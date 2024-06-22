@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f632e786404f9349b4b02fe64b747aa, type: 3}
+  m_Name: GA_Skill_SwordCombo_Ground_01
+  m_EditorClassIdentifier: 
+  UseDebug: 1
+  abilityName: Punch
+  abilityTag: {fileID: 11400000, guid: 7652538ebe0f6434baaa363ccf7f4d95, type: 2}
+  attributeTags: []
+  conditionTags:
+    requireds: []
+    obstacleds: []
+  grantTags:
+    owneds:
+    - {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
+    blocks:
+    - {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
+    - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
+  cancelAbilityTags: []
+  _animationName: SwordCombo_01
+  _fadeInTime: 0.2
+  _tracePoint: {fileID: 11400000, guid: fd15a44b8089f3d4eb7a7e059924865f, type: 2}
+  _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
+  _traceRadius: 1
+  _takeDamageEffect: {fileID: 11400000, guid: f506162ffe7a9bc40b370f0beff56121, type: 2}
+  _applyGameplayEffectsOnHitToOther:
+  - {fileID: 11400000, guid: 9c987c597e5b16046bd3ff9e355ffdcf, type: 2}
+  - {fileID: 11400000, guid: 591e816567943a8458c1199c6f87a106, type: 2}
+  - {fileID: 11400000, guid: b4ab5a2badaa60840aea4fc5cd06760e, type: 2}
+  _applyGameplayEffectsOnSuccessedHit:
+  - {fileID: 11400000, guid: c8895f0a0c13dab4f83a755b7fc2366b, type: 2}
+  _onHitToOtherCue:
+    Cue: {fileID: 11400000, guid: 6c85673d7edaa62439a2920702e6d37b, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+  _onSuccessedPlayerHit:
+    Cue: {fileID: 11400000, guid: 0f6d4545bf2eabd4eb232183e15595c9, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+  _comboTag: {fileID: 11400000, guid: f055fa316400fa047aece36f961a1203, type: 2}

@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ba133722f101b4187995f37a6b5533, type: 3}
+  m_Name: GA_PawnAbiltiy_KnockbackMovement
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  abilityName: 
+  abilityTag: {fileID: 11400000, guid: fa9038ae30a790e4cb42b8e67229281b, type: 2}
+  attributeTags: []
+  grantTags:
+    owneds:
+    - {fileID: 11400000, guid: faa548f5b42584245accfcfd09cb700a, type: 2}
+    blocks: []
+  conditionTags:
+    requireds: []
+    obstacleds: []
+  cancelAbilityTags: []
+  _knockbackCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

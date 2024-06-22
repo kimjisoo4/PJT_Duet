@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec481f101c1db46adb2bff76d213c8, type: 3}
+  m_Name: GA_PawnAbiltiy_ApplyRootMotion
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  abilityName: Apply Root Motion
+  abilityTag: {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
+  attributeTags: []
+  grantTags:
+    owneds: []
+    blocks: []
+  conditionTags:
+    requireds:
+    - {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
+    obstacleds: []
+  cancelAbilityTags: []

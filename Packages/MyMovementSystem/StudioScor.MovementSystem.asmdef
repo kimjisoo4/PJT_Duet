@@ -1,0 +1,23 @@
+{
+    "name": "StudioScor.MovementSystem",
+    "rootNamespace": "StudioScor.MovementSystem",
+    "references": [
+        "GUID:0e56af4e027762c43b7508efc3b00495",
+        "GUID:0caab94c8c0a20b4e83e8dc1e4b2a416"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.alexeytaranov.serializereferencedropdown",
+            "expression": "0.0.0",
+            "define": "SCOR_ENABLE_SERIALIZEREFERENCE"
+        }
+    ],
+    "noEngineReferences": false
+}

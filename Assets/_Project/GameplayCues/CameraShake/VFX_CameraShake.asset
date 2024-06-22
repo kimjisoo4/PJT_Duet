@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cec78c88e404e8045b6a01947d7318e0, type: 3}
+  m_Name: VFX_CameraShake
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  cue: {fileID: 2199142294315240604, guid: f61e0c1b285e5724b8965a67e4a7f684, type: 3}

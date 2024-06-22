@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a53e884f643e234a971f8fd45c063f4, type: 3}
+  m_Name: PlayerManager
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  defaultPlayerController: {fileID: 3642002693172305482, guid: bf345c5f184a5ab4d90c995dd23d9fea,
+    type: 3}
+  defaultPlayerPawn: {fileID: 6419800303973250403, guid: d8fea1572d399c84fb957bd8db6e8c57,
+    type: 3}

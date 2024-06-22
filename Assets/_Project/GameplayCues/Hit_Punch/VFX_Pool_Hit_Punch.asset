@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12b75ec2407b5cc43bc7356debc47ecc, type: 3}
+  m_Name: VFX_Pool_Hit_Punch
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  pooled: {fileID: 6064875541528481297, guid: 42a94c4ef69dba948820b5843c94dd9f, type: 3}
+  startSize: 5

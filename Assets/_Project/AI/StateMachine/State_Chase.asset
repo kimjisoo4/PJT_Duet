@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ff8c60ca2f071347a9e1d7c6a0d6d40, type: 3}
+  m_Name: State_Chase
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  Name: Chase
+  Color: {r: 1, g: 0.74436975, b: 0.3443396, a: 1}
+  _EarlyActions:
+  - {fileID: 11400000, guid: 288f6c7f5f3199c4b9b361dbc1277243, type: 2}
+  _ProcessActions:
+  - {fileID: 11400000, guid: 2447ace7e831e324a80ac85d39084ec6, type: 2}
+  _LateActions: []
+  _PhysisActions: []
+  _Transitions:
+  - _Name: '[T] Turn Around | Remain [F]'
+    _Decisions:
+    - {fileID: 11400000, guid: 998af4d326429204595145131a53137f, type: 2}
+    _True: {fileID: 11400000, guid: e7e39216da5d82b4aaa3208a2ef7fb26, type: 2}
+    _False: {fileID: 11400000, guid: 3dd73da04ce6b6347b5c6ccd9df2fbb7, type: 2}
+  - _Name: '[T] Remain | Idle [F]'
+    _Decisions:
+    - {fileID: 11400000, guid: f7d2a41e52596ac41a773729c786ab20, type: 2}
+    _True: {fileID: 11400000, guid: 3dd73da04ce6b6347b5c6ccd9df2fbb7, type: 2}
+    _False: {fileID: 11400000, guid: edd8d750f1d381040b8be3cc33d247fe, type: 2}

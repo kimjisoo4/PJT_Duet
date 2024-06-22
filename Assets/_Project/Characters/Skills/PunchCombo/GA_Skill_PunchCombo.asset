@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80920523be7d4864d95e2f46a2801194, type: 3}
+  m_Name: GA_Skill_PunchCombo
+  m_EditorClassIdentifier: PF.PJT.Duet:PF.PJT.Duet.Pawn.PawnSkill:PunchComboSkill
+  UseDebug: 0
+  abilityName: Punch Combo
+  abilityTag: {fileID: 11400000, guid: 54ac8190c9c04f54c8e8daee03f98240, type: 2}
+  attributeTags:
+  - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
+  grantTags:
+    owneds: []
+    blocks: []
+  conditionTags:
+    requireds: []
+    obstacleds: []
+  cancelAbilityTags: []
+  _groundActions:
+  - {fileID: 11400000, guid: 0c413131fe6183b458dae19ef6a242cd, type: 2}
+  - {fileID: 11400000, guid: 8f3b1763a05154646a85681458b67374, type: 2}
+  - {fileID: 11400000, guid: fd83fc6b66e9a0e40b6483527e265498, type: 2}

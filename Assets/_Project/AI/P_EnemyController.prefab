@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1008602029604108534
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5724862025874034389}
+  - component: {fileID: 2873670618656609777}
+  - component: {fileID: 8362003983063525420}
+  - component: {fileID: 1402757709988319977}
+  m_Layer: 0
+  m_Name: P_EnemyController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5724862025874034389
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008602029604108534}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2873670618656609777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008602029604108534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b1fc3890dd9c5a4fb500196b1f6c199, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 1
+  playerManager: {fileID: 11400000, guid: 13dbbcde627c89f49bc44e0a2795673d, type: 2}
+  <IsPlayer>k__BackingField: 0
+  <TurnDirectionState>k__BackingField: 1
+  <Affiliation>k__BackingField: 2
+--- !u!114 &8362003983063525420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008602029604108534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3aa09cdb76393e46b6a021c8dfccdb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _playerManager: {fileID: 11400000, guid: 13dbbcde627c89f49bc44e0a2795673d, type: 2}
+  _stateMachine: {fileID: 1402757709988319977}
+  _selfKey: {fileID: 11400000, guid: d3c00c177cc3cd14887495d1347ecf1a, type: 2}
+  _targetKey: {fileID: 11400000, guid: 0b1a3688bf3a9eb488754bfbb09e9e34, type: 2}
+--- !u!114 &1402757709988319977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008602029604108534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7698e61c645283445ad209edfc10a6da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _BlackBoard: {fileID: 11400000, guid: eaf4c0dbd85bb2d4180413664adc4737, type: 2}
+  _DefaultState: {fileID: 11400000, guid: edd8d750f1d381040b8be3cc33d247fe, type: 2}
+  _RemainState: {fileID: 11400000, guid: 3dd73da04ce6b6347b5c6ccd9df2fbb7, type: 2}
+  _ResetState: {fileID: 11400000, guid: 85393f6205cf7ae4c953ceae30f8765e, type: 2}
+  _useAutoPlaying: 1
+  DebugOffset: {x: 0, y: 2, z: 0}
+  DebugRadius: 0.5

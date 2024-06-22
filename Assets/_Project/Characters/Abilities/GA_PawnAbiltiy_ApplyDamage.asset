@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63b8b2dbbcb92324d950699a50d3dad5, type: 3}
+  m_Name: GA_PawnAbiltiy_ApplyDamage
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  abilityName: Apply Damage
+  abilityTag: {fileID: 11400000, guid: 0839948bb0f1ae1468910c7d3dd113c0, type: 2}
+  attributeTags: []
+  grantTags:
+    owneds: []
+    blocks: []
+  conditionTags:
+    requireds: []
+    obstacleds:
+    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+  cancelAbilityTags: []
+  _hpTag: {fileID: 11400000, guid: 6aa6e03b3a1569748a402134867cfd0b, type: 2}
+  _damageResultEvent: {fileID: 11400000, guid: 0f53c8eaeb32ef84f8fc16fedf206042, type: 2}
