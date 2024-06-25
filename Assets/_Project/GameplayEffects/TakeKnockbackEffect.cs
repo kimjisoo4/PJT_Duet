@@ -68,7 +68,7 @@ namespace PF.PJT.Duet.Pawn.Effect
                     float distance = _gameplayEffect._knockbackDistance;
                     float duration = _gameplayEffect._knockbackDuration;
 
-                    _knockbackable.TakeKnockBack(direction, distance, duration);
+                    _knockbackable.TakeKnockback(direction, distance, duration);
                 }
             }
             protected override void OnExitEffect()

@@ -19,12 +19,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
   conditionTags:
     requireds: []
-    obstacleds: []
+    obstacleds:
+    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+    - {fileID: 11400000, guid: 08e9c4a810fff2044a1f26bae2fbd9c8, type: 2}
   grantTags:
-    owneds: []
+    owneds:
+    - {fileID: 11400000, guid: 27d736be509dae14d8fdcf133bc7a0c2, type: 2}
     blocks:
     - {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
     - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
+    - {fileID: 11400000, guid: d2dc3cec091ae4a49b811d817552aa42, type: 2}
+    - {fileID: 11400000, guid: 99005c8d5fca529409cafeb3e9f60c0d, type: 2}
+    - {fileID: 11400000, guid: 2ec728a8400d61a4da454d4c66f9d97a, type: 2}
+    - {fileID: 11400000, guid: a3e8dc39614163349a84f2554057d543, type: 2}
   cancelAbilityTags:
   - {fileID: 11400000, guid: 54ac8190c9c04f54c8e8daee03f98240, type: 2}
   _animationName: Diveroll

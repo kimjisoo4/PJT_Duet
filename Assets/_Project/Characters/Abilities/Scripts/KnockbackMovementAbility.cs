@@ -37,8 +37,6 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                 _knockbackable = gameObject.GetComponent<IKnockbackable>();
             }
 
-            
-
             protected override void OnGrantAbility()
             {
                 base.OnGrantAbility();
@@ -104,7 +102,6 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
 
                 TryActiveAbility();
             }
-
         }
     }
 }

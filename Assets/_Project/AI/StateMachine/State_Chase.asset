@@ -22,7 +22,7 @@ MonoBehaviour:
   _LateActions: []
   _PhysisActions: []
   _Transitions:
-  - _Name: '[T] Turn Around | Remain [F]'
+  - _Name: '[T] Turning | Remain [F]'
     _Decisions:
     - {fileID: 11400000, guid: 998af4d326429204595145131a53137f, type: 2}
     _True: {fileID: 11400000, guid: e7e39216da5d82b4aaa3208a2ef7fb26, type: 2}

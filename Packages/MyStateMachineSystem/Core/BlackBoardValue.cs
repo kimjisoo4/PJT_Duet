@@ -4,28 +4,33 @@ namespace StudioScor.StateMachine
 {
     public class BlackBoardValue<T> : BaseClass
     {
-        private T _Value;
-        private bool _HasValue;
-        public bool HasValue => _HasValue;
+        private T _value;
+        private bool _hasValue;
+        public bool HasValue => _hasValue;
 
 
         public void SetValue(T value)
         {
-            _Value = value;
+            _value = value;
 
-            _HasValue = true;
+            _hasValue = true;
+        }
+
+        public T GetValue()
+        {
+            return _hasValue ? _value : default;
         }
         public bool TryGetValue(out T value)
         {
-            value = _Value;
+            value = _value;
 
-            return _HasValue;
+            return _hasValue;
         }
 
         public void Clear()
         {
-            _Value = default;
-            _HasValue = false;
+            _value = default;
+            _hasValue = false;
         }
     }
 }

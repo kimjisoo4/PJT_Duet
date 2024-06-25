@@ -190,10 +190,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 if (hitCount > 0)
                 {
-                    bool isHit = false;
+                    bool wasHit = false;
 
                     for (int i = 0; i < hitCount; i++)
                     {
+                        bool isHit = false;
                         var hit = _hitResults[i];
 
                         if (!_ignoreTransforms.Contains(hit.transform))
@@ -206,25 +207,36 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                             if(hit.transform.TryGetGameplayEffectSystem(out IGameplayEffectSystem hitGameplayEffectSystem))
                             {
-                                isHit = true;
-
                                 if(_ability._takeDamageEffect)
                                 {
                                     var data = new TakeDamageEffect.FElement(hit.point, hit.normal, hit.collider, prevPosition.Direction(currentPosition), bodyPart.gameObject, gameObject);
                                     
-                                    hitGameplayEffectSystem.TryTakeEffect(_ability._takeDamageEffect, gameObject, Level, data);
+                                    if(hitGameplayEffectSystem.TryTakeEffect(_ability._takeDamageEffect, gameObject, Level, data))
+                                    {
+                                        isHit = true;
+                                    }
                                 }
 
                                 for (int effectIndex = 0; effectIndex < _ability._applyGameplayEffectsOnHitToOther.Length; effectIndex++)
                                 {
                                     var effect = _ability._applyGameplayEffectsOnHitToOther[effectIndex];
 
-                                    hitGameplayEffectSystem.TryTakeEffect(effect, gameObject, Level, null);
+                                    if(hitGameplayEffectSystem.TryTakeEffect(effect, gameObject, Level, null))
+                                    {
+                                        isHit = true;
+                                    }
                                 }
                                 
-                                if(_ability._onHitToOtherCue.Cue)
+                                
+                            }
+
+                            if (isHit)
+                            {
+                                wasHit = true;
+
+                                if (_ability._onHitToOtherCue.Cue)
                                 {
-                                    Vector3 position = hit.distance > 0 ? hit.point + hit.transform.TransformDirection(_ability._onHitToOtherCue.Position) 
+                                    Vector3 position = hit.distance > 0 ? hit.point + hit.transform.TransformDirection(_ability._onHitToOtherCue.Position)
                                                                         : hit.collider.ClosestPoint(prevPosition);
                                     Vector3 rotation = Quaternion.LookRotation(hit.normal, Vector3.up).eulerAngles + hit.transform.TransformDirection(_ability._onHitToOtherCue.Rotation);
                                     Vector3 scale = _ability._onHitToOtherCue.Scale;
@@ -235,7 +247,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                         }
                     }
 
-                    if(isHit)
+                    if(wasHit)
                     {
                         if(_gameplayEffectSystem is not null)
                         {

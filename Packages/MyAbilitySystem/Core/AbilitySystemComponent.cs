@@ -21,8 +21,10 @@ namespace StudioScor.AbilitySystem
         public (bool isGrant, IAbilitySpec abilitySpec) TryGrantAbility(Ability ability, int level = 0);
         public bool TryRemoveAbility(Ability ability);
         public (bool isActivate, IAbilitySpec abilitySpec) TryActivateAbility(Ability ability);
+        public (bool isPossible, IAbilitySpec abilitySpec) CanActivateAbility(Ability ability);
+        public IAbilitySpec ForceActivateAbility(Ability ability);
         public void ReleasedAbility(Ability ability);
-        public bool IsActivateAbility(Ability ability);
+        public bool IsPlayingAbility(Ability ability);
         public void CancelAbility(Ability ability);
         public void CancelAbilityFromSource(object source);
 
@@ -193,18 +195,18 @@ namespace StudioScor.AbilitySystem
             }
         }
 
-        public bool CanActivateAbility(Ability ability)
+        public (bool isPossible, IAbilitySpec abilitySpec) CanActivateAbility(Ability ability)
         {
             if(Abilities.TryGetValue(ability, out IAbilitySpec spec))
             {
-                return spec.CanActiveAbility();
+                return (spec.CanActiveAbility(), spec);
             }
             else
             {
-                return false;
+                return (false, null);
             }
         }
-        public bool IsActivateAbility(Ability ability)
+        public bool IsPlayingAbility(Ability ability)
         {
             if (Abilities.TryGetValue(ability, out IAbilitySpec spec))
             {
@@ -231,14 +233,19 @@ namespace StudioScor.AbilitySystem
             }
         }
 
-        public void ForceActivateAbility(Ability ability)
+        public IAbilitySpec ForceActivateAbility(Ability ability)
         {
             if (!ability)
-                return;
+                return null;
 
             if (Abilities.TryGetValue(ability, out IAbilitySpec spec))
             {
                 spec.ForceActiveAbility();
+                return spec;
+            }
+            else
+            {
+                return null;
             }
         }
 

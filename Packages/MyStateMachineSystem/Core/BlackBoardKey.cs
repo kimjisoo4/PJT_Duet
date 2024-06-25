@@ -25,6 +25,10 @@ namespace StudioScor.StateMachine
             _BlackBoardValues = null;
         }
 
+        public T GetValue(StateMachineComponent stateMachine)
+        {
+            return _BlackBoardValues[stateMachine].GetValue();
+        }
         public bool TryGetValue(StateMachineComponent stateMachine, out T value)
         {
             if (_BlackBoardValues.ContainsKey(stateMachine) && _BlackBoardValues[stateMachine].TryGetValue(out value))

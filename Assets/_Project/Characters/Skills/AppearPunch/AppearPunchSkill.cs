@@ -7,6 +7,7 @@ using PF.PJT.Duet.Pawn.Effect;
 using System.Collections.Generic;
 using StudioScor.GameplayCueSystem;
 using StudioScor.PlayerSystem;
+using StudioScor.MovementSystem;
 
 namespace PF.PJT.Duet.Pawn.PawnSkill
 {
@@ -17,9 +18,15 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private string _animationName = "AppearPunch";
         [SerializeField][Range(0f, 1f)] private float _fadeInTime = 0f;
 
+        [Header(" Movement ")]
+        [SerializeField][Min(0f)] private float _moveDistance = 5f;
+        [SerializeField][Range(0f, 1f)] private float _moveStart = 0.1f;
+        [SerializeField][Range(0f, 1f)] private float _moveEnd = 0.3f;
+        [SerializeField] private AnimationCurve _moveCurve = AnimationCurve.Linear(0, 0, 1, 1);
+
         [Header(" Trace ")]
         [SerializeField] private BodyTag _tracePoint;
-        [SerializeField] private float _traceRadius = 1f;
+        [SerializeField][Min(0f)] private float _traceRadius = 1f;
         [SerializeField] private Variable_LayerMask _traceLayer;
 
         [Header(" Gameplay Effects ")]
@@ -43,12 +50,14 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             protected new readonly AppearPunchSkill _ability;
             private readonly IPawnSystem _pawnSystem;
             private readonly IGameplayEffectSystem _gameplayEffectSystem;
+            private readonly IMovementSystem _movementSystem;
             private readonly IBodySystem _bodySystem;
             private readonly IDilationSystem _dilationSystem;
             private readonly AnimationPlayer _animationPlayer;
             
             private readonly int _animationID;
 
+            private readonly ReachValueToTime _movementValue = new();
 
             private bool _wasEnabledTrace = false;
             private readonly List<Transform> _ignoreTransforms = new();
@@ -65,6 +74,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _pawnSystem = gameObject.GetPawnSystem();
                 _dilationSystem = gameObject.GetDilationSystem();
                 _gameplayEffectSystem = gameObject.GetGameplayEffectSystem();
+                _movementSystem = gameObject.GetMovementSystem();
                 _bodySystem = gameObject.GetBodySystem();
                 _animationPlayer = gameObject.GetComponentInChildren<AnimationPlayer>(true);
 
@@ -106,18 +116,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _animationPlayer.OnNotify += _animationPlayer_OnNotify;
                 _animationPlayer.OnEnterNotifyState += _animationPlayer_OnEnterNotifyState;
                 _animationPlayer.OnExitNotifyState += _animationPlayer_OnExitNotifyState;
-            }
 
-            private void _animationPlayer_OnNotify(string eventName)
-            {
-                switch (eventName)
-                {
-                    case "Impact":
-                        OnImpactVFX();
-                        break;
-                    default:
-                        break;
-                }
+                _movementValue.OnMovement(_ability._moveDistance, _ability._moveCurve);
             }
 
             protected override void ExitAbility()
@@ -132,8 +132,27 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 EndTrace();
             }
+
+            private void _animationPlayer_OnNotify(string eventName)
+            {
+                if (!IsPlaying)
+                    return;
+
+                switch (eventName)
+                {
+                    case "Impact":
+                        OnImpactVFX();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             private void _animationPlayer_OnEnterNotifyState(string eventName)
             {
+                if (!IsPlaying)
+                    return;
+
                 switch (eventName)
                 {
                     case "Trace":
@@ -145,6 +164,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             }
             private void _animationPlayer_OnExitNotifyState(string eventName)
             {
+                if (!IsPlaying)
+                    return;
+
                 switch (eventName)
                 {
                     case "Trace":
@@ -164,7 +186,10 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 if(IsPlaying)
                 {
+                    float normalizedTime = _animationPlayer.NormalizedTime;
+
                     UpdateTrace();
+                    UpdateMovement(normalizedTime);
 
                     switch (_animationPlayer.State)
                     {
@@ -189,6 +214,20 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     _impactCue = _ability._onImpactCue.PlayFromTarget(transform);
                 }
             }
+
+            private void UpdateMovement(float normalizedTime)
+            {
+                if (!_movementValue.IsPlaying)
+                    return;
+
+                var value = Mathf.InverseLerp(_ability._moveStart, _ability._moveEnd, normalizedTime);
+
+                var distance = _movementValue.UpdateMovement(value);
+                Vector3 direction = transform.HorizontalForward();
+
+                _movementSystem.MovePosition(direction * distance);
+            }
+
             private void OnTrace()
             {
                 if (_wasEnabledTrace)

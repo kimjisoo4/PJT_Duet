@@ -9,10 +9,8 @@ namespace PF.PJT.Duet.Pawn.Effect
     {
         private static IObjectPool<Spec> _pool;
 
-        protected override void OnReset()
+        private void Reset()
         {
-            base.OnReset();
-
             _duration = 1f;
             _effectType = EGameplayEffectType.Duration;
         }

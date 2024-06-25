@@ -19,7 +19,9 @@ MonoBehaviour:
   conditionTags:
     requireds:
     - {fileID: 11400000, guid: f055fa316400fa047aece36f961a1203, type: 2}
-    obstacleds: []
+    obstacleds:
+    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+    - {fileID: 11400000, guid: 08e9c4a810fff2044a1f26bae2fbd9c8, type: 2}
   grantTags:
     owneds:
     - {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}

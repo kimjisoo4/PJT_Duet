@@ -71,6 +71,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 Quaternion rotation = Quaternion.LookRotation(_dashDirection, transform.up);
                 _rotationSystem.SetRotation(rotation);
 
+                if(_timer.IsPlaying)
+                {
+                    _timer.EndTimer();
+                }
+
                 _timer.OnTimer(_ability._duration);
                 _reachValueToTime.OnMovement(_ability._distance, _ability._moveCurve);
 

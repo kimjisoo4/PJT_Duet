@@ -16,13 +16,14 @@ MonoBehaviour:
   abilityName: Apply Damage
   abilityTag: {fileID: 11400000, guid: 0839948bb0f1ae1468910c7d3dd113c0, type: 2}
   attributeTags: []
-  grantTags:
-    owneds: []
-    blocks: []
   conditionTags:
     requireds: []
     obstacleds:
     - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+    - {fileID: 11400000, guid: 27d736be509dae14d8fdcf133bc7a0c2, type: 2}
+  grantTags:
+    owneds: []
+    blocks: []
   cancelAbilityTags: []
   _hpTag: {fileID: 11400000, guid: 6aa6e03b3a1569748a402134867cfd0b, type: 2}
   _damageResultEvent: {fileID: 11400000, guid: 0f53c8eaeb32ef84f8fc16fedf206042, type: 2}

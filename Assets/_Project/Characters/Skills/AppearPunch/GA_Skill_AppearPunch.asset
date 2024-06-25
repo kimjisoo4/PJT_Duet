@@ -23,6 +23,7 @@ MonoBehaviour:
   grantTags:
     owneds:
     - {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
+    - {fileID: 11400000, guid: ad6c3d6668571ff4cbdcefdb4e2be194, type: 2}
     blocks:
     - {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
     - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
@@ -31,6 +32,33 @@ MonoBehaviour:
   cancelAbilityTags: []
   _animationName: AppearPunch
   _fadeInTime: 0
+  _moveDistance: 3
+  _moveStart: 0.3
+  _moveEnd: 0.6
+  _moveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   _tracePoint: {fileID: 11400000, guid: b528a909f1f35664aa204d32fc13cb75, type: 2}
   _traceRadius: 1.5
   _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}

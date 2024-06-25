@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ff8c60ca2f071347a9e1d7c6a0d6d40, type: 3}
+  m_Name: State_Turning
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  Name: Turning
+  Color: {r: 1, g: 0.34887588, b: 0, a: 1}
+  _EarlyActions:
+  - {fileID: 11400000, guid: 81ca65932cc358043aca49c23dcb13dd, type: 2}
+  _ProcessActions: []
+  _LateActions: []
+  _PhysisActions: []
+  _Transitions:
+  - _Name: '[T] Turning | Remain [F]'
+    _Decisions:
+    - {fileID: 11400000, guid: 89daa502cca3b61408a1745572a31d42, type: 2}
+    _True: {fileID: 11400000}
+    _False: {fileID: 11400000, guid: 3dd73da04ce6b6347b5c6ccd9df2fbb7, type: 2}
+  - _Name: '[T] Remain | Chase [F]'
+    _Decisions:
+    - {fileID: 11400000, guid: 29c8b4e6a52091546bb9c0bb331665a9, type: 2}
+    _True: {fileID: 11400000, guid: 3dd73da04ce6b6347b5c6ccd9df2fbb7, type: 2}
+    _False: {fileID: 11400000, guid: 9d6fb850c20fad6468b70553c0c3b61d, type: 2}
+  - _Name: '[T] Punch Combo | Remain [F]'
+    _Decisions:
+    - {fileID: 11400000, guid: d957075ab5b9edd4ea85fd34680c29bd, type: 2}
+    - {fileID: 11400000, guid: 0e42432edc2927142a86e72ea3fc5162, type: 2}
+    _True: {fileID: 11400000, guid: 9f21f17f8483aa04e8a691f30bc7501c, type: 2}
+    _False: {fileID: 11400000, guid: 3dd73da04ce6b6347b5c6ccd9df2fbb7, type: 2}

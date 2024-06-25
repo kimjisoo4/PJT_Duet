@@ -20,7 +20,8 @@ MonoBehaviour:
   _attributeTags: []
   _conditionTags:
     requireds: []
-    obstacleds: []
+    obstacleds:
+    - {fileID: 11400000, guid: 27d736be509dae14d8fdcf133bc7a0c2, type: 2}
   _grantTags:
     owneds:
     - {fileID: 11400000, guid: 659e97de82b7a0043b73545f0d619775, type: 2}

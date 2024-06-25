@@ -16,13 +16,14 @@ MonoBehaviour:
   abilityName: 
   abilityTag: {fileID: 11400000, guid: fa9038ae30a790e4cb42b8e67229281b, type: 2}
   attributeTags: []
+  conditionTags:
+    requireds: []
+    obstacleds:
+    - {fileID: 11400000, guid: 27d736be509dae14d8fdcf133bc7a0c2, type: 2}
   grantTags:
     owneds:
     - {fileID: 11400000, guid: faa548f5b42584245accfcfd09cb700a, type: 2}
     blocks: []
-  conditionTags:
-    requireds: []
-    obstacleds: []
   cancelAbilityTags: []
   _knockbackCurve:
     serializedVersion: 2

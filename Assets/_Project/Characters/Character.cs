@@ -15,7 +15,7 @@ namespace PF.PJT.Duet.Pawn
     public interface IKnockbackable
     {
         public delegate void TakeKnockbackEventHandler(IKnockbackable knockbackable, Vector3 direction, float distance, float duration);
-        public void TakeKnockBack(Vector3 direction, float distance, float duration);
+        public void TakeKnockback(Vector3 direction, float distance, float duration);
 
         public event TakeKnockbackEventHandler OnTakeKnockback;
     }
@@ -49,6 +49,7 @@ namespace PF.PJT.Duet.Pawn
         [SerializeField] private Ability _appearAbility;
         [SerializeField] private Ability _leaveAbility;
 
+
         private IAbilitySystem _abilitySystem;
         private IPawnSystem _pawnSystem;
         private IGameplayEffectSystem _gameplayEffectSystem;
@@ -59,6 +60,7 @@ namespace PF.PJT.Duet.Pawn
         private IDilationSystem _dilationSystem;
 
         public GameObject Model => _model;
+
         public event IKnockbackable.TakeKnockbackEventHandler OnTakeKnockback;
 
         private AbilityInputBuffer _inputBuffer = new();
@@ -179,7 +181,7 @@ namespace PF.PJT.Duet.Pawn
             }
         }
 
-        public void TakeKnockBack(Vector3 direction, float distance, float duration)
+        public void TakeKnockback(Vector3 direction, float distance, float duration)
         {
             OnTakeKnockback?.Invoke(this, direction, distance, duration);
         }

@@ -107,6 +107,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4100521211503305755}
     m_Modifications:
+    - target: {fileID: 4734170760491511349, guid: f7fff77a4ca133f498e044fb397b69de,
+        type: 3}
+      propertyPath: _owner
+      value: 
+      objectReference: {fileID: 8594359607491703852}
+    - target: {fileID: 4907513733653231596, guid: f7fff77a4ca133f498e044fb397b69de,
+        type: 3}
+      propertyPath: _owner
+      value: 
+      objectReference: {fileID: 8594359607491703852}
     - target: {fileID: 5497756752658523556, guid: f7fff77a4ca133f498e044fb397b69de,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -157,12 +167,47 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5501619500962631564, guid: f7fff77a4ca133f498e044fb397b69de,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5502274508143566460, guid: f7fff77a4ca133f498e044fb397b69de,
         type: 3}
       propertyPath: m_Name
       value: P_Character_Fighter
       objectReference: {fileID: 0}
+    - target: {fileID: 5502493235472751908, guid: f7fff77a4ca133f498e044fb397b69de,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5502886411933678772, guid: f7fff77a4ca133f498e044fb397b69de,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5503003342021498698, guid: f7fff77a4ca133f498e044fb397b69de,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5503202106889936130, guid: f7fff77a4ca133f498e044fb397b69de,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5994449625353707257, guid: f7fff77a4ca133f498e044fb397b69de,
+        type: 3}
+      propertyPath: _owner
+      value: 
+      objectReference: {fileID: 8594359607491703852}
     - target: {fileID: 6107398047952618893, guid: f7fff77a4ca133f498e044fb397b69de,
+        type: 3}
+      propertyPath: _owner
+      value: 
+      objectReference: {fileID: 8594359607491703852}
+    - target: {fileID: 6814139741859148950, guid: f7fff77a4ca133f498e044fb397b69de,
         type: 3}
       propertyPath: _owner
       value: 

@@ -92,6 +92,8 @@ namespace StudioScor.StatusSystem
             {
                 var status = _statusSystem.GetOrCreateStatus(_statusTag);
 
+                Log($"{nameof(SetupStatusSystem)} :: {status.CurrentValue} / {status.MaxValue}");
+
                 _simpleAmount.SetValue(status.CurrentValue, status.MaxValue);
 
                 status.OnChangedMaxValue += Status_OnChangedMaxValue;

@@ -12,15 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71bfafa98c1d07e44ad960bf4dfeede3, type: 3}
   m_Name: GE_PunchCombo_Ground_01_TakeStiffen
   m_EditorClassIdentifier: 
-  UseDebug: 0
+  UseDebug: 1
   _effectType: 1
-  _duration: 1
+  _duration: 0.4
   _unscaledTime: 0
   _effectTag: {fileID: 11400000, guid: 2ec728a8400d61a4da454d4c66f9d97a, type: 2}
   _attributeTags: []
   _conditionTags:
     requireds: []
-    obstacleds: []
+    obstacleds:
+    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+    - {fileID: 11400000, guid: 27d736be509dae14d8fdcf133bc7a0c2, type: 2}
+    - {fileID: 11400000, guid: ad6c3d6668571ff4cbdcefdb4e2be194, type: 2}
   _grantTags:
     owneds:
     - {fileID: 11400000, guid: 08e9c4a810fff2044a1f26bae2fbd9c8, type: 2}
