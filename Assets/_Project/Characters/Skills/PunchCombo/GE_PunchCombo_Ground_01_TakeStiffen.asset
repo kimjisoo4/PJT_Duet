@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71bfafa98c1d07e44ad960bf4dfeede3, type: 3}
   m_Name: GE_PunchCombo_Ground_01_TakeStiffen
   m_EditorClassIdentifier: 
-  UseDebug: 1
+  UseDebug: 0
   _effectType: 1
   _duration: 0.4
   _unscaledTime: 0

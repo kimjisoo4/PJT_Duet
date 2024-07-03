@@ -47,13 +47,10 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                 AddOwnedTag(_status.CurrentState); 
 
                 _status.OnChangedState += _status_OnChangedState;
-
                 _stat.OnChangedValue += _stat_OnChangedValue;
 
                 ForceActiveAbility();
             }
-
-            
 
             protected override void OnRemoveAbility()
             {
@@ -62,6 +59,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                 if(_status is not null)
                 {
                     _status.OnChangedState -= _status_OnChangedState;
+
                     RemoveOwnedTag(_status.CurrentState);
                 }
 

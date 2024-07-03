@@ -49,7 +49,7 @@ namespace StudioScor.GameplayCueSystem
         {
             Log(" Create New Cue ");
 
-            return new Cue(cuePool);
+            return new Cue(this);
         }
 
         public void Initialization()
@@ -80,6 +80,11 @@ namespace StudioScor.GameplayCueSystem
             }
 
             return cue;
+        }
+
+        public void ReleaseCue(Cue cue)
+        {
+            CuePool.Release(cue);
         }
     }
 }

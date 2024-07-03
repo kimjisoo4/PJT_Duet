@@ -1,0 +1,168 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2310495241380769694
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4654062934846591577}
+  - component: {fileID: 2115033464732450896}
+  - component: {fileID: 396257148805158443}
+  - component: {fileID: 5726285272375439395}
+  - component: {fileID: -7321390917376299596}
+  m_Layer: 0
+  m_Name: P_AirBlast_Explosion
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &4654062934846591577
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2310495241380769694}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.1188307, y: 0.00000011920929, z: -0.8959099}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2115033464732450896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2310495241380769694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8025621a50a16545b014284859fd953, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _traceTimer:
+    <UseDebug>k__BackingField: 0
+    _duration: 0.2
+  _chargeTraceRadiuses:
+  - 0.8
+  - 1.2
+  - 2
+  _explosionCues:
+  - Cue: {fileID: 11400000, guid: 2b24857e9f58b12449941512ddb06530, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0.8, y: 0.8, z: 0.8}
+  - Cue: {fileID: 11400000, guid: 2b24857e9f58b12449941512ddb06530, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1.2, y: 1.2, z: 1.2}
+  - Cue: {fileID: 11400000, guid: 2b24857e9f58b12449941512ddb06530, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 2, y: 2, z: 2}
+  _takeDamages:
+  - {fileID: 11400000, guid: 876e0b27cb16e6944a2050733c4cdeb2, type: 2}
+  - {fileID: 11400000, guid: 0b14cd75ccf5b0f408879b0c528bbc04, type: 2}
+  - {fileID: 11400000, guid: 1ba83ee322f2aa24bb4dff12b3444fa2, type: 2}
+  _takeRadialKnockbacks:
+  - {fileID: 11400000, guid: a50c9729054243c46982a72afb790902, type: 2}
+  _applyGameplayEffectsOnHitToOther:
+  - {fileID: 11400000, guid: 366d6c72fc732b046ba4acf6e3112811, type: 2}
+  _applyGameplayEffectsOnSuccessedHit: []
+--- !u!114 &396257148805158443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2310495241380769694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b3dd485ec20d8b40b73623eec932e18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _trailSphereCast:
+    <UseDebug>k__BackingField: 0
+    _owner: {fileID: 2310495241380769694}
+    _traceRadius: 1
+    _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
+    _maxHitCount: 10
+  _useUnityEvent: 0
+  _unityEvents:
+    _onStartedRaycast:
+      m_PersistentCalls:
+        m_Calls: []
+    _onEndedRaycast:
+      m_PersistentCalls:
+        m_Calls: []
+--- !u!114 &5726285272375439395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2310495241380769694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8eb0ccc0ed5ef448a610d960cbe9aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _chargeable:
+    <UseDebug>k__BackingField: 0
+    _chargeValues:
+    - 0.5
+    - 1
+    _strength: 0
+    _isPlaying: 0
+    _isFulled: 0
+    _currentChargeLevel: 0
+  _useUnityEvent: 0
+  _unityEvents:
+    _onStartedCharging:
+      m_PersistentCalls:
+        m_Calls: []
+    _onCancededCharging:
+      m_PersistentCalls:
+        m_Calls: []
+    _onChangedChargeLevel:
+      m_PersistentCalls:
+        m_Calls: []
+    _onFulledCharging:
+      m_PersistentCalls:
+        m_Calls: []
+    _onFinishedCharging:
+      m_PersistentCalls:
+        m_Calls: []
+    _onEndedCharging:
+      m_PersistentCalls:
+        m_Calls: []
+--- !u!114 &-7321390917376299596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2310495241380769694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35730cd99405cd74180e27123e3e76a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _releasedWhenDisable: 1
+  _onCreated:
+    m_PersistentCalls:
+      m_Calls: []
+  _onReleased:
+    m_PersistentCalls:
+      m_Calls: []

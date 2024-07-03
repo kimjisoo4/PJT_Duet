@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using StudioScor.Utilities;
-using static PlasticGui.WorkspaceWindow.Update.UpdateWorkspaceOperation;
+﻿using StudioScor.Utilities;
+using UnityEngine;
 
 namespace StudioScor.MovementSystem
 {

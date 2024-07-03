@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb06e82321eb53f4eaddc800914b5083, type: 3}
+  m_Name: GE_AirBlast_Charge_03_TakeDamage
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _effectType: 0
+  _duration: 5
+  _unscaledTime: 0
+  _effectTag: {fileID: 11400000, guid: d2dc3cec091ae4a49b811d817552aa42, type: 2}
+  _attributeTags: []
+  _conditionTags:
+    requireds: []
+    obstacleds:
+    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+    - {fileID: 11400000, guid: 27d736be509dae14d8fdcf133bc7a0c2, type: 2}
+  _grantTags:
+    owneds: []
+    blocks: []
+  _cancelEffectTags: []
+  _damageType: {fileID: 0}
+  _baseStat: {fileID: 11400000, guid: ec71c03f010d2164cadd48f171f12fd0, type: 2}
+  _damageRatio: 1.5

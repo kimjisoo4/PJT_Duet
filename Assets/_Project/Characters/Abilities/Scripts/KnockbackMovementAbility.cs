@@ -70,7 +70,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
             {
                 base.ExitAbility();
 
-                _timer.FinisheTimer();
+                _timer.FinishTimer();
                 _reachValueToTime.EndMovement();
             }
             public void UpdateAbility(float deltaTime)

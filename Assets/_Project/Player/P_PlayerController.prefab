@@ -190,6 +190,8 @@ MonoBehaviour:
     type: 3}
   _attackActionReference: {fileID: 7748630667174634724, guid: 77f31ac1e5a26ed4484e6522d199bce0,
     type: 3}
+  _skillActionReference: {fileID: 794013130237643679, guid: 77f31ac1e5a26ed4484e6522d199bce0,
+    type: 3}
   _dashActionReference: {fileID: -7423496331851577499, guid: 77f31ac1e5a26ed4484e6522d199bce0,
     type: 3}
   _characterA: {fileID: 0}

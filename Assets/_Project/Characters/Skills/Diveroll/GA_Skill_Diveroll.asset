@@ -16,7 +16,8 @@ MonoBehaviour:
   abilityName: Diveroll
   abilityTag: {fileID: 11400000, guid: 918a3aff35629b04d81b44b11ec4faa2, type: 2}
   attributeTags:
-  - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
+  - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
+  - {fileID: 11400000, guid: 74e03b5ab9d688c4d8ff8d551ccfba8b, type: 2}
   conditionTags:
     requireds: []
     obstacleds:
@@ -32,8 +33,12 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 99005c8d5fca529409cafeb3e9f60c0d, type: 2}
     - {fileID: 11400000, guid: 2ec728a8400d61a4da454d4c66f9d97a, type: 2}
     - {fileID: 11400000, guid: a3e8dc39614163349a84f2554057d543, type: 2}
+    - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
   cancelAbilityTags:
-  - {fileID: 11400000, guid: 54ac8190c9c04f54c8e8daee03f98240, type: 2}
+  - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
+  _icon: {fileID: 0}
+  _isSkill: 0
+  _skillType: 0
   _animationName: Diveroll
   _motionTime: motionTime
   _fadeInTime: 0.1
@@ -64,3 +69,4 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _coolTimeEffect: {fileID: 0}

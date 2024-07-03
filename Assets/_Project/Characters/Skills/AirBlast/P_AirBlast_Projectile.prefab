@@ -1,0 +1,253 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8984331437772637715
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 185387628400237280}
+  - component: {fileID: 5919586294655286422}
+  - component: {fileID: 3584657914639303916}
+  - component: {fileID: 7880404039890585289}
+  - component: {fileID: 1681164705333570886}
+  - component: {fileID: 7281792994599321411}
+  - component: {fileID: 576137989675743167}
+  m_Layer: 0
+  m_Name: P_AirBlast_Projectile
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &185387628400237280
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8984331437772637715}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.258819, y: 0, z: 0, w: 0.9659259}
+  m_LocalPosition: {x: -2.13, y: 2.61, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: -30, y: 0, z: 0}
+--- !u!54 &5919586294655286422
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8984331437772637715}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &3584657914639303916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8984331437772637715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e3b78c18f2986e4681ed61008afc04b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _rigidbody: {fileID: 5919586294655286422}
+  _lifeTimeTimer:
+    <UseDebug>k__BackingField: 0
+    _duration: 1
+  _explosionPool: {fileID: 11400000, guid: 60feac932cf40fd46aac96089c9b4588, type: 2}
+  _projectileCues:
+  - Cue: {fileID: 11400000, guid: cf92b3a96e5189f439957a620ed622cf, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0.8, y: 0.8, z: 0.8}
+  - Cue: {fileID: 11400000, guid: cf92b3a96e5189f439957a620ed622cf, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+  - Cue: {fileID: 11400000, guid: cf92b3a96e5189f439957a620ed622cf, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1.5, y: 1.5, z: 1.5}
+  _changeChargeLevelTraceRadius:
+  - 0.5
+  - 0.6
+  - 0.8
+  _chargingCues:
+  - Cue: {fileID: 11400000, guid: 7ce1680a92d92d04eb27ba05bf011d58, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0.3, y: 0.3, z: 0.3}
+  - Cue: {fileID: 11400000, guid: 7ce1680a92d92d04eb27ba05bf011d58, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0.4, y: 0.4, z: 0.4}
+  - Cue: {fileID: 11400000, guid: 7ce1680a92d92d04eb27ba05bf011d58, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0.6, y: 0.6, z: 0.6}
+  _changeChargeLevelCues:
+  - Cue: {fileID: 11400000, guid: 12ddacb4fbe776d4dadf73ddb66824c1, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+  - Cue: {fileID: 11400000, guid: ac4d24d7665de7d49a01953da7455317, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+  - Cue: {fileID: 11400000, guid: cf7fa3804e4818e4285b4dfebfbcffaa, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+  _takeDamageEffects: []
+  _applyGameplayEffectsOnHitToOther: []
+  _applyGameplayEffectsOnSuccessedHit: []
+--- !u!114 &7880404039890585289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8984331437772637715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8eb0ccc0ed5ef448a610d960cbe9aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _chargeable:
+    <UseDebug>k__BackingField: 0
+    _chargeValues:
+    - 0.5
+    - 1
+    _strength: 0
+    _isPlaying: 0
+    _isFulled: 0
+    _currentChargeLevel: 0
+  _useUnityEvent: 0
+  _unityEvents:
+    _onStartedCharging:
+      m_PersistentCalls:
+        m_Calls: []
+    _onCancededCharging:
+      m_PersistentCalls:
+        m_Calls: []
+    _onChangedChargeLevel:
+      m_PersistentCalls:
+        m_Calls: []
+    _onFulledCharging:
+      m_PersistentCalls:
+        m_Calls: []
+    _onFinishedCharging:
+      m_PersistentCalls:
+        m_Calls: []
+    _onEndedCharging:
+      m_PersistentCalls:
+        m_Calls: []
+--- !u!114 &1681164705333570886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8984331437772637715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ecf8e2067006014a8c19d107960bdee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _projectile:
+    <UseDebug>k__BackingField: 0
+    _actor: {fileID: 185387628400237280}
+    _target: {fileID: 0}
+    _direction: {x: 0, y: 0, z: 1}
+    _startSpeed: 30
+    _targetSpeed: 15
+    _acceleration: 20
+    _deceleration: 20
+    _useGravity: 0
+    _gravityScale: 1
+    _useTurn: 0
+    _turnSpeed: 180
+  _useUnityEvent: 0
+  _unityEvents:
+    _onStartedProjectile:
+      m_PersistentCalls:
+        m_Calls: []
+    _onEndedProjectile:
+      m_PersistentCalls:
+        m_Calls: []
+--- !u!114 &7281792994599321411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8984331437772637715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35730cd99405cd74180e27123e3e76a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _releasedWhenDisable: 1
+  _onCreated:
+    m_PersistentCalls:
+      m_Calls: []
+  _onReleased:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &576137989675743167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8984331437772637715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b3dd485ec20d8b40b73623eec932e18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _trailSphereCast:
+    <UseDebug>k__BackingField: 0
+    _owner: {fileID: 8984331437772637715}
+    _traceRadius: 1
+    _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
+    _maxHitCount: 10
+  _useUnityEvent: 0
+  _unityEvents:
+    _onStartedRaycast:
+      m_PersistentCalls:
+        m_Calls: []
+    _onEndedRaycast:
+      m_PersistentCalls:
+        m_Calls: []

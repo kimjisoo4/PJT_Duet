@@ -2,11 +2,9 @@
 using StudioScor.AbilitySystem;
 using StudioScor.RotationSystem;
 using StudioScor.PlayerSystem;
-using StudioScor.GameplayTagSystem;
 
 namespace PF.PJT.Duet.Pawn.PawnAbility
 {
-
     [CreateAssetMenu(menuName = "Project/Duet/PawnAbility/Rotation/new Update Rotation Input Ability", fileName = "GA_PawnAbiltiy_UpdateRotationInput")]
     public class UpdateRotationInputAbility : GASAbility
     {

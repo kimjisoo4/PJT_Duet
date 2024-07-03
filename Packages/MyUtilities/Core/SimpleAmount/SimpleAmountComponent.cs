@@ -37,28 +37,28 @@ namespace StudioScor.Utilities
 
         public void SetMaxValue(float maxValue)
         {
-            this._maxValue = maxValue;
+            _maxValue = maxValue;
 
-            normalizedValue = _currentValue / this._maxValue;
+            normalizedValue = _currentValue.SafeDivide(_maxValue);
 
             needUpdate = true;
         }
         public void SetCurrentValue(float currentValue)
         {
-            prevValue = this._currentValue;
-            this._currentValue = currentValue;
+            prevValue = _currentValue;
+            _currentValue = currentValue;
 
-            normalizedValue = this._currentValue / _maxValue;
+            normalizedValue = _currentValue.SafeDivide(_maxValue);
 
             needUpdate = true;
         }
         public void SetValue(float currentValue, float maxValue)
         {
-            prevValue = this._currentValue;
-            this._currentValue = currentValue;
-            this._maxValue = maxValue;
+            prevValue = _currentValue;
+            _currentValue = currentValue;
+            _maxValue = maxValue;
 
-            normalizedValue = this._currentValue.SafeDivide(this._maxValue);
+            normalizedValue = _currentValue.SafeDivide(_maxValue);
 
             needUpdate = true;
         }

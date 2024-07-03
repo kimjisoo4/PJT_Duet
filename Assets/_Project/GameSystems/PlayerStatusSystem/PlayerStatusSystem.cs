@@ -10,7 +10,7 @@ namespace PF.PJT.Duet.System
         [Header(" [ Player Status System ] ")]
         [SerializeField] private PlayerManager _playerManager;
         [SerializeField] private StatusUIToSimpleAmount[] _statusBars;
-        private void Awake()
+        private void Start()
         {
             if(_playerManager.HasPlayerPawn)
             {

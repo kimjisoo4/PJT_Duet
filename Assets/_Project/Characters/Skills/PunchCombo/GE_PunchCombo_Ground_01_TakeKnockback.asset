@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6597982af5a3504ebe26fb739a7b450, type: 3}
   m_Name: GE_PunchCombo_Ground_01_TakeKnockback
   m_EditorClassIdentifier: 
-  UseDebug: 1
+  UseDebug: 0
   _effectType: 0
   _duration: 5
   _unscaledTime: 0

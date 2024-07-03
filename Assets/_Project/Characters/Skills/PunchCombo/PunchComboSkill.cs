@@ -1,14 +1,26 @@
-﻿using StudioScor.AbilitySystem;
+﻿using PF.PJT.Duet.Pawn.Effect;
+using StudioScor.AbilitySystem;
+using StudioScor.GameplayEffectSystem;
 using System.Linq;
 using UnityEngine;
 
 namespace PF.PJT.Duet.Pawn.PawnSkill
 {
     [CreateAssetMenu(menuName = "Project/Duet/PawnSkill/new Punch Combo Skill", fileName = "GA_Skill_PunchCombo")]
-    public class PunchComboSkill : GASAbility
+    public class PunchComboSkill : GASAbility, ISkill
     {
         [Header(" [ Punch Combo Skill ] ")]
+        [SerializeField] private Sprite _icon;
+        [SerializeField] private ESkillType _skillType;
+
+        [Header(" Actions ")]
         [SerializeField] private Ability[] _groundActions;
+
+        [Header(" Gameplay Effects ")]
+        [SerializeField] private CoolTimeEffect _coolTimeEffect;
+
+        public Sprite Icon => _icon;
+        public ESkillType SkillType => _skillType;
 
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
@@ -18,6 +30,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         public class Spec : GASAbilitySpec
         {
             protected new readonly PunchComboSkill _ability;
+
+            private readonly IGameplayEffectSystem _gameplayEffectSystem;
 
             private int _comboCount = 0;
 
@@ -33,6 +47,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             public Spec(Ability ability, IAbilitySystem abilitySystem, int level) : base(ability, abilitySystem, level)
             {
                 _ability = ability as PunchComboSkill;
+
+                _gameplayEffectSystem = gameObject.GetGameplayEffectSystem();
             }
             protected override void OnGrantAbility()
             {
@@ -78,6 +94,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             public override bool CanActiveAbility()
             {
+                if (_ability._coolTimeEffect && _gameplayEffectSystem.HasEffect(_ability._coolTimeEffect))
+                    return false;
+
                 if (!base.CanActiveAbility())
                     return false;
 

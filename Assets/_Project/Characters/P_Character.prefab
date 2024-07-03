@@ -85,10 +85,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
+  _characterInformationData: {fileID: 0}
   _model: {fileID: 0}
   _attackAbility: {fileID: 11400000, guid: d97d523f6a92c6642a1f3b28baab8003, type: 2}
+  _skillAbility: {fileID: 0}
   _dashAbility: {fileID: 11400000, guid: 4ea00ee30e228e94d949280a09e57a35, type: 2}
   _inputAttackTag: {fileID: 11400000, guid: 241b0b1e98a4c3842b150d4a38a69637, type: 2}
+  _inputSkillTag: {fileID: 11400000, guid: 69f31f611cfa4244b95dd20d471f0983, type: 2}
   _inputDashTag: {fileID: 11400000, guid: cb5ec0c08662bab4893e7bd59235ccfc, type: 2}
   _appearAbility: {fileID: 0}
   _leaveAbility: {fileID: 11400000, guid: 93148de224d639b4b969b1c9cb708d29, type: 2}
@@ -219,7 +222,7 @@ MonoBehaviour:
   UseDebug: 0
   _turnSpeed: 720
   _rotationType: 2
-  _autoTransition: 1
+  _autoTransition: 0
   _lookTarget: {fileID: 0}
   _lookDirection: {x: 0, y: 0, z: 0}
   _lookPosition: {x: 0, y: 0, z: 0}

@@ -27,6 +27,7 @@ MonoBehaviour:
     blocks:
     - {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
     - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
-  cancelAbilityTags: []
+  cancelAbilityTags:
+  - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
   _triggerTag: {fileID: 11400000, guid: 08e9c4a810fff2044a1f26bae2fbd9c8, type: 2}
   _animationOffset: 0.2

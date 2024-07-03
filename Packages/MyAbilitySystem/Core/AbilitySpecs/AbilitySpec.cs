@@ -93,7 +93,7 @@ namespace StudioScor.AbilitySystem
 
         
 
-        public virtual void ForceActiveAbility()
+        public void ForceActiveAbility()
         {
             Log(" Active Ability ");
 
@@ -131,7 +131,7 @@ namespace StudioScor.AbilitySystem
             return IsPlaying;
         }
 
-        public virtual void ForceFinishAbility()
+        public void ForceFinishAbility()
         {
             if (!IsPlaying)
                 return;
@@ -154,7 +154,7 @@ namespace StudioScor.AbilitySystem
 
         }
 
-        public virtual void CancelAbility()
+        public void CancelAbility()
         {
             if (!IsPlaying)
                 return;

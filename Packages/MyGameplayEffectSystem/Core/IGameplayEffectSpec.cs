@@ -2,16 +2,6 @@
 
 namespace StudioScor.GameplayEffectSystem
 {
-    public interface IGameplayEffectSpecEvent
-    {
-        public event EffectSpecStateHandler OnActivateEffect;
-        public event EffectSpecStateHandler OnCanceledEffect;
-        public event EffectSpecStateHandler OnFinishedEffect;
-        public event EffectSpecStateHandler OnEndedEffect;
-        public event EffectSpecStateHandler OnOverlappedEffect;
-
-        public event EffectSpecLevelStateHandler OnChangedEffectLevel;
-    }
     public interface IGameplayEffectSpec
     {
         public GameplayEffect GameplayEffect { get; }
@@ -41,5 +31,14 @@ namespace StudioScor.GameplayEffectSystem
         public void ForceOverlapEffect(IGameplayEffectSpec effectSpec);
         public bool CanOverlapEffect(IGameplayEffectSpec effectSpec);
         public bool TryOverlapEffect(IGameplayEffectSpec effectSpec);
+
+
+        public event EffectSpecStateHandler OnActivateEffect;
+        public event EffectSpecStateHandler OnCanceledEffect;
+        public event EffectSpecStateHandler OnFinishedEffect;
+        public event EffectSpecStateHandler OnEndedEffect;
+        public event EffectSpecStateHandler OnOverlappedEffect;
+
+        public event EffectSpecLevelStateHandler OnChangedEffectLevel;
     }
 }

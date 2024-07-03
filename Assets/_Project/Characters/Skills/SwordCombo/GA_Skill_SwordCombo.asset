@@ -16,15 +16,20 @@ MonoBehaviour:
   abilityName: Sword Combo
   abilityTag: {fileID: 11400000, guid: 2abce383ef02a3746ae231857fe23256, type: 2}
   attributeTags:
+  - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
   - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
-  grantTags:
-    owneds: []
-    blocks: []
   conditionTags:
     requireds: []
     obstacleds: []
+  grantTags:
+    owneds: []
+    blocks:
+    - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
   cancelAbilityTags: []
+  _icon: {fileID: 21300000, guid: e6e43c9413aeb224e8795078bc800227, type: 3}
+  _skillType: 1
   _groundActions:
   - {fileID: 11400000, guid: 53be5efb694e55f4b9b4904aa1ee9da6, type: 2}
   - {fileID: 11400000, guid: 5d1c00a94d3ef8d40b205c90f903558a, type: 2}
   - {fileID: 11400000, guid: 4e1dd643897b4264380ef6ce73ee3147, type: 2}
+  _coolTimeEffect: {fileID: 0}

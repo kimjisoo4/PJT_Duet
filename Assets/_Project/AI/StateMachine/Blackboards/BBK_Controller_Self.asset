@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33c09dbde3fce2b4b9d76a690a93a78b, type: 3}
   m_Name: BBK_Controller_Self
   m_EditorClassIdentifier: 
-  UseDebug: 1
+  UseDebug: 0

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb06e82321eb53f4eaddc800914b5083, type: 3}
   m_Name: GE_PunchCombo_Ground_01_TakeDamage
   m_EditorClassIdentifier: 
-  UseDebug: 1
+  UseDebug: 0
   _effectType: 0
   _duration: 5
   _unscaledTime: 0

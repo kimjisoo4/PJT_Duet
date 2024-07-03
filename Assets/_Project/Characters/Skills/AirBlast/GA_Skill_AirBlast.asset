@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f18c975c8f3c98341bd498d036abcecc, type: 3}
+  m_Name: GA_Skill_AirBlast
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  abilityName: Air Blast
+  abilityTag: {fileID: 11400000, guid: 05a37e651f6bda54ca91a5b46959494b, type: 2}
+  attributeTags:
+  - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
+  - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
+  conditionTags:
+    requireds: []
+    obstacleds:
+    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+    - {fileID: 11400000, guid: 08e9c4a810fff2044a1f26bae2fbd9c8, type: 2}
+  grantTags:
+    owneds:
+    - {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
+    blocks:
+    - {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
+    - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
+    - {fileID: 11400000, guid: 54ac8190c9c04f54c8e8daee03f98240, type: 2}
+    - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
+  cancelAbilityTags: []
+  _icon: {fileID: 21300000, guid: ce175afd01f9f974a893de3c3d10c4ce, type: 3}
+  _skillType: 2
+  _readyAnimationName: AirBlast_Start
+  _readyAnimFadeInTime: 0.1
+  _readyAnimFixedTransition: 1
+  _chargingMotionTime: motionTime
+  _maxChargeTime: 2
+  _shotAnimationName: AirBlast_Shot
+  _shotAnimFadeInTime: 0.2
+  _shotAnimFixedTransition: 0
+  _projectile: {fileID: 11400000, guid: dba7d1f184ecf4047945c95ea80d1211, type: 2}
+  _spawnPoint: {fileID: 11400000, guid: 505aaab0b6f505d4a93e337f8b0451b4, type: 2}
+  _coolTimeEffect: {fileID: 11400000, guid: 3d22f554f51a0ad4790dffe136767f28, type: 2}
+  _spawnedCue:
+    Cue: {fileID: 11400000, guid: 3938793d18494b8498b45326eb58de7d, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0.5, y: 0.5, z: 0.5}
+  _shotCues:
+  - Cue: {fileID: 11400000, guid: 7c666569905d4c0479b4b0e36cac019b, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0.8, y: 0.8, z: 0.8}
+  - Cue: {fileID: 11400000, guid: 7c666569905d4c0479b4b0e36cac019b, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+  - Cue: {fileID: 11400000, guid: 7c666569905d4c0479b4b0e36cac019b, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1.2, y: 1.2, z: 1.2}

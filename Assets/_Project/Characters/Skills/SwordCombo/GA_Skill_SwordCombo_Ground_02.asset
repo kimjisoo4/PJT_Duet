@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f632e786404f9349b4b02fe64b747aa, type: 3}
   m_Name: GA_Skill_SwordCombo_Ground_02
   m_EditorClassIdentifier: 
-  UseDebug: 1
+  UseDebug: 0
   abilityName: Punch
   abilityTag: {fileID: 11400000, guid: cfb829942e588a743ab9b5514ab5ecdd, type: 2}
   attributeTags: []
@@ -29,6 +29,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
     - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
   cancelAbilityTags: []
+  _icon: {fileID: 0}
+  _skillType: 0
   _animationName: SwordCombo_02
   _fadeInTime: 0.2
   _tracePoint: {fileID: 11400000, guid: fd15a44b8089f3d4eb7a7e059924865f, type: 2}

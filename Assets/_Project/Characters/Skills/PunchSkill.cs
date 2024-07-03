@@ -8,14 +8,18 @@ using StudioScor.GameplayCueSystem;
 using StudioScor.GameplayTagSystem;
 using PF.PJT.Duet.Pawn.Effect;
 using StudioScor.PlayerSystem;
+using StudioScor.RotationSystem;
 
 namespace PF.PJT.Duet.Pawn.PawnSkill
 {
 
     [CreateAssetMenu(menuName = "Project/Duet/PawnSkill/new Punch Skill", fileName = "GA_Skill_Punch")]
-    public class PunchSkill : GASAbility
+    public class PunchSkill : GASAbility, ISkill
     {
         [Header(" [ Punch Skill ] ")]
+        [SerializeField] private Sprite _icon;
+        [SerializeField] private ESkillType _skillType;
+
         [Header(" Animation ")]
         [SerializeField] private string _animationName = "Attack01";
         [SerializeField][Range(0f, 1f)] private float _fadeInTime = 0.2f;
@@ -25,6 +29,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private Variable_LayerMask _traceLayer;
         [SerializeField] private float _traceRadius = 1f;
         [Header(" Gameplay Effects ")]
+        [SerializeField] private CoolTimeEffect _coolTimeEffect;
         [SerializeField] private TakeDamageEffect _takeDamageEffect;
         [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnHitToOther;
         [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnSuccessedHit;
@@ -36,6 +41,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [Header(" Combo ")]
         [SerializeField] private GameplayTag _comboTag;
 
+        public Sprite Icon => _icon;
+        public ESkillType SkillType => _skillType;
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
             return new Spec(this, abilitySystem, level);
@@ -48,6 +55,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private readonly AnimationPlayer _animationPlayer;
             private readonly IPawnSystem _pawnSystem;
             private readonly IBodySystem _bodySystem;
+            private readonly IRotationSystem _rotationSystem;
             private readonly IGameplayEffectSystem _gameplayEffectSystem;
 
             private bool _wasEnabledTrace = false;
@@ -63,9 +71,18 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _animationPlayer = gameObject.GetComponentInChildren<AnimationPlayer>(true);
                 _bodySystem = gameObject.GetBodySystem();
                 _pawnSystem = gameObject.GetPawnSystem();
+                _rotationSystem = gameObject.GetRotationSystem();
                 _gameplayEffectSystem = gameObject.GetGameplayEffectSystem();
 
                 _animationHash = Animator.StringToHash(_ability._animationName);
+            }
+
+            public override bool CanActiveAbility()
+            {
+                if (_ability._coolTimeEffect && _gameplayEffectSystem.HasEffect(_ability._coolTimeEffect))
+                    return false;
+
+                return base.CanActiveAbility();
             }
             protected override void EnterAbility()
             {
@@ -119,8 +136,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                             CancelAbility();
                             break;
                         case EAnimationState.Playing:
-                            float normalizedTime = _animationPlayer.NormalizedTime;
-
                             break;
                         case EAnimationState.BlendOut:
                             TryFinishAbility();
@@ -211,7 +226,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                                 {
                                     var data = new TakeDamageEffect.FElement(hit.point, hit.normal, hit.collider, prevPosition.Direction(currentPosition), bodyPart.gameObject, gameObject);
                                     
-                                    if(hitGameplayEffectSystem.TryTakeEffect(_ability._takeDamageEffect, gameObject, Level, data))
+                                    if(hitGameplayEffectSystem.TryTakeEffect(_ability._takeDamageEffect, gameObject, Level, data).isActivate)
                                     {
                                         isHit = true;
                                     }
@@ -221,7 +236,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                                 {
                                     var effect = _ability._applyGameplayEffectsOnHitToOther[effectIndex];
 
-                                    if(hitGameplayEffectSystem.TryTakeEffect(effect, gameObject, Level, null))
+                                    if(hitGameplayEffectSystem.TryTakeEffect(effect, gameObject, Level, null).isActivate)
                                     {
                                         isHit = true;
                                     }

@@ -116,19 +116,21 @@ namespace PF.PJT.Duet.Controller.Enemy
                 return;
 
             var damageCauser = damageInfo.Causer;
+            var instigator = damageInfo.Instigator;
 
-            if (!damageCauser.TryGetActor(out IActor actor))
-            {
-                SetTargetKey(damageCauser ? damageCauser.transform : null);
-            }
-            else if(actor.gameObject.TryGetPawnSystem(out IPawnSystem pawn))
+            if(instigator.TryGetPawn(out IPawnSystem pawn))
             {
                 SetTargetKey(pawn.transform);
             }
+            else if (damageCauser.TryGetActor(out IActor causerActor))
+            {
+                SetTargetKey(causerActor.transform);
+            }
             else
             {
-                SetTargetKey(actor.transform);
+                SetTargetKey(damageCauser.transform);
             }
+            
         }
 
         private void _playerManager_OnChangedPlayerPawn(PlayerManager playerManager, IPawnSystem currentPawn, IPawnSystem prevPawn = null)

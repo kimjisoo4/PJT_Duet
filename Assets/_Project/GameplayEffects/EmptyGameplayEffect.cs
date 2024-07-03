@@ -41,6 +41,13 @@ namespace PF.PJT.Duet.Pawn.Effect
 
                 return true;
             }
+
+            protected override void OnExitEffect()
+            {
+                base.OnExitEffect();
+
+                _pool.Release(this);
+            }
         }
     }
 }

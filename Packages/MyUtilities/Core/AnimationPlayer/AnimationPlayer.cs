@@ -29,6 +29,7 @@ namespace StudioScor.Utilities
         private int _layer = 0;
         private int _currentStateHash;
 
+        private bool _useFixedTransition;
         private float _fadeIn;
         private float _offset;
         private float _normalizedTime;
@@ -111,16 +112,14 @@ namespace StudioScor.Utilities
             }
         }
 
-
-
-        public void Play(string stateName, float fadeIn = 0.2f, float offset = 0f, int layer = 0)
+        public void Play(string stateName, float fadeIn = 0.2f, float offset = 0f, int layer = 0, bool fixedTransition = false)
         {
             int hash = Animator.StringToHash(stateName);
 
-            PlayAnimation(hash, fadeIn, offset, layer);
+            PlayAnimation(hash, fadeIn, offset, layer, fixedTransition);
         }
 
-        public void Play(int stateHash, float fadeIn = 0.2f, float offset = 0f, int layer = 0)
+        public void Play(int stateHash, float fadeIn = 0.2f, float offset = 0f, int layer = 0, bool fixedTransition = false)
         {
             if (!_animator)
             {
@@ -132,17 +131,18 @@ namespace StudioScor.Utilities
                 }
             }
 
-            PlayAnimation(stateHash, fadeIn, offset, layer);
+            PlayAnimation(stateHash, fadeIn, offset, layer, fixedTransition);
         }
-        private void PlayAnimation(int stateHash, float fadeIn, float offset, int layer = 0)
+        private void PlayAnimation(int stateHash, float fadeIn, float offset, int layer, bool fixedTransition)
         {
             CancelAnimation();
 
             _isPlaying = true;
             _currentStateHash = stateHash;
-            this._fadeIn = fadeIn;
-            this._offset = offset;
-            this._layer = layer;
+            _useFixedTransition = fixedTransition;
+            _fadeIn = fadeIn;
+            _offset = offset;
+            _layer = layer;
 
             SetAnimationState(EAnimationState.TryPlay);
         }
@@ -241,7 +241,10 @@ namespace StudioScor.Utilities
 
         private void OnTryPlay()
         {
-            _animator.CrossFade(_currentStateHash, _fadeIn, _layer, _offset);
+            if (_useFixedTransition)
+                _animator.CrossFadeInFixedTime(_currentStateHash, _fadeIn, _layer, _offset);
+            else
+                _animator.CrossFade(_currentStateHash, _fadeIn, _layer, _offset);
 
             _isPlaying = true;
             _normalizedTime = 0f;

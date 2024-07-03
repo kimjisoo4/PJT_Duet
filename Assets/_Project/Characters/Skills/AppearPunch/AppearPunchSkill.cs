@@ -11,10 +11,15 @@ using StudioScor.MovementSystem;
 
 namespace PF.PJT.Duet.Pawn.PawnSkill
 {
+
     [CreateAssetMenu(menuName = "Project/Duet/PawnSkill/new Appear Punch Skill", fileName = "GA_Skill_Appear_Punch")]
-    public class AppearPunchSkill : GASAbility
+    public class AppearPunchSkill : GASAbility, ISkill
     {
-        [Header(" [ Appear Punch Skill ] ")]
+        [Header(" [ Appear Punch Skill ] ")][SerializeField] private Sprite _icon;
+        [SerializeField] private ESkillType _skillType;
+
+
+        [Header(" Animations ")]
         [SerializeField] private string _animationName = "AppearPunch";
         [SerializeField][Range(0f, 1f)] private float _fadeInTime = 0f;
 
@@ -30,6 +35,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private Variable_LayerMask _traceLayer;
 
         [Header(" Gameplay Effects ")]
+        [SerializeField] private CoolTimeEffect _coolTimeEffect;
         [SerializeField] private TakeDamageEffect _takeDamageEffect;
         [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnHitToOther;
         [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnHitToSelf;
@@ -39,13 +45,14 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private FGameplayCue _onImpactCue;
         [SerializeField] private FGameplayCue _onHitToOtherCue;
         [SerializeField] private FGameplayCue _onSuccessedPlayerHit;
-
+        public Sprite Icon => _icon;
+        public ESkillType SkillType => _skillType;
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
             return new Spec(this, abilitySystem, level);
         }
 
-        public class Spec : GASAbilitySpec, IUpdateableAbilitySpec
+        public class Spec : GASAbilitySpec, IUpdateableAbilitySpec, ISkillState
         {
             protected new readonly AppearPunchSkill _ability;
             private readonly IPawnSystem _pawnSystem;
@@ -66,10 +73,15 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             private Cue _impactCue;
 
+            private CoolTimeEffect.Spec _coolTimeEffectSpec;
+            private bool InCoolTime => _coolTimeEffectSpec is not null && _coolTimeEffectSpec.IsActivate;
+            public float CoolTime => _ability._coolTimeEffect ? _ability._coolTimeEffect.Duration : 0f;
+            public float RemainCoolTime => InCoolTime ? _coolTimeEffectSpec.RemainTime : 0f;
+            public float NormalizedCoolTime => InCoolTime ? _coolTimeEffectSpec.NormalizedTime : 1f;
+
             public Spec(Ability ability, IAbilitySystem abilitySystem, int level) : base(ability, abilitySystem, level)
             {
                 _ability = ability as AppearPunchSkill;
-
                 
                 _pawnSystem = gameObject.GetPawnSystem();
                 _dilationSystem = gameObject.GetDilationSystem();
@@ -93,6 +105,16 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _dilationSystem.OnChangedDilation -= _dilationSystem_OnChangedDilation;
             }
 
+            public override bool CanActiveAbility()
+            {
+                if (_ability._coolTimeEffect && _gameplayEffectSystem.HasEffect(_ability._coolTimeEffect))
+                    return false;
+
+                if (!base.CanActiveAbility())
+                    return false;
+                
+                return true;
+            }
             private void _dilationSystem_OnChangedDilation(IDilationSystem dilation, float currentDilation, float prevDilation)
             {
                 if (!IsPlaying)
@@ -131,6 +153,24 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 }
 
                 EndTrace();
+
+                if(_ability._coolTimeEffect)
+                {
+                    var takeEffect = _gameplayEffectSystem.TryTakeEffect(_ability._coolTimeEffect);
+
+                    if (takeEffect.isActivate)
+                    {
+                        _coolTimeEffectSpec = takeEffect.effectSpec as CoolTimeEffect.Spec;
+                        _coolTimeEffectSpec.OnEndedEffect += _coolTimeEffectSpec_OnEndedEffect;
+                    }
+                }
+            }
+
+            private void _coolTimeEffectSpec_OnEndedEffect(IGameplayEffectSpec effectSpec)
+            {
+                effectSpec.OnEndedEffect -= _coolTimeEffectSpec_OnEndedEffect;
+
+                _coolTimeEffectSpec = null;
             }
 
             private void _animationPlayer_OnNotify(string eventName)

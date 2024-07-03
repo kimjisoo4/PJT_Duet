@@ -28,11 +28,14 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 805576a40355c4841831954476a8f650, type: 2}
     - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
   cancelAbilityTags: []
+  _icon: {fileID: 0}
+  _skillType: 0
   _animationName: PunchCombo_01
   _fadeInTime: 0.2
   _tracePoint: {fileID: 11400000, guid: a4c70ea47d0f5134fbed7856ff1d7212, type: 2}
   _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
   _traceRadius: 1
+  _coolTimeEffect: {fileID: 0}
   _takeDamageEffect: {fileID: 11400000, guid: 763f50a9698fdfd499a718b2ff912029, type: 2}
   _applyGameplayEffectsOnHitToOther:
   - {fileID: 11400000, guid: d0b5c2c7dc2ce124699dcd9174a9bdaf, type: 2}

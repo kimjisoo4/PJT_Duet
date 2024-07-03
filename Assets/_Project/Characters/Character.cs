@@ -1,17 +1,15 @@
-﻿using StudioScor.PlayerSystem;
-using StudioScor.Utilities;
-using UnityEngine;
-using StudioScor.MovementSystem;
-using StudioScor.RotationSystem;
-using StudioScor.AbilitySystem;
+﻿using StudioScor.AbilitySystem;
 using StudioScor.GameplayEffectSystem;
 using StudioScor.GameplayTagSystem;
+using StudioScor.MovementSystem;
+using StudioScor.PlayerSystem;
+using StudioScor.RotationSystem;
+using StudioScor.Utilities;
+using UnityEngine;
 
-namespace PF.PJT.Duet.Pawn.PawnSkill
-{
-}
 namespace PF.PJT.Duet.Pawn
 {
+
     public interface IKnockbackable
     {
         public delegate void TakeKnockbackEventHandler(IKnockbackable knockbackable, Vector3 direction, float distance, float duration);
@@ -19,8 +17,10 @@ namespace PF.PJT.Duet.Pawn
 
         public event TakeKnockbackEventHandler OnTakeKnockback;
     }
+
     public interface ICharacter
     {
+        public CharacterInformationData CharacterInformationData { get; }
         public GameObject gameObject { get; }
         public Transform transform { get; }
 
@@ -31,18 +31,22 @@ namespace PF.PJT.Duet.Pawn
 
         public void Teleport(Vector3 position, Quaternion rotation);
         public void SetInputAttack(bool pressed);
+        public void SetInputSkill(bool pressed);
         public void SetInputDash(bool pressed);
     }
 
     public class Character : BaseMonoBehaviour, ICharacter, IKnockbackable
     {
         [Header(" [ Character ] ")]
+        [SerializeField] private CharacterInformationData _characterInformationData;
         [SerializeField] private GameObject _model;
 
         [SerializeField] private Ability _attackAbility;
+        [SerializeField] private Ability _skillAbility;
         [SerializeField] private Ability _dashAbility;
 
         [SerializeField] private GameplayTag _inputAttackTag;
+        [SerializeField] private GameplayTag _inputSkillTag;
         [SerializeField] private GameplayTag _inputDashTag;
 
         [Header(" [ Change Character ] ")]
@@ -59,6 +63,7 @@ namespace PF.PJT.Duet.Pawn
         private IGroundChecker _groundChecker;
         private IDilationSystem _dilationSystem;
 
+        public CharacterInformationData CharacterInformationData => _characterInformationData;
         public GameObject Model => _model;
 
         public event IKnockbackable.TakeKnockbackEventHandler OnTakeKnockback;
@@ -73,6 +78,7 @@ namespace PF.PJT.Duet.Pawn
         private void Start()
         {
             _abilitySystem.TryGrantAbility(_attackAbility, 0);
+            _abilitySystem.TryGrantAbility(_skillAbility, 0);
             _abilitySystem.TryGrantAbility(_dashAbility, 0);
             _abilitySystem.TryGrantAbility(_appearAbility, 0);
 
@@ -138,7 +144,8 @@ namespace PF.PJT.Duet.Pawn
         {
             Log("Appear");
 
-            _abilitySystem.CancelAbility(_leaveAbility);
+            if(_leaveAbility)
+                _abilitySystem.CancelAbility(_leaveAbility);
 
             _abilitySystem.TryActivateAbility(_appearAbility);
         }
@@ -149,35 +156,95 @@ namespace PF.PJT.Duet.Pawn
             {
                 _gameplayTagSystem.AddOwnedTag(_inputAttackTag);
 
-                if (!_abilitySystem.TryActivateAbility(_attackAbility).isActivate)
+                if (_attackAbility)
                 {
-                    _inputBuffer.SetBuffer(_attackAbility);
+                    if (!_abilitySystem.TryActivateAbility(_attackAbility).isActivate)
+                    {
+                        _inputBuffer.SetBuffer(_attackAbility);
+                    }
+
                 }
             }
             else
             {
                 _gameplayTagSystem.RemoveOwnedTag(_inputAttackTag);
 
-                _abilitySystem.ReleasedAbility(_attackAbility);
+                if (_attackAbility)
+                {
+                    if (_abilitySystem.IsPlayingAbility(_attackAbility))
+                    {
+                        _abilitySystem.ReleasedAbility(_attackAbility);
+                    }
+                    else
+                    {
+                        _inputBuffer.ReleaseBuffer(_attackAbility);
+                    }
+                }
+            }
+        }
+
+        public void SetInputSkill(bool pressed)
+        {
+            if(pressed)
+            {
+                _gameplayTagSystem.AddOwnedTag(_inputSkillTag);
+
+                if(_skillAbility)
+                {
+                    if (!_abilitySystem.TryActivateAbility(_skillAbility).isActivate)
+                    {
+                        _inputBuffer.SetBuffer(_skillAbility);
+                    }
+                }
+            }
+            else
+            {
+                _gameplayTagSystem.RemoveOwnedTag(_inputSkillTag);
+
+                if (_skillAbility)
+                {
+                    if (_abilitySystem.IsPlayingAbility(_skillAbility))
+                    {
+                        _abilitySystem.ReleasedAbility(_skillAbility);
+                    }
+                    else
+                    {
+                        _inputBuffer.ReleaseBuffer(_skillAbility);
+                    }
+                }
             }
         }
 
         public void SetInputDash(bool pressed)
         {
-            if(pressed)
+            if (pressed)
             {
                 _gameplayTagSystem.AddOwnedTag(_inputDashTag);
 
-                if (!_abilitySystem.TryActivateAbility(_dashAbility).isActivate)
+                if (_dashAbility)
                 {
-                    _inputBuffer.SetBuffer(_dashAbility);
+                    if (!_abilitySystem.TryActivateAbility(_dashAbility).isActivate)
+                    {
+                        _inputBuffer.SetBuffer(_dashAbility);
+                    }
+
                 }
             }
             else
             {
                 _abilitySystem.ReleasedAbility(_dashAbility);
 
-                _gameplayTagSystem.RemoveOwnedTag(_inputDashTag);
+                if (_dashAbility)
+                {
+                    if (_abilitySystem.IsPlayingAbility(_dashAbility))
+                    {
+                        _abilitySystem.ReleasedAbility(_dashAbility);
+                    }
+                    else
+                    {
+                        _inputBuffer.ReleaseBuffer(_dashAbility);
+                    }
+                }
             }
         }
 

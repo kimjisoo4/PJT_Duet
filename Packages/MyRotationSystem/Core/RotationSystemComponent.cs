@@ -59,6 +59,7 @@ namespace StudioScor.RotationSystem
 
         public void SetTurnSpeed(float turnSpeed);
         public void SetAutoTransition(bool newAutoTransition);
+        public void TransitionRotationType(ERotationType newRotationType);
 
         public void SetRotation(Quaternion newRotation);
         public void AddRotation(Quaternion additiveRotation);

@@ -30,7 +30,7 @@ namespace PF.PJT.Duet
 
             _timer.UpdateTimer(deltaTime);
         }
-        private void _timer_OnFinishedTimer(Timer timer)
+        private void _timer_OnFinishedTimer(ITimer timer)
         {
             _floatingText.Release();
 
