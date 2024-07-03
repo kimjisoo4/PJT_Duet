@@ -25,7 +25,7 @@
 > &nbsp;  캐릭터의 스킬 상태를 UI 로 표기하였습니다.  현재 플레이 중인 캐릭터의 일반 공격 및 스킬 아이콘이 표기되고, 태그할 캐릭터의 체력 및 태그 스킬 쿨타임을 표기합니다.   
 > &nbsp;  캐릭터의 일부 스킬에 쿨타임을 적용시켰습니다. 장풍 및 태그 스킬에 적용되어있습니다.   
 
-&nbsp; [Build 파일 다운로드](https://github.com/kimjisoo4/MyPlayerSystem)
+&nbsp; [Build 파일 다운로드](https://drive.google.com/drive/folders/1lWb3SZCT2R_x6VnrLfdgjaFJJqnDiTvs?usp=drive_link)
  # 🔎 모듈
 
 ### [Player System](https://github.com/kimjisoo4/MyPlayerSystem)
