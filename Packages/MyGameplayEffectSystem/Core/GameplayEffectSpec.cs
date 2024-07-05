@@ -65,6 +65,8 @@ namespace StudioScor.GameplayEffectSystem
         public void ForceOverlapEffect(IGameplayEffectSpec spec) 
         {
             OnOverlapEffect(spec);
+
+            Invoke_OnOverlappedEffect();
         }
 
         public virtual bool CanOverlapEffect(IGameplayEffectSpec spec)
@@ -102,7 +104,7 @@ namespace StudioScor.GameplayEffectSystem
 
             OnChangeLevel(prevLevel);
 
-            Callback_OnChangedEffectLevel(prevLevel);
+            Invoke_OnChangedEffectLevel(prevLevel);
         }
 
 
@@ -118,6 +120,8 @@ namespace StudioScor.GameplayEffectSystem
             _isActivate = true;
 
             OnEnterEffect();
+
+            Invoke_OnActivateEffect();
 
             if (_gameplayEffect.Type.Equals(EGameplayEffectType.Instante))
             {
@@ -174,7 +178,11 @@ namespace StudioScor.GameplayEffectSystem
 
             OnFInishEffect();
 
+            Invoke_OnFinishedEffect();
+
             OnExitEffect();
+
+            Invoke_OnEndedEffect();
         }
         public void ForceCancelEffect()
         {
@@ -187,7 +195,11 @@ namespace StudioScor.GameplayEffectSystem
 
             OnCancelEffect();
 
+            Invoke_OnCanceledEffect();
+
             OnExitEffect();
+
+            Invoke_OnEndedEffect();
         }
 
         protected abstract void OnEnterEffect();
@@ -200,39 +212,39 @@ namespace StudioScor.GameplayEffectSystem
 
         
         #region Callback
-        protected void Callback_OnActivateEffect()
+        protected void Invoke_OnActivateEffect()
         {
-            Log("On Activate Effect");
+            Log($"{nameof(OnActivateEffect)}");
 
             OnActivateEffect?.Invoke(this);
         }
-        protected void Callback_OnCanceledEffect()
+        protected void Invoke_OnCanceledEffect()
         {
-            Log("On Canceled Effect");
+            Log($"{nameof(OnCanceledEffect)}");
 
             OnCanceledEffect?.Invoke(this);
         }
-        protected void Callback_OnFinishedEffect()
+        protected void Invoke_OnFinishedEffect()
         {
-            Log("On Finished Effect");
+            Log($"{nameof(OnFinishedEffect)}");
 
             OnFinishedEffect?.Invoke(this);
         }
-        protected void Callback_OnEndedEffect()
+        protected void Invoke_OnEndedEffect()
         {
-            Log("On Ended Effect");
+            Log($"{nameof(OnEndedEffect)}");
 
             OnEndedEffect?.Invoke(this);
         }
-        protected void Callback_OnOverlappedEffect()
+        protected void Invoke_OnOverlappedEffect()
         {
-            Log("On Overlapped Effect");
+            Log($"{nameof(OnOverlappedEffect)}");
 
             OnOverlappedEffect?.Invoke(this);
         }
-        protected void Callback_OnChangedEffectLevel(int prevLevel)
+        protected void Invoke_OnChangedEffectLevel(int prevLevel)
         {
-            Log("On Changed Effect Level - Current Level : " + Level + " Prev Level : " + prevLevel);
+            Log($"{nameof(OnChangedEffectLevel)}- Current Level : " + Level + " Prev Level : " + prevLevel);
 
             OnChangedEffectLevel?.Invoke(this, _level, prevLevel);
         }

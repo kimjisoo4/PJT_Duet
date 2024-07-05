@@ -87,14 +87,14 @@ MonoBehaviour:
   UseDebug: 0
   _characterInformationData: {fileID: 0}
   _model: {fileID: 0}
-  _attackAbility: {fileID: 11400000, guid: d97d523f6a92c6642a1f3b28baab8003, type: 2}
+  _attackAbility: {fileID: 0}
   _skillAbility: {fileID: 0}
   _dashAbility: {fileID: 11400000, guid: 4ea00ee30e228e94d949280a09e57a35, type: 2}
   _inputAttackTag: {fileID: 11400000, guid: 241b0b1e98a4c3842b150d4a38a69637, type: 2}
   _inputSkillTag: {fileID: 11400000, guid: 69f31f611cfa4244b95dd20d471f0983, type: 2}
   _inputDashTag: {fileID: 11400000, guid: cb5ec0c08662bab4893e7bd59235ccfc, type: 2}
   _appearAbility: {fileID: 0}
-  _leaveAbility: {fileID: 11400000, guid: 93148de224d639b4b969b1c9cb708d29, type: 2}
+  _leaveAbility: {fileID: 11400000, guid: d4820fd723c264d49ad72727c39239d6, type: 2}
 --- !u!114 &5849666587521794672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,8 +112,8 @@ MonoBehaviour:
   defaultController: {fileID: 1008602029604108534, guid: 78708e74ea6e3a8478b0f90f95338a96,
     type: 3}
   currentController: {fileID: 0}
-  isStartPlayer: 1
-  useAutoPossesed: 1
+  isStartPlayer: 0
+  useAutoPossesed: 0
   ignoreMovementInput: 0
   ignoreRotateInput: 0
 --- !u!114 &1200809129570485976
@@ -187,11 +187,17 @@ MonoBehaviour:
   - AbilityName: 'GA_PawnAbiltiy_Dead [ Level : 0 ]'
     Ability: {fileID: 11400000, guid: a337999a0c81c7c48b59ad9fae6520a1, type: 2}
     Level: 0
-  - AbilityName: 'GA_PawnAbiltiy_Leave [ Level : 0 ]'
+  - AbilityName: 'GA_PawnAbiltiy_HideActor [ Level : 0 ]'
     Ability: {fileID: 11400000, guid: 93148de224d639b4b969b1c9cb708d29, type: 2}
     Level: 0
   - AbilityName: 'GA_PawnAbiltiy_Dilation [ Level : 0 ]'
     Ability: {fileID: 11400000, guid: 15a702b30356120468be178e6480638c, type: 2}
+    Level: 0
+  - AbilityName: 'GA_PawnAbiltiy_GhostCharacter [ Level : 0 ]'
+    Ability: {fileID: 11400000, guid: 9809db4490eef2d4288e43eafa926d37, type: 2}
+    Level: 0
+  - AbilityName: 'GA_PawnAbiltiy_SetSpectator [ Level : 0 ]'
+    Ability: {fileID: 11400000, guid: cee1c3f6ea2baa248b088e01fc46f946, type: 2}
     Level: 0
 --- !u!114 &2224922915931206671
 MonoBehaviour:

@@ -16,12 +16,13 @@ MonoBehaviour:
   abilityName: Dead
   abilityTag: {fileID: 11400000, guid: be762f289462b7f41bf52fcc24df6022, type: 2}
   attributeTags: []
-  grantTags:
-    owneds:
-    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
-    blocks: []
   conditionTags:
     requireds:
     - {fileID: 11400000, guid: 3c16ad90f6a20ae42bada629d667ec69, type: 2}
     obstacleds: []
+  grantTags:
+    owneds:
+    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+    - {fileID: 11400000, guid: a40dd7e3e3d12514894ca380fde04a21, type: 2}
+    blocks: []
   cancelAbilityTags: []

@@ -166,56 +166,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 }
             }
 
-            private void _coolTimeEffectSpec_OnEndedEffect(IGameplayEffectSpec effectSpec)
-            {
-                effectSpec.OnEndedEffect -= _coolTimeEffectSpec_OnEndedEffect;
-
-                _coolTimeEffectSpec = null;
-            }
-
-            private void _animationPlayer_OnNotify(string eventName)
-            {
-                if (!IsPlaying)
-                    return;
-
-                switch (eventName)
-                {
-                    case "Impact":
-                        OnImpactVFX();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            private void _animationPlayer_OnEnterNotifyState(string eventName)
-            {
-                if (!IsPlaying)
-                    return;
-
-                switch (eventName)
-                {
-                    case "Trace":
-                        OnTrace();
-                        break;
-                    default:
-                        break;
-                }
-            }
-            private void _animationPlayer_OnExitNotifyState(string eventName)
-            {
-                if (!IsPlaying)
-                    return;
-
-                switch (eventName)
-                {
-                    case "Trace":
-                        EndTrace();
-                        break;
-                    default:
-                        break;
-                }
-            }
+            
 
             public void FixedUpdateAbility(float deltaTime)
             {
@@ -371,6 +322,57 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                             }
                         }
                     }
+                }
+            }
+
+            private void _coolTimeEffectSpec_OnEndedEffect(IGameplayEffectSpec effectSpec)
+            {
+                effectSpec.OnEndedEffect -= _coolTimeEffectSpec_OnEndedEffect;
+
+                _coolTimeEffectSpec = null;
+            }
+
+            private void _animationPlayer_OnNotify(string eventName)
+            {
+                if (!IsPlaying)
+                    return;
+
+                switch (eventName)
+                {
+                    case "Impact":
+                        OnImpactVFX();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            private void _animationPlayer_OnEnterNotifyState(string eventName)
+            {
+                if (!IsPlaying)
+                    return;
+
+                switch (eventName)
+                {
+                    case "Trace":
+                        OnTrace();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            private void _animationPlayer_OnExitNotifyState(string eventName)
+            {
+                if (!IsPlaying)
+                    return;
+
+                switch (eventName)
+                {
+                    case "Trace":
+                        EndTrace();
+                        break;
+                    default:
+                        break;
                 }
             }
         }

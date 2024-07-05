@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5af6fcc5d4508c641bbeb1d5759b37ff, type: 3}
+  m_Name: GA_Skill_HammerCombo_Ground_02
+  m_EditorClassIdentifier: 
+  UseDebug: 1
+  abilityName: Hammer Attack 02
+  abilityTag: {fileID: 11400000, guid: 9f2f3e1d90868584a9170bd9c2013abe, type: 2}
+  attributeTags: []
+  conditionTags:
+    requireds:
+    - {fileID: 11400000, guid: 598fd5f3b4fe31f409832b3ab344115b, type: 2}
+    obstacleds:
+    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+    - {fileID: 11400000, guid: 08e9c4a810fff2044a1f26bae2fbd9c8, type: 2}
+  grantTags:
+    owneds:
+    - {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
+    blocks:
+    - {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
+    - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
+  cancelAbilityTags: []
+  _icon: {fileID: 0}
+  _skillType: 0
+  _animationName: HammerCombo_02
+  _fadeInTime: 0.2
+  _tracePoint: {fileID: 11400000, guid: f81dd5aa5a1303140919d9e139c1502f, type: 2}
+  _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
+  _traceRadius: 2
+  _coolTimeEffect: {fileID: 0}
+  _takeDamageEffect: {fileID: 11400000, guid: d04bea0d897cd4542878044e70ecbccc, type: 2}
+  _applyGameplayEffectsOnHitToOther:
+  - {fileID: 11400000, guid: 06b596d8e5757774fab07c4b598267ae, type: 2}
+  - {fileID: 11400000, guid: 33eb1c18d23e21e4b86b04ed33c5e14b, type: 2}
+  - {fileID: 11400000, guid: b4ab5a2badaa60840aea4fc5cd06760e, type: 2}
+  _applyGameplayEffectsOnSuccessedHit:
+  - {fileID: 11400000, guid: c8895f0a0c13dab4f83a755b7fc2366b, type: 2}
+  _onHitToOtherCue:
+    Cue: {fileID: 11400000, guid: 6c85673d7edaa62439a2920702e6d37b, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0, y: 0, z: 0}
+  _onSuccessedPlayerHit:
+    Cue: {fileID: 11400000, guid: 0f6d4545bf2eabd4eb232183e15595c9, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+  _onHitGroundFX:
+    Cue: {fileID: 11400000, guid: ebb6acfae9c7e5b49897518cf617c273, type: 2}
+    Position: {x: 0, y: 0, z: 2}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+  _comboTag: {fileID: 11400000, guid: b22cc20af574a0d4a9188c304b97cd51, type: 2}

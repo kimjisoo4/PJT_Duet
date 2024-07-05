@@ -55,6 +55,7 @@ MonoBehaviour:
   - 0.8
   - 1.2
   - 2
+  _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
   _explosionCues:
   - Cue: {fileID: 11400000, guid: 2b24857e9f58b12449941512ddb06530, type: 2}
     Position: {x: 0, y: 0, z: 0}
@@ -94,7 +95,9 @@ MonoBehaviour:
     <UseDebug>k__BackingField: 0
     _owner: {fileID: 2310495241380769694}
     _traceRadius: 1
-    _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
+    _traceLayer:
+      serializedVersion: 2
+      m_Bits: 0
     _maxHitCount: 10
   _useUnityEvent: 0
   _unityEvents:

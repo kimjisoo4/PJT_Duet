@@ -330,7 +330,7 @@ namespace StudioScor.Utilities
         #region Callback
         protected void Invoke_OnStarted()
         {
-            Log("On Enter Animation");
+            Log($"{nameof(OnStarted)}");
 
             OnStarted?.Invoke();
 
@@ -338,7 +338,7 @@ namespace StudioScor.Utilities
         }
         protected void Invoke_OnFailed()
         {
-            Log("On Failed Animation");
+            Log($"{nameof(OnFailed)}");
 
             OnFailed?.Invoke();
 
@@ -346,7 +346,7 @@ namespace StudioScor.Utilities
         }
         protected void Invoke_OnCanceled()
         {
-            Log("On Canceled Animation");
+            Log($"{nameof(OnCanceled)}");
 
             OnCanceled?.Invoke();
 
@@ -356,7 +356,7 @@ namespace StudioScor.Utilities
         }
         protected void Invoke_OnFinished()
         {
-            Log("On Finished Animation");
+            Log($"{nameof(OnFinished)}");
 
             OnFinished?.Invoke();
 
@@ -365,7 +365,7 @@ namespace StudioScor.Utilities
         }
         protected void Invoke_OnFinishedBlendIn()
         {
-            Log("On Finished Blend In Animation");
+            Log($"{nameof(OnFinishedBlendIn)}");
 
             OnFinishedBlendIn?.Invoke();
 
@@ -373,7 +373,7 @@ namespace StudioScor.Utilities
         }
         protected void Invoke_OnStartedBlendOut()
         {
-            Log("On Started Blend Out Animation");
+            Log($"{nameof(OnStartedBlendOut)}");
 
             OnStartedBlendOut?.Invoke();
 
@@ -382,21 +382,21 @@ namespace StudioScor.Utilities
 
         protected void Invoke_OnNotify(string notify)
         {
-            Log("On Notify - " + notify);
+            Log($"{nameof(OnNotify)} - {notify}");
 
             OnNotify?.Invoke(notify);
         }
 
         protected void Invoke_OnEnterNotifyState(string notify)
         {
-            Log("On Enter Notify State - " + notify);
+            Log($"{nameof(OnEnterNotifyState)} - {notify}");
 
             OnEnterNotifyState?.Invoke(notify);
         }
 
         protected void Invoke_OnExitNotifyState(string notify)
         {
-            Log("On Exit Notify State - " + notify);
+            Log($"{nameof(OnExitNotifyState)} - {notify}");
 
             OnExitNotifyState?.Invoke(notify);
         }

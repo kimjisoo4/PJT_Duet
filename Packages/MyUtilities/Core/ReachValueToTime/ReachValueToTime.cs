@@ -15,6 +15,7 @@ namespace StudioScor.Utilities
 
         public float DeltaDistance => _deltaDistance;
         public float Distance => _distance;
+        public float RemainDistance => Distance - _prevDistance;
         public AnimationCurve Curve => _curve;
         public bool IsPlaying => _isPlaying;
 
@@ -28,8 +29,8 @@ namespace StudioScor.Utilities
         }
         public ReachValueToTime(float distance, AnimationCurve curve)
         {
-            this._distance = distance;
-            this._curve = curve;
+            _distance = distance;
+            _curve = curve;
         }
 
         public void Copy(ReachValueToTime reachValueToTime)
@@ -49,7 +50,7 @@ namespace StudioScor.Utilities
             }
             else
             {
-                this._distance = distance;
+                _distance = distance;
             }
         }
         public void SetCurve(AnimationCurve curve)
@@ -62,7 +63,7 @@ namespace StudioScor.Utilities
             }
             else
             {
-                this._curve = curve;
+                _curve = curve;
             }
         }
 
@@ -72,8 +73,8 @@ namespace StudioScor.Utilities
             if (_isPlaying || distance.SafeEquals(0f))
                 return;
 
-            this._distance = distance;
-            this._curve = curve;
+            _distance = distance;
+            _curve = curve;
             _prevDistance = 0f;
             _deltaDistance = 0f;
 
@@ -84,7 +85,7 @@ namespace StudioScor.Utilities
             if (_isPlaying || distance.SafeEquals(0f))
                 return;
 
-            this._distance = distance; 
+            _distance = distance; 
             _prevDistance = 0f;
             _deltaDistance = 0f;
 
@@ -121,7 +122,17 @@ namespace StudioScor.Utilities
             if (!_isPlaying)
                 return 0f;
 
-            float distance = Curve.Evaluate(normalizeTime) * Distance;
+            float distance;
+            
+            if(Curve is null)
+            {
+                distance = normalizeTime * Distance;
+            }
+            else
+            {
+                distance = Curve.Evaluate(normalizeTime) * Distance;
+            }
+            
 
             _deltaDistance = distance - _prevDistance;
             _prevDistance = distance;

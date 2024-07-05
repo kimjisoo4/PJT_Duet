@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e5bd37b6c5352e4bb80fe13e2f58d69, type: 3}
+  m_Name: GA_PawnAbiltiy_SetSpectator
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  abilityName: Set Spectator
+  abilityTag: {fileID: 11400000, guid: a40dd7e3e3d12514894ca380fde04a21, type: 2}
+  attributeTags: []
+  conditionTags:
+    requireds:
+    - {fileID: 11400000, guid: a40dd7e3e3d12514894ca380fde04a21, type: 2}
+    obstacleds: []
+  grantTags:
+    owneds: []
+    blocks: []
+  cancelAbilityTags: []

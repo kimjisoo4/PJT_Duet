@@ -31,6 +31,8 @@ namespace PF.PJT.Duet.System
 
             if(_skillState is not null)
             {
+                Log($"Skill Name [{skill}]  Remain Time - {_skillState.RemainCoolTime:f2} :: CoolTime - {_skillState.CoolTime:f2}");
+
                 _amount.SetValue(_skillState.RemainCoolTime, _skillState.CoolTime);
             }
             else

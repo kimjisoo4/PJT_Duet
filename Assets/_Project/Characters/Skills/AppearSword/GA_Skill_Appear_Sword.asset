@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d938739065f92ea42a19ac80b1155b72, type: 3}
+  m_Name: GA_Skill_Appear_Sword
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  abilityName: Appear Sword
+  abilityTag: {fileID: 11400000, guid: 0e0e84c1086e6d84b82160e516fcc951, type: 2}
+  attributeTags:
+  - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
+  - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
+  conditionTags:
+    requireds: []
+    obstacleds: []
+  grantTags:
+    owneds:
+    - {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
+    - {fileID: 11400000, guid: ad6c3d6668571ff4cbdcefdb4e2be194, type: 2}
+    blocks:
+    - {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
+    - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
+    - {fileID: 11400000, guid: 5892f453510d8d54f9605e3f5d51880e, type: 2}
+    - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
+  cancelAbilityTags: []
+  _icon: {fileID: 21300000, guid: 8ba2524c70c28eb4490b7b636cb9f1ca, type: 3}
+  _skillType: 3
+  _appearAnimation: AppearSword
+  _fadeInTime: 0
+  _moveDistance: 4
+  _moveStartTime: 0
+  _moveEndTime: 0.3
+  _moveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.04136514
+      outSlope: 0.04136514
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.1640959
+    - serializedVersion: 3
+      time: 0.53964126
+      value: 0.70494837
+      inSlope: 1.6204834
+      outSlope: 1.6204834
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.11563004
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _tracePoint: {fileID: 11400000, guid: fd15a44b8089f3d4eb7a7e059924865f, type: 2}
+  _traceRadius: 3
+  _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
+  _coolTimeEffect: {fileID: 11400000, guid: 2fd36f1757979dc459cd656191338304, type: 2}
+  _takeDamageEffect: {fileID: 11400000, guid: b9e9ce3017b8679418553f3fc57276d1, type: 2}
+  _takeRadialKnockbackEffect: {fileID: 11400000, guid: 66d69f5ab9231c24d80a61fb6f1ff181,
+    type: 2}
+  _applyGameplayEffectsOnHitToOther:
+  - {fileID: 11400000, guid: 3fca86f4847ea6a4e9f5a18445cdb3fc, type: 2}
+  - {fileID: 11400000, guid: b4ab5a2badaa60840aea4fc5cd06760e, type: 2}
+  _applyGameplayEffectsOnHitToSelf:
+  - {fileID: 11400000, guid: c8895f0a0c13dab4f83a755b7fc2366b, type: 2}
+  _applyGameplayEffectsOnSuccessedHit: []
+  _onImpactCue:
+    Cue: {fileID: 11400000, guid: 6c1960221b9ce274aa0c7351cbe32da3, type: 2}
+    Position: {x: 0, y: 0, z: 1}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1.5, y: 1.5, z: 1.5}
+  _onHitToOtherCue:
+    Cue: {fileID: 11400000, guid: 6c85673d7edaa62439a2920702e6d37b, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1.5, y: 1.5, z: 1.5}
+  _onSuccessedPlayerHit:
+    Cue: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0, y: 0, z: 0}

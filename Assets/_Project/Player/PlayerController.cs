@@ -24,6 +24,7 @@ namespace PF.PJT.Duet.Controller
         [Header(" [ Player Controller ] ")]
         [SerializeField] private PlayerInput _playerInput;
         [SerializeField] private LookAxisComponent _lookAxisComp;
+        [SerializeField] private GameObject _subPlayerController;
 
         [Header(" Input Reference ")]
         [SerializeField] private InputActionReference _changeActionReference;
@@ -43,6 +44,7 @@ namespace PF.PJT.Duet.Controller
         private Camera _mainCamera;
         
         private IControllerSystem _controllerSystem;
+        private IControllerSystem _subControllerSystem;
 
         private InputAction _moveInputAction;
         private InputAction _lookInputAction;
@@ -118,6 +120,7 @@ namespace PF.PJT.Duet.Controller
             _mainCamera = Camera.main;
 
             _controllerSystem = gameObject.GetControllerSystem();
+            _subControllerSystem = _subPlayerController.GetControllerSystem();
 
             _mainCharacter = _characterA.GetComponent<ICharacter>();
             _subCharacter = _characterB.GetComponent<ICharacter>();
@@ -134,9 +137,11 @@ namespace PF.PJT.Duet.Controller
             }
             else
             {
-                var pawn = _mainCharacter.gameObject.GetPawnSystem();
+                var mainPawn = _mainCharacter.gameObject.GetPawnSystem();
+                var subPawn = _subCharacter.gameObject.GetPawnSystem();
 
-                _controllerSystem.OnPossess(pawn);
+                _controllerSystem.OnPossess(mainPawn);
+                _subControllerSystem.OnPossess(subPawn);
 
                 _currentCharacter = _mainCharacter;
             }
@@ -165,21 +170,26 @@ namespace PF.PJT.Duet.Controller
             }
         }
 
+        
         private void ChangeCharacter()
         {
-            var currentCharacter = _currentCharacter;
+            var prevCharacter = _currentCharacter;
             var nextCharacter = _currentCharacter != _mainCharacter ? _mainCharacter : _subCharacter;
 
-            if (!currentCharacter.TryLeave())
+            if (!prevCharacter.TryLeave())
                 return;
+
+            ReleaseAllInput();
 
             _currentCharacter = nextCharacter;
 
+            var prevPawn = prevCharacter.gameObject.GetPawnSystem();
             var pawn = _currentCharacter.gameObject.GetPawnSystem();
 
             _controllerSystem.OnPossess(pawn);
+            _subControllerSystem.OnPossess(prevPawn);
 
-            _currentCharacter.Teleport(currentCharacter.transform.position, currentCharacter.transform.rotation);
+            _currentCharacter.Teleport(prevCharacter.transform.position, prevCharacter.transform.rotation);
 
             _currentCharacter.Appear();
 
@@ -263,7 +273,22 @@ namespace PF.PJT.Duet.Controller
             _dashInputAction.started -= DashAction_started;
             _dashInputAction.canceled -= DashAction_canceled;
         }
-        
+
+        private void ReleaseAllInput()
+        {
+            if (_currentCharacter is null)
+                return;
+
+            if (_attackInputAction.IsPressed())
+                _currentCharacter.SetInputAttack(false);
+
+            if (_skillInputAction.IsPressed())
+                _currentCharacter.SetInputSkill(false);
+
+            if (_dashInputAction.IsPressed())
+                _currentCharacter.SetInputDash(false);
+        }
+
         private void _lookInputAction_performed(InputAction.CallbackContext obj)
         {
             _inputLookDirection = obj.ReadValue<Vector2>();

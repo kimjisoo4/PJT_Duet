@@ -12,7 +12,12 @@ using UnityEngine;
 
 namespace PF.PJT.Duet.Pawn.PawnSkill
 {
-    public class ProjectileActor : BaseMonoBehaviour, ISpawnedActorToAbility
+    public interface IProjectileActor
+    {
+        public void OnProjectile();
+    }
+
+    public class ProjectileActor : BaseMonoBehaviour, ISpawnedActorToAbility, IProjectileActor
     {
         [Header(" [ Air Blast Actor ] ")]
         [SerializeField] private Rigidbody _rigidbody;
@@ -26,6 +31,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
         [Header(" Trace ")]
         [SerializeField] private float[] _changeChargeLevelTraceRadius;
+        [SerializeField] private Variable_LayerMask _traceLayer;
 
         [Header(" Gameplay Cue ")]
         [SerializeField] private FGameplayCue[] _chargingCues;
@@ -53,8 +59,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             _chargeable = GetComponent<IChargeable>();
             _sphereCast = GetComponent<ISphereCast>();
 
-            _projectile.OnStartedProjectile += _projectile_OnStartedProjectile;
-
             _chargeable.OnStartedCharge += _chargeable_OnStartedCharge;
             _chargeable.OnEndedCharge += _chargeable_OnEndedCharge;
             _chargeable.OnChangedChargeLevel += _chargeable_OnChangedChargeLevel;
@@ -64,11 +68,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
         private void OnDestroy()
         {
-            if (_projectile is not null)
-            {
-                _projectile.OnStartedProjectile -= _projectile_OnStartedProjectile;
-            }
-
             if (_chargeable is not null)
             {
                 _chargeable.OnStartedCharge -= _chargeable_OnStartedCharge;
@@ -125,6 +124,20 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             Owner = newOwner;
             _pawnSystem = Owner.GetPawnSystem();
             _abilitySpec = abilitySpec;
+        }
+
+        public void OnProjectile()
+        {
+            _sphereCast.TraceLayer = _traceLayer.Value;
+            _sphereCast.OnTrace();
+
+            if (_projectileFX is not null)
+            {
+                _projectileFX.OnEndedCue += _projectileFX_OnEndedCue;
+            }
+
+            _lifeTimeTimer.OnTimer();
+            _projectile.OnProjectile();
         }
 
         private void _chargeable_OnStartedCharge(IChargeable chargeable)
@@ -248,34 +261,30 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 if (hit.transform.TryGetPawnSystem(out IPawnSystem hitPawn) && hitPawn.Controller.CheckAffiliation(_pawnSystem.Controller) != EAffiliation.Hostile)
                     continue;
 
-                if (!_sphereCast.IgnoreTransforms.Contains(hit.transform))
-                {
-                    _sphereCast.AddIgnoreTransform(hit.transform);
-
                     isHit = true;
 
-                    if (hit.transform.TryGetGameplayEffectSystem(out var hitEffectSystem))
+                if (hit.transform.TryGetGameplayEffectSystem(out var hitEffectSystem))
+                {
+                    if (_takeDamageEffects is not null && _takeDamageEffects.Length > 0)
                     {
-                        if(_takeDamageEffects is not null && _takeDamageEffects.Length > 0)
+                        TakeDamageEffect.FElement element = new TakeDamageEffect.FElement(hit.point, hit.normal, hit.collider, direction, gameObject, Owner);
+                        var takeDamage = _takeDamageEffects.ElementAtOrDefault(_chargeable.CurrentChargeLevel);
+
+                        if (!takeDamage)
                         {
-                            TakeDamageEffect.FElement element = new TakeDamageEffect.FElement(hit.point, hit.normal, hit.collider, direction, gameObject, Owner);
-                            var takeDamage = _takeDamageEffects.ElementAtOrDefault(_chargeable.CurrentChargeLevel);
-
-                            if (!takeDamage)
-                            {
-                                takeDamage = _takeDamageEffects.Last();
-                            }
-
-                            hitEffectSystem.TryTakeEffect(takeDamage, Owner, _abilitySpec.Level, element);
+                            takeDamage = _takeDamageEffects.Last();
                         }
 
-                        for (int effectIndex = 0; effectIndex < _applyGameplayEffectsOnHitToOther.Length; effectIndex++)
-                        {
-                            var effect = _applyGameplayEffectsOnHitToOther[effectIndex];
-
-                            hitEffectSystem.TryTakeEffect(effect, gameObject, _abilitySpec.Level, null);
-                        }
+                        hitEffectSystem.TryTakeEffect(takeDamage, Owner, _abilitySpec.Level, element);
                     }
+
+                    for (int effectIndex = 0; effectIndex < _applyGameplayEffectsOnHitToOther.Length; effectIndex++)
+                    {
+                        var effect = _applyGameplayEffectsOnHitToOther[effectIndex];
+
+                        hitEffectSystem.TryTakeEffect(effect, gameObject, _abilitySpec.Level, null);
+                    }
+
                 }
             }
 
@@ -293,8 +302,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             var spawnedChargeable = spwaned.gameObject.GetComponent<IChargeable>();
             spawnedChargeable.SetChargeLevel(_chargeable.CurrentChargeLevel);
 
-            var spawnedTrace = spwaned.gameObject.GetComponent<IRaycast>();
-            spawnedTrace.OnTrace();
+            var spawnedTrace = spwaned.gameObject.GetComponent<IExplosionActor>();
+            spawnedTrace.OnExplosion();
 
             EndProjectile();
         }
@@ -322,16 +331,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             EndProjectile();
         }
 
-        private void _projectile_OnStartedProjectile(IProjectile projectile)
-        {
-            _lifeTimeTimer.OnTimer();
-            _sphereCast.OnTrace();
-
-            if (_projectileFX is not null)
-            {
-                _projectileFX.OnEndedCue += _projectileFX_OnEndedCue;
-            }
-        }
         private void _projectileFX_OnEndedCue(Cue cue)
         {
             if(gameObject.activeInHierarchy)

@@ -11,12 +11,19 @@ using UnityEngine;
 
 namespace PF.PJT.Duet.Pawn.PawnSkill
 {
-    public class ExplosionActor : BaseMonoBehaviour, ISpawnedActorToAbility
+    public interface IExplosionActor
+    {
+        public void OnExplosion();
+    }
+
+    public class ExplosionActor : BaseMonoBehaviour, ISpawnedActorToAbility, IExplosionActor
     {
         [Header(" [ Explosion Actor ] ")]
         [SerializeField] private Timer _traceTimer;
+
         [Header(" Trace ")]
         [SerializeField] private float[] _chargeTraceRadiuses;
+        [SerializeField] private Variable_LayerMask _traceLayer;
 
         [Header(" Gameplay Cue ")]
         [SerializeField] private FGameplayCue[] _explosionCues;
@@ -97,6 +104,17 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             _pawnSystem = Owner.GetPawnSystem();
         }
+        public void OnExplosion()
+        {
+            _sphereCast.TraceLayer = _traceLayer.Value;
+            int level = _chargeable.CurrentChargeLevel;
+
+            SetTraceRadius(level);
+            PlayExplosionCue(level);
+
+            _traceTimer.OnTimer();
+            _sphereCast.OnTrace();
+        }
 
         private void SetTraceRadius(int chargeLevel)
         {
@@ -147,62 +165,57 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 bool isEachHit = false;
 
-                if (!_sphereCast.IgnoreTransforms.Contains(hit.transform))
-                {
-                    _sphereCast.AddIgnoreTransform(hit.transform);
-
                     Vector3 direction = transform.Direction(hit.point);
 
-                    if (hit.transform.TryGetGameplayEffectSystem(out var hitEffectSystem))
+                if (hit.transform.TryGetGameplayEffectSystem(out var hitEffectSystem))
+                {
+                    if (_takeDamages is not null && _takeDamages.Length > 0)
                     {
-                        if(_takeDamages is not null && _takeDamages.Length > 0)
+                        TakeDamageEffect.FElement element = new TakeDamageEffect.FElement(hit.point, hit.normal, hit.collider, direction, gameObject, Owner);
+                        var takeDamage = _takeDamages.ElementAtOrDefault(_chargeable.CurrentChargeLevel);
+
+                        if (!takeDamage)
                         {
-                            TakeDamageEffect.FElement element = new TakeDamageEffect.FElement(hit.point, hit.normal, hit.collider, direction, gameObject, Owner);
-                            var takeDamage = _takeDamages.ElementAtOrDefault(_chargeable.CurrentChargeLevel);
-
-                            if (!takeDamage)
-                            {
-                                takeDamage = _takeDamages.Last();
-                            }
-
-                            if (hitEffectSystem.TryTakeEffect(takeDamage, Owner, _abilitySpec.Level, element).isActivate)
-                            {
-                                isHit = true;
-                                isEachHit = true;
-                            }
-                        }
-                        if(_takeRadialKnockbacks is not null && _takeRadialKnockbacks.Length > 0)
-                        {
-                            var radialData = new TakeRadialKnockbackEffect.FElement(transform.position);
-                            var takeRadialKnockback = _takeRadialKnockbacks.ElementAtOrDefault(_chargeable.CurrentChargeLevel);
-
-                            if (!takeRadialKnockback)
-                                takeRadialKnockback = _takeRadialKnockbacks.Last();
-
-                            if (hitEffectSystem.TryTakeEffect(takeRadialKnockback, gameObject, _abilitySpec.Level, radialData).isActivate)
-                            {
-                                isHit = true;
-                                isEachHit = true;
-                            }
-
+                            takeDamage = _takeDamages.Last();
                         }
 
-                        for (int effectIndex = 0; effectIndex < _applyGameplayEffectsOnHitToOther.Length; effectIndex++)
+                        if (hitEffectSystem.TryTakeEffect(takeDamage, Owner, _abilitySpec.Level, element).isActivate)
                         {
-                            var effect = _applyGameplayEffectsOnHitToOther[effectIndex];
+                            isHit = true;
+                            isEachHit = true;
+                        }
+                    }
+                    if (_takeRadialKnockbacks is not null && _takeRadialKnockbacks.Length > 0)
+                    {
+                        var radialData = new TakeRadialKnockbackEffect.FElement(transform.position);
+                        var takeRadialKnockback = _takeRadialKnockbacks.ElementAtOrDefault(_chargeable.CurrentChargeLevel);
 
-                            if (hitEffectSystem.TryTakeEffect(effect, gameObject, _abilitySpec.Level, null).isActivate)
-                            {
-                                isHit = true;
-                                isEachHit = true;
-                            }
+                        if (!takeRadialKnockback)
+                            takeRadialKnockback = _takeRadialKnockbacks.Last();
 
+                        if (hitEffectSystem.TryTakeEffect(takeRadialKnockback, gameObject, _abilitySpec.Level, radialData).isActivate)
+                        {
+                            isHit = true;
+                            isEachHit = true;
                         }
 
-                        if (isEachHit)
+                    }
+
+                    for (int effectIndex = 0; effectIndex < _applyGameplayEffectsOnHitToOther.Length; effectIndex++)
+                    {
+                        var effect = _applyGameplayEffectsOnHitToOther[effectIndex];
+
+                        if (hitEffectSystem.TryTakeEffect(effect, gameObject, _abilitySpec.Level, null).isActivate)
                         {
-                            // 각각 맞았을 때,
+                            isHit = true;
+                            isEachHit = true;
                         }
+
+                    }
+
+                    if (isEachHit)
+                    {
+                        // 각각 맞았을 때,
                     }
                 }
             }
@@ -214,12 +227,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         }
         private void _sphereCast_OnStartedRaycast(IRaycast raycast)
         {
-            _traceTimer.OnTimer();
-
-            int level = _chargeable.CurrentChargeLevel;
-
-            SetTraceRadius(level);
-            PlayExplosionCue(level);
+           
         }
         private void _traceTimer_OnEndedTimer(ITimer timer)
         {

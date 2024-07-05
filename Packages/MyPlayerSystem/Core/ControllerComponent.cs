@@ -271,7 +271,7 @@ namespace StudioScor.PlayerSystem
 
             Pawn.OnPossess(this);
 
-            Callback_OnPossessedPawn();
+            Invoke_OnPossessedPawn();
         }
         public void UnPossess(IPawnSystem unPossessPawn)
         {
@@ -287,7 +287,7 @@ namespace StudioScor.PlayerSystem
 
             prevPawn.UnPossess();
 
-            Callback_OnUnPossessedPawn(prevPawn);
+            Invoke_OnUnPossessedPawn(prevPawn);
         }
         
         public virtual EAffiliation CheckAffiliation(IControllerSystem targetController)
@@ -329,7 +329,7 @@ namespace StudioScor.PlayerSystem
             var prevTarget = LookTarget;
             LookTarget = target;
 
-            Callback_OnChangedLookTarget(prevTarget);
+            Inovke_OnChangedLookTarget(prevTarget);
         }
 
         public Vector3 GetLookPosition()
@@ -348,22 +348,22 @@ namespace StudioScor.PlayerSystem
 
 
         #region Callback
-        protected virtual void Callback_OnPossessedPawn()
+        protected virtual void Invoke_OnPossessedPawn()
         {
-            Log("On Possessed Pawn - " + Pawn.gameObject.name);
+            Log($"{nameof(OnPossessedPawn)} - {Pawn.gameObject.name}");
 
             OnPossessedPawn?.Invoke(this, Pawn);
         }
-        protected virtual void Callback_OnUnPossessedPawn(IPawnSystem prevPawn)
+        protected virtual void Invoke_OnUnPossessedPawn(IPawnSystem prevPawn)
         {
-            Log("On UnPossessed Pawn - " + prevPawn.gameObject.name);
+            Log($"{nameof(OnUnPossessedPawn)} - {prevPawn.gameObject.name}");
 
             OnUnPossessedPawn?.Invoke(this, prevPawn);
         }
 
-        protected virtual void Callback_OnChangedLookTarget(Transform prevTarget)
+        protected virtual void Inovke_OnChangedLookTarget(Transform prevTarget)
         {
-            Log($"On Changed Look Target - Current : {(LookTarget ? LookTarget.name : "Null" )} || Prev : {(prevTarget ? prevTarget.name : "Null")}");
+            Log($"{nameof(OnChangedLookTarget)} - Current : {(LookTarget ? LookTarget.name : "Null" )} || Prev : {(prevTarget ? prevTarget.name : "Null")}");
 
             OnChangedLookTarget?.Invoke(this, LookTarget, prevTarget);
         }

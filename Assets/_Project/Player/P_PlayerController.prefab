@@ -117,6 +117,7 @@ Transform:
   m_Children:
   - {fileID: 1853084638214750924}
   - {fileID: 5665102072739311488}
+  - {fileID: 3249466170211702872}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1276840408987602085
@@ -182,6 +183,7 @@ MonoBehaviour:
   UseDebug: 0
   _playerInput: {fileID: 1276840408987602085}
   _lookAxisComp: {fileID: 6055870967808086937}
+  _subPlayerController: {fileID: 6696259387773506644}
   _changeActionReference: {fileID: -6889193714284316769, guid: 77f31ac1e5a26ed4484e6522d199bce0,
     type: 3}
   _moveActionReference: {fileID: -8709058799728952139, guid: 77f31ac1e5a26ed4484e6522d199bce0,
@@ -196,6 +198,56 @@ MonoBehaviour:
     type: 3}
   _characterA: {fileID: 0}
   _characterB: {fileID: 0}
+  _useHideCursor: 1
+--- !u!1 &6696259387773506644
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3249466170211702872}
+  - component: {fileID: 4819788971404035956}
+  m_Layer: 0
+  m_Name: SubPlayerController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3249466170211702872
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6696259387773506644}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6114619893299449059}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4819788971404035956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6696259387773506644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b1fc3890dd9c5a4fb500196b1f6c199, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  playerManager: {fileID: 11400000, guid: 13dbbcde627c89f49bc44e0a2795673d, type: 2}
+  <IsPlayer>k__BackingField: 0
+  <TurnDirectionState>k__BackingField: 0
+  <Affiliation>k__BackingField: 0
 --- !u!1 &8036280054929956186
 GameObject:
   m_ObjectHideFlags: 0

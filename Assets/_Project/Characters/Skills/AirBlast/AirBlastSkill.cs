@@ -365,9 +365,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 _spawnedActor.transform.SetParent(null, true);
 
-                var projectile = _spawnedActor.gameObject.GetComponent<IProjectile>();
-                projectile.OnProjectile();
-
                 FGameplayCue shotCue;
                 
                 if(_chargeable is not null)
@@ -390,6 +387,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 }
 
                 _chargeable = null;
+
+                var projectile = _spawnedActor.gameObject.GetComponent<IProjectileActor>();
+                projectile.OnProjectile();
             }
 
             private void UpdateInShot(float deltaTime)

@@ -1,14 +1,14 @@
-﻿using StudioScor.Utilities;
-using UnityEngine;
+﻿using PF.PJT.Duet.Pawn.Effect;
 using StudioScor.AbilitySystem;
 using StudioScor.BodySystem;
-using System.Collections.Generic;
-using StudioScor.GameplayEffectSystem;
 using StudioScor.GameplayCueSystem;
+using StudioScor.GameplayEffectSystem;
 using StudioScor.GameplayTagSystem;
-using PF.PJT.Duet.Pawn.Effect;
 using StudioScor.PlayerSystem;
 using StudioScor.RotationSystem;
+using StudioScor.Utilities;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace PF.PJT.Duet.Pawn.PawnSkill
 {
@@ -189,6 +189,24 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 _wasEnabledTrace = false;
             }
+
+            private bool CheckAffilation(Transform target)
+            {
+                if (!target)
+                    return false;
+
+                if (!target.TryGetController(out IControllerSystem hitPawnController))
+                    return false;
+
+                if (!_pawnSystem.IsPossessed)
+                    return false;
+
+                if (_pawnSystem.Controller.CheckAffiliation(hitPawnController) != EAffiliation.Hostile)
+                    return false;
+
+                return true;
+            }
+
             private void UpdateTrace()
             {
                 if (!_wasEnabledTrace)
@@ -217,7 +235,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                             _ignoreTransforms.Add(hit.transform);
                             Log($"HIT :: {hit.transform.name}");
 
-                            if (hit.transform.TryGetPawnSystem(out IPawnSystem hitPawn) && hitPawn.Controller.CheckAffiliation(_pawnSystem.Controller) != EAffiliation.Hostile)
+                            if (!CheckAffilation(hit.transform))
                                 continue;
 
                             if(hit.transform.TryGetGameplayEffectSystem(out IGameplayEffectSystem hitGameplayEffectSystem))

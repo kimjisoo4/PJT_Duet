@@ -99,6 +99,7 @@ MonoBehaviour:
   - 0.5
   - 0.6
   - 0.8
+  _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
   _chargingCues:
   - Cue: {fileID: 11400000, guid: 7ce1680a92d92d04eb27ba05bf011d58, type: 2}
     Position: {x: 0, y: 0, z: 0}
@@ -241,7 +242,9 @@ MonoBehaviour:
     <UseDebug>k__BackingField: 0
     _owner: {fileID: 8984331437772637715}
     _traceRadius: 1
-    _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
+    _traceLayer:
+      serializedVersion: 2
+      m_Bits: 0
     _maxHitCount: 10
   _useUnityEvent: 0
   _unityEvents:

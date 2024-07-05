@@ -8,6 +8,7 @@ namespace StudioScor.Utilities
     {
         public delegate void RaycastStateHandler(IRaycast raycast);
 
+        public GameObject Owner { get; }
         public bool IsPlaying { get; }
         public int MaxHitCount { get; set; }
         public LayerMask TraceLayer { get; set; }
@@ -15,6 +16,7 @@ namespace StudioScor.Utilities
         public IReadOnlyCollection<RaycastHit> HitResults { get; }
         public IReadOnlyList<Transform> IgnoreTransforms { get; }
 
+        public void SetOwner(GameObject newOwner);
         public void OnTrace();
         public void EndTrace();
 
@@ -50,8 +52,9 @@ namespace StudioScor.Utilities
         private readonly List<Transform> _ignoreTransforms = new List<Transform>();
         private RaycastHit[] _hitResults;
 
-        public float TraceRadius { get => _traceRadius; set => _traceRadius = value; }
+        public GameObject Owner => _owner;
         public bool IsPlaying => _isPlaying;
+        public float TraceRadius { get => _traceRadius; set => _traceRadius = value; }
         public int MaxHitCount { get => _maxHitCount; set => _maxHitCount = value; }
         public LayerMask TraceLayer { get => _traceLayer.Value; set => _traceLayer.SetValue(value); }
         public int HitCount => _hitCount;
@@ -61,6 +64,11 @@ namespace StudioScor.Utilities
 
         public event IRaycast.RaycastStateHandler OnStartedRaycast;
         public event IRaycast.RaycastStateHandler OnEndedRaycast;
+
+        public void SetOwner(GameObject owner)
+        {
+            _owner = owner;
+        }
 
         public void AddIgnoreTransform(Transform transform)
         {
@@ -135,7 +143,7 @@ namespace StudioScor.Utilities
         [Header(" [ Trail Sphere Cast ] ")]
         [SerializeField] private GameObject _owner;
         [SerializeField] private float _traceRadius = 1f;
-        [SerializeField] private Variable_LayerMask _traceLayer;
+        [SerializeField] private LayerMask _traceLayer;
         [SerializeField] private int _maxHitCount = 10;
 
         private bool _isPlaying = false;
@@ -146,10 +154,11 @@ namespace StudioScor.Utilities
         public Vector3 StartPosition => _startPosition;
         public Vector3 EndPosition => _prevEndPosition;
 
+        public GameObject Owner => _owner;
         public bool IsPlaying => _isPlaying;
         public float TraceRadius { get => _traceRadius; set => _traceRadius = value; }
         public int MaxHitCount { get => _maxHitCount; set => _maxHitCount = value; }
-        public LayerMask TraceLayer { get => _traceLayer.Value; set => _traceLayer.SetValue(value); }
+        public LayerMask TraceLayer { get => _traceLayer; set => _traceLayer = value; }
         public IReadOnlyCollection<RaycastHit> HitResults => _hitResults;
         public IReadOnlyList<Transform> IgnoreTransforms => _ignoreTransforms;
         public int HitCount => _hitCount;
@@ -181,6 +190,7 @@ namespace StudioScor.Utilities
 
             _hitCount = 0;
             _prevEndPosition = _owner.transform.position;
+            AddIgnoreTransform(Owner.transform);
 
             Invoke_OnStartedRaycast();
         }
@@ -213,20 +223,37 @@ namespace StudioScor.Utilities
 
             _prevEndPosition = endPosition;
 
-            _hitCount = SUtility.Physics.DrawSphereCastAllNonAlloc(_startPosition, endPosition, _traceRadius, _hitResults, _traceLayer.Value, QueryTriggerInteraction.UseGlobal, UseDebug);
+            _hitCount = SUtility.Physics.DrawSphereCastAllNonAlloc(_startPosition, endPosition, _traceRadius, _hitResults, _traceLayer, QueryTriggerInteraction.UseGlobal, UseDebug);
+
+            int removeCount = 0;
 
             if(_hitCount > 0)
             {
                 for (int i = 0; i < _hitCount; i++)
                 {
-                    if (_hitResults[i].distance.SafeEquals(0f))
+                    var hitResult = _hitResults[i];
+
+                    if (!_ignoreTransforms.Contains(hitResult.transform))
                     {
-                        _hitResults[i].point = _hitResults[i].collider.ClosestPoint(_startPosition);
-                        _hitResults[i].distance = Vector3.Distance(_hitResults[i].point, _startPosition);
-                        _hitResults[i].normal = _hitResults[i].point.Direction(_startPosition);
+                        AddIgnoreTransform(hitResult.transform);
+
+                        if (hitResult.distance.SafeEquals(0f))
+                        {
+                            hitResult.point = hitResult.collider.ClosestPoint(_startPosition);
+                            hitResult.distance = Vector3.Distance(hitResult.point, _startPosition);
+                            hitResult.normal = hitResult.point.Direction(_startPosition);
+                        }
+
+                        _hitResults[i - removeCount] = hitResult;
+                    }
+                    else
+                    {
+                        removeCount++;
                     }
                 }
             }
+
+            _hitCount -= removeCount;
 
             return (_hitCount, _hitResults);
         }

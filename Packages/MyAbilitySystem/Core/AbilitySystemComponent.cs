@@ -151,8 +151,6 @@ namespace StudioScor.AbilitySystem
         {
             Log("Setup Ability System");
 
-            abilities.Clear();
-
             foreach (var ability in initAbilities)
             {
                 TryGrantAbility(ability.Ability, ability.Level);

@@ -21,6 +21,7 @@ namespace StudioScor.BodySystem
         [SerializeField] private BodyTag _BodyTag;
         [SerializeField] private bool _canEquiped = true;
         [SerializeField] private bool _useAutoAttach = true;
+        [SerializeField] private bool _useAutoDetach = false;
 
         private IBodySystem _bodySystem;
         public BodyTag BodyTag => _BodyTag;
@@ -65,7 +66,7 @@ namespace StudioScor.BodySystem
 
         private void OnDisable()
         {
-            if (!_useAutoAttach)
+            if (!_useAutoDetach)
                 return;
 
             SetOwner(null);

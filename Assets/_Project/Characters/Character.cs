@@ -74,13 +74,16 @@ namespace PF.PJT.Duet.Pawn
         private void Awake()
         {
             InitCharacter();
-        }
-        private void Start()
-        {
+
             _abilitySystem.TryGrantAbility(_attackAbility, 0);
             _abilitySystem.TryGrantAbility(_skillAbility, 0);
             _abilitySystem.TryGrantAbility(_dashAbility, 0);
             _abilitySystem.TryGrantAbility(_appearAbility, 0);
+            _abilitySystem.TryGrantAbility(_leaveAbility, 0);
+        }
+        private void Start()
+        {
+            
 
         }
         private void Update()
@@ -257,6 +260,8 @@ namespace PF.PJT.Duet.Pawn
         {
             _movementSystem.Teleport(position);
             _rotationSystem.SetRotation(rotation);
+
+            transform.SetPositionAndRotation(position, rotation);
         }
     }
 }

@@ -43,12 +43,11 @@ namespace StudioScor.Utilities
         [SerializeField] private bool _useUnityEvent;
         [SerializeField][SCondition(nameof(_useUnityEvent))] private UnityEvents _unityEvents;
 
+        public GameObject Owner => _trailSphereCast.Owner;
         public bool IsPlaying => _trailSphereCast.IsPlaying;
         public float TraceRadius { get => _trailSphereCast.TraceRadius; set => _trailSphereCast.TraceRadius = value; }
-
         public int MaxHitCount { get => _trailSphereCast.MaxHitCount; set => _trailSphereCast.MaxHitCount = value; }
         public LayerMask TraceLayer { get => _trailSphereCast.TraceLayer; set => _trailSphereCast.TraceLayer = value; }
-
         public int HitCount => _trailSphereCast.HitCount;
         public IReadOnlyCollection<RaycastHit> HitResults => _trailSphereCast.HitResults; 
         public IReadOnlyList<Transform> IgnoreTransforms => _trailSphereCast.IgnoreTransforms;
@@ -89,6 +88,11 @@ namespace StudioScor.Utilities
         public void AddIgnoreTransform(Transform transform)
         {
             _trailSphereCast.AddIgnoreTransform(transform);
+        }
+
+        public void SetOwner(GameObject owner)
+        {
+            _trailSphereCast.SetOwner(owner);
         }
         public void OnTrace()
         {
