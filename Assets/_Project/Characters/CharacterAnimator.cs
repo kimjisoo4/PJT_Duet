@@ -21,6 +21,8 @@ namespace PF.PJT.Duet.Pawn
 
         private readonly int ANIM_IS_MOVING = Animator.StringToHash("isMoving");
         private readonly int ANIM_MOVE_SPEED = Animator.StringToHash("moveSpeed");
+        private readonly int ANIM_SPEED_X = Animator.StringToHash("speedX");
+        private readonly int ANIM_SPEED_Z = Animator.StringToHash("speedZ");
         private readonly int ANIM_IS_STIFFEN = Animator.StringToHash("isStiffen");
 
         private void Awake()
@@ -86,6 +88,11 @@ namespace PF.PJT.Duet.Pawn
 
             float horizontalSpeed = _movementSystem.PrevSpeed;
 
+            Vector3 velocity = _movementSystem.PrevVelocityXZ;
+            Vector3 localVelocity = transform.InverseTransformDirection(velocity);
+
+            _animator.SetFloat(ANIM_SPEED_X, localVelocity.x, _dampTime, deltaTime);
+            _animator.SetFloat(ANIM_SPEED_Z, localVelocity.z, _dampTime, deltaTime);
             _animator.SetFloat(ANIM_MOVE_SPEED, horizontalSpeed, _dampTime, deltaTime);
         }
     }

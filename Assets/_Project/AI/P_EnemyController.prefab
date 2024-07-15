@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5724862025874034389}
   - component: {fileID: 2873670618656609777}
   - component: {fileID: 8362003983063525420}
-  - component: {fileID: 1402757709988319977}
+  - component: {fileID: 4535251697745477865}
   m_Layer: 0
   m_Name: P_EnemyController
   m_TagString: Untagged
@@ -65,10 +65,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _playerManager: {fileID: 11400000, guid: 13dbbcde627c89f49bc44e0a2795673d, type: 2}
-  _stateMachine: {fileID: 1402757709988319977}
-  _selfKey: {fileID: 11400000, guid: d3c00c177cc3cd14887495d1347ecf1a, type: 2}
-  _targetKey: {fileID: 11400000, guid: 0b1a3688bf3a9eb488754bfbb09e9e34, type: 2}
---- !u!114 &1402757709988319977
+  _behaviorTree: {fileID: 4535251697745477865}
+--- !u!114 &4535251697745477865
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -77,14 +75,45 @@ MonoBehaviour:
   m_GameObject: {fileID: 1008602029604108534}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7698e61c645283445ad209edfc10a6da, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d7b55c7ecdb49a4a89fa5e6f9022861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseDebug: 0
-  _BlackBoard: {fileID: 11400000, guid: eaf4c0dbd85bb2d4180413664adc4737, type: 2}
-  _DefaultState: {fileID: 11400000, guid: edd8d750f1d381040b8be3cc33d247fe, type: 2}
-  _RemainState: {fileID: 11400000, guid: 3dd73da04ce6b6347b5c6ccd9df2fbb7, type: 2}
-  _ResetState: {fileID: 11400000, guid: 85393f6205cf7ae4c953ceae30f8765e, type: 2}
-  _useAutoPlaying: 1
-  DebugOffset: {x: 0, y: 2, z: 0}
-  DebugRadius: 0.5
+  startWhenEnabled: 0
+  asynchronousLoad: 0
+  pauseWhenDisabled: 0
+  restartWhenComplete: 1
+  logTaskChanges: 0
+  group: 0
+  resetValuesOnRestart: 0
+  externalBehavior: {fileID: 11400000, guid: fcd6e16e30e5f9844b81f1bf74feeafc, type: 2}
+  mBehaviorSource:
+    behaviorName: Behavior
+    behaviorDescription: 
+    mTaskData:
+      types: []
+      parentIndex: 
+      startIndex: 
+      variableStartIndex: 
+      JSONSerialization: '{"EntryTask":{"Type":"BehaviorDesigner.Runtime.Tasks.EntryTask","NodeData":{"Offset":"(592,3)"},"ID":0,"Name":"Entry","Instant":true},"RootTask":{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(2,123)"},"ID":1,"Name":"Selector","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-281.279,162.8837)"},"ID":2,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Inverter","NodeData":{"Offset":"(-45,117)"},"ID":3,"Name":"Inverter","Instant":true,"Children":[{"Type":"StudioScor.PlayerSystem.BehaviorTree.IsPossessed","NodeData":{"Offset":"(0,110)"},"ID":4,"Name":"Is
+        Possessed","Instant":true}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(24,315)"},"ID":5,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(1.61816216,176.139557)"},"ID":6,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.SharedVariables.CompareSharedTransform","NodeData":{"Offset":"(-76.9865646,116.139465)"},"ID":7,"Name":"Compare
+        Shared Transform","Instant":true,"SharedTransformvariable":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true},"SharedTransformcompareTo":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":null}},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(15.581543,205.348724)"},"ID":8,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(290,472.068939)"},"ID":9,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-303.371277,168.075745)"},"ID":10,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"StudioScor.PlayerSystem.BehaviorTree.ControllerSetTurnDirectionState","NodeData":{"Offset":"(-102.18045,170.886734)"},"ID":11,"Name":"Controller
+        Set Turn Direction State","Instant":true,"ETurnDirectionState_turnDirectionState":"MoveDirection"},{"Type":"StudioScor.PlayerSystem.BehaviorTree.ControllerMoveToTarget","NodeData":{"Offset":"(22.678566,257.589264)"},"ID":12,"Name":"Controller
+        Move To Target","Instant":true,"SharedTransform_targetKey":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true},"SharedFloat_reachDistance":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":3}},{"Type":"StudioScor.PlayerSystem.BehaviorTree.ControllerSetTurnDirectionState","NodeData":{"Offset":"(117.566772,349.7449)"},"ID":13,"Name":"Controller
+        Set Turn Direction State","Instant":true,"ETurnDirectionState_turnDirectionState":"LookDirection"}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(235.555359,203.128479)"},"ID":14,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"StudioScor.PlayerSystem.BehaviorTree.ControllerMoveDirection","NodeData":{"Offset":"(-6.642642,130.571228)"},"ID":15,"Name":"Controller
+        Move Direction","Instant":true,"Disabled":true,"SharedFloat_duration":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":-1},"SharedVector3_direction":{"Type":"BehaviorDesigner.Runtime.SharedVector3","Name":null,"Vector3mValue":"(0,0,1)"},"SharedFloat_strength":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"EDirection_directionSpace":"Target","SharedTransform_targetKey":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true}},{"Type":"StudioScor.PlayerSystem.BehaviorTree.TryDodgeAbility","NodeData":{"Offset":"(193.05542,123.5777)"},"ID":16,"Name":"Try
+        Dodge Ability","Instant":true,"Ability_dodgeAbility":0,"SharedTransform_target":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true},"EDirection_transformSpace":"Target","SharedVector3_direction":{"Type":"BehaviorDesigner.Runtime.SharedVector3","Name":null,"Vector3mValue":"(0,0,-1)"}},{"Type":"StudioScor.PlayerSystem.BehaviorTree.TryHammerWindmillAbility","NodeData":{"Offset":"(371.981659,111.317764)"},"ID":17,"Name":"Try
+        Hammer Windmill Ability","Instant":true,"Disabled":true,"Ability_windmillAbility":1,"SharedFloat_duration":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":3},"SharedTransform_targetKey":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true}}]}]}]},"DetachedTasks":[{"Type":"StudioScor.PlayerSystem.BehaviorTree.TryComboAbility","NodeData":{"Offset":"(1448.25427,1010.0575)"},"ID":18,"Name":"Try
+        Combo Ability","Instant":true,"Int32_maxComboCount":3,"SharedTransform_targetKey":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":null,"IsShared":true},"SharedFloat_distance":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":5}}],"Variables":[{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Self","IsShared":true},{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true}]}'
+      fieldSerializationData:
+        typeName: []
+        fieldNameHash: 
+        startIndex: 
+        dataPosition: 
+        unityObjects:
+        - {fileID: 11400000, guid: 1b7b03b736be7ec438c8858bf6dd64b4, type: 2}
+        - {fileID: 11400000, guid: 6b59291d269a102439b44fe76cb29a9d, type: 2}
+        byteData: 
+        byteDataArray: 
+      Version: 1.7.9
+  gizmoViewMode: 2
+  showBehaviorDesignerGizmo: 1

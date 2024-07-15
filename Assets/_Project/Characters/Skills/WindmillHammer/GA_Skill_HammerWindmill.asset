@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8cbdf08e1ec8f34c9580b08dc5c293a, type: 3}
+  m_Name: GA_Skill_HammerWindmill
+  m_EditorClassIdentifier: 
+  UseDebug: 1
+  abilityName: Hammer Windmill
+  abilityTag: {fileID: 11400000, guid: 9e0a51adadf0af747b71711722ce2c73, type: 2}
+  attributeTags:
+  - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
+  - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
+  conditionTags:
+    requireds: []
+    obstacleds:
+    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+    - {fileID: 11400000, guid: 08e9c4a810fff2044a1f26bae2fbd9c8, type: 2}
+  grantTags:
+    owneds:
+    - {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
+    - {fileID: 11400000, guid: a37abe0ec7c2eaf41aed4e316cc0f45f, type: 2}
+    - {fileID: 11400000, guid: ad6c3d6668571ff4cbdcefdb4e2be194, type: 2}
+    blocks:
+    - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
+    - {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
+    - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
+  cancelAbilityTags: []
+  _icon: {fileID: 21300000, guid: e6064dfad4327e5458520762ed261893, type: 3}
+  _skillType: 2
+  _startAnimationName: HammerWindmill_Start
+  _fadeInTime: 0.2
+  _loopAnimationName: HammerWindmill_Loop
+  _endAnimationName: HammerWindmill_End
+  _blendEndTime: 0.2
+  _tracePoint: {fileID: 11400000, guid: f81dd5aa5a1303140919d9e139c1502f, type: 2}
+  _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
+  _traceRadius: 1
+  _hitInterval: 0.2
+  _grantMovementTag:
+    owneds:
+    - {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
+    blocks:
+    - {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
+    - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
+  _coolTimeEffect: {fileID: 0}
+  _takeDamageEffect: {fileID: 11400000, guid: 73d06cdc5f63ae04eb3363c76de9087f, type: 2}
+  _applyGameplayEffectsOnHitToOther:
+  - {fileID: 11400000, guid: 8c034b218b251074aab4857f588d7e25, type: 2}
+  - {fileID: 11400000, guid: 65e6c119abe331d40bdcc395070438c6, type: 2}
+  - {fileID: 11400000, guid: b4ab5a2badaa60840aea4fc5cd06760e, type: 2}
+  _applyGameplayEffectsOnSuccessedHit:
+  - {fileID: 11400000, guid: c8895f0a0c13dab4f83a755b7fc2366b, type: 2}
+  _onHitToOtherCue:
+    Cue: {fileID: 11400000, guid: 6c85673d7edaa62439a2920702e6d37b, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0, y: 0, z: 0}
+  _onSuccessedPlayerHit:
+    Cue: {fileID: 11400000, guid: 0f6d4545bf2eabd4eb232183e15595c9, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0.5, y: 0.5, z: 0.5}

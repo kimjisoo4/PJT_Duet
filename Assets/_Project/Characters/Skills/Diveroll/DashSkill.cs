@@ -6,13 +6,14 @@ using StudioScor.AbilitySystem;
 using StudioScor.RotationSystem;
 using PF.PJT.Duet.Pawn.Effect;
 using StudioScor.GameplayEffectSystem;
+using System;
 
 namespace PF.PJT.Duet.Pawn.PawnSkill
 {
-    [CreateAssetMenu(menuName = "Project/Duet/PawnSkill/new Dash Skill", fileName = "GA_Skill_Dash")]
+    [CreateAssetMenu(menuName = "Project/Duet/PawnSkill/new Diveroll Skill", fileName = "GA_Skill_Diveroll")]
     public class DashSkill : GASAbility, ISkill
     {
-        [Header(" [ Dash Skill ] ")]
+        [Header(" [ Diveroll Skill ] ")]
         [SerializeField] private Sprite _icon;
         [SerializeField] private bool _isSkill;
         [SerializeField] private ESkillType _skillType;

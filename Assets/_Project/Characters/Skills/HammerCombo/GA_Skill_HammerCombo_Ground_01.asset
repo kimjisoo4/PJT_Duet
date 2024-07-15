@@ -34,7 +34,7 @@ MonoBehaviour:
   _fadeInTime: 0.2
   _tracePoint: {fileID: 11400000, guid: f81dd5aa5a1303140919d9e139c1502f, type: 2}
   _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
-  _traceRadius: 2
+  _traceRadius: 1.25
   _coolTimeEffect: {fileID: 0}
   _takeDamageEffect: {fileID: 11400000, guid: d67384be8c85dab4485c894af6f74084, type: 2}
   _applyGameplayEffectsOnHitToOther:

@@ -1,6 +1,6 @@
-﻿using PF.PJT.Duet.Pawn;
+﻿using BehaviorDesigner.Runtime;
+using PF.PJT.Duet.Pawn;
 using StudioScor.PlayerSystem;
-using StudioScor.StateMachine;
 using StudioScor.Utilities;
 using UnityEngine;
 
@@ -10,17 +10,22 @@ namespace PF.PJT.Duet.Controller.Enemy
     {
         [Header(" [ Enemy Controller ] ")]
         [SerializeField] private PlayerManager _playerManager;
-
-        [Header(" State Machine ")]
-        [SerializeField] private StateMachineComponent _stateMachine;
-        [SerializeField] private BlackboardKey_Controller _selfKey;
-        [SerializeField] private BlackBoardKey_Transform _targetKey;
+        [SerializeField] private BehaviorTree _behaviorTree;
 
         private ICharacter _character;
         private IControllerSystem _controllerSystem;
         private IDamageableSystem _damageableSytstemInPawn;
         public IControllerSystem ControllerSystem => _controllerSystem;
 
+        private void OnValidate()
+        {
+#if UNITY_EDITOR
+            if(!_behaviorTree)
+            {
+                _behaviorTree = gameObject.GetComponent<BehaviorTree>();
+            }
+#endif
+        }
         private void Awake()
         {
             _controllerSystem = gameObject.GetControllerSystem();
@@ -55,7 +60,7 @@ namespace PF.PJT.Duet.Controller.Enemy
         }
         private void OnDisable()
         {
-            _stateMachine.EndStateMachine();
+            _behaviorTree.DisableBehavior(false);
         }
 
         private void LateUpdate()
@@ -66,13 +71,20 @@ namespace PF.PJT.Duet.Controller.Enemy
             transform.SetPositionAndRotation(_controllerSystem.Pawn.transform.position, _controllerSystem.Pawn.transform.rotation);
         }
 
+        private const string SELF_KEY = "Self";
+        private const string TARGET_KEY = "Target";
+        
+        private SharedTransform _selfKey;
+        private SharedTransform _targetKey;
+
         private void SetCharacter(ICharacter newCharacter)
         {
             if (_character is not null)
             {
                 _damageableSytstemInPawn.OnAfterDamage -= DamageableSystem_OnAfterDamage;
                 _damageableSytstemInPawn = null;
-                _stateMachine.EndStateMachine();
+
+                _behaviorTree.DisableBehavior(false);
             }
                 
             _character = newCharacter;
@@ -82,38 +94,62 @@ namespace PF.PJT.Duet.Controller.Enemy
                 _damageableSytstemInPawn = _character.gameObject.GetComponent<IDamageableSystem>();
                 _damageableSytstemInPawn.OnAfterDamage += DamageableSystem_OnAfterDamage;
 
-                _stateMachine.OnStateMachine();
-                _selfKey.SetValue(_stateMachine, ControllerSystem);
+                _behaviorTree.EnableBehavior();
+
+                _selfKey = (SharedTransform)_behaviorTree.GetVariable(SELF_KEY);
+                
+                if(_selfKey is null)
+                {
+                    _selfKey = new SharedTransform();
+
+                    _behaviorTree.SetVariable(SELF_KEY, _selfKey);
+                }
+
+                _selfKey.SetValue(_controllerSystem.Pawn.transform);
+
+                _targetKey = (SharedTransform)_behaviorTree.GetVariable(TARGET_KEY);
+
+                if(_targetKey is null)
+                {
+                    _targetKey = new SharedTransform();
+
+                    _behaviorTree.SetVariable(TARGET_KEY, _targetKey);
+                }
             }
         }
 
-        private void SetTargetKey(Transform target)
+        public void SetTargetKey(Transform target)
         {
-            if (!_stateMachine.IsPlaying)
+            if (!_behaviorTree.isActiveAndEnabled)
                 return;
 
-            if(target)
+            if(target.TryGetActor(out IActor actor))
             {
-                _controllerSystem.SetLookTarget(target);
-                _targetKey.SetValue(_stateMachine, target);
+                target = actor.transform;
             }
-            else
-            {
-                _controllerSystem.SetLookTarget(null);
-                _targetKey.Clear(_stateMachine);
-            }
+
+            _controllerSystem.SetLookTarget(target);
+            _targetKey.SetValue(target);
         }
 
         private void DamageableSystem_OnAfterDamage(IDamageableSystem damageable, DamageInfoData damageInfo)
         {
             if (!_controllerSystem.IsPossess)
+            {
+                Log($"Un Possessed");
                 return;
+            }
 
-            if (!_stateMachine.IsPlaying)
+            if (!_behaviorTree.isActiveAndEnabled)
+            {
+                Log($"Behavior Tree Is Disable");
                 return;
+            }
 
-            if (_targetKey.HasValue(_stateMachine))
+            if (_targetKey is null || _targetKey.Value)
+            {
                 return;
+            }
 
             var damageCauser = damageInfo.Causer;
             var instigator = damageInfo.Instigator;
@@ -135,11 +171,16 @@ namespace PF.PJT.Duet.Controller.Enemy
 
         private void _playerManager_OnChangedPlayerPawn(PlayerManager playerManager, IPawnSystem currentPawn, IPawnSystem prevPawn = null)
         {
-            if (!_stateMachine.IsPlaying)
+            if (!_controllerSystem.IsPossess)
                 return;
 
-            if (!_targetKey.TryGetValue(_stateMachine, out Transform target))
+            if (!_behaviorTree.isActiveAndEnabled)
                 return;
+
+            if (_targetKey is null)
+                return;
+
+            var target = _targetKey.Value;
 
             if (prevPawn is null || target != prevPawn.transform)
             {

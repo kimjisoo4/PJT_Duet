@@ -27,6 +27,6 @@ MonoBehaviour:
     owneds: []
     blocks: []
   _cancelEffectTags: []
-  _knockbackDistance: 3
-  _knockbackDuration: 0.3
-  _knockbackAngle: 0
+  _knockbackDistance: 8
+  _knockbackDuration: 0.4
+  _knockbackAngle: -30

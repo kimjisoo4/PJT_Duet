@@ -95,7 +95,7 @@ namespace PF.PJT.Duet.Pawn
             _abilitySystem.Tick(deltaTime * _dilationSystem.Speed);
             _gameplayEffectSystem.Tick(deltaTime * _dilationSystem.Speed);
 
-            _movementSystem.UpdateMovement(deltaTime);
+            _movementSystem.UpdateMovement(deltaTime * _dilationSystem.Speed);
         }
         private void FixedUpdate()
         {
@@ -112,7 +112,7 @@ namespace PF.PJT.Duet.Pawn
         {
             float deltaTime = Time.deltaTime;
 
-            _rotationSystem.UpdateRotation(deltaTime);
+            _rotationSystem.UpdateRotation(deltaTime * _dilationSystem.Speed);
         }
 
         private void InitCharacter()
@@ -235,7 +235,7 @@ namespace PF.PJT.Duet.Pawn
             }
             else
             {
-                _abilitySystem.ReleasedAbility(_dashAbility);
+                _gameplayTagSystem.RemoveOwnedTag(_inputDashTag);
 
                 if (_dashAbility)
                 {

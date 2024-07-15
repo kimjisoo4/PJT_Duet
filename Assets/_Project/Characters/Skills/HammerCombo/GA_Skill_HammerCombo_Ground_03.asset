@@ -35,7 +35,7 @@ MonoBehaviour:
   _fadeInTime: 0.2
   _tracePoint: {fileID: 11400000, guid: f81dd5aa5a1303140919d9e139c1502f, type: 2}
   _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
-  _traceRadius: 2
+  _traceRadius: 1.25
   _coolTimeEffect: {fileID: 0}
   _takeDamageEffect: {fileID: 11400000, guid: f1a1ed97b50b1804d83aa2b3a5aae05f, type: 2}
   _applyGameplayEffectsOnHitToOther:
@@ -53,7 +53,7 @@ MonoBehaviour:
     Cue: {fileID: 11400000, guid: 0f6d4545bf2eabd4eb232183e15595c9, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
-    Scale: {x: 1, y: 1, z: 1}
+    Scale: {x: 1.5, y: 1.5, z: 1.5}
   _onHitGroundFX:
     Cue: {fileID: 0}
     Position: {x: 0, y: 0, z: 2}

@@ -48,12 +48,6 @@
       "source": "embedded",
       "dependencies": {}
     },
-    "com.studioscor.statemachine": {
-      "version": "file:MyStateMachineSystem",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
     "com.studioscor.statsystem": {
       "version": "file:MyStatSystem",
       "depth": 0,

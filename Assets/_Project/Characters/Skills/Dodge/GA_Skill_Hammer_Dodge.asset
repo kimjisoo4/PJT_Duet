@@ -1,0 +1,261 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edfc0eae341b0a34eb3c74b894307189, type: 3}
+  m_Name: GA_Skill_Hammer_Dodge
+  m_EditorClassIdentifier: 
+  UseDebug: 1
+  abilityName: Dodge
+  abilityTag: {fileID: 0}
+  attributeTags:
+  - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
+  - {fileID: 11400000, guid: 74e03b5ab9d688c4d8ff8d551ccfba8b, type: 2}
+  conditionTags:
+    requireds: []
+    obstacleds:
+    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+    - {fileID: 11400000, guid: 08e9c4a810fff2044a1f26bae2fbd9c8, type: 2}
+  grantTags:
+    owneds: []
+    blocks:
+    - {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
+    - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
+    - {fileID: 11400000, guid: d2dc3cec091ae4a49b811d817552aa42, type: 2}
+    - {fileID: 11400000, guid: 99005c8d5fca529409cafeb3e9f60c0d, type: 2}
+    - {fileID: 11400000, guid: 2ec728a8400d61a4da454d4c66f9d97a, type: 2}
+    - {fileID: 11400000, guid: a3e8dc39614163349a84f2554057d543, type: 2}
+    - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
+  cancelAbilityTags:
+  - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
+  _icon: {fileID: 21300000, guid: 1be6ecb2a70ab274ebdf20057e7983a2, type: 3}
+  _isSkill: 0
+  _skillType: 0
+  _animDuration: 1
+  _animationDatas:
+    _forward:
+      _animName: Dodge_Forward
+      _fadeInTime: 0.1
+      _movementCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.15
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.31604972
+          value: 0.5617426
+          inSlope: 3.1798701
+          outSlope: 3.1798701
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.09854339
+        - serializedVersion: 3
+          time: 0.65
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+    _backward:
+      _animName: Dodge_Backward
+      _fadeInTime: 0.1
+      _movementCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.15
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.31604972
+          value: 0.5617426
+          inSlope: 3.1798701
+          outSlope: 3.1798701
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.09854339
+        - serializedVersion: 3
+          time: 0.65
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+    _left:
+      _animName: Dodge_Left
+      _fadeInTime: 0.1
+      _movementCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.15
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.31604972
+          value: 0.5617426
+          inSlope: 3.1798701
+          outSlope: 3.1798701
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.09854339
+        - serializedVersion: 3
+          time: 0.65
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+    _right:
+      _animName: Dodge_Right
+      _fadeInTime: 0.1
+      _movementCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.15
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.31604972
+          value: 0.5617426
+          inSlope: 3.1798701
+          outSlope: 3.1798701
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.09854339
+        - serializedVersion: 3
+          time: 0.65
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+  _motionTime: motionTime
+  _distance: 5
+  _coolTimeEffect: {fileID: 0}

@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace StudioScor.Utilities
 {
@@ -15,12 +15,71 @@ namespace StudioScor.Utilities
         Finish,
         Canceled,
     }
-
     public class AnimationPlayer : BaseMonoBehaviour
     {
+        public class Events
+        {
+            public event Action OnStarted;
+            public event Action OnFailed;
+            public event Action OnCanceled;
+            public event Action OnFinished;
+            public event Action OnFinishedBlendIn;
+            public event Action OnStartedBlendOut;
+
+            public event Action<string> OnNotify;
+            public event Action<string> OnEnterNotifyState;
+            public event Action<string> OnExitNotifyState;
+
+
+            #region Callback
+            public void Invoke_OnStarted()
+            {
+                OnStarted?.Invoke();
+            }
+            public void Invoke_OnFailed()
+            {
+                OnFailed?.Invoke();
+            }
+            public void Invoke_OnCanceled()
+            {
+                OnCanceled?.Invoke();
+            }
+            public void Invoke_OnFinished()
+            {
+                OnFinished?.Invoke();
+            }
+            public void Invoke_OnFinishedBlendIn()
+            {
+                OnFinishedBlendIn?.Invoke();
+            }
+            public void Invoke_OnStartedBlendOut()
+            {
+                OnStartedBlendOut?.Invoke();
+            }
+
+            public void Invoke_OnNotify(string notify)
+            {
+                OnNotify?.Invoke(notify);
+            }
+
+            public void Invoke_OnEnterNotifyState(string notify)
+            {
+                OnEnterNotifyState?.Invoke(notify);
+            }
+
+            public void Invoke_OnExitNotifyState(string notify)
+            {
+                OnExitNotifyState?.Invoke(notify);
+            }
+
+            #endregion
+        }
+
         [Header(" [ Animation Player ] ")]
         [SerializeField] private Animator _animator;
         [SerializeField] private string _defaultState = "Empty";
+
+        public Events AnimationEvents { get; set; }
 
         private int _defaultStateHash;
         
@@ -33,13 +92,15 @@ namespace StudioScor.Utilities
         private float _fadeIn;
         private float _offset;
         private float _normalizedTime;
-        private bool _isPlaying = false;
 
+        private bool _isPlaying = false;
+        private bool _isFinished = false;
 
         private readonly List<string> _notifyStates = new();
 
         public Animator Animator => _animator;
         public bool IsPlaying => _isPlaying;
+        public bool IsFinished => _isFinished;
         public float NormalizedTime => _normalizedTime;
         public EAnimationState State => _state;
 
@@ -133,11 +194,14 @@ namespace StudioScor.Utilities
 
             PlayAnimation(stateHash, fadeIn, offset, layer, fixedTransition);
         }
+
         private void PlayAnimation(int stateHash, float fadeIn, float offset, int layer, bool fixedTransition)
         {
             CancelAnimation();
 
             _isPlaying = true;
+            _isFinished = false;
+
             _currentStateHash = stateHash;
             _useFixedTransition = fixedTransition;
             _fadeIn = fadeIn;
@@ -147,9 +211,12 @@ namespace StudioScor.Utilities
             SetAnimationState(EAnimationState.TryPlay);
         }
 
-
         private void SetAnimationState(EAnimationState newState)
         {
+            if (_state == newState)
+                return;
+
+            Log($"Current State - {newState} || Prev State - {_state}");
             _state = newState;
 
             switch (newState)
@@ -225,6 +292,8 @@ namespace StudioScor.Utilities
             OnNotify = null;
             OnEnterNotifyState = null;
             OnExitNotifyState = null;
+
+            AnimationEvents = null;
         }
         private void ExitAllNotify()
         {
@@ -282,6 +351,7 @@ namespace StudioScor.Utilities
 
             _normalizedTime = 1f;
             _isPlaying = false;
+            _isFinished = true;
             _currentStateHash = default;
 
             Invoke_OnFinished();
@@ -333,6 +403,7 @@ namespace StudioScor.Utilities
             Log($"{nameof(OnStarted)}");
 
             OnStarted?.Invoke();
+            AnimationEvents?.Invoke_OnStarted();
 
             OnFailed = null;
         }
@@ -341,6 +412,7 @@ namespace StudioScor.Utilities
             Log($"{nameof(OnFailed)}");
 
             OnFailed?.Invoke();
+            AnimationEvents?.Invoke_OnFailed();
 
             OnFailed = null;
         }
@@ -349,6 +421,7 @@ namespace StudioScor.Utilities
             Log($"{nameof(OnCanceled)}");
 
             OnCanceled?.Invoke();
+            AnimationEvents?.Invoke_OnCanceled();
 
             OnCanceled = null;
             OnFinished = null;
@@ -359,6 +432,7 @@ namespace StudioScor.Utilities
             Log($"{nameof(OnFinished)}");
 
             OnFinished?.Invoke();
+            AnimationEvents?.Invoke_OnFinished();
 
             OnFinished = null;
             OnCanceled = null;
@@ -368,6 +442,7 @@ namespace StudioScor.Utilities
             Log($"{nameof(OnFinishedBlendIn)}");
 
             OnFinishedBlendIn?.Invoke();
+            AnimationEvents?.Invoke_OnFinishedBlendIn();
 
             OnFinishedBlendIn = null;
         }
@@ -376,6 +451,7 @@ namespace StudioScor.Utilities
             Log($"{nameof(OnStartedBlendOut)}");
 
             OnStartedBlendOut?.Invoke();
+            AnimationEvents?.Invoke_OnStartedBlendOut();
 
             OnStartedBlendOut = null;
         }
@@ -385,6 +461,7 @@ namespace StudioScor.Utilities
             Log($"{nameof(OnNotify)} - {notify}");
 
             OnNotify?.Invoke(notify);
+            AnimationEvents?.Invoke_OnNotify(notify);
         }
 
         protected void Invoke_OnEnterNotifyState(string notify)
@@ -392,6 +469,7 @@ namespace StudioScor.Utilities
             Log($"{nameof(OnEnterNotifyState)} - {notify}");
 
             OnEnterNotifyState?.Invoke(notify);
+            AnimationEvents?.Invoke_OnEnterNotifyState(notify);
         }
 
         protected void Invoke_OnExitNotifyState(string notify)
@@ -399,6 +477,7 @@ namespace StudioScor.Utilities
             Log($"{nameof(OnExitNotifyState)} - {notify}");
 
             OnExitNotifyState?.Invoke(notify);
+            AnimationEvents?.Invoke_OnExitNotifyState(notify);
         }
 
         #endregion

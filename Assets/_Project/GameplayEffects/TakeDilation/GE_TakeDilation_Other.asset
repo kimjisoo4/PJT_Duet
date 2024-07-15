@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _effectType: 1
-  _duration: 0.2
+  _duration: 0.1
   _unscaledTime: 1
   _effectTag: {fileID: 11400000, guid: a3e8dc39614163349a84f2554057d543, type: 2}
   _attributeTags: []

@@ -23,3 +23,23 @@ AnimatorOverrideController:
     m_OverrideClip: {fileID: 7400000, guid: a3c7daf5dbba19245938db35245052fa, type: 3}
   - m_OriginalClip: {fileID: 7400000, guid: 5b3833fc8bf3c7d4eb21a48c14ead54b, type: 3}
     m_OverrideClip: {fileID: 7400000, guid: 5b3833fc8bf3c7d4eb21a48c14ead54b, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 554523467ee8d4b4ea1722aed5070b8a, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 554523467ee8d4b4ea1722aed5070b8a, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 34cf87f11bbc57c4b9b73fdd5fa93281, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 34cf87f11bbc57c4b9b73fdd5fa93281, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: a76b11de25f4d4e4ab91d27f3603c7e7, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: a76b11de25f4d4e4ab91d27f3603c7e7, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: e3ce9218d72c10841bbd95cd901792d4, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: e3ce9218d72c10841bbd95cd901792d4, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: af2453d50b96fc949891d7b278aaf733, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: af2453d50b96fc949891d7b278aaf733, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 6cbfc0656c630a3449739ce9ddffed2f, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 6cbfc0656c630a3449739ce9ddffed2f, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 3a31d64cb3a2f3b4c9c1bcaf23a5de3b, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 3a31d64cb3a2f3b4c9c1bcaf23a5de3b, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 1158bfbc39914504cac2b5c3074d0a06, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 1158bfbc39914504cac2b5c3074d0a06, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 71e868f2bea02dd489150a144d2bffa3, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 71e868f2bea02dd489150a144d2bffa3, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: bbe5d89340bc54345b7a72235c6457c8, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: bbe5d89340bc54345b7a72235c6457c8, type: 3}

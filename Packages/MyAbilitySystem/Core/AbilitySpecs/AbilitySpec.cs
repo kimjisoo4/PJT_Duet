@@ -38,13 +38,13 @@ namespace StudioScor.AbilitySystem
 
         public void GrantAbility()
         {
-            Log("Grant Ability");
+            Log($"{nameof(GrantAbility)}");
 
             OnGrantAbility();
         }
         public void RemoveAbility()
         {
-            Log("Remove Ability ");
+            Log($"{nameof(RemoveAbility)}");
 
             ForceFinishAbility();
 
@@ -73,8 +73,6 @@ namespace StudioScor.AbilitySystem
             if (!IsPlaying)
                 return;
 
-            Log(" On Release Ability ");
-
             Invoke_OnReleasedAbility();
 
             OnReleaseAbility();
@@ -95,8 +93,6 @@ namespace StudioScor.AbilitySystem
 
         public void ForceActiveAbility()
         {
-            Log(" Active Ability ");
-
             IsPlaying = true;
 
             Invoke_OnActivateAbility();
@@ -106,7 +102,7 @@ namespace StudioScor.AbilitySystem
 
         public void ForceReTriggerAbility()
         {
-            Log(" ReTrigger Ability ");
+            Log($"{nameof(OnReTriggerAbility)}");
 
             OnReTriggerAbility();
         }
