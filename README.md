@@ -20,15 +20,20 @@
 #### 6월 24일 ~ 6월 28일
 > &nbsp; 캐릭터 태그시에 처리 및 태그시 등장 스킬 추가.    
 > &nbsp; AI 가 플레이어 공격시 반응하여 추적하며, 일정 거리 이내에 진입하면 공격을 가하도록 임시 작업.    
-> &nbsp; 격투가 클래스의 우클릭 스킬 장풍(차징, 투사체, 폭발)을 추가.
+> &nbsp; 격투가 클래스의 우클릭 스킬 장풍(차징, 투사체, 폭발)을 추가.    
 #### 7월 01일 ~ 7월 03일
-> &nbsp;  캐릭터의 일부 스킬에 쿨타임을 적용. 장풍 및 태그 스킬에 적용.   
+> &nbsp;  캐릭터의 일부 스킬에 쿨타임을 적용. 장풍 및 태그 스킬에 적용.    
 > &nbsp;  캐릭터의 스킬 상태를 UI 로 표기. 플레이 중인 캐릭터의 일반 공격,스킬 아이콘 및 태그할 캐릭터의 체력, 태그 스킬 쿨타임을 표기.   
 #### 7월 03일 ~ 7월 05일
-> &nbsp;  검사 클래스에 돌진(전진, 관통) 스킬 추가.
-> &nbsp;  검사 클래스에 등장 스킬 추가.
-> &nbsp;  캐릭터 태그시 기존 캐릭터가 액션 중일 경우 액션을 마친 후 사라지도록 수정.    
-     
+> &nbsp;  검사 클래스에 돌진(전진, 관통) 스킬 추가.    
+> &nbsp;  검사 클래스에 등장 스킬 추가.    
+> &nbsp;  캐릭터 태그시 기존 캐릭터가 액션 중일 경우 액션을 마친 후 사라지도록 수정.   
+#### 7월 08일 ~ 7월 12일
+> &nbsp;  적 캐릭터로 Hammer Ork 추가.    
+> &nbsp;  Hammer Ork 의 기본 공격, 휠윈드 공격, 닷지 추가.    
+> &nbsp;  적의 AI 를 Behavior Tree 로 변경함. 플레이어와의 거리에 따라 기본 공격 또는 휠윈드 공격을 하도록함.        
+> &nbsp;  기존에 사용하던 State Machine 은 제거함.    
+
 &nbsp; [Build 파일 다운로드](https://drive.google.com/drive/folders/1lWb3SZCT2R_x6VnrLfdgjaFJJqnDiTvs?usp=drive_link)    
  
  # 🔎 모듈
@@ -67,11 +72,7 @@
 ### [Status System](https://github.com/kimjisoo4/MyStatusSystem)
 > &nbsp;캐릭터의 Current, Max 값을 관리하는 시스템입니다. HP 등에 사용되고 있습니다.    
 > &nbsp;Stat 과 다르게 0 ~ MaxValue 를 가지며, 해당 값을 관리합니다.     
-> &nbsp;StatSystem 과 연동하여 최대 체력을 조정하는 등으로 사용하고 있습니다.    
-
-### [State Machine](https://github.com/kimjisoo4/MyStateMachineSystem)
-> &nbsp;Unity Tank! 로 소개된 적이 있는 Scriptable Object 기반의 StateMachine 을 나름대로 조정하여 만들었습니다.    
-> &nbsp;AI의 행동 관리를 위해 사용하고 있습니다.    
+> &nbsp;StatSystem 과 연동하여 최대 체력을 조정하는 등으로 사용하고 있습니다.
 
 ### [Movement System](https://github.com/kimjisoo4/MyMovementSystem)
 > &nbsp;이동을 처리하기 위해 만든 모듈입니다. Modifer 와 같이 사용하여 캐릭터의 이동을 컨트롤 합니다.  이동해야하는 값을 AddVelocity와 AddPosition로 나누어 저장해놓고, 상속받은 클래스에서 이 값을 이용해서 이동을 처리합니다.    
