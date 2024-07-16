@@ -16,11 +16,12 @@ MonoBehaviour:
   abilityName: Directional Move Modifier
   abilityTag: {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
   attributeTags: []
-  grantTags:
-    owneds: []
-    blocks: []
   conditionTags:
     requireds: []
     obstacleds:
     - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+  grantTags:
+    owneds: []
+    blocks: []
   cancelAbilityTags: []
+  _moveSpeedTag: {fileID: 11400000, guid: 99b0d60dd64574d46adad3e32e9e38ef, type: 2}

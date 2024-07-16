@@ -17,12 +17,12 @@ namespace StudioScor.AbilitySystem
         public int Level { get; protected set; }
         public bool IsPlaying { get; protected set; }
 
-        public event AbilityEventHandler OnActivatedAbility;
-        public event AbilityEventHandler OnReleasedAbility;
-        public event AbilityEventHandler OnFinishedAbility;
-        public event AbilityEventHandler OnCanceledAbility;
-        public event AbilityEventHandler OnEndedAbility;
-        public event AbilityLevelEventHandler OnChangedAbilityLevel;
+        public event IAbilitySpec.AbilityEventHandler OnActivatedAbility;
+        public event IAbilitySpec.AbilityEventHandler OnReleasedAbility;
+        public event IAbilitySpec.AbilityEventHandler OnFinishedAbility;
+        public event IAbilitySpec.AbilityEventHandler OnCanceledAbility;
+        public event IAbilitySpec.AbilityEventHandler OnEndedAbility;
+        public event IAbilitySpec.AbilityLevelEventHandler OnChangedAbilityLevel;
 
 #if UNITY_EDITOR
         public override bool UseDebug => _ability.UseDebug;
@@ -188,7 +188,6 @@ namespace StudioScor.AbilitySystem
 
 
 
-        public virtual void OnOverride(int level) { }
         protected abstract void EnterAbility();
         protected virtual void ExitAbility() { }
         protected virtual void OnFinishAbility() { }

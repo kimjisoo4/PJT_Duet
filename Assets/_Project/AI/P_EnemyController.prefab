@@ -47,10 +47,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  playerManager: {fileID: 11400000, guid: 13dbbcde627c89f49bc44e0a2795673d, type: 2}
-  <IsPlayer>k__BackingField: 0
-  <TurnDirectionState>k__BackingField: 1
-  <Affiliation>k__BackingField: 2
+  _playerManager: {fileID: 11400000, guid: 13dbbcde627c89f49bc44e0a2795673d, type: 2}
+  _turnDirectionState: 1
+  _isPlayer: 0
+  _affiliation: 2
 --- !u!114 &8362003983063525420
 MonoBehaviour:
   m_ObjectHideFlags: 0

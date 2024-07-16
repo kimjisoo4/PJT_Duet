@@ -1,4 +1,5 @@
-﻿using PF.PJT.Duet.Pawn.Effect;
+﻿using BehaviorDesigner.Runtime.Tasks.Unity.UnityPhysics;
+using PF.PJT.Duet.Pawn.Effect;
 using StudioScor.AbilitySystem;
 using StudioScor.BodySystem;
 using StudioScor.GameplayCueSystem;
@@ -8,6 +9,7 @@ using StudioScor.PlayerSystem;
 using StudioScor.RotationSystem;
 using StudioScor.Utilities;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace PF.PJT.Duet.Pawn.PawnSkill
@@ -24,10 +26,14 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private string _animationName = "Attack01";
         [SerializeField][Range(0f, 1f)] private float _fadeInTime = 0.2f;
 
+        [Header(" Rotation ")]
+        [SerializeField] private GameplayTag _rotationTag;
+
         [Header(" Attack Trace ")]
         [SerializeField] private BodyTag _tracePoint;
         [SerializeField] private Variable_LayerMask _traceLayer;
         [SerializeField] private float _traceRadius = 1f;
+
         [Header(" Gameplay Effects ")]
         [SerializeField] private CoolTimeEffect _coolTimeEffect;
         [SerializeField] private TakeDamageEffect _takeDamageEffect;
@@ -51,31 +57,36 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         {
             protected new readonly PunchSkill _ability;
 
-            private readonly int _animationHash;
+            private readonly int _animationID;
             private readonly AnimationPlayer _animationPlayer;
             private readonly IPawnSystem _pawnSystem;
             private readonly IBodySystem _bodySystem;
-            private readonly IRotationSystem _rotationSystem;
             private readonly IGameplayEffectSystem _gameplayEffectSystem;
 
-            private bool _wasEnabledTrace = false;
-            private readonly List<Transform> _ignoreTransforms = new();
-            private Vector3 _prevTracePoint;
-            private RaycastHit[] _hitResults = new RaycastHit[10];
-
+            private readonly AnimationPlayer.Events _animationEvents;
+            private readonly TrailSphereCast _trailSphereCast = new();
+            private readonly MatchTargetWeightMask _matchTargetMask = new MatchTargetWeightMask(Vector3.zero, 1f);
 
             public Spec(Ability ability, IAbilitySystem abilitySystem, int level) : base(ability, abilitySystem, level)
             {
                 _ability = ability as PunchSkill;
-
+                
                 _animationPlayer = gameObject.GetComponentInChildren<AnimationPlayer>(true);
                 _bodySystem = gameObject.GetBodySystem();
                 _pawnSystem = gameObject.GetPawnSystem();
-                _rotationSystem = gameObject.GetRotationSystem();
                 _gameplayEffectSystem = gameObject.GetGameplayEffectSystem();
 
-                _animationHash = Animator.StringToHash(_ability._animationName);
+                _animationID = Animator.StringToHash(_ability._animationName);
+                _animationEvents = new();
+
+                _animationEvents.OnFailed += _animationEvents_OnFailed;
+                _animationEvents.OnCanceled += _animationEvents_OnCanceled;
+                _animationEvents.OnStartedBlendOut += _animationEvents_OnStartedBlendOut;
+                _animationEvents.OnEnterNotifyState += _animationEvents_OnEnterNotifyState;
+                _animationEvents.OnExitNotifyState += _animationEvents_OnExitNotifyState;
             }
+
+            
 
             public override bool CanActiveAbility()
             {
@@ -88,68 +99,13 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 base.EnterAbility();
 
-                _wasEnabledTrace = false;
-
-                _animationPlayer.Play(_animationHash, _ability._fadeInTime);
-
-                _animationPlayer.OnEnterNotifyState += _animationPlayer_OnEnterNotifyState;
-                _animationPlayer.OnExitNotifyState += _animationPlayer_OnExitNotifyState;
-            }
-
-            private void _animationPlayer_OnEnterNotifyState(string obj)
-            {
-                switch (obj)
-                {
-                    case "Trace":
-                        OnTrace();
-                        break;
-                    case "Combo":
-                        OnCombo();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            private void _animationPlayer_OnExitNotifyState(string obj)
-            {
-                switch (obj)
-                {
-                    case "Trace":
-                        EndTrace();
-                        break;
-                    case "Combo":
-                        EndCombo();
-                        break;
-                    default:
-                        break;
-                }
+                _animationPlayer.Play(_animationID, _ability._fadeInTime);
+                _animationPlayer.AnimationEvents = _animationEvents;
             }
 
             public void UpdateAbility(float deltaTime)
             {
-                if(IsPlaying)
-                {
-                    switch (_animationPlayer.State)
-                    {
-                        case EAnimationState.Failed | EAnimationState.Canceled:
-                            CancelAbility();
-                            break;
-                        case EAnimationState.Playing:
-                            break;
-                        case EAnimationState.BlendOut:
-                            TryFinishAbility();
-                            break;
-                        case EAnimationState.Finish:
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                else
-                {
-
-                }
+                return;
             }
 
             public void FixedUpdateAbility(float deltaTime)
@@ -162,32 +118,46 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             private void OnCombo()
             {
-                GameplayTagSystem.AddOwnedTag(_ability._comboTag);
+                if(_ability._comboTag)
+                    GameplayTagSystem.AddOwnedTag(_ability._comboTag);
             }
             private void EndCombo()
             {
-                GameplayTagSystem.RemoveOwnedTag(_ability._comboTag);
+                if(_ability._comboTag)
+                    GameplayTagSystem.RemoveOwnedTag(_ability._comboTag);
             }
 
+            private void OnTurn()
+            {
+                if(_ability._rotationTag)
+                    GameplayTagSystem.AddOwnedTag(_ability._rotationTag);
+            }
+            private void EndTurn()
+            {
+                if(_ability._rotationTag)
+                    GameplayTagSystem.RemoveOwnedTag(_ability._rotationTag);
+            }
             private void OnTrace()
             {
-                if (_wasEnabledTrace)
+                if (_trailSphereCast.IsPlaying)
                     return;
 
-                _wasEnabledTrace = true;
-                
-                _ignoreTransforms.Clear();
-                _ignoreTransforms.Add(transform);
+                var bodypart = _bodySystem.GetBodyPart(_ability._tracePoint);
 
-                var tracePart = _bodySystem.GetBodyPart(_ability._tracePoint);
-                _prevTracePoint = tracePart.transform.position;
+                _trailSphereCast.SetOwner(bodypart.gameObject);
+
+                _trailSphereCast.AddIgnoreTransform(transform);
+
+                _trailSphereCast.TraceRadius = _ability._traceRadius;
+                _trailSphereCast.TraceLayer = _ability._traceLayer.Value;
+                _trailSphereCast.MaxHitCount = 20;
+                _trailSphereCast.UseDebug = UseDebug;
+
+                _trailSphereCast.OnTrace();
             }
             private void EndTrace()
             {
-                if (!_wasEnabledTrace)
-                    return;
-
-                _wasEnabledTrace = false;
+                _trailSphereCast.EndTrace();
             }
 
             private bool CheckAffilation(Transform target)
@@ -209,17 +179,10 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             private void UpdateTrace()
             {
-                if (!_wasEnabledTrace)
+                if (!_trailSphereCast.IsPlaying)
                     return;
 
-                var bodyPart = _bodySystem.GetBodyPart(_ability._tracePoint);
-
-                Vector3 prevPosition = _prevTracePoint;
-                Vector3 currentPosition = bodyPart.transform.position;
-
-                _prevTracePoint = currentPosition;
-
-                var hitCount = SUtility.Physics.DrawSphereCastAllNonAlloc(prevPosition, currentPosition, _ability._traceRadius, _hitResults, _ability._traceLayer.Value, QueryTriggerInteraction.Ignore, _ability.UseDebug);
+                var (hitCount, hitResults) = _trailSphereCast.UpdateTrace();
 
                 if (hitCount > 0)
                 {
@@ -228,54 +191,50 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     for (int i = 0; i < hitCount; i++)
                     {
                         bool isHit = false;
-                        var hit = _hitResults[i];
+                        var hit = hitResults[i];
 
-                        if (!_ignoreTransforms.Contains(hit.transform))
+                        if (!CheckAffilation(hit.transform))
+                            continue;
+
+                        Log($"HIT :: {hit.transform.name}");
+
+                        if (hit.transform.TryGetGameplayEffectSystem(out IGameplayEffectSystem hitGameplayEffectSystem))
                         {
-                            _ignoreTransforms.Add(hit.transform);
-                            Log($"HIT :: {hit.transform.name}");
-
-                            if (!CheckAffilation(hit.transform))
-                                continue;
-
-                            if(hit.transform.TryGetGameplayEffectSystem(out IGameplayEffectSystem hitGameplayEffectSystem))
+                            if (_ability._takeDamageEffect)
                             {
-                                if(_ability._takeDamageEffect)
-                                {
-                                    var data = new TakeDamageEffect.FElement(hit.point, hit.normal, hit.collider, prevPosition.Direction(currentPosition), bodyPart.gameObject, gameObject);
-                                    
-                                    if(hitGameplayEffectSystem.TryTakeEffect(_ability._takeDamageEffect, gameObject, Level, data).isActivate)
-                                    {
-                                        isHit = true;
-                                    }
-                                }
+                                var data = new TakeDamageEffect.FElement(hit.point, hit.normal, hit.collider, _trailSphereCast.StartPosition.Direction(_trailSphereCast.EndPosition), _trailSphereCast.Owner.gameObject, gameObject);
 
-                                for (int effectIndex = 0; effectIndex < _ability._applyGameplayEffectsOnHitToOther.Length; effectIndex++)
+                                if (hitGameplayEffectSystem.TryTakeEffect(_ability._takeDamageEffect, gameObject, Level, data).isActivate)
                                 {
-                                    var effect = _ability._applyGameplayEffectsOnHitToOther[effectIndex];
-
-                                    if(hitGameplayEffectSystem.TryTakeEffect(effect, gameObject, Level, null).isActivate)
-                                    {
-                                        isHit = true;
-                                    }
+                                    isHit = true;
                                 }
-                                
-                                
                             }
 
-                            if (isHit)
+                            for (int effectIndex = 0; effectIndex < _ability._applyGameplayEffectsOnHitToOther.Length; effectIndex++)
                             {
-                                wasHit = true;
+                                var effect = _ability._applyGameplayEffectsOnHitToOther[effectIndex];
 
-                                if (_ability._onHitToOtherCue.Cue)
+                                if (hitGameplayEffectSystem.TryTakeEffect(effect, gameObject, Level, null).isActivate)
                                 {
-                                    Vector3 position = hit.distance > 0 ? hit.point + hit.transform.TransformDirection(_ability._onHitToOtherCue.Position)
-                                                                        : hit.collider.ClosestPoint(prevPosition);
-                                    Vector3 rotation = Quaternion.LookRotation(hit.normal, Vector3.up).eulerAngles + hit.transform.TransformDirection(_ability._onHitToOtherCue.Rotation);
-                                    Vector3 scale = _ability._onHitToOtherCue.Scale;
-
-                                    _ability._onHitToOtherCue.Cue.Play(position, rotation, scale);
+                                    isHit = true;
                                 }
+                            }
+
+
+                        }
+
+                        if (isHit)
+                        {
+                            wasHit = true;
+
+                            if (_ability._onHitToOtherCue.Cue)
+                            {
+                                Vector3 position = hit.distance > 0 ? hit.point + hit.transform.TransformDirection(_ability._onHitToOtherCue.Position)
+                                                                    : hit.collider.ClosestPoint(_trailSphereCast.StartPosition);
+                                Vector3 rotation = Quaternion.LookRotation(hit.normal, Vector3.up).eulerAngles + hit.transform.TransformDirection(_ability._onHitToOtherCue.Rotation);
+                                Vector3 scale = _ability._onHitToOtherCue.Scale;
+
+                                _ability._onHitToOtherCue.Cue.Play(position, rotation, scale);
                             }
                         }
                     }
@@ -301,6 +260,57 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                         }
                     }
                 }
+            }
+
+            private void _animationEvents_OnEnterNotifyState(string eventName)
+            {
+                switch (eventName)
+                {
+                    case "Trace":
+                        OnTrace();
+                        break;
+                    case "Combo":
+                        OnCombo();
+                        break;
+                    case "Turn":
+                        OnTurn();
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            private void _animationEvents_OnExitNotifyState(string eventName)
+            {
+                switch (eventName)
+                {
+                    case "Trace":
+                        EndTrace();
+                        break;
+                    case "Combo":
+                        EndCombo();
+                        break;
+                    case "Turn":
+                        EndTurn();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            private void _animationEvents_OnCanceled()
+            {
+                CancelAbility();
+            }
+
+            private void _animationEvents_OnFailed()
+            {
+                CancelAbility();
+            }
+            private void _animationEvents_OnStartedBlendOut()
+            {
+                TryFinishAbility();
             }
         }
     }

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2e0459b76142be4b839a70563e5ed41, type: 3}
   m_Name: Stat_MoveSpeed
   m_EditorClassIdentifier: 
-  statName: Move Speed
-  description: 
+  _statName: MoveSpeed
+  _description: 

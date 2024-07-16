@@ -6,10 +6,10 @@ using StudioScor.Utilities;
 
 namespace StudioScor.AbilitySystem
 {
-    public delegate void AbilitySpecHandler(IAbilitySystem abilitySystem, IAbilitySpec abilitySpec);
 
     public interface IAbilitySystem
     {
+        public delegate void AbilitySpecHandler(IAbilitySystem abilitySystem, IAbilitySpec abilitySpec);
         public GameObject gameObject { get; }
         public Transform transform { get; }
 
@@ -118,12 +118,12 @@ namespace StudioScor.AbilitySystem
 
         public IReadOnlyDictionary<Ability,IAbilitySpec> Abilities => abilities;
 
-        public event AbilitySpecHandler OnActivatedAbility;
-        public event AbilitySpecHandler OnReleasedAbility;
-        public event AbilitySpecHandler OnEndedAbility;
+        public event IAbilitySystem.AbilitySpecHandler OnActivatedAbility;
+        public event IAbilitySystem.AbilitySpecHandler OnReleasedAbility;
+        public event IAbilitySystem.AbilitySpecHandler OnEndedAbility;
 
-        public event AbilitySpecHandler OnGrantedAbility;
-        public event AbilitySpecHandler OnRemovedAbility;
+        public event IAbilitySystem.AbilitySpecHandler OnGrantedAbility;
+        public event IAbilitySystem.AbilitySpecHandler OnRemovedAbility;
 
         private void OnValidate()
         {
@@ -303,7 +303,7 @@ namespace StudioScor.AbilitySystem
         {
             if (Abilities.TryGetValue(ability, out IAbilitySpec spec))
             {
-                spec.OnOverride(level);
+                spec.SetAbilityLevel(level);
 
                 return spec;
             }

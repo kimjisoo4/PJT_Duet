@@ -5,15 +5,15 @@ using StudioScor.PlayerSystem;
 
 namespace PF.PJT.Duet.Pawn.PawnAbility
 {
-    [CreateAssetMenu(menuName = "Project/Duet/PawnAbility/Rotation/new Update Rotation Input Ability", fileName = "GA_PawnAbiltiy_UpdateRotationInput")]
-    public class UpdateRotationInputAbility : GASAbility
+    [CreateAssetMenu(menuName = "Project/Duet/PawnAbility/Rotation/new Set Rotation In Look Direction Ability", fileName = "GA_PawnAbiltiy_SetRotationInLookDirection")]
+    public class SetRotationInLookDirectionAbility : GASAbility
     {
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
             return new Spec(this, abilitySystem, level);
         }
 
-        public class Spec : GASPassiveAbilitySpec, IUpdateableAbilitySpec
+        public class Spec : GASPassiveAbilitySpec
         {
             private readonly IPawnSystem _pawnSystem;
             private readonly IRotationSystem _rotationSystem;
@@ -24,23 +24,19 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                 _rotationSystem = gameObject.GetRotationSystem();
             }
 
-            protected override void ExitAbility()   
+            protected override void EnterAbility()
             {
-                base.ExitAbility();
+                base.EnterAbility();
 
+                _rotationSystem.TransitionRotationType(ERotationType.Direction);
+                _rotationSystem.SetLookDirection(_pawnSystem.LookDirection);
+            }
+
+            protected override void ExitAbility()
+            {
                 _rotationSystem.SetLookDirection(Vector3.zero);
-            }
-            public void FixedUpdateAbility(float deltaTime)
-            {
-                return;
-            }
 
-            public void UpdateAbility(float deltaTime)
-            {
-                if (!IsPlaying)
-                    return;
-
-                _rotationSystem.SetLookDirection(_pawnSystem.TurnDirection);
+                base.ExitAbility();
             }
         }
     }

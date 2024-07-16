@@ -108,14 +108,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  playerManager: {fileID: 11400000, guid: 13dbbcde627c89f49bc44e0a2795673d, type: 2}
-  defaultController: {fileID: 1008602029604108534, guid: 78708e74ea6e3a8478b0f90f95338a96,
+  _playerManager: {fileID: 11400000, guid: 13dbbcde627c89f49bc44e0a2795673d, type: 2}
+  _defaultController: {fileID: 1008602029604108534, guid: 78708e74ea6e3a8478b0f90f95338a96,
     type: 3}
-  currentController: {fileID: 0}
-  isStartPlayer: 0
-  useAutoPossesed: 0
-  ignoreMovementInput: 0
-  ignoreRotateInput: 0
+  _currentController: {fileID: 0}
+  _isStartPlayer: 0
+  _useAutoPossesed: 1
+  _ignoreMovementInput: 0
+  _ignoreRotateInput: 0
 --- !u!114 &1200809129570485976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  initializationTags:
+  _initializationTags:
     owneds: []
     blocks: []
 --- !u!114 &8881201888828586278
@@ -166,7 +166,7 @@ MonoBehaviour:
   - AbilityName: 'GA_PawnAbiltiy_UpdateMovementInput [ Level : 0 ]'
     Ability: {fileID: 11400000, guid: f3c7dc150bed5c745b2d5096f923e608, type: 2}
     Level: 0
-  - AbilityName: 'GA_PawnAbiltiy_UpdateRotationInput [ Level : 0 ]'
+  - AbilityName: 'GA_PawnAbiltiy_UpdateRotationInTurnDirection [ Level : 0 ]'
     Ability: {fileID: 11400000, guid: 58d2fc4e6fefd2241a0d147e9b2312ad, type: 2}
     Level: 0
   - AbilityName: 'GA_PawnAbiltiy_DirectionalMoveModifier [ Level : 0 ]'
@@ -198,6 +198,9 @@ MonoBehaviour:
     Level: 0
   - AbilityName: 'GA_PawnAbiltiy_SetSpectator [ Level : 0 ]'
     Ability: {fileID: 11400000, guid: cee1c3f6ea2baa248b088e01fc46f946, type: 2}
+    Level: 0
+  - AbilityName: 'GA_PawnAbiltiy_SetRotationInLookDirection [ Level : 0 ]'
+    Ability: {fileID: 11400000, guid: 6f0daf6a87995824da0d9c2eb606d59e, type: 2}
     Level: 0
 --- !u!114 &2224922915931206671
 MonoBehaviour:
@@ -278,8 +281,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  defaultLevel: 1
-  initializationStats: {fileID: 11400000, guid: 419293b71b81abd4aa0fcdc993a04461,
+  _defaultLevel: 1
+  _initializationStats: {fileID: 11400000, guid: 419293b71b81abd4aa0fcdc993a04461,
     type: 2}
 --- !u!114 &6885337648413571771
 MonoBehaviour:

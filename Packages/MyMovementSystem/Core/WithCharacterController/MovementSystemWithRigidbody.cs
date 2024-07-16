@@ -38,22 +38,22 @@ namespace StudioScor.MovementSystem
         {
             if (_rigidbody.isKinematic)
             {
-                _lastVelocity = addVelocity * deltaTime;
+                _lastVelocity = _addVelocity * deltaTime;
 
-                if(addPosition != default)
+                if(_addPosition != default)
                 {
-                    _lastVelocity += addPosition;
+                    _lastVelocity += _addPosition;
                 }
 
                 _rigidbody.MovePosition(_rigidbody.position + LastVelocity);
             }
             else
             {
-                _lastVelocity = addVelocity;
+                _lastVelocity = _addVelocity;
 
-                if (addPosition != default)
+                if (_addPosition != default)
                 {
-                    _lastVelocity += addPosition.SafeDivide(deltaTime);
+                    _lastVelocity += _addPosition.SafeDivide(deltaTime);
                 }
 
                 _rigidbody.velocity = LastVelocity;

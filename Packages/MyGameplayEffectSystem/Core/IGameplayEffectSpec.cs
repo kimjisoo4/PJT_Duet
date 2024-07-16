@@ -4,6 +4,10 @@ namespace StudioScor.GameplayEffectSystem
 {
     public interface IGameplayEffectSpec
     {
+
+        public delegate void EffectSpecStateHandler(IGameplayEffectSpec effectSpec);
+        public delegate void EffectSpecLevelStateHandler(IGameplayEffectSpec effectSpec, int currentLevel, int prevLevel);
+
         public GameplayEffect GameplayEffect { get; }
         public IGameplayEffectSystem GameplayEffectSystem { get; }
 

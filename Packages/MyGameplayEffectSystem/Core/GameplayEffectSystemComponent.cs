@@ -4,7 +4,6 @@ using StudioScor.Utilities;
 
 namespace StudioScor.GameplayEffectSystem
 {
-    public delegate void ChangeGameplayEffectHandler(IGameplayEffectSystem effectSystem, IGameplayEffectSpec effectSpec);
 
     public static class GameplayEffectSystemUtility
     {
@@ -67,6 +66,7 @@ namespace StudioScor.GameplayEffectSystem
 
     public interface IGameplayEffectSystem
     {
+        public delegate void ChangeGameplayEffectHandler(IGameplayEffectSystem effectSystem, IGameplayEffectSpec effectSpec);
         public Transform transform { get; }
         public GameObject gameObject { get; }
 
@@ -98,8 +98,8 @@ namespace StudioScor.GameplayEffectSystem
         private List<IGameplayEffectSpec> gameplayEffects;
         public IReadOnlyList<IGameplayEffectSpec> GameplayEffects => gameplayEffects;
 
-        public event ChangeGameplayEffectHandler OnGrantedEffect;
-        public event ChangeGameplayEffectHandler OnRemovedEffect;
+        public event IGameplayEffectSystem.ChangeGameplayEffectHandler OnGrantedEffect;
+        public event IGameplayEffectSystem.ChangeGameplayEffectHandler OnRemovedEffect;
 
         private void OnValidate()
         {

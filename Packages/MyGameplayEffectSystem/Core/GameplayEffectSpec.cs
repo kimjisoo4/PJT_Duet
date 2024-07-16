@@ -4,9 +4,6 @@ using StudioScor.Utilities;
 
 namespace StudioScor.GameplayEffectSystem
 {
-    public delegate void EffectSpecStateHandler(IGameplayEffectSpec effectSpec);
-    public delegate void EffectSpecLevelStateHandler(IGameplayEffectSpec effectSpec, int currentLevel, int prevLevel);
-
     public abstract class GameplayEffectSpec : BaseClass, IGameplayEffectSpec
     {
         protected GameplayEffect _gameplayEffect;
@@ -33,14 +30,14 @@ namespace StudioScor.GameplayEffectSystem
         public override Object Context => _gameplayEffect;
 #endif
 
-        public event EffectSpecStateHandler OnActivateEffect;
-        public event EffectSpecStateHandler OnCanceledEffect;
-        public event EffectSpecStateHandler OnFinishedEffect;
-        public event EffectSpecStateHandler OnEndedEffect;
-        
-        public event EffectSpecStateHandler OnOverlappedEffect;
+        public event IGameplayEffectSpec.EffectSpecStateHandler OnActivateEffect;
+        public event IGameplayEffectSpec.EffectSpecStateHandler OnCanceledEffect;
+        public event IGameplayEffectSpec.EffectSpecStateHandler OnFinishedEffect;
+        public event IGameplayEffectSpec.EffectSpecStateHandler OnEndedEffect;
+                     
+        public event IGameplayEffectSpec.EffectSpecStateHandler OnOverlappedEffect;
 
-        public event EffectSpecLevelStateHandler OnChangedEffectLevel;
+        public event IGameplayEffectSpec.EffectSpecLevelStateHandler OnChangedEffectLevel;
 
         public GameplayEffectSpec() { }
         public GameplayEffectSpec(GameplayEffect gameplayEffect, IGameplayEffectSystem gameplayEffectSystem, GameObject instigator = null, int level = 0, object data = default)

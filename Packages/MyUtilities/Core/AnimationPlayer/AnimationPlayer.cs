@@ -15,6 +15,7 @@ namespace StudioScor.Utilities
         Finish,
         Canceled,
     }
+
     public class AnimationPlayer : BaseMonoBehaviour
     {
         public class Events
@@ -397,7 +398,7 @@ namespace StudioScor.Utilities
             Invoke_OnExitNotifyState(notify);
         }
 
-        #region Callback
+        #region Invoke
         protected void Invoke_OnStarted()
         {
             Log($"{nameof(OnStarted)}");

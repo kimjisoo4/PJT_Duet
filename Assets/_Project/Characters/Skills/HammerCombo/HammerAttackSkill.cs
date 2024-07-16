@@ -224,47 +224,46 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 if (!_sphereCast.IsPlaying)
                     return;
 
-                var trace = _sphereCast.UpdateTrace();
+                var (hitCount, hitResults) = _sphereCast.UpdateTrace();
 
-                if (trace.hitCount > 0)
+                if (hitCount > 0)
                 {
                     bool wasHit = false;
 
-                    for (int i = 0; i < trace.hitCount; i++)
+                    for (int i = 0; i < hitCount; i++)
                     {
                         bool isHit = false;
-                        var hit = trace.raycastHits[i];
+                        var hit = hitResults[i];
 
+                        if (!CheckAffilation(hit.transform))
+                            continue;
 
-                            if (!CheckAffilation(hit.transform))
-                                continue;
+                        Log($"HIT :: {hit.transform.name}");
 
-                            Log($"HIT :: {hit.transform.name}");
-
-                            if (hit.transform.TryGetGameplayEffectSystem(out IGameplayEffectSystem hitGameplayEffectSystem))
+                        if (hit.transform.TryGetGameplayEffectSystem(out IGameplayEffectSystem hitGameplayEffectSystem))
+                        {
+                            if (_ability._takeDamageEffect)
                             {
-                                if (_ability._takeDamageEffect)
+                                var data = new TakeDamageEffect.FElement(hit.point, hit.normal, hit.collider, _sphereCast.StartPosition.Direction(_sphereCast.EndPosition), _sphereCast.Owner, gameObject);
+
+                                if (hitGameplayEffectSystem.TryTakeEffect(_ability._takeDamageEffect, gameObject, Level, data).isActivate)
                                 {
-                                    var data = new TakeDamageEffect.FElement(hit.point, hit.normal, hit.collider, _sphereCast.StartPosition.Direction(_sphereCast.EndPosition), _sphereCast.Owner, gameObject);
-
-                                    if (hitGameplayEffectSystem.TryTakeEffect(_ability._takeDamageEffect, gameObject, Level, data).isActivate)
-                                    {
-                                        isHit = true;
-                                    }
+                                    isHit = true;
                                 }
-
-                                for (int effectIndex = 0; effectIndex < _ability._applyGameplayEffectsOnHitToOther.Length; effectIndex++)
-                                {
-                                    var effect = _ability._applyGameplayEffectsOnHitToOther[effectIndex];
-
-                                    if (hitGameplayEffectSystem.TryTakeEffect(effect, gameObject, Level, null).isActivate)
-                                    {
-                                        isHit = true;
-                                    }
-                                }
-
-
                             }
+
+                            for (int effectIndex = 0; effectIndex < _ability._applyGameplayEffectsOnHitToOther.Length; effectIndex++)
+                            {
+                                var effect = _ability._applyGameplayEffectsOnHitToOther[effectIndex];
+
+                                if (hitGameplayEffectSystem.TryTakeEffect(effect, gameObject, Level, null).isActivate)
+                                {
+                                    isHit = true;
+                                }
+                            }
+
+
+                        }
 
                         if (isHit)
                         {

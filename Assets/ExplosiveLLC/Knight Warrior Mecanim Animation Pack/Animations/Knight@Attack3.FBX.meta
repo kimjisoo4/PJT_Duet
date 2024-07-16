@@ -536,6 +536,22 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0
+        functionName: AnimNotifyStateEnter
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: b109b38a57c395941b7e68e9f9b7859f,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.25000003
+        functionName: AnimNotifyStateExit
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: b109b38a57c395941b7e68e9f9b7859f,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1

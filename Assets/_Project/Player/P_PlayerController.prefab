@@ -164,10 +164,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  playerManager: {fileID: 11400000, guid: 13dbbcde627c89f49bc44e0a2795673d, type: 2}
-  <IsPlayer>k__BackingField: 1
-  <TurnDirectionState>k__BackingField: 1
-  <Affiliation>k__BackingField: 0
+  _playerManager: {fileID: 11400000, guid: 13dbbcde627c89f49bc44e0a2795673d, type: 2}
+  _turnDirectionState: 1
+  _isPlayer: 1
+  _affiliation: 0
 --- !u!114 &5419371886552561173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,10 +244,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  playerManager: {fileID: 11400000, guid: 13dbbcde627c89f49bc44e0a2795673d, type: 2}
-  <IsPlayer>k__BackingField: 0
-  <TurnDirectionState>k__BackingField: 0
-  <Affiliation>k__BackingField: 0
+  _playerManager: {fileID: 0}
+  _turnDirectionState: 0
+  _isPlayer: 0
+  _affiliation: 2
 --- !u!1 &8036280054929956186
 GameObject:
   m_ObjectHideFlags: 0

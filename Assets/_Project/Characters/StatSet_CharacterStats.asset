@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f6c82e33e287ae4492a9c8162becbda, type: 3}
   m_Name: StatSet_CharacterStats
   m_EditorClassIdentifier: 
-  _Stats:
-  - HeaderName: Max HP [ 100.00 ~ 100.00 ]
+  _stats:
+  - HeaderName: MaxHP [ 100.00 ~ 100.00 ]
     Tag: {fileID: 11400000, guid: 1c3d390ae00b72b4c98d7ab1e19df4d5, type: 2}
     Value:
       _Min: 100
@@ -28,7 +28,7 @@ MonoBehaviour:
         m_PostInfinity: 0
         m_RotationOrder: 0
       _Values: []
-  - HeaderName: Attack Point [ 10.00 ~ 10.00 ]
+  - HeaderName: AttackPoint [ 10.00 ~ 10.00 ]
     Tag: {fileID: 11400000, guid: ec71c03f010d2164cadd48f171f12fd0, type: 2}
     Value:
       _Min: 10
@@ -43,7 +43,7 @@ MonoBehaviour:
         m_PostInfinity: 0
         m_RotationOrder: 0
       _Values: []
-  - HeaderName: Move Speed [ 5.00 ~ 5.00 ]
+  - HeaderName: MoveSpeed [ 5.00 ~ 5.00 ]
     Tag: {fileID: 11400000, guid: 99b0d60dd64574d46adad3e32e9e38ef, type: 2}
     Value:
       _Min: 5

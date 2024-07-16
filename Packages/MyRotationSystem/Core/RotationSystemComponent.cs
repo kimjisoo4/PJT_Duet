@@ -67,6 +67,7 @@ namespace StudioScor.RotationSystem
         public void UpdateRotation(float deltaTime);
 
         public Transform LookTarget { get; }
+        public Vector3 LookPosition { get; }
         public Vector3 LookDirection { get; }
         public Quaternion TurnRotation { get; }
 
@@ -103,6 +104,7 @@ namespace StudioScor.RotationSystem
         public Transform LookTarget => _lookTarget;
         public ERotationType RotationType => _rotationType;
         public Vector3 LookDirection => _lookDirection;
+        public Vector3 LookPosition => _lookPosition;
         public Quaternion TurnRotation => _turnRotation;
         public float TurnSpeed => _turnSpeed;
         public bool AutoTransition => _autoTransition;

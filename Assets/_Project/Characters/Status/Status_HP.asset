@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb39ad45fe157184789361cba1688be7, type: 3}
   m_Name: Status_HP
   m_EditorClassIdentifier: 
-  _Name: HP
-  _Description: 
+  _name: HP
+  _description: 
