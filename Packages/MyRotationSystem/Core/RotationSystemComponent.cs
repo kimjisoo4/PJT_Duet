@@ -61,7 +61,7 @@ namespace StudioScor.RotationSystem
         public void SetAutoTransition(bool newAutoTransition);
         public void TransitionRotationType(ERotationType newRotationType);
 
-        public void SetRotation(Quaternion newRotation);
+        public void SetRotation(Quaternion newRotation, bool isImmediately = true);
         public void AddRotation(Quaternion additiveRotation);
 
         public void UpdateRotation(float deltaTime);
@@ -207,11 +207,18 @@ namespace StudioScor.RotationSystem
             _autoTransition = newAutoTransition;
         }
 
-        public void SetRotation(Quaternion setRotation)
+        public void SetRotation(Quaternion setRotation, bool isImmediately = true)
         {
-            _overrideRotation = setRotation;
+            if(isImmediately)
+            {
+                transform.eulerAngles = new Vector3(0, setRotation.eulerAngles.y, 0);
+            }
+            else
+            {
+                _overrideRotation = setRotation;
 
-            _wasOverrideRotation = true;
+                _wasOverrideRotation = true;
+            }
         }
         public void AddRotation(Quaternion additiveRotation)
         {

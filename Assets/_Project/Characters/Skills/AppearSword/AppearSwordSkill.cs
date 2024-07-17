@@ -5,6 +5,7 @@ using StudioScor.GameplayCueSystem;
 using StudioScor.GameplayEffectSystem;
 using StudioScor.MovementSystem;
 using StudioScor.PlayerSystem;
+using StudioScor.RotationSystem;
 using StudioScor.Utilities;
 using System;
 using UnityEngine;
@@ -61,9 +62,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private readonly IPawnSystem _pawnSystem;
             private readonly IBodySystem _bodySystem;
             private readonly IMovementSystem _movementSystem;
+            private readonly IRotationSystem _rotationSystem;
             private readonly IGameplayEffectSystem _gameplayEffectSystem;
 
             private readonly int _animationHash;
+            private readonly AnimationPlayer.Events _animationEvents;
             private readonly ReachValueToTime _moveReachValue = new();
             private readonly TrailSphereCast _sphereCast = new();
 
@@ -82,10 +85,22 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _pawnSystem = gameObject.GetPawnSystem();
                 _bodySystem = gameObject.GetBodySystem();
                 _movementSystem = gameObject.GetMovementSystem();
+                _rotationSystem = gameObject.GetRotationSystem();
+
                 _gameplayEffectSystem = gameObject.GetGameplayEffectSystem();
 
                 _animationHash = Animator.StringToHash(_ability._appearAnimation);
+                _animationEvents = new();
+
+                _animationEvents.OnCanceled += _animationEvents_OnCanceled;
+                _animationEvents.OnFailed += _animationEvents_OnFailed;
+                _animationEvents.OnStartedBlendOut += _animationEvents_OnStartedBlendOut;
+                _animationEvents.OnEnterNotifyState += _animationEvents_OnEnterNotifyState;
+                _animationEvents.OnExitNotifyState += _animationEvents_OnExitNotifyState;
+                _animationEvents.OnNotify += _animationEvents_OnNotify;
             }
+
+            
 
             public override bool CanActiveAbility()
             {
@@ -104,13 +119,12 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 base.EnterAbility();
 
                 _animationPlayer.Play(_animationHash, _ability._fadeInTime);
+                _animationPlayer.AnimationEvents = _animationEvents;
 
-                _moveDirection = transform.HorizontalForward();
+                _moveDirection = transform.HorizontalDirection(_pawnSystem.LookPosition);
+
+                _rotationSystem.SetRotation(Quaternion.LookRotation(_moveDirection, Vector3.up), false);
                 _moveReachValue.OnMovement(_ability._moveDistance, _ability._moveCurve);
-
-                _animationPlayer.OnEnterNotifyState += _animationPlayer_OnEnterNotifyState;
-                _animationPlayer.OnExitNotifyState += _animationPlayer_OnExitNotifyState;
-                _animationPlayer.OnNotify += _animationPlayer_OnNotify;
 
                 if (_ability._coolTimeEffect)
                 {
@@ -131,7 +145,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _coolTimeSpec = null;
             }
 
-            private void _animationPlayer_OnNotify(string eventName)
+            private void _animationEvents_OnNotify(string eventName)
             {
                 switch (eventName)
                 {
@@ -162,26 +176,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 if (IsPlaying)
                 {
-                    switch (_animationPlayer.State)
+                    if(_animationPlayer.IsPlaying)
                     {
-                        case EAnimationState.Failed:
-                        case EAnimationState.Canceled:
-                            CancelAbility();
-                            break;
-                        case EAnimationState.BlendOut:
-                        case EAnimationState.Finish:
-                            TryFinishAbility();
-                            break;
-                        case EAnimationState.None:
-                            break;
-                        case EAnimationState.TryPlay:
-                            break;
-                        case EAnimationState.Start:
-                        case EAnimationState.Playing:
-                            float normalizedTime = _animationPlayer.NormalizedTime;
+                        float normalizedTime = _animationPlayer.NormalizedTime;
 
-                            UpdateMovement(normalizedTime);
-                            break;
+                        UpdateMovement(normalizedTime);
                     }
                 }
             }
@@ -190,9 +189,22 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 UpdateTrace();
             }
-            private void _animationPlayer_OnEnterNotifyState(string eventName)
+            private void _animationEvents_OnStartedBlendOut()
             {
-                Log($"{nameof(_animationPlayer.OnEnterNotifyState)} [ Trigger - {eventName} ] ");
+                TryFinishAbility();
+            }
+
+            private void _animationEvents_OnFailed()
+            {
+                CancelAbility();
+            }
+
+            private void _animationEvents_OnCanceled()
+            {
+                CancelAbility();
+            }
+            private void _animationEvents_OnEnterNotifyState(string eventName)
+            {
                 switch (eventName)
                 {
                     case "Trace":
@@ -203,10 +215,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                         break;
                 }
             }
-            private void _animationPlayer_OnExitNotifyState(string eventName)
+            private void _animationEvents_OnExitNotifyState(string eventName)
             {
-                Log($"{nameof(_animationPlayer.OnExitNotifyState)} [ Trigger - {eventName} ] ");
-
                 switch (eventName)
                 {
                     case "Trace":
@@ -307,7 +317,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                             {
                                 Vector3 position = hit.distance > 0 ? hit.point + hit.transform.TransformDirection(_ability._onHitToOtherCue.Position)
                                                                     : hit.collider.ClosestPoint(_sphereCast.StartPosition);
-                                Vector3 rotation = Quaternion.LookRotation(hit.normal, Vector3.up).eulerAngles + hit.transform.TransformDirection(_ability._onHitToOtherCue.Rotation);
+                                Quaternion hitRotation = hit.normal.SafeEquals(Vector3.zero) ? Quaternion.identity : Quaternion.LookRotation(hit.normal, Vector3.up);
+                                Vector3 rotation = hitRotation.eulerAngles + hit.transform.TransformDirection(_ability._onHitToOtherCue.Rotation);
                                 Vector3 scale = _ability._onHitToOtherCue.Scale;
 
                                 _ability._onHitToOtherCue.Cue.Play(position, rotation, scale);

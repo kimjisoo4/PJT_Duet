@@ -4,6 +4,7 @@ using StudioScor.AbilitySystem;
 using StudioScor.BodySystem;
 using StudioScor.GameplayCueSystem;
 using StudioScor.GameplayEffectSystem;
+using StudioScor.GameplayTagSystem;
 using StudioScor.MovementSystem;
 using StudioScor.PlayerSystem;
 using StudioScor.Utilities;
@@ -29,6 +30,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private float _moveDistance = 5f;
         [SerializeField][Range(0f, 1f)] private float _moveStartTime = 0.2f;
         [SerializeField][Range(0f, 1f)] private float _moveEndTime = 0.8f;
+
+        [Header(" Turn ")]
+        [SerializeField] private GameplayTag _turnTag;
 
         [Header(" Trace ")]
         [SerializeField] private BodyTag _tracePoint;
@@ -65,10 +69,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private readonly int _animationHash;
             private readonly TrailSphereCast _sphereCast = new();
             private readonly ReachValueToTime _movementReachValue = new();
-
+            private readonly AnimationPlayer.Events _animationEvents = new();
 
             private readonly MatchTargetWeightMask _matchTargetWeight = new MatchTargetWeightMask(new Vector3(1, 0, 1), 0);
             private Vector3 _moveDirection;
+            private bool _wasStartedMovement;
 
             private CoolTimeEffect.Spec _coolTimeSpec;
             public float CoolTime => _ability._coolTimeEffect ? _ability._coolTimeEffect.Duration : 0f;
@@ -85,7 +90,13 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _gameplayEffectSystem = gameObject.GetGameplayEffectSystem();
 
                 _animationHash = Animator.StringToHash(_ability._rushAnimationName);
+                _animationEvents.OnCanceled += _animationEvents_OnCanceled;
+                _animationEvents.OnFailed += _animationEvents_OnFailed;
+                _animationEvents.OnStartedBlendOut += _animationEvents_OnStartedBlendOut;
+                _animationEvents.OnEnterNotifyState += _animationEvents_OnEnterNotifyState;
+                _animationEvents.OnExitNotifyState += _animationEvents_OnExitNotifyState;
             }
+
 
             public override bool CanActiveAbility()
             {
@@ -103,11 +114,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 base.EnterAbility();
 
                 _animationPlayer.Play(_animationHash, _ability._fadeInTime);
-                _animationPlayer.OnStarted += _animationPlayer_OnStarted;
-                _animationPlayer.OnEnterNotifyState += _animationPlayer_OnEnterNotifyState;
-                _animationPlayer.OnExitNotifyState += _animationPlayer_OnExitNotifyState;
+                _animationPlayer.AnimationEvents = _animationEvents;
 
-                _movementReachValue.OnMovement(_ability._moveDistance);
+                
 
                 if(_ability._coolTimeEffect)
                 {
@@ -144,27 +153,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 if (IsPlaying)
                 {
-                    switch (_animationPlayer.State)
+                    if(_animationPlayer.IsPlaying)
                     {
-                        case EAnimationState.Failed:
-                        case EAnimationState.Canceled:
-                            CancelAbility();
-                            break;
-                        case EAnimationState.BlendOut:
-                        case EAnimationState.Finish:
-                            TryFinishAbility();
-                            break;
-                        case EAnimationState.None:
-                            break;
-                        case EAnimationState.TryPlay:
-                            break;
-                        case EAnimationState.Start:
-                        case EAnimationState.Playing:
-                            float normalizedTime = _animationPlayer.NormalizedTime;
+                        float normalizedTime = _animationPlayer.NormalizedTime;
 
-                            UpdateMovement(normalizedTime);
-
-                            break;
+                        UpdateMovement(normalizedTime);
                     }
                 }
             }
@@ -173,13 +166,16 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 UpdateTrace();
             }
-
-            
-
             private void UpdateMovement(float normalizedTime)
             {
                 if (normalizedTime < _ability._moveStartTime || normalizedTime > _ability._moveEndTime)
                     return;
+
+                if(!_movementReachValue.IsPlaying)
+                {
+                    _moveDirection = transform.HorizontalForward();
+                    _movementReachValue.OnMovement(_ability._moveDistance);
+                }
 
                 float moveTime = Mathf.InverseLerp(_ability._moveStartTime, _ability._moveEndTime, normalizedTime);
 
@@ -198,6 +194,16 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                                                       _ability._moveEndTime);
             }
 
+            private void OnTurn()
+            {
+                if (_ability._turnTag)
+                    GameplayTagSystem.AddOwnedTag(_ability._turnTag);
+            }
+            private void EndTurn()
+            {
+                if (_ability._turnTag)
+                    GameplayTagSystem.RemoveOwnedTag(_ability._turnTag);
+            }
             private void OnTrace()
             {
                 var bodypart = _bodySystem.GetBodyPart(_ability._tracePoint);
@@ -299,18 +305,27 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 }
             }
 
+
             private void _coolTimeSpec_OnEndedEffect(IGameplayEffectSpec effectSpec)
             {
                 effectSpec.OnEndedEffect -= _coolTimeSpec_OnEndedEffect;
 
                 _coolTimeSpec = null;
             }
-            private void _animationPlayer_OnStarted()
+            private void _animationEvents_OnCanceled()
             {
-                _moveDirection = transform.HorizontalForward();
+                CancelAbility();
+            }
+            private void _animationEvents_OnFailed()
+            {
+                CancelAbility();
             }
 
-            private void _animationPlayer_OnEnterNotifyState(string eventName)
+            private void _animationEvents_OnStartedBlendOut()
+            {
+                TryFinishAbility();
+            }
+            private void _animationEvents_OnEnterNotifyState(string eventName)
             {
                 Log($"{nameof(_animationPlayer.OnEnterNotifyState)} [ Trigger - {eventName} ] ");
                 switch (eventName)
@@ -318,12 +333,14 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     case "Trace":
                         OnTrace();
                         break;
-
+                    case "Turn":
+                        OnTurn();
+                        break;
                     default:
                         break;
                 }
             }
-            private void _animationPlayer_OnExitNotifyState(string eventName)
+            private void _animationEvents_OnExitNotifyState(string eventName)
             {
                 Log($"{nameof(_animationPlayer.OnExitNotifyState)} [ Trigger - {eventName} ] ");
 
@@ -332,7 +349,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     case "Trace":
                         EndTrace();
                         break;
-
+                    case "Turn":
+                        EndTurn();
+                        break;
                     default:
                         break;
                 }

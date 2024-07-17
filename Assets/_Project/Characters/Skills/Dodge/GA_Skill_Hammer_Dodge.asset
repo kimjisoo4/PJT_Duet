@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edfc0eae341b0a34eb3c74b894307189, type: 3}
   m_Name: GA_Skill_Hammer_Dodge
   m_EditorClassIdentifier: 
-  UseDebug: 1
+  UseDebug: 0
   abilityName: Dodge
   abilityTag: {fileID: 0}
   attributeTags:

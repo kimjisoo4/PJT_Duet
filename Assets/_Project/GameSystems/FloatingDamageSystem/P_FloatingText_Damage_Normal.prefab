@@ -252,4 +252,4 @@ MonoBehaviour:
   _lookAtCamera: {fileID: 3815557738408329426}
   _timer:
     <UseDebug>k__BackingField: 0
-    duration: 1
+    _duration: 1

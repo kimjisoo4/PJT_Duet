@@ -33,7 +33,7 @@ MonoBehaviour:
   _skillType: 0
   _animationName: PunchCombo_02
   _fadeInTime: 0.2
-  _rotationTag: {fileID: 11400000, guid: 6d15f3d07c563074d9dd397fd12a0276, type: 2}
+  _turnTag: {fileID: 11400000, guid: 6d15f3d07c563074d9dd397fd12a0276, type: 2}
   _tracePoint: {fileID: 11400000, guid: 725a199b4ac75cc4a91a99dcb763827a, type: 2}
   _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
   _traceRadius: 1

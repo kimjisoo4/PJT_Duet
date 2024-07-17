@@ -203,7 +203,7 @@ namespace PF.PJT.Duet.Controller
             _controllerSystem.SetMoveDirection(moveDirection, _inputMoveStrength);
             _controllerSystem.SetTurnDirection(moveDirection);
 
-            _controllerSystem.SetLookPosition(_mainCamera.transform.TransformPoint(Vector3.forward * 10f));
+            _controllerSystem.SetLookPosition(_mainCamera.transform.position + _mainCamera.transform.forward * 10f);
         }
 
         private void _controllerSystem_OnPossessedPawn(IControllerSystem controller, IPawnSystem pawn)

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80920523be7d4864d95e2f46a2801194, type: 3}
   m_Name: GA_Skill_HammerCombo
   m_EditorClassIdentifier: PF.PJT.Duet:PF.PJT.Duet.Pawn.PawnSkill:PunchComboSkill
-  UseDebug: 0
+  UseDebug: 1
   abilityName: Hammer Combo
   abilityTag: {fileID: 11400000, guid: b92c4efe22453eb4c9c8d9dad2c704d3, type: 2}
   attributeTags:

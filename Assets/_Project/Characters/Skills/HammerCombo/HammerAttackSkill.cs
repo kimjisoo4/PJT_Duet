@@ -21,10 +21,14 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private string _animationName = "HammerAttack";
         [SerializeField][Range(0f, 1f)] private float _fadeInTime = 0.2f;
 
+        [Header(" Turn ")]
+        [SerializeField] private GameplayTag _turnTag;
+
         [Header(" Attack Trace ")]
         [SerializeField] private BodyTag _tracePoint;
         [SerializeField] private Variable_LayerMask _traceLayer;
         [SerializeField] private float _traceRadius = 1f;
+
 
         [Header(" Gameplay Effects ")]
         [SerializeField] private CoolTimeEffect _coolTimeEffect;
@@ -50,12 +54,13 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         {
             protected new readonly HammerAttackSkill _ability;
 
-            private readonly int _animationHash;
             private readonly AnimationPlayer _animationPlayer;
             private readonly IPawnSystem _pawnSystem;
             private readonly IBodySystem _bodySystem;
             private readonly IGameplayEffectSystem _gameplayEffectSystem;
 
+            private readonly int _animationHash;
+            private readonly AnimationPlayer.Events _animationEvents;
             private readonly TrailSphereCast _sphereCast = new();
 
 
@@ -69,7 +74,16 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _gameplayEffectSystem = gameObject.GetGameplayEffectSystem();
 
                 _animationHash = Animator.StringToHash(_ability._animationName);
+                _animationEvents = new();
+                _animationEvents.OnCanceled += _animationEvents_OnCanceled;
+                _animationEvents.OnFailed += _animationEvents_OnFailed;
+                _animationEvents.OnStartedBlendOut += _animationEvents_OnStartedBlendOut;
+                _animationEvents.OnNotify += _animationEvents_OnNotify;
+                _animationEvents.OnEnterNotifyState += _animationEvents_OnEnterNotifyState;
+                _animationEvents.OnExitNotifyState += _animationEvents_OnExitNotifyState;
             }
+
+            
 
             public override bool CanActiveAbility()
             {
@@ -83,12 +97,14 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 base.EnterAbility();
 
                 _animationPlayer.Play(_animationHash, _ability._fadeInTime);
-
-                _animationPlayer.OnNotify += _animationPlayer_OnNotify;
-                _animationPlayer.OnEnterNotifyState += _animationPlayer_OnEnterNotifyState;
-                _animationPlayer.OnExitNotifyState += _animationPlayer_OnExitNotifyState;
+                _animationPlayer.AnimationEvents = _animationEvents;
             }
+            protected override void ExitAbility()
+            {
+                base.ExitAbility();
 
+                _animationPlayer.TryStopAnimation(_animationHash);
+            }
             private void PlayHitGroundFX()
             {
                 if(_ability._onHitGroundFX.Cue)
@@ -97,72 +113,10 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 }
             }
 
-            private void _animationPlayer_OnNotify(string eventName)
-            {
-                switch (eventName)
-                {
-                    case "HitGround":
-                        PlayHitGroundFX();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            private void _animationPlayer_OnEnterNotifyState(string eventName)
-            {
-                switch (eventName)
-                {
-                    case "Trace":
-                        OnTrace();
-                        break;
-                    case "Combo":
-                        OnCombo();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            private void _animationPlayer_OnExitNotifyState(string obj)
-            {
-                switch (obj)
-                {
-                    case "Trace":
-                        EndTrace();
-                        break;
-                    case "Combo":
-                        EndCombo();
-                        break;
-                    default:
-                        break;
-                }
-            }
 
             public void UpdateAbility(float deltaTime)
             {
-                if (IsPlaying)
-                {
-                    switch (_animationPlayer.State)
-                    {
-                        case EAnimationState.Failed | EAnimationState.Canceled:
-                            CancelAbility();
-                            break;
-                        case EAnimationState.Playing:
-                            break;
-                        case EAnimationState.BlendOut:
-                            TryFinishAbility();
-                            break;
-                        case EAnimationState.Finish:
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                else
-                {
-
-                }
+                return;
             }
 
             public void FixedUpdateAbility(float deltaTime)
@@ -175,15 +129,29 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             private void OnCombo()
             {
-                GameplayTagSystem.AddOwnedTag(_ability._comboTag);
+                if(_ability._comboTag)
+                    GameplayTagSystem.AddOwnedTag(_ability._comboTag);
             }
             private void EndCombo()
             {
-                GameplayTagSystem.RemoveOwnedTag(_ability._comboTag);
+                if(_ability._comboTag)
+                    GameplayTagSystem.RemoveOwnedTag(_ability._comboTag);
             }
-
+            private void OnTurn()
+            {
+                if(_ability._turnTag)
+                    GameplayTagSystem.AddOwnedTag(_ability._turnTag);
+            }
+            private void EndTurn()
+            {
+                if (_ability._turnTag)
+                    GameplayTagSystem.RemoveOwnedTag(_ability._turnTag);
+            }
             private void OnTrace()
             {
+                if (_sphereCast.IsPlaying)
+                    return;
+
                 var bodypart = _bodySystem.GetBodyPart(_ability._tracePoint);
 
                 _sphereCast.SetOwner(bodypart.gameObject);
@@ -303,6 +271,73 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     }
                 }
             }
+
+
+
+            
+
+            private void _animationEvents_OnEnterNotifyState(string eventName)
+            {
+                switch (eventName)
+                {
+                    case "Trace":
+                        OnTrace();
+                        break;
+                    case "Combo":
+                        OnCombo();
+                        break;
+                    case "Turn":
+                        OnTurn();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            private void _animationEvents_OnExitNotifyState(string eventName)
+            {
+                switch (eventName)
+                {
+                    case "Trace":
+                        EndTrace();
+                        break;
+                    case "Combo":
+                        EndCombo();
+                        break;
+                    case "Turn":
+                        EndTurn();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            private void _animationEvents_OnNotify(string eventName)
+            {
+                switch (eventName)
+                {
+                    case "HitGround":
+                        PlayHitGroundFX();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            private void _animationEvents_OnStartedBlendOut()
+            {
+                TryFinishAbility();
+            }
+
+            private void _animationEvents_OnFailed()
+            {
+                CancelAbility();
+            }
+
+            private void _animationEvents_OnCanceled()
+            {
+                CancelAbility();
+            }
+
+
         }
     }
 }

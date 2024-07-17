@@ -59,10 +59,19 @@ namespace StudioScor.MovementSystem
             _CharacterController.enabled = true;
         }
 
-        public override void Teleport(Vector3 position)
+        public override void Teleport(Vector3 position = default, bool isImmediately = true)
         {
-            _TeleporPositiont = position;
-            _WasTeleport = true;
+            if(isImmediately)
+            {
+                _CharacterController.enabled = false;
+                _CharacterController.transform.position = position;
+                _CharacterController.enabled = true;
+            }
+            else
+            {
+                _TeleporPositiont = position;
+                _WasTeleport = true;
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using StudioScor.Utilities;
+using UnityEngine.UIElements;
 
 namespace StudioScor.MovementSystem
 {
@@ -8,6 +9,8 @@ namespace StudioScor.MovementSystem
         [Header(" [ Use Rigidbody ] ")]
         [SerializeField] private Rigidbody _rigidbody;
 
+        private bool _wasRequestTeleport;
+        private Vector3 _requestTeleportPosition;
         private Vector3 _lastVelocity;
         public override Vector3 LastVelocity => _lastVelocity;
        
@@ -28,10 +31,23 @@ namespace StudioScor.MovementSystem
                 }
             }
         }
-        public override void Teleport(Vector3 position)
+        public override void Teleport(Vector3 position = default, bool isImmediately = true)
         {
-            transform.position = position;
-            _rigidbody.position = position;
+            if(isImmediately)
+            {
+                transform.position = position;
+                _rigidbody.position = position;
+            }
+            else
+            {
+                _wasRequestTeleport = true;
+                _requestTeleportPosition = position;
+            }
+        }
+        private void OnTeleport()
+        {
+            transform.position = _requestTeleportPosition;
+            _rigidbody.position = _requestTeleportPosition;
         }
 
         protected override void OnMovement(float deltaTime)
@@ -40,7 +56,7 @@ namespace StudioScor.MovementSystem
             {
                 _lastVelocity = _addVelocity * deltaTime;
 
-                if(_addPosition != default)
+                if (_addPosition != default)
                 {
                     _lastVelocity += _addPosition;
                 }
@@ -58,7 +74,11 @@ namespace StudioScor.MovementSystem
 
                 _rigidbody.velocity = LastVelocity;
             }
-            
+
+            if (_wasRequestTeleport)
+            {
+                OnTeleport();
+            }
         }
     }
 

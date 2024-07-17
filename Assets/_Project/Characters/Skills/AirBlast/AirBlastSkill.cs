@@ -3,6 +3,7 @@ using StudioScor.AbilitySystem;
 using StudioScor.BodySystem;
 using StudioScor.GameplayCueSystem;
 using StudioScor.GameplayEffectSystem;
+using StudioScor.GameplayTagSystem;
 using StudioScor.Utilities;
 using System;
 using System.Linq;
@@ -29,6 +30,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private string _shotAnimationName = "AirBlast_Shot";
         [SerializeField][Range(0f, 1f)] private float _shotAnimFadeInTime = 0.2f;
         [SerializeField] private bool _shotAnimFixedTransition = false;
+
+        [Header(" Turn ")]
+        [SerializeField] private GameplayTag _turnTag;
 
         [Header(" Projectile ")]
         [SerializeField] private SimplePoolContainer _projectile;
@@ -76,6 +80,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private EState _abilityState;
             private IBodyPart _bodypart;
             private bool _wasReleased = false;
+            private bool _wasGrantedTurnTag;
+            private readonly AnimationPlayer.Events _animationEvents;
+
 
             private ISpawnedActorToAbility _spawnedActor;
             private IChargeable _chargeable;
@@ -98,6 +105,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _readyAnimationHash = Animator.StringToHash(_ability._readyAnimationName);
                 _chargeMotionTimeHash = Animator.StringToHash(_ability._chargingMotionTime);
                 _shotAnimationHash = Animator.StringToHash(_ability._shotAnimationName);
+
+                _animationEvents = new();
+                _animationEvents.OnNotify += _animationPlayer_OnNotify;
             }
 
             public override bool CanActiveAbility()
@@ -110,7 +120,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 return true;
             }
-
             protected override void EnterAbility()
             {
                 base.EnterAbility();
@@ -124,7 +133,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 base.ExitAbility();
 
                 TransitionState(EState.None);
-                
+                EndTurn();
+
                 _chargeable = null;
                 _spawnedActor = null;
 
@@ -147,6 +157,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _coolTimeEffectSpec = null;
             }
 
+           
             protected override void OnCancelAbility()
             {
                 base.OnCancelAbility();
@@ -198,6 +209,29 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 return;
             }
 
+
+            private void OnUpdateAbility(float deltaTime)
+            {
+                switch (_abilityState)
+                {
+                    case EState.None:
+                        break;
+                    case EState.Ready:
+                        UpdateInReady(deltaTime);
+                        break;
+                    case EState.Charge:
+                        UpdateInCharge(deltaTime);
+                        break;
+                    case EState.Shot:
+                        UpdateInShot(deltaTime);
+                        break;
+                    case EState.Finish:
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             private void TransitionState(EState newState)
             {
                 switch (_abilityState)
@@ -241,31 +275,33 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 }
             }
 
+            private void OnTurn()
+            {
+                if (_wasGrantedTurnTag)
+                    return;
+
+                _wasGrantedTurnTag = true;
+
+                if (_ability._turnTag)
+                    GameplayTagSystem.AddOwnedTag(_ability._turnTag);
+            }
+            private void EndTurn()
+            {
+                if (!_wasGrantedTurnTag)
+                    return;
+
+                _wasGrantedTurnTag = false;
+
+                if (_ability._turnTag)
+                    GameplayTagSystem.RemoveOwnedTag(_ability._turnTag);
+            }
+
             private void OnReady()
             {
                 _animationPlayer.Play(_readyAnimationHash, _ability._readyAnimFadeInTime, fixedTransition: _ability._readyAnimFixedTransition);
-                _animationPlayer.OnNotify += _animationPlayer_OnNotify;
-            }
+                _animationPlayer.AnimationEvents = _animationEvents;
 
-
-            private void _animationPlayer_OnNotify(string eventName)
-            {
-                if (!IsPlaying)
-                    return;
-
-                switch (eventName)
-                {
-                    case "Spawn":
-                        OnSpawnAirBlast();
-                        break;
-
-                    case "Shot":
-                        OnShotAirBlast();
-                        break;
-
-                    default:
-                        break;
-                }
+                OnTurn();
             }
 
             private void OnSpawnAirBlast()
@@ -319,7 +355,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             }
             private void EndReady()
             {
-                
             }
 
 
@@ -331,10 +366,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 }
                 else
                 {
+                    OnTurn();
                     _chargingTimer.OnTimer(_ability._maxChargeTime);
                     _animationPlayer.Animator.SetFloat(_chargeMotionTimeHash, 0f);
-
-                    
                 }
             }
             private void UpdateInCharge(float deltaTime)
@@ -349,6 +383,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private void EndCharge()
             {
                 _chargingTimer.EndTimer();
+                EndTurn();
              
                 if(_chargeable is not null)
                     _chargeable.FinishCharging();
@@ -358,7 +393,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private void OnShot()
             {
                 _animationPlayer.Play(_shotAnimationHash, _ability._shotAnimFadeInTime, fixedTransition: _ability._shotAnimFixedTransition);
-                _animationPlayer.OnNotify += _animationPlayer_OnNotify;
+                _animationPlayer.AnimationEvents = _animationEvents;
             }
 
             private void OnShotAirBlast()
@@ -414,23 +449,23 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             }
 
 
-            private void OnUpdateAbility(float deltaTime)
+            
+
+            private void _animationPlayer_OnNotify(string eventName)
             {
-                switch (_abilityState)
+                if (!IsPlaying)
+                    return;
+
+                switch (eventName)
                 {
-                    case EState.None:
+                    case "Spawn":
+                        OnSpawnAirBlast();
                         break;
-                    case EState.Ready:
-                        UpdateInReady(deltaTime);
+
+                    case "Shot":
+                        OnShotAirBlast();
                         break;
-                    case EState.Charge:
-                        UpdateInCharge(deltaTime);
-                        break;
-                    case EState.Shot:
-                        UpdateInShot(deltaTime);
-                        break;
-                    case EState.Finish:
-                        break;
+
                     default:
                         break;
                 }

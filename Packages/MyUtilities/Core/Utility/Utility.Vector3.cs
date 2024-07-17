@@ -76,7 +76,7 @@ namespace StudioScor.Utilities
             forward.Normalize();
             right.Normalize();
 
-            return forward * direction.y + right * direction.x;
+            return (forward * direction.y + right * direction.x).normalized;
         }
         public static Vector3 TurnDirectionFromY(this Vector3 direction, Transform target)
         {
@@ -89,7 +89,7 @@ namespace StudioScor.Utilities
             forward.Normalize();
             right.Normalize();
 
-            return forward * direction.z + right * direction.x;
+            return (forward * direction.z + right * direction.x).normalized;
         }
 
         // Direction

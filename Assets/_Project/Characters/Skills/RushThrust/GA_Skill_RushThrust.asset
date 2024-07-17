@@ -38,6 +38,7 @@ MonoBehaviour:
   _moveDistance: 8
   _moveStartTime: 0.35
   _moveEndTime: 0.65
+  _turnTag: {fileID: 11400000, guid: 6d15f3d07c563074d9dd397fd12a0276, type: 2}
   _tracePoint: {fileID: 11400000, guid: fd15a44b8089f3d4eb7a7e059924865f, type: 2}
   _traceRadius: 1
   _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}

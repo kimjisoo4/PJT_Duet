@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using StudioScor.GameplayCueSystem;
 using StudioScor.PlayerSystem;
 using StudioScor.MovementSystem;
+using StudioScor.RotationSystem;
 
 namespace PF.PJT.Duet.Pawn.PawnSkill
 {
@@ -58,20 +59,19 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private readonly IPawnSystem _pawnSystem;
             private readonly IGameplayEffectSystem _gameplayEffectSystem;
             private readonly IMovementSystem _movementSystem;
+            private readonly IRotationSystem _rotationSystem;
             private readonly IBodySystem _bodySystem;
             private readonly IDilationSystem _dilationSystem;
             private readonly AnimationPlayer _animationPlayer;
             
             private readonly int _animationID;
+            private readonly AnimationPlayer.Events _animationEvents;
 
             private readonly ReachValueToTime _movementValue = new();
-
-            private bool _wasEnabledTrace = false;
-            private readonly List<Transform> _ignoreTransforms = new();
-            private Vector3 _prevTracePoint;
-            private RaycastHit[] _hitResults = new RaycastHit[10];
+            private readonly TrailSphereCast _sphereCast = new();
 
             private Cue _impactCue;
+            private Vector3 _moveDirection;
 
             private CoolTimeEffect.Spec _coolTimeEffectSpec;
             private bool InCoolTime => _coolTimeEffectSpec is not null && _coolTimeEffectSpec.IsActivate;
@@ -87,11 +87,22 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _dilationSystem = gameObject.GetDilationSystem();
                 _gameplayEffectSystem = gameObject.GetGameplayEffectSystem();
                 _movementSystem = gameObject.GetMovementSystem();
+                _rotationSystem = gameObject.GetRotationSystem();
                 _bodySystem = gameObject.GetBodySystem();
                 _animationPlayer = gameObject.GetComponentInChildren<AnimationPlayer>(true);
 
                 _animationID = Animator.StringToHash(_ability._animationName);
+                _animationEvents = new();
+                _animationEvents.OnFailed += _animationEvents_OnFailed;
+                _animationEvents.OnCanceled += _animationEvents_OnCanceled;
+                _animationEvents.OnStartedBlendOut += _animationEvents_OnStartedBlendOut;
+                _animationEvents.OnNotify += _animationEvents_OnNotify;
+                _animationEvents.OnEnterNotifyState += _animationEvents_OnEnterNotifyState;
+                _animationEvents.OnExitNotifyState += _animationEvents_OnExitNotifyState;
             }
+
+            
+
             protected override void OnGrantAbility()
             {
                 base.OnGrantAbility();
@@ -134,11 +145,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 base.EnterAbility();
 
                 _animationPlayer.Play(_animationID, _ability._fadeInTime);
+                _animationPlayer.AnimationEvents = _animationEvents;
 
-                _animationPlayer.OnNotify += _animationPlayer_OnNotify;
-                _animationPlayer.OnEnterNotifyState += _animationPlayer_OnEnterNotifyState;
-                _animationPlayer.OnExitNotifyState += _animationPlayer_OnExitNotifyState;
+                _moveDirection = transform.HorizontalDirection(_pawnSystem.LookPosition);
 
+                _rotationSystem.SetRotation(Quaternion.LookRotation(_moveDirection, Vector3.up), false);
                 _movementValue.OnMovement(_ability._moveDistance, _ability._moveCurve);
             }
 
@@ -151,8 +162,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     _impactCue.Stop();
                     _impactCue = null;
                 }
-
-                EndTrace();
 
                 if(_ability._coolTimeEffect)
                 {
@@ -177,23 +186,12 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 if(IsPlaying)
                 {
-                    float normalizedTime = _animationPlayer.NormalizedTime;
-
-                    UpdateTrace();
-                    UpdateMovement(normalizedTime);
-
-                    switch (_animationPlayer.State)
+                    if(_animationPlayer.IsPlaying)
                     {
-                        case EAnimationState.BlendOut:
-                        case EAnimationState.Finish:
-                            TryFinishAbility();
-                            return;
-                        case EAnimationState.Failed:
-                        case EAnimationState.Canceled:
-                            CancelAbility();
-                            return;
-                        default:
-                            break;
+                        float normalizedTime = _animationPlayer.NormalizedTime;
+
+                        UpdateTrace();
+                        UpdateMovement(normalizedTime);
                     }
                 }
             }
@@ -212,48 +210,40 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     return;
 
                 var value = Mathf.InverseLerp(_ability._moveStart, _ability._moveEnd, normalizedTime);
-
                 var distance = _movementValue.UpdateMovement(value);
-                Vector3 direction = transform.HorizontalForward();
 
-                _movementSystem.MovePosition(direction * distance);
+                _movementSystem.MovePosition(_moveDirection * distance);
             }
 
             private void OnTrace()
             {
-                if (_wasEnabledTrace)
+                if (_sphereCast.IsPlaying)
                     return;
 
-                _wasEnabledTrace = true;
+                var bodypart = _bodySystem.GetBodyPart(_ability._tracePoint);
 
-                _ignoreTransforms.Clear();
-                _ignoreTransforms.Add(transform);
+                _sphereCast.SetOwner(bodypart.gameObject);
 
-                var body = _bodySystem.GetBodyPart(_ability._tracePoint);
+                _sphereCast.AddIgnoreTransform(transform);
 
-                _prevTracePoint = body.transform.position;
+                _sphereCast.TraceRadius = _ability._traceRadius;
+                _sphereCast.TraceLayer = _ability._traceLayer.Value;
+                _sphereCast.MaxHitCount = 20;
+                _sphereCast.UseDebug = UseDebug;
+
+                _sphereCast.OnTrace();
             }
             private void EndTrace()
             {
-                if (!_wasEnabledTrace)
-                    return;
-
-                _wasEnabledTrace = false;
+                _sphereCast.EndTrace();
             }
 
             private void UpdateTrace()
             {
-                if (!_wasEnabledTrace)
+                if (!_sphereCast.IsPlaying)
                     return;
 
-                var bodyPart = _bodySystem.GetBodyPart(_ability._tracePoint);
-
-                Vector3 prevPosition = _prevTracePoint;
-                Vector3 currentPosition = bodyPart.transform.position;
-
-                _prevTracePoint = currentPosition;
-
-                var hitCount = SUtility.Physics.DrawSphereCastAllNonAlloc(prevPosition, currentPosition, _ability._traceRadius, _hitResults, _ability._traceLayer.Value, QueryTriggerInteraction.Ignore, _ability.UseDebug);
+                var (hitCount, hitResults) = _sphereCast.UpdateTrace();
 
                 if (hitCount > 0)
                 {
@@ -261,43 +251,39 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                     for (int i = 0; i < hitCount; i++)
                     {
-                        var hit = _hitResults[i];
+                        var hit = hitResults[i];
 
-                        if (!_ignoreTransforms.Contains(hit.transform))
-                        {
-                            _ignoreTransforms.Add(hit.transform);
                             Log($"HIT :: {hit.transform.name}");
 
                             if (hit.transform.TryGetPawnSystem(out IPawnSystem hitPawn) && hitPawn.Controller.CheckAffiliation(_pawnSystem.Controller) != EAffiliation.Hostile)
                                 continue;
 
-                            if (hit.transform.TryGetGameplayEffectSystem(out IGameplayEffectSystem hitGameplayEffectSystem))
+                        if (hit.transform.TryGetGameplayEffectSystem(out IGameplayEffectSystem hitGameplayEffectSystem))
+                        {
+                            isHit = true;
+
+                            if (_ability._takeDamageEffect)
                             {
-                                isHit = true;
+                                var data = new TakeDamageEffect.FElement(hit.point, hit.normal, hit.collider, _sphereCast.StartPosition.Direction(_sphereCast.EndPosition), _sphereCast.Owner, gameObject);
 
-                                if (_ability._takeDamageEffect)
-                                {
-                                    var data = new TakeDamageEffect.FElement(hit.point, hit.normal, hit.collider, prevPosition.Direction(currentPosition), bodyPart.gameObject, gameObject);
+                                hitGameplayEffectSystem.TryTakeEffect(_ability._takeDamageEffect, gameObject, Level, data);
+                            }
 
-                                    hitGameplayEffectSystem.TryTakeEffect(_ability._takeDamageEffect, gameObject, Level, data);
-                                }
+                            for (int effectIndex = 0; effectIndex < _ability._applyGameplayEffectsOnHitToOther.Length; effectIndex++)
+                            {
+                                var effect = _ability._applyGameplayEffectsOnHitToOther[effectIndex];
 
-                                for (int effectIndex = 0; effectIndex < _ability._applyGameplayEffectsOnHitToOther.Length; effectIndex++)
-                                {
-                                    var effect = _ability._applyGameplayEffectsOnHitToOther[effectIndex];
+                                hitGameplayEffectSystem.TryTakeEffect(effect, gameObject, Level, null);
+                            }
 
-                                    hitGameplayEffectSystem.TryTakeEffect(effect, gameObject, Level, null);
-                                }
+                            if (_ability._onHitToOtherCue.Cue)
+                            {
+                                Vector3 position = hit.distance > 0 ? hit.point + hit.transform.TransformDirection(_ability._onHitToOtherCue.Position)
+                                                                    : hit.collider.ClosestPoint(_sphereCast.StartPosition);
+                                Vector3 rotation = Quaternion.LookRotation(hit.normal, Vector3.up).eulerAngles + hit.transform.TransformDirection(_ability._onHitToOtherCue.Rotation);
+                                Vector3 scale = _ability._onHitToOtherCue.Scale;
 
-                                if (_ability._onHitToOtherCue.Cue)
-                                {
-                                    Vector3 position = hit.distance > 0 ? hit.point + hit.transform.TransformDirection(_ability._onHitToOtherCue.Position)
-                                                                        : hit.collider.ClosestPoint(prevPosition);
-                                    Vector3 rotation = Quaternion.LookRotation(hit.normal, Vector3.up).eulerAngles + hit.transform.TransformDirection(_ability._onHitToOtherCue.Rotation);
-                                    Vector3 scale = _ability._onHitToOtherCue.Scale;
-
-                                    _ability._onHitToOtherCue.Cue.Play(position, rotation, scale);
-                                }
+                                _ability._onHitToOtherCue.Cue.Play(position, rotation, scale);
                             }
                         }
                     }
@@ -332,7 +318,22 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _coolTimeEffectSpec = null;
             }
 
-            private void _animationPlayer_OnNotify(string eventName)
+            private void _animationEvents_OnStartedBlendOut()
+            {
+                TryFinishAbility();
+            }
+
+            private void _animationEvents_OnCanceled()
+            {
+                CancelAbility();
+            }
+
+            private void _animationEvents_OnFailed()
+            {
+                CancelAbility();
+            }
+
+            private void _animationEvents_OnNotify(string eventName)
             {
                 if (!IsPlaying)
                     return;
@@ -347,11 +348,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 }
             }
 
-            private void _animationPlayer_OnEnterNotifyState(string eventName)
+            private void _animationEvents_OnEnterNotifyState(string eventName)
             {
-                if (!IsPlaying)
-                    return;
-
                 switch (eventName)
                 {
                     case "Trace":
@@ -361,11 +359,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                         break;
                 }
             }
-            private void _animationPlayer_OnExitNotifyState(string eventName)
+            private void _animationEvents_OnExitNotifyState(string eventName)
             {
-                if (!IsPlaying)
-                    return;
-
                 switch (eventName)
                 {
                     case "Trace":

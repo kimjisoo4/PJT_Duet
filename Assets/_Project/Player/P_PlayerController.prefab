@@ -247,7 +247,7 @@ MonoBehaviour:
   _playerManager: {fileID: 0}
   _turnDirectionState: 0
   _isPlayer: 0
-  _affiliation: 2
+  _affiliation: 0
 --- !u!1 &8036280054929956186
 GameObject:
   m_ObjectHideFlags: 0

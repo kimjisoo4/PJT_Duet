@@ -127,6 +127,10 @@ namespace StudioScor.Utilities
         {
             _defaultStateHash = Animator.StringToHash(_defaultState);
         }
+        private void OnDisable()
+        {
+            CancelAnimation();
+        }
 
         private void LateUpdate()
         {
@@ -262,7 +266,16 @@ namespace StudioScor.Utilities
             if (_currentStateHash != hash)
                 return;
 
-            ForceStopAnimation(fadeTime);
+            var prevState = _state;
+
+            if (prevState == EAnimationState.BlendOut)
+            {
+                CancelAnimation();
+            }
+            else
+            {
+                ForceStopAnimation(fadeTime);
+            }
         }
         public void ForceStopAnimation(float fadeTime = 0.2f)
         {

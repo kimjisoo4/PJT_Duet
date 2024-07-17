@@ -408,20 +408,6 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.30182928
-        functionName: AnimNotifyStateEnter
-        data: Trace
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.43371212
-        functionName: AnimNotifyStateExit
-        data: Trace
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
       - time: 0
         functionName: AnimNotifyStateEnter
         data: Turn
@@ -432,6 +418,20 @@ ModelImporter:
       - time: 0.24722221
         functionName: AnimNotifyStateExit
         data: Turn
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.30182928
+        functionName: AnimNotifyStateEnter
+        data: Trace
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.43371212
+        functionName: AnimNotifyStateExit
+        data: Trace
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0

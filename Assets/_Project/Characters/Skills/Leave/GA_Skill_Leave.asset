@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 851890c8122dfa14a9232c9ddc887e82, type: 3}
   m_Name: GA_Skill_Leave
   m_EditorClassIdentifier: 
-  UseDebug: 1
+  UseDebug: 0
   abilityName: Leave
   abilityTag: {fileID: 11400000, guid: 20a6c120f74013c4a833970edf113a1c, type: 2}
   attributeTags: []

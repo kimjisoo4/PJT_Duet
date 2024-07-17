@@ -13,7 +13,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
             return new Spec(this, abilitySystem, level);
         }
 
-        public class Spec : GASPassiveAbilitySpec
+        public class Spec : GASPassiveAbilitySpec, IUpdateableAbilitySpec
         {
             private readonly IPawnSystem _pawnSystem;
             private readonly IRotationSystem _rotationSystem;
@@ -22,6 +22,19 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
             {
                 _pawnSystem = gameObject.GetPawnSystem();
                 _rotationSystem = gameObject.GetRotationSystem();
+            }
+
+            public void FixedUpdateAbility(float deltaTime)
+            {
+                return;
+            }
+
+            public void UpdateAbility(float deltaTime)
+            {
+                if(IsPlaying)
+                {
+                    _rotationSystem.SetLookDirection(_pawnSystem.LookDirection);
+                }
             }
 
             protected override void EnterAbility()

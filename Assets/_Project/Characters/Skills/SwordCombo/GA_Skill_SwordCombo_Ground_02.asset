@@ -33,9 +33,11 @@ MonoBehaviour:
   _skillType: 0
   _animationName: SwordCombo_02
   _fadeInTime: 0.2
+  _turnTag: {fileID: 11400000, guid: 6d15f3d07c563074d9dd397fd12a0276, type: 2}
   _tracePoint: {fileID: 11400000, guid: fd15a44b8089f3d4eb7a7e059924865f, type: 2}
   _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
   _traceRadius: 1
+  _coolTimeEffect: {fileID: 0}
   _takeDamageEffect: {fileID: 11400000, guid: 7b1a53aa683950a4793a23af0ddc97b6, type: 2}
   _applyGameplayEffectsOnHitToOther:
   - {fileID: 11400000, guid: 7357b35a74b6d5d42b4fd17fe822ba1e, type: 2}

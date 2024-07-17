@@ -32,6 +32,7 @@ MonoBehaviour:
   _skillType: 0
   _animationName: HammerCombo_01
   _fadeInTime: 0.2
+  _turnTag: {fileID: 11400000, guid: 6d15f3d07c563074d9dd397fd12a0276, type: 2}
   _tracePoint: {fileID: 11400000, guid: f81dd5aa5a1303140919d9e139c1502f, type: 2}
   _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
   _traceRadius: 1.25

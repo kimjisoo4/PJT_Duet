@@ -258,10 +258,8 @@ namespace PF.PJT.Duet.Pawn
 
         public void Teleport(Vector3 position, Quaternion rotation)
         {
-            _movementSystem.Teleport(position);
-            _rotationSystem.SetRotation(rotation);
-
-            transform.SetPositionAndRotation(position, rotation);
+            _movementSystem.Teleport(position, true);
+            _rotationSystem.SetRotation(rotation, true);
         }
     }
 }

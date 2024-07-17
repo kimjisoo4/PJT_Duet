@@ -26,8 +26,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private string _animationName = "Attack01";
         [SerializeField][Range(0f, 1f)] private float _fadeInTime = 0.2f;
 
-        [Header(" Rotation ")]
-        [SerializeField] private GameplayTag _rotationTag;
+        [Header(" Turn ")]
+        [SerializeField] private GameplayTag _turnTag;
 
         [Header(" Attack Trace ")]
         [SerializeField] private BodyTag _tracePoint;
@@ -65,7 +65,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             private readonly AnimationPlayer.Events _animationEvents;
             private readonly TrailSphereCast _trailSphereCast = new();
-            private readonly MatchTargetWeightMask _matchTargetMask = new MatchTargetWeightMask(Vector3.zero, 1f);
 
             public Spec(Ability ability, IAbilitySystem abilitySystem, int level) : base(ability, abilitySystem, level)
             {
@@ -85,8 +84,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _animationEvents.OnEnterNotifyState += _animationEvents_OnEnterNotifyState;
                 _animationEvents.OnExitNotifyState += _animationEvents_OnExitNotifyState;
             }
-
-            
 
             public override bool CanActiveAbility()
             {
@@ -129,13 +126,13 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             private void OnTurn()
             {
-                if(_ability._rotationTag)
-                    GameplayTagSystem.AddOwnedTag(_ability._rotationTag);
+                if (_ability._turnTag)
+                    GameplayTagSystem.AddOwnedTag(_ability._turnTag);
             }
             private void EndTurn()
             {
-                if(_ability._rotationTag)
-                    GameplayTagSystem.RemoveOwnedTag(_ability._rotationTag);
+                if (_ability._turnTag)
+                    GameplayTagSystem.RemoveOwnedTag(_ability._turnTag);
             }
             private void OnTrace()
             {
@@ -275,7 +272,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     case "Turn":
                         OnTurn();
                         break;
-
                     default:
                         break;
                 }

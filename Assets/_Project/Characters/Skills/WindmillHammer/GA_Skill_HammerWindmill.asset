@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8cbdf08e1ec8f34c9580b08dc5c293a, type: 3}
   m_Name: GA_Skill_HammerWindmill
   m_EditorClassIdentifier: 
-  UseDebug: 1
+  UseDebug: 0
   abilityName: Hammer Windmill
   abilityTag: {fileID: 11400000, guid: 9e0a51adadf0af747b71711722ce2c73, type: 2}
   attributeTags:

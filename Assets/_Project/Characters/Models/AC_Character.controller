@@ -30,7 +30,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HammerCombo_03
-  m_Speed: 1.2
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 6504008667541149528}
@@ -1289,7 +1289,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sowrd
+  m_Name: Sword
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 8025177207301004864}
@@ -1509,7 +1509,7 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0.2
   m_TransitionOffset: 0
-  m_ExitTime: 0.8
+  m_ExitTime: 0.72
   m_HasExitTime: 1
   m_HasFixedDuration: 0
   m_InterruptionSource: 2

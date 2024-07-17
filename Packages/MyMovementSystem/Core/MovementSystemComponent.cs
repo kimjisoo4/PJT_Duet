@@ -39,7 +39,7 @@ namespace StudioScor.MovementSystem
         public void SetMoveDirection(Vector3 direction, float stregnth = -1f);
         public void AddVelocity(Vector3 velocity);
         public void MovePosition(Vector3 position);
-        public void Teleport(Vector3 position = default);
+        public void Teleport(Vector3 position = default, bool isImmediately = true);
         public void UpdateMovement(float deltaTime);
 
         public event ChangedMovementHandler OnLanded;
@@ -297,7 +297,7 @@ namespace StudioScor.MovementSystem
             }
         }
 
-        public abstract void Teleport(Vector3 position);
+        public abstract void Teleport(Vector3 position = default, bool isImmediately = true);
         protected abstract void OnMovement(float deltaTime);
         protected virtual void PropertyUpdate()
         {
