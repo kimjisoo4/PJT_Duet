@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: GA_PawnAbiltiy_UpdateMovementInput
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: 
+  _id: GA_PawnAbiltiy_UpdateMovementInput
   abilityTag: {fileID: 11400000, guid: 805576a40355c4841831954476a8f650, type: 2}
   attributeTags: []
-  grantTags:
-    owneds: []
-    blocks: []
   conditionTags:
     requireds: []
     obstacleds:
     - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+  grantTags:
+    owneds: []
+    blocks: []
   cancelAbilityTags: []

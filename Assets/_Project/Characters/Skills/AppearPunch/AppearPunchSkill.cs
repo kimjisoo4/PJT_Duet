@@ -1,25 +1,21 @@
-﻿using StudioScor.Utilities;
-using UnityEngine;
+﻿using PF.PJT.Duet.Pawn.Effect;
 using StudioScor.AbilitySystem;
 using StudioScor.BodySystem;
-using StudioScor.GameplayEffectSystem;
-using PF.PJT.Duet.Pawn.Effect;
-using System.Collections.Generic;
 using StudioScor.GameplayCueSystem;
-using StudioScor.PlayerSystem;
+using StudioScor.GameplayEffectSystem;
 using StudioScor.MovementSystem;
+using StudioScor.PlayerSystem;
 using StudioScor.RotationSystem;
+using StudioScor.Utilities;
+using UnityEngine;
 
 namespace PF.PJT.Duet.Pawn.PawnSkill
 {
 
     [CreateAssetMenu(menuName = "Project/Duet/PawnSkill/new Appear Punch Skill", fileName = "GA_Skill_Appear_Punch")]
-    public class AppearPunchSkill : GASAbility, ISkill
+    public class AppearPunchSkill : CharacterSkill
     {
-        [Header(" [ Appear Punch Skill ] ")][SerializeField] private Sprite _icon;
-        [SerializeField] private ESkillType _skillType;
-
-
+        [Header(" [ Appear Punch Skill ] ")]
         [Header(" Animations ")]
         [SerializeField] private string _animationName = "AppearPunch";
         [SerializeField][Range(0f, 1f)] private float _fadeInTime = 0f;
@@ -46,8 +42,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private FGameplayCue _onImpactCue;
         [SerializeField] private FGameplayCue _onHitToOtherCue;
         [SerializeField] private FGameplayCue _onSuccessedPlayerHit;
-        public Sprite Icon => _icon;
-        public ESkillType SkillType => _skillType;
+
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
             return new Spec(this, abilitySystem, level);
@@ -264,9 +259,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                             if (_ability._takeDamageEffect)
                             {
-                                var data = new TakeDamageEffect.FElement(hit.point, hit.normal, hit.collider, _sphereCast.StartPosition.Direction(_sphereCast.EndPosition), _sphereCast.Owner, gameObject);
+                                var data = TakeDamageEffect.Element.Get(hit.point, hit.normal, hit.collider, _sphereCast.StartPosition.Direction(_sphereCast.EndPosition), _sphereCast.Owner, gameObject);
 
                                 hitGameplayEffectSystem.TryTakeEffect(_ability._takeDamageEffect, gameObject, Level, data);
+
+                                data.Release();
                             }
 
                             for (int effectIndex = 0; effectIndex < _ability._applyGameplayEffectsOnHitToOther.Length; effectIndex++)

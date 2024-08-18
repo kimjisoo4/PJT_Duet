@@ -1,18 +1,13 @@
-﻿using PF.PJT.Duet.Pawn.Effect;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 namespace PF.PJT.Duet.Pawn.PawnSkill
 {
     public interface ISkill
     {
+        public string Name { get; }
         public Sprite Icon { get; }
         public ESkillType SkillType { get; }
-    }
-    public interface ISkillState
-    {
-        public float CoolTime { get; }
-        public float RemainCoolTime { get; }
-        public float NormalizedCoolTime { get; }
+        public string GetDescription();
     }
 }

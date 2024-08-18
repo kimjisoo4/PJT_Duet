@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: GA_PawnAbiltiy_ApplyRootMotion
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: Apply Root Motion
+  _id: GA_PawnAbiltiy_ApplyRootMotion
   abilityTag: {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
   attributeTags: []
-  grantTags:
-    owneds: []
-    blocks: []
   conditionTags:
     requireds:
     - {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
     obstacleds: []
+  grantTags:
+    owneds: []
+    blocks: []
   cancelAbilityTags: []

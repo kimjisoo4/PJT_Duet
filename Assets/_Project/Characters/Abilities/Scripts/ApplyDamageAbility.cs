@@ -1,9 +1,8 @@
-﻿using UnityEngine;
-using StudioScor.AbilitySystem;
-using StudioScor.Utilities;
-using StudioScor.StatSystem;
+﻿using StudioScor.AbilitySystem;
+using StudioScor.GameplayTagSystem;
 using StudioScor.StatusSystem;
-using System.Net.NetworkInformation;
+using StudioScor.Utilities;
+using UnityEngine;
 
 namespace PF.PJT.Duet.Pawn.PawnAbility
 {
@@ -13,6 +12,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
         [Header(" Apply Damage Ability ")]
         [SerializeField] private StatusTag _hpTag;
         [SerializeField] private DamageResultEvent _damageResultEvent;
+        [SerializeField] private GameplayTag _onHitTriggerTag;
 
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
@@ -62,6 +62,8 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                 damageInfo.AppliedDamage = damage;
 
                 _ability._damageResultEvent.Invoke(new FDamageResult(damage, transform.position, damageInfo.Type));
+
+                GameplayTagSystem.TriggerTag(_ability._onHitTriggerTag);
             }
         }
     }

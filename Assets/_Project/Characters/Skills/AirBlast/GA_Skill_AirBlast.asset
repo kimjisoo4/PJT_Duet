@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_Skill_AirBlast
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: Air Blast
+  _id: GA_Skill_AirBlast
   abilityTag: {fileID: 11400000, guid: 05a37e651f6bda54ca91a5b46959494b, type: 2}
   attributeTags:
   - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
@@ -33,7 +33,11 @@ MonoBehaviour:
     - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
   cancelAbilityTags: []
   _icon: {fileID: 21300000, guid: ce175afd01f9f974a893de3c3d10c4ce, type: 3}
+  _name: 
   _skillType: 2
+  _description: "\uAE30\uB97C \uBAA8\uC544 \uC5D0\uB108\uC9C0 \uAD6C\uCCB4\uB97C
+    \uB0A0\uB9B0\uB2E4. \uCDA9\uC804 \uB2E8\uACC4(\uCD5C\uB300{0}\uCD08)\uC5D0 \uB530\uB77C
+    \uACF5\uACA9\uB825\uC758 {1}%/{2}%/{3}%\uC758 \uD53C\uD574\uB97C \uC900\uB2E4."
   _readyAnimationName: AirBlast_Start
   _readyAnimFadeInTime: 0.1
   _readyAnimFixedTransition: 1
@@ -45,6 +49,18 @@ MonoBehaviour:
   _turnTag: {fileID: 11400000, guid: 6d15f3d07c563074d9dd397fd12a0276, type: 2}
   _projectile: {fileID: 11400000, guid: dba7d1f184ecf4047945c95ea80d1211, type: 2}
   _spawnPoint: {fileID: 11400000, guid: 505aaab0b6f505d4a93e337f8b0451b4, type: 2}
+  _applyGameplayEffectsOnHitToOther_01:
+  - {fileID: 11400000, guid: 876e0b27cb16e6944a2050733c4cdeb2, type: 2}
+  - {fileID: 11400000, guid: a50c9729054243c46982a72afb790902, type: 2}
+  - {fileID: 11400000, guid: 366d6c72fc732b046ba4acf6e3112811, type: 2}
+  _applyGameplayEffectsOnHitToOther_02:
+  - {fileID: 11400000, guid: a50c9729054243c46982a72afb790902, type: 2}
+  - {fileID: 11400000, guid: 366d6c72fc732b046ba4acf6e3112811, type: 2}
+  - {fileID: 11400000, guid: 0b14cd75ccf5b0f408879b0c528bbc04, type: 2}
+  _applyGameplayEffectsOnHitToOther_03:
+  - {fileID: 11400000, guid: a50c9729054243c46982a72afb790902, type: 2}
+  - {fileID: 11400000, guid: 366d6c72fc732b046ba4acf6e3112811, type: 2}
+  - {fileID: 11400000, guid: 1ba83ee322f2aa24bb4dff12b3444fa2, type: 2}
   _coolTimeEffect: {fileID: 11400000, guid: 3d22f554f51a0ad4790dffe136767f28, type: 2}
   _spawnedCue:
     Cue: {fileID: 11400000, guid: 3938793d18494b8498b45326eb58de7d, type: 2}

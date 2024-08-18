@@ -69,15 +69,7 @@ MonoBehaviour:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 2, y: 2, z: 2}
-  _takeDamages:
-  - {fileID: 11400000, guid: 876e0b27cb16e6944a2050733c4cdeb2, type: 2}
-  - {fileID: 11400000, guid: 0b14cd75ccf5b0f408879b0c528bbc04, type: 2}
-  - {fileID: 11400000, guid: 1ba83ee322f2aa24bb4dff12b3444fa2, type: 2}
-  _takeRadialKnockbacks:
-  - {fileID: 11400000, guid: a50c9729054243c46982a72afb790902, type: 2}
-  _applyGameplayEffectsOnHitToOther:
-  - {fileID: 11400000, guid: 366d6c72fc732b046ba4acf6e3112811, type: 2}
-  _applyGameplayEffectsOnSuccessedHit: []
+  _applyGameplayEffectsOnHitToOther: []
 --- !u!114 &396257148805158443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,6 +99,9 @@ MonoBehaviour:
     _onEndedRaycast:
       m_PersistentCalls:
         m_Calls: []
+  _useAlwaysDrawGizmos: 0
+  _isWire: 1
+  _gizmosColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &5726285272375439395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,6 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
+  _poolContainer: {fileID: 0}
   _releasedWhenDisable: 1
   _onCreated:
     m_PersistentCalls:

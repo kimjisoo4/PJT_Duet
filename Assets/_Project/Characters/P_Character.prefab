@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 285428388805798098}
   - component: {fileID: 1441152112645405717}
   - component: {fileID: 6046190132648609203}
+  - component: {fileID: 8617892478365922569}
   m_Layer: 6
   m_Name: P_Character
   m_TagString: Untagged
@@ -71,7 +72,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 1.08, z: 0}
 --- !u!114 &4193450265519391899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,16 +86,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  _characterInformationData: {fileID: 0}
+  _characterInformationData: {fileID: 11400000, guid: 78cc0381708ed794ca56d0bce1b2c839,
+    type: 2}
   _model: {fileID: 0}
-  _attackAbility: {fileID: 0}
-  _skillAbility: {fileID: 0}
+  _attackAbility: {fileID: 11400000, guid: d97d523f6a92c6642a1f3b28baab8003, type: 2}
+  _skillAbility: {fileID: 11400000, guid: 696493dc85b42214d9c8f1ae0fb7e237, type: 2}
   _dashAbility: {fileID: 11400000, guid: 4ea00ee30e228e94d949280a09e57a35, type: 2}
   _inputAttackTag: {fileID: 11400000, guid: 241b0b1e98a4c3842b150d4a38a69637, type: 2}
   _inputSkillTag: {fileID: 11400000, guid: 69f31f611cfa4244b95dd20d471f0983, type: 2}
   _inputDashTag: {fileID: 11400000, guid: cb5ec0c08662bab4893e7bd59235ccfc, type: 2}
-  _appearAbility: {fileID: 0}
+  _appearAbility: {fileID: 11400000, guid: 2da42ed5d99683342a380c6ede06f26c, type: 2}
   _leaveAbility: {fileID: 11400000, guid: d4820fd723c264d49ad72727c39239d6, type: 2}
+  _resetTriggerTag: {fileID: 11400000, guid: 903d481e2b5b3c74f9461acce4289fd3, type: 2}
+  _enemyControllers: []
+  _onSpawend: {fileID: 0}
+  _onDead: {fileID: 0}
 --- !u!114 &5849666587521794672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,6 +208,12 @@ MonoBehaviour:
   - AbilityName: 'GA_PawnAbiltiy_SetRotationInLookDirection [ Level : 0 ]'
     Ability: {fileID: 11400000, guid: 6f0daf6a87995824da0d9c2eb606d59e, type: 2}
     Level: 0
+  - AbilityName: 'GA_PawnAbiltiy_ToggleShaderFloat_SuperArmor [ Level : 0 ]'
+    Ability: {fileID: 11400000, guid: be409f22db264a14c94f03cb435a71ba, type: 2}
+    Level: 0
+  - AbilityName: 'GA_PawnAbiltiy_TriggerShaderFloat_Hit [ Level : 0 ]'
+    Ability: {fileID: 11400000, guid: c4f27ef6a1f68de42b1b7dadf88d0f9b, type: 2}
+    Level: 0
 --- !u!114 &2224922915931206671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,7 +309,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  _InitializationStatuses: {fileID: 0}
+  _initializationStatuses: {fileID: 0}
 --- !u!114 &285428388805798098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,3 +351,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _speed: 1
+--- !u!114 &8617892478365922569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6419800303973250403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f7f43c997a5c6747bbc32eeff51e50f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _autoPlaying: 1

@@ -34,12 +34,12 @@ namespace PF.PJT.Duet.Controller
         [SerializeField] private InputActionReference _skillActionReference;
         [SerializeField] private InputActionReference _dashActionReference;
 
+        [Header(" GameEvents ")]
+        [SerializeField] private GameEvent _onDeadAllCharacter;
+
         [Header(" Change Test ")]
         [SerializeField] private GameObject _characterA;
         [SerializeField] private GameObject _characterB;
-
-        [Header(" Cursor Test ")]
-        [SerializeField] private bool _useHideCursor = true; 
 
         private Camera _mainCamera;
         
@@ -48,6 +48,7 @@ namespace PF.PJT.Duet.Controller
 
         private InputAction _moveInputAction;
         private InputAction _lookInputAction;
+        private InputAction _changeInputAction;
         private InputAction _attackInputAction;
         private InputAction _skillInputAction;
         private InputAction _dashInputAction;
@@ -98,22 +99,6 @@ namespace PF.PJT.Duet.Controller
             _lookAxisComp.Tick(deltaTime);
         }
 
-        private void OnApplicationFocus(bool focus)
-        {
-            if (!_useHideCursor)
-                return;
-
-            if(focus)
-            {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-            else
-            {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-            }
-        }
 
         private void InitPlayerController()
         {
@@ -124,6 +109,33 @@ namespace PF.PJT.Duet.Controller
 
             _mainCharacter = _characterA.GetComponent<ICharacter>();
             _subCharacter = _characterB.GetComponent<ICharacter>();
+
+            _mainCharacter.OnDead += _mainCharacter_OnDead;
+            _subCharacter.OnDead += _subCharacter_OnDead;
+        }
+
+        private void _subCharacter_OnDead(ICharacter character)
+        {
+            if(_mainCharacter is not null && !_mainCharacter.IsDead)
+            {
+                SetCurrentCharacter(_mainCharacter);
+            }
+            else
+            {
+                _onDeadAllCharacter.Invoke();
+            }
+        }
+
+        private void _mainCharacter_OnDead(ICharacter character)
+        {
+            if (_subCharacter is not null && !_subCharacter.IsDead)
+            {
+                SetCurrentCharacter(_subCharacter);
+            }
+            else
+            {
+                _onDeadAllCharacter.Invoke();
+            }
         }
 
         #region Controller
@@ -148,14 +160,13 @@ namespace PF.PJT.Duet.Controller
 
             Inovke_OnChangedCurrentCharacter();
 
-
             if(_currentCharacter != _mainCharacter)
             {
-                _mainCharacter.TryLeave();
+                _mainCharacter.Leave();
             }
             else
             {
-                _subCharacter.TryLeave();
+                _subCharacter.Leave();
             }
 
             _controllerSystem.OnPossessedPawn += _controllerSystem_OnPossessedPawn;
@@ -171,16 +182,17 @@ namespace PF.PJT.Duet.Controller
         }
 
         
-        private void ChangeCharacter()
+        private void SetCurrentCharacter(ICharacter nextCharacter)
         {
-            var prevCharacter = _currentCharacter;
-            var nextCharacter = _currentCharacter != _mainCharacter ? _mainCharacter : _subCharacter;
+            if (_currentCharacter == nextCharacter)
+                return;
 
-            if (!prevCharacter.TryLeave())
+            if (!nextCharacter.CanAppear())
                 return;
 
             ReleaseAllInput();
 
+            var prevCharacter = _currentCharacter;
             _currentCharacter = nextCharacter;
 
             var prevPawn = prevCharacter.gameObject.GetPawnSystem();
@@ -190,6 +202,9 @@ namespace PF.PJT.Duet.Controller
             _subControllerSystem.OnPossess(prevPawn);
 
             _currentCharacter.Teleport(prevCharacter.transform.position, prevCharacter.transform.rotation);
+
+            if(prevCharacter.CanLeave())
+                prevCharacter.Leave();
 
             _currentCharacter.Appear();
 
@@ -229,8 +244,8 @@ namespace PF.PJT.Duet.Controller
             _lookInputAction.canceled += _lookInputAction_canceled;
 
 
-            var changeAction = actionMap.FindAction(_changeActionReference.action.name);
-            changeAction.started += ChangeAction_started;
+            _changeInputAction = actionMap.FindAction(_changeActionReference.action.name);
+            _changeInputAction.started += ChangeAction_started;
 
             _attackInputAction = actionMap.FindAction(_attackActionReference.action.name);
             _attackInputAction.started += AttackAction_started;
@@ -246,32 +261,40 @@ namespace PF.PJT.Duet.Controller
         }
         private void ResetInput()
         {
-            if (!_playerInput)
-                return;
+            if (_moveInputAction is not null)
+            {
+                _moveInputAction.performed -= _moveInputAction_performed;
+                _moveInputAction.canceled -= _moveInputAction_canceled;
+            }
 
-            var actionMap = _playerInput.currentActionMap;
+            if (_lookInputAction is not null)
+            {
+                _lookInputAction.performed -= _lookInputAction_performed;
+                _lookInputAction.canceled -= _lookInputAction_canceled;
+            }
 
-            if (actionMap is null)
-                return;
+            if (_changeInputAction is not null)
+            {
+                _changeInputAction.started -= ChangeAction_started;
+            }
 
-            _moveInputAction.performed -= _moveInputAction_performed;
-            _moveInputAction.canceled -= _moveInputAction_canceled;
+            if (_attackInputAction is not null)
+            {
+                _attackInputAction.started -= AttackAction_started;
+                _attackInputAction.canceled -= AttackAction_canceled;
+            }
 
-            _lookInputAction.performed -= _lookInputAction_performed;
-            _lookInputAction.canceled -= _lookInputAction_canceled;
+            if(_skillInputAction is not null)
+            {
+                _skillInputAction.started -= _skillInputAction_started;
+                _skillInputAction.canceled -= _skillInputAction_canceled;
+            }
 
-
-            var changeAction = actionMap.FindAction(_changeActionReference.action.name);
-            changeAction.started -= ChangeAction_started;
-
-            _attackInputAction.started -= AttackAction_started;
-            _attackInputAction.canceled -= AttackAction_canceled;
-
-            _skillInputAction.started -= _skillInputAction_started;
-            _skillInputAction.canceled -= _skillInputAction_canceled;
-
-            _dashInputAction.started -= DashAction_started;
-            _dashInputAction.canceled -= DashAction_canceled;
+            if(_dashInputAction is not null)
+            {
+                _dashInputAction.started -= DashAction_started;
+                _dashInputAction.canceled -= DashAction_canceled;
+            }
         }
 
         private void ReleaseAllInput()
@@ -314,7 +337,9 @@ namespace PF.PJT.Duet.Controller
 
         private void ChangeAction_started(InputAction.CallbackContext obj)
         {
-            ChangeCharacter();
+            var nextCharacter = _currentCharacter == _mainCharacter ? _subCharacter : _mainCharacter;
+
+            SetCurrentCharacter(nextCharacter);
         }
         private void AttackAction_started(InputAction.CallbackContext obj)
         {

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_PawnAbiltiy_ApplyStiffen
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: 
+  _id: GA_PawnAbiltiy_ApplyStiffen
   abilityTag: {fileID: 11400000, guid: fb22d332c8f7def438e75a7383360ce7, type: 2}
   attributeTags: []
   conditionTags:

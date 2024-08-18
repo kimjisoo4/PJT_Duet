@@ -27,6 +27,8 @@ MonoBehaviour:
     owneds: []
     blocks: []
   _cancelEffectTags: []
-  _damageType: {fileID: 0}
+  _damageType: {fileID: 11400000, guid: 51a87664067800e4a8c65116af67c083, type: 2}
   _baseStat: {fileID: 11400000, guid: ec71c03f010d2164cadd48f171f12fd0, type: 2}
   _damageRatio: 0.5
+  _isAdditionalDamage: 0
+  _onAttackHitTag: {fileID: 11400000, guid: 9063c96f2eaa0b04aa9fd0ede7483ce0, type: 2}

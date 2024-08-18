@@ -1,27 +1,20 @@
-using PF.PJT.Duet.Define;
 using PF.PJT.Duet.Pawn.Effect;
 using StudioScor.AbilitySystem;
 using StudioScor.BodySystem;
 using StudioScor.GameplayCueSystem;
 using StudioScor.GameplayEffectSystem;
 using StudioScor.GameplayTagSystem;
-using StudioScor.MovementSystem;
 using StudioScor.PlayerSystem;
 using StudioScor.Utilities;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace PF.PJT.Duet.Pawn.PawnSkill
 {
 
     [CreateAssetMenu(menuName = "Project/Duet/PawnSkill/new Rush Thrust Skill", fileName = "GA_Skill_RushThrust")]
-    public class RushThrustSkill : GASAbility, ISkill
+    public class RushThrustSkill : CharacterSkill
     {
         [Header(" [ Rush Thrust Skill ] ")]
-        [SerializeField] private Sprite _icon;
-        [SerializeField] private ESkillType _skillType;
-
         [Header(" Animation ")]
         [SerializeField] private string _rushAnimationName;
         [SerializeField][Range(0f, 1f)] private float _fadeInTime = 0.2f;
@@ -48,9 +41,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [Header(" Gameplay Cue ")]
         [SerializeField] private FGameplayCue _onHitToOtherCue;
         [SerializeField] private FGameplayCue _onSuccessedPlayerHit;
-
-        public Sprite Icon => _icon;
-        public ESkillType SkillType => _skillType;
 
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
@@ -246,12 +236,14 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                         {
                             if (_ability._takeDamageEffect)
                             {
-                                var data = new TakeDamageEffect.FElement(hit.point, hit.normal, hit.collider, _sphereCast.StartPosition.Direction(_sphereCast.EndPosition), _sphereCast.Owner, gameObject);
+                                var data = TakeDamageEffect.Element.Get(hit.point, hit.normal, hit.collider, _sphereCast.StartPosition.Direction(_sphereCast.EndPosition), _sphereCast.Owner, gameObject);
 
                                 if (hitGameplayEffectSystem.TryTakeEffect(_ability._takeDamageEffect, gameObject, Level, data).isActivate)
                                 {
                                     isHit = true;
                                 }
+
+                                data.Release();
                             }
 
                             for (int effectIndex = 0; effectIndex < _ability._applyGameplayEffectsOnHitToOther.Length; effectIndex++)

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_Skill_Diveroll
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: Diveroll
+  _id: GA_Skill_Diveroll
   abilityTag: {fileID: 11400000, guid: 918a3aff35629b04d81b44b11ec4faa2, type: 2}
   attributeTags:
   - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
@@ -37,8 +37,9 @@ MonoBehaviour:
   cancelAbilityTags:
   - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
   _icon: {fileID: 0}
-  _isSkill: 0
+  _name: 
   _skillType: 0
+  _description: 
   _animationName: Diveroll
   _motionTime: motionTime
   _fadeInTime: 0.1

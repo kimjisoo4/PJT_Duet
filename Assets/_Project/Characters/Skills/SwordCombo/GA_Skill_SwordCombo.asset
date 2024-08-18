@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_Skill_SwordCombo
   m_EditorClassIdentifier: PF.PJT.Duet:PF.PJT.Duet.Pawn.PawnSkill:PunchComboSkill
   UseDebug: 0
-  abilityName: Sword Combo
+  _id: GA_Skill_SwordCombo
   abilityTag: {fileID: 11400000, guid: 2abce383ef02a3746ae231857fe23256, type: 2}
   attributeTags:
   - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
@@ -28,7 +28,9 @@ MonoBehaviour:
     - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
   cancelAbilityTags: []
   _icon: {fileID: 21300000, guid: e6e43c9413aeb224e8795078bc800227, type: 3}
+  _name: 
   _skillType: 1
+  _description: 
   _groundActions:
   - {fileID: 11400000, guid: 53be5efb694e55f4b9b4904aa1ee9da6, type: 2}
   - {fileID: 11400000, guid: 5d1c00a94d3ef8d40b205c90f903558a, type: 2}

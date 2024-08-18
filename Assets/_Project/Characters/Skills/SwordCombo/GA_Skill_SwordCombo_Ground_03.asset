@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_Skill_SwordCombo_Ground_03
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: Punch
+  _id: GA_Skill_SwordCombo_Ground_03
   abilityTag: {fileID: 11400000, guid: 954ada6c8464eda419095ebc169c17d4, type: 2}
   attributeTags: []
   conditionTags:
@@ -30,7 +30,9 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
   cancelAbilityTags: []
   _icon: {fileID: 0}
+  _name: 
   _skillType: 0
+  _description: 
   _animationName: SwordCombo_03
   _fadeInTime: 0.2
   _turnTag: {fileID: 11400000, guid: 6d15f3d07c563074d9dd397fd12a0276, type: 2}

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_PawnAbiltiy_GhostCharacter
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: Ghost Character
+  _id: GA_PawnAbiltiy_GhostCharacter
   abilityTag: {fileID: 11400000, guid: 4b76024f94481d042ac2ed541d7ff898, type: 2}
   attributeTags: []
   conditionTags:

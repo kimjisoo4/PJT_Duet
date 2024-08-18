@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_Skill_Leave
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: Leave
+  _id: GA_Skill_Leave
   abilityTag: {fileID: 11400000, guid: 20a6c120f74013c4a833970edf113a1c, type: 2}
   attributeTags: []
   conditionTags:

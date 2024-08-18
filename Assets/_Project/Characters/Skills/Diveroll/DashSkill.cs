@@ -11,13 +11,9 @@ using System;
 namespace PF.PJT.Duet.Pawn.PawnSkill
 {
     [CreateAssetMenu(menuName = "Project/Duet/PawnSkill/new Diveroll Skill", fileName = "GA_Skill_Diveroll")]
-    public class DashSkill : GASAbility, ISkill
+    public class DashSkill : CharacterSkill
     {
         [Header(" [ Diveroll Skill ] ")]
-        [SerializeField] private Sprite _icon;
-        [SerializeField] private bool _isSkill;
-        [SerializeField] private ESkillType _skillType;
-
         [Header(" Animation")]
         [SerializeField] private string _animationName = "Slide";
         [SerializeField] private string _motionTime = "motionTime";
@@ -31,10 +27,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
         [Header(" Gameplay Effects ")]
         [SerializeField] private CoolTimeEffect _coolTimeEffect;
-
-        public Sprite Icon => _icon;
-        public bool IsSkill => _isSkill;
-        public ESkillType SkillType => _skillType;
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
             return new Spec(this, abilitySystem, level);

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_PawnAbiltiy_ApplyDamage
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: Apply Damage
+  _id: GA_PawnAbiltiy_ApplyDamage
   abilityTag: {fileID: 11400000, guid: 0839948bb0f1ae1468910c7d3dd113c0, type: 2}
   attributeTags: []
   conditionTags:
@@ -27,3 +27,4 @@ MonoBehaviour:
   cancelAbilityTags: []
   _hpTag: {fileID: 11400000, guid: 6aa6e03b3a1569748a402134867cfd0b, type: 2}
   _damageResultEvent: {fileID: 11400000, guid: 0f53c8eaeb32ef84f8fc16fedf206042, type: 2}
+  _onHitTriggerTag: {fileID: 11400000, guid: c6d3c9c5ecbaaba4d9d668bd35c061fe, type: 2}

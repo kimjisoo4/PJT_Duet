@@ -38,9 +38,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private FGameplayCue[] _changeChargeLevelCues;
 
         [Header(" Gameplay Effects ")]
-        [SerializeField] private TakeDamageEffect[] _takeDamageEffects;
-        [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnHitToOther;
-        [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnSuccessedHit;
+        [SerializeField] private GameplayEffect[] _addedApplyGameplayEffectsOnHitToOther;
+        
+        private GameplayEffect[] _applyGameplayEffectsOnHitToOther;
 
         public GameObject Owner { get; private set; }
 
@@ -100,7 +100,13 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             }
             if(_projectileFX is not null)
             {
+                _projectileFX.Stop();
                 _projectileFX = null;
+            }
+            if (_charingFX is not null)
+            {
+                _charingFX.Stop();
+                _charingFX = null;
             }
         }
 
@@ -122,9 +128,15 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         public void SetOwner(GameObject newOwner, IAbilitySpec abilitySpec)
         {
             Owner = newOwner;
-            _pawnSystem = Owner.GetPawnSystem();
             _abilitySpec = abilitySpec;
+
+            _pawnSystem = Owner.GetPawnSystem();
         }
+        public void SetApplyGameplayEffectToOther(GameplayEffect[] gameplayEffects)
+        {
+            _addedApplyGameplayEffectsOnHitToOther = gameplayEffects;
+        }
+
 
         public void OnProjectile()
         {
@@ -162,7 +174,10 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         private void PlayChangedChargeChangingFX(int chargeLevel)
         {
             if (_charingFX is not null)
+            {
                 _charingFX.Stop();
+                _charingFX = null;
+            }
 
             FGameplayCue targetCue;
 
@@ -248,11 +263,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             if (hitCount == 0)
                 return;
 
-            Vector3 direction = _sphereCast.StartPosition.Direction(_sphereCast.EndPosition);
-
             bool isHit = false;
 
-            for(int i = 0; i < hitCount; i++)
+            Vector3 direction = _sphereCast.StartPosition.Direction(_sphereCast.EndPosition);
+
+            for (int i = 0; i < hitCount; i++)
             {
                 var hit = hitResult[i];
 
@@ -261,51 +276,64 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 if (hit.transform.TryGetPawnSystem(out IPawnSystem hitPawn) && hitPawn.Controller.CheckAffiliation(_pawnSystem.Controller) != EAffiliation.Hostile)
                     continue;
 
-                    isHit = true;
+                isHit = true;
+
+                if (_applyGameplayEffectsOnHitToOther is null || _applyGameplayEffectsOnHitToOther.Length == 0)
+                    break;
 
                 if (hit.transform.TryGetGameplayEffectSystem(out var hitEffectSystem))
                 {
-                    if (_takeDamageEffects is not null && _takeDamageEffects.Length > 0)
+                    foreach (var effect in _applyGameplayEffectsOnHitToOther)
                     {
-                        TakeDamageEffect.FElement element = new TakeDamageEffect.FElement(hit.point, hit.normal, hit.collider, direction, gameObject, Owner);
-                        var takeDamage = _takeDamageEffects.ElementAtOrDefault(_chargeable.CurrentChargeLevel);
-
-                        if (!takeDamage)
+                        if (effect is TakeDamageEffect takeDamageEffect)
                         {
-                            takeDamage = _takeDamageEffects.Last();
+                            TakeDamageEffect.Element element = TakeDamageEffect.Element.Get(hit.point, hit.normal, hit.collider, direction, gameObject, Owner);
+
+                            hitEffectSystem.TryTakeEffect(takeDamageEffect, Owner, _abilitySpec.Level, element);
+
+                            element.Release();
                         }
+                        else if (effect is TakeRadialKnockbackEffect takeRadialKnockbackEffect)
+                        {
+                            var radialData = new TakeRadialKnockbackEffect.FElement(transform.position);
 
-                        hitEffectSystem.TryTakeEffect(takeDamage, Owner, _abilitySpec.Level, element);
+                            if (hitEffectSystem.TryTakeEffect(takeRadialKnockbackEffect, gameObject, _abilitySpec.Level, radialData).isActivate)
+                            {
+                                isHit = true;
+                            }
+                        }
+                        else
+                        {
+                            hitEffectSystem.TryTakeEffect(effect, gameObject, _abilitySpec.Level, null);
+                        }
                     }
-
-                    for (int effectIndex = 0; effectIndex < _applyGameplayEffectsOnHitToOther.Length; effectIndex++)
-                    {
-                        var effect = _applyGameplayEffectsOnHitToOther[effectIndex];
-
-                        hitEffectSystem.TryTakeEffect(effect, gameObject, _abilitySpec.Level, null);
-                    }
-
                 }
             }
 
             if (!isHit)
                 return;
 
+            SpawnExplosion();
+
+            EndProjectile();
+        }
+
+        private void SpawnExplosion()
+        {
             var explosionActor = _explosionPool.Get();
 
             explosionActor.SetPositionAndRotation(transform.position, transform.rotation);
             explosionActor.gameObject.SetActive(true);
 
-            var spwaned = explosionActor.GetComponent<ISpawnedActorToAbility>();
-            spwaned.SetOwner(Owner, _abilitySpec);
+            var spawned = explosionActor.GetComponent<ISpawnedActorToAbility>();
+            spawned.SetOwner(Owner, _abilitySpec);
+            spawned.SetApplyGameplayEffectToOther(_addedApplyGameplayEffectsOnHitToOther);
 
-            var spawnedChargeable = spwaned.gameObject.GetComponent<IChargeable>();
+            var spawnedChargeable = spawned.gameObject.GetComponent<IChargeable>();
             spawnedChargeable.SetChargeLevel(_chargeable.CurrentChargeLevel);
 
-            var spawnedTrace = spwaned.gameObject.GetComponent<IExplosionActor>();
+            var spawnedTrace = spawned.gameObject.GetComponent<IExplosionActor>();
             spawnedTrace.OnExplosion();
-
-            EndProjectile();
         }
 
         private void _chargeable_OnChangedChargeLevel(IChargeable chargeable, int currentLevel, int prevLevel)
@@ -323,6 +351,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             if (_charingFX is not null)
             {
                 _charingFX.Stop();
+                _charingFX = null;
             }
         }
 

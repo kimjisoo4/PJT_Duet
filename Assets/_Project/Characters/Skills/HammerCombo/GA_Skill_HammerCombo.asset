@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80920523be7d4864d95e2f46a2801194, type: 3}
   m_Name: GA_Skill_HammerCombo
   m_EditorClassIdentifier: PF.PJT.Duet:PF.PJT.Duet.Pawn.PawnSkill:PunchComboSkill
-  UseDebug: 1
-  abilityName: Hammer Combo
+  UseDebug: 0
+  _id: GA_Skill_HammerCombo
   abilityTag: {fileID: 11400000, guid: b92c4efe22453eb4c9c8d9dad2c704d3, type: 2}
   attributeTags:
   - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
@@ -28,7 +28,9 @@ MonoBehaviour:
     - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
   cancelAbilityTags: []
   _icon: {fileID: 21300000, guid: e6e43c9413aeb224e8795078bc800227, type: 3}
+  _name: 
   _skillType: 1
+  _description: 
   _groundActions:
   - {fileID: 11400000, guid: 275f259dc98aa4f488bcca5aa4d3a01a, type: 2}
   - {fileID: 11400000, guid: 61369f231cb5a184e99d9e3ab552b5b7, type: 2}

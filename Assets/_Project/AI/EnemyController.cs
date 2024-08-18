@@ -1,5 +1,6 @@
 ﻿using BehaviorDesigner.Runtime;
 using PF.PJT.Duet.Pawn;
+using StudioScor.BodySystem;
 using StudioScor.PlayerSystem;
 using StudioScor.Utilities;
 using UnityEngine;
@@ -11,7 +12,19 @@ namespace PF.PJT.Duet.Controller.Enemy
         [Header(" [ Enemy Controller ] ")]
         [SerializeField] private PlayerManager _playerManager;
         [SerializeField] private BehaviorTree _behaviorTree;
+        [SerializeField] private ExternalBehavior _externalBehavior;
 
+        [Header(" Follow Target  ")]
+        [SerializeField] private BodyTag _headTag;
+
+        private const string SELF_KEY = "Self";
+        private const string TARGET_KEY = "Target";
+        private const string ORIGIN_POSITION_KEY = "OriginPos";
+
+        private SharedTransform _selfKey;
+        private SharedTransform _targetKey;
+        private SharedVector3 _originPosKey;
+        private ISightSensor _sightSensor;
         private ICharacter _character;
         private IControllerSystem _controllerSystem;
         private IDamageableSystem _damageableSytstemInPawn;
@@ -29,12 +42,14 @@ namespace PF.PJT.Duet.Controller.Enemy
         private void Awake()
         {
             _controllerSystem = gameObject.GetControllerSystem();
+            _sightSensor = gameObject.GetComponentInChildren<ISightSensor>();
 
             _playerManager.OnChangedPlayerPawn += _playerManager_OnChangedPlayerPawn;
             _controllerSystem.OnPossessedPawn += _controllerSystem_OnPossessedPawn;
             _controllerSystem.OnUnPossessedPawn += _controllerSystem_OnUnPossessedPawn;
-        }
 
+            _sightSensor.OnFoundSight += _sightSensor_OnFoundSight;
+        }
         private void OnDestroy()
         {
             if(_playerManager)
@@ -42,40 +57,27 @@ namespace PF.PJT.Duet.Controller.Enemy
                 _playerManager.OnChangedPlayerPawn -= _playerManager_OnChangedPlayerPawn;
             }
 
-            if(_controllerSystem is null)
+            if(_controllerSystem is not null)
             {
                 _controllerSystem.OnPossessedPawn -= _controllerSystem_OnPossessedPawn;
                 _controllerSystem.OnUnPossessedPawn -= _controllerSystem_OnUnPossessedPawn;
             }
-        }
 
-        private void OnEnable()
-        {
-            if(ControllerSystem.IsPossess)
+            if(_sightSensor is not null)
             {
-                var character = ControllerSystem.Pawn.gameObject.GetComponent<Character>();
-
-                SetCharacter(character);
+                _sightSensor.OnFoundSight -= _sightSensor_OnFoundSight;
             }
         }
-        private void OnDisable()
+
+        private void FixedUpdate()
         {
-            _behaviorTree.DisableBehavior(false);
+            if(_controllerSystem.IsPossess)
+            {
+                float deltaTime = Time.fixedDeltaTime;
+
+                _sightSensor.UpdateSight(deltaTime);
+            }
         }
-
-        private void LateUpdate()
-        {
-            if (!_controllerSystem.IsPossess)
-                return;
-
-            transform.SetPositionAndRotation(_controllerSystem.Pawn.transform.position, _controllerSystem.Pawn.transform.rotation);
-        }
-
-        private const string SELF_KEY = "Self";
-        private const string TARGET_KEY = "Target";
-        
-        private SharedTransform _selfKey;
-        private SharedTransform _targetKey;
 
         private void SetCharacter(ICharacter newCharacter)
         {
@@ -84,37 +86,48 @@ namespace PF.PJT.Duet.Controller.Enemy
                 _damageableSytstemInPawn.OnAfterDamage -= DamageableSystem_OnAfterDamage;
                 _damageableSytstemInPawn = null;
 
+                _behaviorTree.ExternalBehavior = null;
                 _behaviorTree.DisableBehavior(false);
+
+                _sightSensor.RemoveIgnoreTransform(_character.transform);
             }
-                
+
             _character = newCharacter;
 
             if (_character is not null)
             {
+                if (!gameObject.activeSelf)
+                    gameObject.SetActive(true);
+
                 _damageableSytstemInPawn = _character.gameObject.GetComponent<IDamageableSystem>();
                 _damageableSytstemInPawn.OnAfterDamage += DamageableSystem_OnAfterDamage;
 
+                _behaviorTree.ExternalBehavior = _externalBehavior;
                 _behaviorTree.EnableBehavior();
 
-                _selfKey = (SharedTransform)_behaviorTree.GetVariable(SELF_KEY);
-                
-                if(_selfKey is null)
+                _sightSensor.AddIgnoreTransform(_character.transform);
+                if (_character.gameObject.TryGetBodySystem(out IBodySystem bodySystem))
                 {
-                    _selfKey = new SharedTransform();
-
-                    _behaviorTree.SetVariable(SELF_KEY, _selfKey);
+                    if (bodySystem.TryGetBodyPart(_headTag, out IBodyPart bodypart))
+                    {
+                        _sightSensor.SetOwner(bodypart.gameObject);
+                    }
+                    else
+                    {
+                        _sightSensor.SetOwner(bodySystem.gameObject);
+                    }
                 }
 
-                _selfKey.SetValue(_controllerSystem.Pawn.transform);
+                SetupBlackboard();
 
-                _targetKey = (SharedTransform)_behaviorTree.GetVariable(TARGET_KEY);
+                _sightSensor.OnSight();
+            }
+            else
+            {
+                _sightSensor.EndSight();
+                _behaviorTree.DisableBehavior(false);
 
-                if(_targetKey is null)
-                {
-                    _targetKey = new SharedTransform();
-
-                    _behaviorTree.SetVariable(TARGET_KEY, _targetKey);
-                }
+                gameObject.SetActive(false);
             }
         }
 
@@ -130,6 +143,49 @@ namespace PF.PJT.Duet.Controller.Enemy
 
             _controllerSystem.SetLookTarget(target);
             _targetKey.SetValue(target);
+
+            if (target)
+                _sightSensor.EndSight();
+            else
+                _sightSensor.OnSight();
+        }
+
+        private void SetupBlackboard()
+        {
+            _selfKey = (SharedTransform)_behaviorTree.GetVariable(SELF_KEY);
+
+            if (_selfKey is null)
+            {
+                _selfKey = new SharedTransform();
+
+                _behaviorTree.SetVariable(SELF_KEY, _selfKey);
+            }
+
+            _selfKey.SetValue(_controllerSystem.Pawn.transform);
+
+
+
+            _targetKey = (SharedTransform)_behaviorTree.GetVariable(TARGET_KEY);
+
+            if (_targetKey is null)
+            {
+                _targetKey = new SharedTransform();
+
+                _behaviorTree.SetVariable(TARGET_KEY, _targetKey);
+            }
+
+
+
+            _originPosKey = (SharedVector3)_behaviorTree.GetVariable(ORIGIN_POSITION_KEY);
+
+            if (_originPosKey is null)
+            {
+                _originPosKey = new SharedVector3();
+
+                _behaviorTree.SetVariable(ORIGIN_POSITION_KEY, _originPosKey);
+            }
+
+            _originPosKey.SetValue(_controllerSystem.Pawn.transform.position);
         }
 
         private void DamageableSystem_OnAfterDamage(IDamageableSystem damageable, DamageInfoData damageInfo)
@@ -192,6 +248,31 @@ namespace PF.PJT.Duet.Controller.Enemy
             SetTargetKey(currentPawn.transform);
         }
 
+        private void _sightSensor_OnFoundSight(ISightSensor sightSensor, ISightTarget sight)
+        {
+            if (!_controllerSystem.IsPossess)
+                return;
+
+            if (!_behaviorTree.isActiveAndEnabled)
+                return;
+
+            if (_targetKey is null)
+                return;
+
+            if (_targetKey.Value)
+                return;
+
+            if(sight.gameObject.TryGetPawn(out IPawnSystem pawn))
+            {
+                var affiliation = pawn.Controller.CheckAffiliation(_controllerSystem);
+
+                if (affiliation == EAffiliation.Hostile)
+                {
+                    SetTargetKey(pawn.transform);
+                }
+            }
+        }
+
         private void _controllerSystem_OnPossessedPawn(IControllerSystem controller, IPawnSystem pawn)
         {
             var character = pawn.gameObject.GetComponent<ICharacter>();
@@ -203,7 +284,5 @@ namespace PF.PJT.Duet.Controller.Enemy
         {
             SetCharacter(null);
         }
-
-        
     }
 }

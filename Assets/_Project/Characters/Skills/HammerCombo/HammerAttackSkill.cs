@@ -11,12 +11,9 @@ using UnityEngine;
 namespace PF.PJT.Duet.Pawn.PawnSkill
 {
     [CreateAssetMenu(menuName = "Project/Duet/PawnSkill/new Hammer Skill", fileName = "GA_Skill_Hammer")]
-    public class HammerAttackSkill : GASAbility, ISkill
+    public class HammerAttackSkill : CharacterSkill
     {
         [Header(" [ Hammer Skill ] ")]
-        [SerializeField] private Sprite _icon;
-        [SerializeField] private ESkillType _skillType;
-
         [Header(" Animation ")]
         [SerializeField] private string _animationName = "HammerAttack";
         [SerializeField][Range(0f, 1f)] private float _fadeInTime = 0.2f;
@@ -44,8 +41,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [Header(" Combo ")]
         [SerializeField] private GameplayTag _comboTag;
 
-        public Sprite Icon => _icon;
-        public ESkillType SkillType => _skillType;
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
             return new Spec(this, abilitySystem, level);
@@ -212,12 +207,14 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                         {
                             if (_ability._takeDamageEffect)
                             {
-                                var data = new TakeDamageEffect.FElement(hit.point, hit.normal, hit.collider, _sphereCast.StartPosition.Direction(_sphereCast.EndPosition), _sphereCast.Owner, gameObject);
+                                var data = TakeDamageEffect.Element.Get(hit.point, hit.normal, hit.collider, _sphereCast.StartPosition.Direction(_sphereCast.EndPosition), _sphereCast.Owner, gameObject);
 
                                 if (hitGameplayEffectSystem.TryTakeEffect(_ability._takeDamageEffect, gameObject, Level, data).isActivate)
                                 {
                                     isHit = true;
                                 }
+
+                                data.Release();
                             }
 
                             for (int effectIndex = 0; effectIndex < _ability._applyGameplayEffectsOnHitToOther.Length; effectIndex++)

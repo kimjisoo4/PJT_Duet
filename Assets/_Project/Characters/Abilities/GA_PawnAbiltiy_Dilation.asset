@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_PawnAbiltiy_Dilation
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: Dilation
+  _id: GA_PawnAbiltiy_Dilation
   abilityTag: {fileID: 11400000, guid: 42245e7ecb8a6d64f81c5cd0ba5f3380, type: 2}
   attributeTags: []
   conditionTags:

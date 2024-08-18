@@ -16,7 +16,7 @@ namespace PF.PJT.Duet.System
                 var data = character.CharacterInformationData;
 
                 _icon.sprite = data.Icon;
-                _icon.color = Color.white;
+                _icon.color = character.IsDead ? Color.gray : Color.white;
             }
             else
             {

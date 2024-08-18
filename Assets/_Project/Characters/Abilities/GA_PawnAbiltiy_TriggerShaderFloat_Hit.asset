@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f06adc6ad0df34847898bc347c420496, type: 3}
+  m_Name: GA_PawnAbiltiy_TriggerShaderFloat_Hit
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _id: GA_PawnAbiltiy_TriggerShaderFloat_Hit
+  abilityTag: {fileID: 11400000, guid: 7f4c45f146827ef419de5bd7124a3633, type: 2}
+  attributeTags: []
+  conditionTags:
+    requireds: []
+    obstacleds: []
+  grantTags:
+    owneds: []
+    blocks: []
+  cancelAbilityTags: []
+  _onTriggerTag: {fileID: 11400000, guid: c6d3c9c5ecbaaba4d9d668bd35c061fe, type: 2}
+  _propertyName: _Hit
+  _fadeInTime: 0
+  _fadeOutTime: 0.3

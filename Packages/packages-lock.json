@@ -1,67 +1,67 @@
 {
   "dependencies": {
     "com.studioscor.abilitysystem": {
-      "version": "file:MyAbilitySystem",
+      "version": "file:com.studioscor.abilitysystem",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
     "com.studioscor.bodysystem": {
-      "version": "file:MyBodySystem",
+      "version": "file:com.studioscor.bodysystem",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
     "com.studioscor.gameplaycuesystem": {
-      "version": "file:MyGameplayCueSystem",
+      "version": "file:com.studioscor.gameplaycuesystem",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
     "com.studioscor.gameplayeffectsystem": {
-      "version": "file:MyGameplayEffectSystem",
+      "version": "file:com.studioscor.gameplayeffectsystem",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
     "com.studioscor.gameplaytagsystem": {
-      "version": "file:MyGameplayTagSystem",
+      "version": "file:com.studioscor.gameplaytagsystem",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
     "com.studioscor.movementsystem": {
-      "version": "file:MyMovementSystem",
+      "version": "file:com.studioscor.movementsystem",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
     "com.studioscor.playersystem": {
-      "version": "file:MyPlayerSystem",
+      "version": "file:com.studioscor.playersystem",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
     "com.studioscor.rotationsystem": {
-      "version": "file:MyRotationSystem",
+      "version": "file:com.studioscor.rotationsystem",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
     "com.studioscor.statsystem": {
-      "version": "file:MyStatSystem",
+      "version": "file:com.studioscor.statsystem",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
     "com.studioscor.statussystem": {
-      "version": "file:MyStatusSystem",
+      "version": "file:com.studioscor.statussystem",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
     "com.studioscor.utilities": {
-      "version": "file:MyUtilities",
+      "version": "file:com.studioscor.utilities",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}

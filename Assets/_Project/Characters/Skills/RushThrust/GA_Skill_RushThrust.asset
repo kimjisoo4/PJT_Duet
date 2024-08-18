@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_Skill_RushThrust
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: Rush Thrust
+  _id: GA_Skill_RushThrust
   abilityTag: {fileID: 11400000, guid: 57ae54225fb814a4781f95ed89d5ce1f, type: 2}
   attributeTags:
   - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
@@ -32,7 +32,9 @@ MonoBehaviour:
     - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
   cancelAbilityTags: []
   _icon: {fileID: 21300000, guid: 69093eb85851a134282c3101604941f1, type: 3}
+  _name: 
   _skillType: 2
+  _description: 
   _rushAnimationName: RushThrust
   _fadeInTime: 0.2
   _moveDistance: 8

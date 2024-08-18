@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_PawnAbiltiy_HideActor
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: Hide Actor
+  _id: GA_PawnAbiltiy_HideActor
   abilityTag: {fileID: 11400000, guid: 5892f453510d8d54f9605e3f5d51880e, type: 2}
   attributeTags: []
   conditionTags:

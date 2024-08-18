@@ -13,18 +13,20 @@ MonoBehaviour:
   m_Name: GA_PawnAbiltiy_Attribute_HP
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: Attribute HP
+  _id: GA_PawnAbiltiy_Attribute_HP
   abilityTag: {fileID: 11400000, guid: cdc62109aceb48445801364c8e6da0a2, type: 2}
   attributeTags: []
-  grantTags:
-    owneds: []
-    blocks: []
   conditionTags:
     requireds: []
     obstacleds: []
+  grantTags:
+    owneds: []
+    blocks: []
   cancelAbilityTags: []
   _statTag: {fileID: 11400000, guid: 1c3d390ae00b72b4c98d7ab1e19df4d5, type: 2}
   _statusTag: {fileID: 11400000, guid: 6aa6e03b3a1569748a402134867cfd0b, type: 2}
+  _defaultRateValue: 1
+  _resetTriggerTag: {fileID: 11400000, guid: 903d481e2b5b3c74f9461acce4289fd3, type: 2}
   _fulledTag: {fileID: 11400000, guid: bc1556bbc04548e46ab30cad3cd60780, type: 2}
   _consumedTag: {fileID: 11400000, guid: 9be7cc517b0050f4eba1854cdb101b45, type: 2}
   _emptiedTag: {fileID: 11400000, guid: 3c16ad90f6a20ae42bada629d667ec69, type: 2}

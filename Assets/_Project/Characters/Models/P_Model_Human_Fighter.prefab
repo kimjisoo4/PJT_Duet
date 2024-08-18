@@ -49,6 +49,7 @@ MonoBehaviour:
   _BodyTag: {fileID: 11400000, guid: 725a199b4ac75cc4a91a99dcb763827a, type: 2}
   _canEquiped: 1
   _useAutoAttach: 1
+  _useAutoDetach: 0
 --- !u!114 &4734170760491511349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,6 +113,7 @@ MonoBehaviour:
   _BodyTag: {fileID: 11400000, guid: b528a909f1f35664aa204d32fc13cb75, type: 2}
   _canEquiped: 0
   _useAutoAttach: 1
+  _useAutoDetach: 0
 --- !u!114 &4907513733653231596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,6 +177,7 @@ MonoBehaviour:
   _BodyTag: {fileID: 11400000, guid: 1bb013298a14c504397731511af9a38a, type: 2}
   _canEquiped: 0
   _useAutoAttach: 1
+  _useAutoDetach: 0
 --- !u!114 &5994449625353707257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,15 +327,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4932a7a33a1e5bd4e87e6dc2ffb0f034, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onFootR:
-    m_PersistentCalls:
-      m_Calls: []
-  onFootL:
-    m_PersistentCalls:
-      m_Calls: []
-  onHit:
-    m_PersistentCalls:
-      m_Calls: []
+  UseDebug: 0
+  _useUnityEvent: 1
+  _unityEvents:
+    _onFootR:
+      m_PersistentCalls:
+        m_Calls: []
+    _onFootL:
+      m_PersistentCalls:
+        m_Calls: []
+    _onHit:
+      m_PersistentCalls:
+        m_Calls: []
+    _onLand:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!1 &5607516610639556546
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,6 +391,7 @@ MonoBehaviour:
   _BodyTag: {fileID: 11400000, guid: a4c70ea47d0f5134fbed7856ff1d7212, type: 2}
   _canEquiped: 1
   _useAutoAttach: 1
+  _useAutoDetach: 0
 --- !u!114 &6814139741859148950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -976,7 +986,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2516edcba6fec964787b5492b55edbd1, type: 2}
+  - {fileID: 2100000, guid: 54cae91d910266646a94b73612fdf599, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

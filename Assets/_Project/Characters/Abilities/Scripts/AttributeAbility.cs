@@ -12,6 +12,12 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
         [Header(" [ Stat State Post Ability ] ")]
         [SerializeField] private StatTag _statTag;
         [SerializeField] private StatusTag _statusTag;
+        [SerializeField][Range(0f, 1f)] private float _defaultRateValue = 1f;
+
+        [Header(" Reset Status ")]
+        [SerializeField] private GameplayTag _resetTriggerTag;
+
+        [Header(" State Tag ")]
         [SerializeField] private GameplayTag _fulledTag;
         [SerializeField] private GameplayTag _consumedTag;
         [SerializeField] private GameplayTag _emptiedTag;
@@ -46,6 +52,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
 
                 AddOwnedTag(_status.CurrentState); 
 
+                GameplayTagSystem.OnTriggeredTag += GameplayTagSystem_OnTriggeredTag;
                 _status.OnChangedState += _status_OnChangedState;
                 _stat.OnChangedValue += _stat_OnChangedValue;
 
@@ -56,7 +63,12 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
             {
                 base.OnRemoveAbility();
 
-                if(_status is not null)
+                if(GameplayTagSystem is not null)
+                {
+                    GameplayTagSystem.OnTriggeredTag -= GameplayTagSystem_OnTriggeredTag;
+                }
+
+                if (_status is not null)
                 {
                     _status.OnChangedState -= _status_OnChangedState;
 
@@ -67,6 +79,13 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                 {
                     _stat.OnChangedValue -= _stat_OnChangedValue;
                 }
+            }
+
+            protected override void EnterAbility()
+            {
+                base.EnterAbility();
+
+                _status.SetValue(_stat.Value, _ability._defaultRateValue, true);
             }
 
             private void AddOwnedTag(EStatusState state)
@@ -107,11 +126,20 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                         break;
                 }
             }
+            private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag, object data = null)
+            {
+                if (gameplayTag != _ability._resetTriggerTag)
+                    return;
+
+                _status.SetValue(_stat.Value, _ability._defaultRateValue, true);
+
+            }
 
             private void _stat_OnChangedValue(Stat stat, float currentValue, float prevValue)
             {
                 _status.SetMaxValue(currentValue, false, true);
             }
+
             private void _status_OnChangedState(Status status, EStatusState currentState, EStatusState prevState)
             {
                 RemoveOwnedTag(prevState);

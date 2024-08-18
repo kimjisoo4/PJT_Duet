@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_Skill_AppearPunch
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: Appear Punch
+  _id: GA_Skill_AppearPunch
   abilityTag: {fileID: 11400000, guid: 5d2baa08a5d2be14eb382a9c1ee85870, type: 2}
   attributeTags:
   - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
@@ -32,7 +32,9 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
   cancelAbilityTags: []
   _icon: {fileID: 21300000, guid: a1b24ee49f7b3204caa5aa8c1bda288a, type: 3}
+  _name: 
   _skillType: 3
+  _description: 
   _animationName: AppearPunch
   _fadeInTime: 0
   _moveDistance: 3

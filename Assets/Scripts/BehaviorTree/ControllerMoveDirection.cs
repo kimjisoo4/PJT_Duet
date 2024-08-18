@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace StudioScor.PlayerSystem.BehaviorTree
 {
+
     public class ControllerMoveDirection : PlayerSystemAction
     {
         public enum EDirection

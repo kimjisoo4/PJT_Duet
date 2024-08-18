@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_PawnAbiltiy_KnockbackMovement
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: 
+  _id: GA_PawnAbiltiy_KnockbackMovement
   abilityTag: {fileID: 11400000, guid: fa9038ae30a790e4cb42b8e67229281b, type: 2}
   attributeTags: []
   conditionTags:

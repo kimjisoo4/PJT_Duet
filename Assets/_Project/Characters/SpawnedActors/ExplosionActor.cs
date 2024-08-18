@@ -29,10 +29,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private FGameplayCue[] _explosionCues;
 
         [Header(" Gameplay Effects ")]
-        [SerializeField] private TakeDamageEffect[] _takeDamages;
-        [SerializeField] private TakeRadialKnockbackEffect[] _takeRadialKnockbacks;
         [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnHitToOther;
-        [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnSuccessedHit;
+        private GameplayEffect[] _addedApplyGameplayEffectsOnHitToOther;
 
         public GameObject Owner { get; private set; }
         private IAbilitySpec _abilitySpec;
@@ -48,7 +46,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             _chargeable = GetComponent<IChargeable>();
 
             _traceTimer.OnEndedTimer += _traceTimer_OnEndedTimer;
-            _sphereCast.OnStartedRaycast += _sphereCast_OnStartedRaycast;
         }
         private void OnDestroy()
         {
@@ -56,11 +53,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 _traceTimer.EndTimer();
                 _traceTimer.OnEndedTimer -= _traceTimer_OnEndedTimer;
-            }
-            
-            if(_sphereCast is not null)
-            {
-                _sphereCast.OnStartedRaycast -= _sphereCast_OnStartedRaycast;
             }
 
             if(_explosionCue is not null)
@@ -101,9 +93,14 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         {
             Owner = newOwner;
             _abilitySpec = abilitySpec;
-
+            
             _pawnSystem = Owner.GetPawnSystem();
         }
+        public void SetApplyGameplayEffectToOther(GameplayEffect[] gameplayEffects)
+        {
+            _addedApplyGameplayEffectsOnHitToOther = gameplayEffects;
+        }
+
         public void OnExplosion()
         {
             _sphereCast.TraceLayer = _traceLayer.Value;
@@ -152,8 +149,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         {
             (int hitCount, RaycastHit[] hitResult) = _sphereCast.UpdateTrace();
 
-            bool isHit = false;
-
             for (int i = 0; i < hitCount; i++)
             {
                 var hit = hitResult[i];
@@ -163,72 +158,57 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 if (hit.transform.TryGetPawnSystem(out IPawnSystem hitPawn) && hitPawn.Controller.CheckAffiliation(_pawnSystem.Controller) != EAffiliation.Hostile)
                     continue;
 
-                bool isEachHit = false;
-
-                    Vector3 direction = transform.Direction(hit.point);
+                Vector3 direction = transform.Direction(hit.point);
 
                 if (hit.transform.TryGetGameplayEffectSystem(out var hitEffectSystem))
                 {
-                    if (_takeDamages is not null && _takeDamages.Length > 0)
+                    foreach (var effect in _applyGameplayEffectsOnHitToOther)
                     {
-                        TakeDamageEffect.FElement element = new TakeDamageEffect.FElement(hit.point, hit.normal, hit.collider, direction, gameObject, Owner);
-                        var takeDamage = _takeDamages.ElementAtOrDefault(_chargeable.CurrentChargeLevel);
-
-                        if (!takeDamage)
+                        if (effect is TakeDamageEffect takeDamageEffect)
                         {
-                            takeDamage = _takeDamages.Last();
+                            TakeDamageEffect.Element element = TakeDamageEffect.Element.Get(hit.point, hit.normal, hit.collider, direction, gameObject, Owner);
+
+                            hitEffectSystem.TryTakeEffect(takeDamageEffect, Owner, _abilitySpec.Level, element);
+
+                            element.Release();
                         }
-
-                        if (hitEffectSystem.TryTakeEffect(takeDamage, Owner, _abilitySpec.Level, element).isActivate)
+                        else if (effect is TakeRadialKnockbackEffect takeRadialKnockbackEffect)
                         {
-                            isHit = true;
-                            isEachHit = true;
+                            var radialData = new TakeRadialKnockbackEffect.FElement(transform.position);
+
+                            hitEffectSystem.TryTakeEffect(takeRadialKnockbackEffect, gameObject, _abilitySpec.Level, radialData);
+                        }
+                        else
+                        {
+                            hitEffectSystem.TryTakeEffect(effect, gameObject, _abilitySpec.Level, null);
                         }
                     }
-                    if (_takeRadialKnockbacks is not null && _takeRadialKnockbacks.Length > 0)
+
+                    foreach (var effect in _addedApplyGameplayEffectsOnHitToOther)
                     {
-                        var radialData = new TakeRadialKnockbackEffect.FElement(transform.position);
-                        var takeRadialKnockback = _takeRadialKnockbacks.ElementAtOrDefault(_chargeable.CurrentChargeLevel);
-
-                        if (!takeRadialKnockback)
-                            takeRadialKnockback = _takeRadialKnockbacks.Last();
-
-                        if (hitEffectSystem.TryTakeEffect(takeRadialKnockback, gameObject, _abilitySpec.Level, radialData).isActivate)
+                        if (effect is TakeDamageEffect takeDamageEffect)
                         {
-                            isHit = true;
-                            isEachHit = true;
+                            TakeDamageEffect.Element element = TakeDamageEffect.Element.Get(hit.point, hit.normal, hit.collider, direction, gameObject, Owner);
+
+                            hitEffectSystem.TryTakeEffect(takeDamageEffect, Owner, _abilitySpec.Level, element);
+
+                            element.Release();
                         }
-
-                    }
-
-                    for (int effectIndex = 0; effectIndex < _applyGameplayEffectsOnHitToOther.Length; effectIndex++)
-                    {
-                        var effect = _applyGameplayEffectsOnHitToOther[effectIndex];
-
-                        if (hitEffectSystem.TryTakeEffect(effect, gameObject, _abilitySpec.Level, null).isActivate)
+                        else if (effect is TakeRadialKnockbackEffect takeRadialKnockbackEffect)
                         {
-                            isHit = true;
-                            isEachHit = true;
+                            var radialData = new TakeRadialKnockbackEffect.FElement(transform.position);
+
+                            hitEffectSystem.TryTakeEffect(takeRadialKnockbackEffect, gameObject, _abilitySpec.Level, radialData);
                         }
-
-                    }
-
-                    if (isEachHit)
-                    {
-                        // 각각 맞았을 때,
+                        else
+                        {
+                            hitEffectSystem.TryTakeEffect(effect, gameObject, _abilitySpec.Level, null);
+                        }
                     }
                 }
             }
+        }
 
-            if (isHit)
-            {
-                // 이번에 맞았을 때,
-            }
-        }
-        private void _sphereCast_OnStartedRaycast(IRaycast raycast)
-        {
-           
-        }
         private void _traceTimer_OnEndedTimer(ITimer timer)
         {
             _sphereCast.EndTrace();

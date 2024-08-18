@@ -13,12 +13,9 @@ using UnityEngine;
 namespace PF.PJT.Duet.Pawn.PawnSkill
 {
     [CreateAssetMenu(menuName = "Project/Duet/PawnSkill/new Appear Sword Skill", fileName = "GA_Skill_Appear_Sword")]
-    public class AppearSwordSkill : GASAbility, ISkill
+    public class AppearSwordSkill : CharacterSkill
     {
         [Header(" [ Appear Sword ]")]
-        [SerializeField] private Sprite _icon;
-        [SerializeField] private ESkillType _skillType = ESkillType.Appear;
-
         [Header(" Animation ")]
         [SerializeField] private string _appearAnimation = "AppearSword";
         [SerializeField][Range(0f, 1f)] private float _fadeInTime = 0f;
@@ -46,9 +43,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private FGameplayCue _onImpactCue;
         [SerializeField] private FGameplayCue _onHitToOtherCue;
         [SerializeField] private FGameplayCue _onSuccessedPlayerHit;
-        public Sprite Icon => _icon;
-        public ESkillType SkillType => _skillType;
-
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
             return new Spec(this, abilitySystem, level);
@@ -280,12 +274,14 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                         {
                             if (_ability._takeDamageEffect)
                             {
-                                var data = new TakeDamageEffect.FElement(hit.point, hit.normal, hit.collider, _sphereCast.StartPosition.Direction(_sphereCast.EndPosition), _sphereCast.Owner, gameObject);
+                                var data = TakeDamageEffect.Element.Get(hit.point, hit.normal, hit.collider, _sphereCast.StartPosition.Direction(_sphereCast.EndPosition), _sphereCast.Owner, gameObject);
 
                                 if (hitGameplayEffectSystem.TryTakeEffect(_ability._takeDamageEffect, gameObject, Level, data).isActivate)
                                 {
                                     isHit = true;
                                 }
+
+                                data.Release();
                             }
 
                             if(_ability._takeRadialKnockbackEffect)

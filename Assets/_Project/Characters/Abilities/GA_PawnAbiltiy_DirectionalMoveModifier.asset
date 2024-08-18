@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_PawnAbiltiy_DirectionalMoveModifier
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: Directional Move Modifier
+  _id: GA_PawnAbiltiy_DirectionalMoveModifier
   abilityTag: {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
   attributeTags: []
   conditionTags:

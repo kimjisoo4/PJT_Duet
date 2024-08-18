@@ -4,6 +4,7 @@ using StudioScor.BodySystem;
 using StudioScor.GameplayCueSystem;
 using StudioScor.GameplayEffectSystem;
 using StudioScor.GameplayTagSystem;
+using StudioScor.PlayerSystem;
 using StudioScor.Utilities;
 using System;
 using System.Linq;
@@ -12,13 +13,11 @@ using UnityEngine;
 
 namespace PF.PJT.Duet.Pawn.PawnSkill
 {
+
     [CreateAssetMenu(menuName = "Project/Duet/PawnSkill/new Air Blast Skill", fileName = "GA_Skill_AirBlast")]
-    public class AirBlastSkill : GASAbility, ISkill
+    public class AirBlastSkill : CharacterSkill
     {
         [Header(" [ Air Blast Skill ] ")]
-        [SerializeField] private Sprite _icon;
-        [SerializeField] private ESkillType _skillType = ESkillType.Skill;
-
         [Header(" Animations ")]
         [SerializeField] private string _readyAnimationName = "AirBlast_Start";
         [SerializeField] private float _readyAnimFadeInTime = 0.2f;
@@ -39,15 +38,31 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private BodyTag _spawnPoint;
 
         [Header(" Gameplay Effects ")]
+        [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnHitToOther_01;
+        [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnHitToOther_02;
+        [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnHitToOther_03;
+
+        [Header(" CoolTime ")]
         [SerializeField] private CoolTimeEffect _coolTimeEffect;
 
         [Header(" Gameplay Cue ")]
         [SerializeField] private FGameplayCue _spawnedCue;
         [SerializeField] private FGameplayCue[] _shotCues;
 
+        public override string GetDescription()
+        {
+            float time = _maxChargeTime;
 
-        public Sprite Icon => _icon;
-        public ESkillType SkillType => _skillType;
+            var takeDamage_01 = _applyGameplayEffectsOnHitToOther_01.First(x => x is TakeDamageEffect) as TakeDamageEffect;
+            var takeDamage_02 = _applyGameplayEffectsOnHitToOther_02.First(x => x is TakeDamageEffect) as TakeDamageEffect;
+            var takeDamage_03 = _applyGameplayEffectsOnHitToOther_03.First(x => x is TakeDamageEffect) as TakeDamageEffect;
+
+            float damage_01 = takeDamage_01.DamageRatio * 100;
+            float damage_02 = takeDamage_02.DamageRatio * 100;
+            float damage_03 = takeDamage_03.DamageRatio * 100;
+
+            return string.Format(Description, time, damage_01, damage_02, damage_03);
+        }
 
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
@@ -149,15 +164,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     }
                 }
             }
-
-            private void _coolTimeEffectSpec_OnEndedEffect(IGameplayEffectSpec effectSpec)
-            {
-                effectSpec.OnEndedEffect -= _coolTimeEffectSpec_OnEndedEffect;
-
-                _coolTimeEffectSpec = null;
-            }
-
-           
             protected override void OnCancelAbility()
             {
                 base.OnCancelAbility();
@@ -178,6 +184,12 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 }
             }
 
+            private void _coolTimeEffectSpec_OnEndedEffect(IGameplayEffectSpec effectSpec)
+            {
+                effectSpec.OnEndedEffect -= _coolTimeEffectSpec_OnEndedEffect;
+
+                _coolTimeEffectSpec = null;
+            }
 
             protected override void OnReleaseAbility()
             {
@@ -398,6 +410,22 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             private void OnShotAirBlast()
             {
+                GameplayEffect[] applyGameplayEffects;
+
+                switch (_chargeable.CurrentChargeLevel)
+                {
+                    case 0:
+                        applyGameplayEffects = _ability._applyGameplayEffectsOnHitToOther_01;
+                        break;
+                    case 1:
+                        applyGameplayEffects = _ability._applyGameplayEffectsOnHitToOther_02;
+                        break;
+                    default:
+                        applyGameplayEffects = _ability._applyGameplayEffectsOnHitToOther_03;
+                        break;
+                }
+
+                _spawnedActor.SetApplyGameplayEffectToOther(applyGameplayEffects);
                 _spawnedActor.transform.SetParent(null, true);
 
                 FGameplayCue shotCue;
@@ -470,6 +498,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                         break;
                 }
             }
+
         }
     }
 }

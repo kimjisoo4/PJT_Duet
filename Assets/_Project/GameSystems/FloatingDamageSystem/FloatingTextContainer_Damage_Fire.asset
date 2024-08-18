@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec48e77519f4e548bb2e44bc1857115, type: 3}
+  m_Name: FloatingTextContainer_Damage_Fire
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _floatingDamageText: {fileID: 2312953970359488407, guid: 6814a81cdc6f79548a01b7443768142a,
+    type: 3}
+  _container: {fileID: 577219064001235252, guid: 672a1e1bea05e5243b1cfaa383d0bdb9,
+    type: 3}
+  _capacity: 10
+  _maxSize: 100

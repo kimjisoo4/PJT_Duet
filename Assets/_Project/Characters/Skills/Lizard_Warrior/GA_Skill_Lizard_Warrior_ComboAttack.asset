@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80920523be7d4864d95e2f46a2801194, type: 3}
+  m_Name: GA_Skill_Lizard_Warrior_ComboAttack
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _id: GA_Skill_Lizard_Warrior_ComboAttack
+  abilityTag: {fileID: 11400000, guid: 768d423f0e6ca984d9b6c0e086cdbc16, type: 2}
+  attributeTags:
+  - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
+  - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
+  conditionTags:
+    requireds: []
+    obstacleds: []
+  grantTags:
+    owneds: []
+    blocks: []
+  cancelAbilityTags: []
+  _icon: {fileID: 0}
+  _name: 
+  _skillType: 1
+  _description: 
+  _groundActions:
+  - {fileID: 11400000, guid: df626cb27242f2640a71cf810f549c31, type: 2}
+  - {fileID: 11400000, guid: f356260face8ceb43811fa84385e5bfb, type: 2}
+  - {fileID: 11400000, guid: 00576392d50218f4199b37e269248a41, type: 2}
+  _coolTimeEffect: {fileID: 0}

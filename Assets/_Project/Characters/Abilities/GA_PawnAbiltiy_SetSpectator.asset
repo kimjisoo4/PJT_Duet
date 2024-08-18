@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_PawnAbiltiy_SetSpectator
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: Set Spectator
+  _id: GA_PawnAbiltiy_SetSpectator
   abilityTag: {fileID: 11400000, guid: a40dd7e3e3d12514894ca380fde04a21, type: 2}
   attributeTags: []
   conditionTags:

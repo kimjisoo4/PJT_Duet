@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_PawnAbiltiy_UpdateRotationInTurnDirection
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: Update Rotation Input
+  _id: GA_PawnAbiltiy_UpdateRotationInTurnDirection
   abilityTag: {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
   attributeTags: []
   conditionTags:

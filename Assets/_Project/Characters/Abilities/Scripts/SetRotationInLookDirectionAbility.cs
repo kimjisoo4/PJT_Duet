@@ -23,20 +23,6 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                 _pawnSystem = gameObject.GetPawnSystem();
                 _rotationSystem = gameObject.GetRotationSystem();
             }
-
-            public void FixedUpdateAbility(float deltaTime)
-            {
-                return;
-            }
-
-            public void UpdateAbility(float deltaTime)
-            {
-                if(IsPlaying)
-                {
-                    _rotationSystem.SetLookDirection(_pawnSystem.LookDirection);
-                }
-            }
-
             protected override void EnterAbility()
             {
                 base.EnterAbility();
@@ -51,6 +37,20 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
 
                 base.ExitAbility();
             }
+
+            public void FixedUpdateAbility(float deltaTime)
+            {
+                return;
+            }
+
+            public void UpdateAbility(float deltaTime)
+            {
+                if(IsPlaying)
+                {
+                    _rotationSystem.SetLookDirection(_pawnSystem.LookDirection);
+                }
+            }
+
         }
     }
 }

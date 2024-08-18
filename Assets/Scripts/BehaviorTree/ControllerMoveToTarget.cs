@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace StudioScor.PlayerSystem.BehaviorTree
 {
+
     public class ControllerMoveToTarget : PlayerSystemAction
     {
         [Header(" [ Controller Move To Target ] ")]
@@ -41,12 +42,11 @@ namespace StudioScor.PlayerSystem.BehaviorTree
                 return TaskStatus.Failure;
 
             var target = _targetKey.Value;
-            float reachDistance = _reachDistance.Value;
 
             Vector3 direction = Pawn.transform.HorizontalDirection(target, false);
             float distance = direction.magnitude;
 
-            if (distance <= reachDistance)
+            if (distance <= _distance)
             {
                 return TaskStatus.Success;
             }

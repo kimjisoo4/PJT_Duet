@@ -1,0 +1,232 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DefaultMeleeAttackSkill
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: 7f632e786404f9349b4b02fe64b747aa,
+      type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: UseDebug
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: abilityName
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: abilityTag
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: attributeTags.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: conditionTags.requireds.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: conditionTags.obstacleds.Array.size
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: conditionTags.obstacleds.Array.data[0]
+    value: 
+    objectReference: {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+  - target: {fileID: 0}
+    propertyPath: conditionTags.obstacleds.Array.data[1]
+    value: 
+    objectReference: {fileID: 11400000, guid: 08e9c4a810fff2044a1f26bae2fbd9c8, type: 2}
+  - target: {fileID: 0}
+    propertyPath: grantTags.owneds.Array.size
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: grantTags.owneds.Array.data[0]
+    value: 
+    objectReference: {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
+  - target: {fileID: 0}
+    propertyPath: grantTags.blocks.Array.size
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: grantTags.blocks.Array.data[0]
+    value: 
+    objectReference: {fileID: 11400000, guid: 805576a40355c4841831954476a8f650, type: 2}
+  - target: {fileID: 0}
+    propertyPath: grantTags.blocks.Array.data[1]
+    value: 
+    objectReference: {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
+  - target: {fileID: 0}
+    propertyPath: cancelAbilityTags.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _icon
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _skillType
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _animationName
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _fadeInTime
+    value: 0.2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _turnTag
+    value: 
+    objectReference: {fileID: 11400000, guid: 6d15f3d07c563074d9dd397fd12a0276, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _tracePoint
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _traceLayer
+    value: 
+    objectReference: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _traceRadius
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _coolTimeEffect
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _takeDamageEffect
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _applyGameplayEffectsOnHitToOther.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _applyGameplayEffectsOnHitToOther.Array.data[0]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _applyGameplayEffectsOnHitToOther.Array.data[1]
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _applyGameplayEffectsOnHitToOther.Array.data[2]
+    value: 
+    objectReference: {fileID: 11400000, guid: b4ab5a2badaa60840aea4fc5cd06760e, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _applyGameplayEffectsOnSuccessedHit.Array.size
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _applyGameplayEffectsOnSuccessedHit.Array.data[0]
+    value: 
+    objectReference: {fileID: 11400000, guid: c8895f0a0c13dab4f83a755b7fc2366b, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _onHitToOtherCue.Cue
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _onHitToOtherCue.Position.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _onHitToOtherCue.Position.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _onHitToOtherCue.Position.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _onHitToOtherCue.Rotation.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _onHitToOtherCue.Rotation.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _onHitToOtherCue.Rotation.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _onHitToOtherCue.Scale.x
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _onHitToOtherCue.Scale.y
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _onHitToOtherCue.Scale.z
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _onSuccessedPlayerHit.Cue
+    value: 
+    objectReference: {fileID: 11400000, guid: 0f6d4545bf2eabd4eb232183e15595c9, type: 2}
+  - target: {fileID: 0}
+    propertyPath: _onSuccessedPlayerHit.Position.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _onSuccessedPlayerHit.Position.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _onSuccessedPlayerHit.Position.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _onSuccessedPlayerHit.Rotation.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _onSuccessedPlayerHit.Rotation.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _onSuccessedPlayerHit.Rotation.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _onSuccessedPlayerHit.Scale.x
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _onSuccessedPlayerHit.Scale.y
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _onSuccessedPlayerHit.Scale.z
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: _comboTag
+    value: 
+    objectReference: {fileID: 0}
+  m_ExcludedProperties: []

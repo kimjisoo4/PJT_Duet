@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_PawnAbiltiy_Dead
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: Dead
+  _id: GA_PawnAbiltiy_Dead
   abilityTag: {fileID: 11400000, guid: be762f289462b7f41bf52fcc24df6022, type: 2}
   attributeTags: []
   conditionTags:
@@ -26,3 +26,5 @@ MonoBehaviour:
     - {fileID: 11400000, guid: a40dd7e3e3d12514894ca380fde04a21, type: 2}
     blocks: []
   cancelAbilityTags: []
+  _grantAbilities:
+  - {fileID: 11400000, guid: 92667724782cbdf41a284ce5962bd45a, type: 2}

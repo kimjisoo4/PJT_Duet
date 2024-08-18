@@ -1,17 +1,16 @@
-﻿using StudioScor.PlayerSystem;
-using StudioScor.Utilities;
-using UnityEngine;
-using StudioScor.MovementSystem;
+﻿using PF.PJT.Duet.Pawn.Effect;
 using StudioScor.AbilitySystem;
-using StudioScor.RotationSystem;
-using PF.PJT.Duet.Pawn.Effect;
 using StudioScor.GameplayEffectSystem;
+using StudioScor.MovementSystem;
+using StudioScor.PlayerSystem;
+using StudioScor.Utilities;
 using System;
+using UnityEngine;
 
 namespace PF.PJT.Duet.Pawn.PawnSkill
 {
     [CreateAssetMenu(menuName = "Project/Duet/PawnSkill/new Dodge Skill", fileName = "GA_Skill_Dodge")]
-    public class DodgeSkill : GASAbility, ISkill
+    public class DodgeSkill : CharacterSkill
     {
         [Serializable]
         public struct FAnimationData
@@ -42,10 +41,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         }
 
         [Header(" [ Dodge Skill ] ")]
-        [SerializeField] private Sprite _icon;
-        [SerializeField] private bool _isSkill;
-        [SerializeField] private ESkillType _skillType;
-
         [Header(" Animation")]
         [SerializeField] private float _animDuration = 1f;
         [SerializeField] private FDirectionalAnimationData _animationDatas;
@@ -57,9 +52,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [Header(" Gameplay Effects ")]
         [SerializeField] private CoolTimeEffect _coolTimeEffect;
 
-        public Sprite Icon => _icon;
-        public bool IsSkill => _isSkill;
-        public ESkillType SkillType => _skillType;
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
             return new Spec(this, abilitySystem, level);

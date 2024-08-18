@@ -1,4 +1,6 @@
-﻿using StudioScor.GameplayEffectSystem;
+﻿using PF.PJT.Duet.Pawn.PawnSkill;
+using StudioScor.GameplayEffectSystem;
+using StudioScor.GameplayTagSystem;
 using StudioScor.StatSystem;
 using StudioScor.Utilities;
 using UnityEngine;
@@ -9,32 +11,70 @@ namespace PF.PJT.Duet.Pawn.Effect
     [CreateAssetMenu(menuName = "Project/Duet/GameplayEffect/new Take Damage Effect", fileName = "GE_TakeDamage")]
     public class TakeDamageEffect : GASGameplayEffect
     {
-        public struct FElement
+        public class Element
         {
-            public Vector3 HitPoint;
-            public Vector3 HitNormal;
-            public Collider HitCollider;
-            public Vector3 Direction;
-            public GameObject DamageCauser;
-            public GameObject Instigator;
+            private Vector3 _hitPoint;
+            private Vector3 _hitNormal;
+            private Collider _hitCollider;
+            private Vector3 _direction;
+            private GameObject _damageCauser;
+            private GameObject _instigator;
 
-            public FElement(Vector3 hitPoint, Vector3 hitNormal, Collider hitCollider, Vector3 direction, GameObject damageCauser, GameObject instigator)
+            public Vector3 HitPoint => _hitPoint;
+            public Vector3 HitNormal => _hitNormal;
+            public Collider HitCollider => _hitCollider;
+            public Vector3 Direction => _direction;
+            public GameObject DamageCauser => _damageCauser;
+            public GameObject Instigator => _instigator;
+
+            private static IObjectPool<Element> _pool;
+
+            public Element()
+            { }
+
+            public static Element Get(Vector3 hitPoint, Vector3 hitNormal, Collider hitCollider, Vector3 direction, GameObject damageCauser, GameObject instigator)
             {
-                HitPoint = hitPoint;
-                HitNormal = hitNormal;
-                HitCollider = hitCollider;
-                Direction = direction;
-                DamageCauser = damageCauser;
-                Instigator = instigator;
+                if(_pool is null)
+                {
+                    _pool = new ObjectPool<Element>(Create);
+                }
+
+                var element = _pool.Get();
+
+                element._hitPoint = hitPoint;
+                element._hitNormal = hitNormal;
+                element._hitCollider = hitCollider;
+                element._direction = direction;
+                element._damageCauser = damageCauser;
+                element._instigator = instigator;
+
+                return element;
+            }
+
+            private static Element Create()
+            {
+                return new Element();
+            }
+
+            public void Release()
+            {
+                _pool.Release(this);
             }
         }
 
-        [Header(" Take Damage Effect ")]
+        [Header(" [ Take Damage Effect ] ")]
         [SerializeField] private DamageType _damageType;
         [SerializeField] private StatTag _baseStat;
         [SerializeField] private float _damageRatio = 1f;
+        [SerializeField] private bool _isAdditionalDamage = false;
+
+        [Header(" Gameplay Tag Trigger Event ")]
+        [SerializeField] private GameplayTag _onAttackHitTag;
 
         private static IObjectPool<Spec> _pool;
+
+        public StatTag BaseStat => _baseStat;
+        public float DamageRatio => _damageRatio;
 
         public override IGameplayEffectSpec CreateSpec(IGameplayEffectSystem gameplayEffectSystem, GameObject instigator = null, int level = 0, object data = null)
         {
@@ -91,9 +131,9 @@ namespace PF.PJT.Duet.Pawn.Effect
                     var baseStat = _statSystem.GetOrCreateValue(_gameplayEffect._baseStat);
 
                     float damage = baseStat.Value * _gameplayEffect._damageRatio;
-                    FElement damageData = (FElement)Data;
+                    Element damageData = (Element)Data;
 
-                    _damageableSystem.ApplyPointDamage(damage, 
+                    var appliedDamage = _damageableSystem.ApplyPointDamage(damage, 
                                                        _gameplayEffect._damageType, 
                                                        damageData.HitPoint, 
                                                        damageData.HitNormal, 
@@ -101,6 +141,17 @@ namespace PF.PJT.Duet.Pawn.Effect
                                                        damageData.Direction, 
                                                        damageData.DamageCauser, 
                                                        damageData.Instigator);
+
+
+                    
+                    if(!_gameplayEffect._isAdditionalDamage && Instigator && Instigator.TryGetGameplayTagSystem(out IGameplayTagSystem instigatorGameplayTagSystem))
+                    {
+                        var data = OnAttackHitData.CreateAttackHitData(Instigator, gameObject, damageData.Direction, damageData.HitCollider, damageData.HitPoint, damageData.HitNormal, damage, appliedDamage);
+
+                        instigatorGameplayTagSystem.TriggerTag(_gameplayEffect._onAttackHitTag, data);
+
+                        data.Release();
+                    }
                 }
             }
 

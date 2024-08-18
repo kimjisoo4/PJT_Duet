@@ -29,7 +29,6 @@ namespace PF.PJT.Duet.System
         private IAbilitySystem _mainAbilitySystem;
         private IAbilitySystem _subAbilitySystem;
 
-
         private void Start()
         {
             if(_playerManager.HasPlayerController)
@@ -134,6 +133,7 @@ namespace PF.PJT.Duet.System
             }
 
             var tagCharacter = _playerController.IsPlayingMainCharacter ? _playerController.SubCharacter : _playerController.MainCharacter;
+
             _tagCharacterSlot.SetCharacter(tagCharacter);
             _tagCharacterStatusAmount.SetTarget(tagCharacter.gameObject);
 
@@ -209,7 +209,5 @@ namespace PF.PJT.Duet.System
 
             SetSlot(abilitySpec.Ability, abilitySpec);
         }
-
-        
     }
 }

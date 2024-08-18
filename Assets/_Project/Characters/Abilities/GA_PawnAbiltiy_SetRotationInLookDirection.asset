@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_PawnAbiltiy_SetRotationInLookDirection
   m_EditorClassIdentifier: 
   UseDebug: 0
-  abilityName: Set Rotation In Loop Direction
+  _id: GA_PawnAbiltiy_SetRotationInLookDirection
   abilityTag: {fileID: 11400000, guid: 6d15f3d07c563074d9dd397fd12a0276, type: 2}
   attributeTags: []
   conditionTags:

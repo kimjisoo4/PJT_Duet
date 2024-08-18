@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5724862025874034389}
   - component: {fileID: 2873670618656609777}
   - component: {fileID: 8362003983063525420}
+  - component: {fileID: 2079508616770173886}
   - component: {fileID: 4535251697745477865}
   m_Layer: 0
   m_Name: P_EnemyController
@@ -66,6 +67,30 @@ MonoBehaviour:
   UseDebug: 0
   _playerManager: {fileID: 11400000, guid: 13dbbcde627c89f49bc44e0a2795673d, type: 2}
   _behaviorTree: {fileID: 4535251697745477865}
+  _externalBehavior: {fileID: 11400000, guid: fcd6e16e30e5f9844b81f1bf74feeafc, type: 2}
+  _headTag: {fileID: 11400000, guid: c3e87976f96b5a2499d1135dc5381cf8, type: 2}
+--- !u!114 &2079508616770173886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008602029604108534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6ddc60a1b34e8042b6359a62ba512f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 1
+  _owner: {fileID: 1008602029604108534}
+  _interval: 0.1
+  _distance: 10
+  _angle: 90
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _sightCount: 20
+  _isAutoPlaying: 1
 --- !u!114 &4535251697745477865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,7 +110,7 @@ MonoBehaviour:
   logTaskChanges: 0
   group: 0
   resetValuesOnRestart: 0
-  externalBehavior: {fileID: 11400000, guid: fcd6e16e30e5f9844b81f1bf74feeafc, type: 2}
+  externalBehavior: {fileID: 0}
   mBehaviorSource:
     behaviorName: Behavior
     behaviorDescription: 
@@ -98,12 +123,12 @@ MonoBehaviour:
         Possessed","Instant":true}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(24,315)"},"ID":5,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(1.61816216,176.139557)"},"ID":6,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.SharedVariables.CompareSharedTransform","NodeData":{"Offset":"(-76.9865646,116.139465)"},"ID":7,"Name":"Compare
         Shared Transform","Instant":true,"SharedTransformvariable":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true},"SharedTransformcompareTo":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":null}},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(15.581543,205.348724)"},"ID":8,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(290,472.068939)"},"ID":9,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-303.371277,168.075745)"},"ID":10,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"StudioScor.PlayerSystem.BehaviorTree.ControllerSetTurnDirectionState","NodeData":{"Offset":"(-102.18045,170.886734)"},"ID":11,"Name":"Controller
         Set Turn Direction State","Instant":true,"ETurnDirectionState_turnDirectionState":"MoveDirection"},{"Type":"StudioScor.PlayerSystem.BehaviorTree.ControllerMoveToTarget","NodeData":{"Offset":"(22.678566,257.589264)"},"ID":12,"Name":"Controller
-        Move To Target","Instant":true,"SharedTransform_targetKey":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true},"SharedFloat_reachDistance":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":3}},{"Type":"StudioScor.PlayerSystem.BehaviorTree.ControllerSetTurnDirectionState","NodeData":{"Offset":"(117.566772,349.7449)"},"ID":13,"Name":"Controller
+        Move To Target","Instant":true,"SharedTransform_targetKey":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true},"SharedFloat_reachDistance":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":3},"SharedFloat_randDistance":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}},{"Type":"StudioScor.PlayerSystem.BehaviorTree.ControllerSetTurnDirectionState","NodeData":{"Offset":"(117.566772,349.7449)"},"ID":13,"Name":"Controller
         Set Turn Direction State","Instant":true,"ETurnDirectionState_turnDirectionState":"LookDirection"}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(235.555359,203.128479)"},"ID":14,"Name":"Sequence","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"StudioScor.PlayerSystem.BehaviorTree.ControllerMoveDirection","NodeData":{"Offset":"(-6.642642,130.571228)"},"ID":15,"Name":"Controller
-        Move Direction","Instant":true,"Disabled":true,"SharedFloat_duration":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":-1},"SharedVector3_direction":{"Type":"BehaviorDesigner.Runtime.SharedVector3","Name":null,"Vector3mValue":"(0,0,1)"},"SharedFloat_strength":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"EDirection_directionSpace":"Target","SharedTransform_targetKey":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true}},{"Type":"StudioScor.PlayerSystem.BehaviorTree.TryDodgeAbility","NodeData":{"Offset":"(193.05542,123.5777)"},"ID":16,"Name":"Try
+        Move Direction","Instant":true,"Disabled":true,"SharedFloat_duration":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":-1},"SharedFloat_randDuration":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedVector3_direction":{"Type":"BehaviorDesigner.Runtime.SharedVector3","Name":null,"Vector3mValue":"(0,0,1)"},"SharedFloat_strength":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloat_randStrangth":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0.5},"EDirection_directionSpace":"Target","SharedTransform_targetKey":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true}},{"Type":"StudioScor.PlayerSystem.BehaviorTree.TryDodgeAbility","NodeData":{"Offset":"(193.05542,123.5777)"},"ID":16,"Name":"Try
         Dodge Ability","Instant":true,"Ability_dodgeAbility":0,"SharedTransform_target":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true},"EDirection_transformSpace":"Target","SharedVector3_direction":{"Type":"BehaviorDesigner.Runtime.SharedVector3","Name":null,"Vector3mValue":"(0,0,-1)"}},{"Type":"StudioScor.PlayerSystem.BehaviorTree.TryHammerWindmillAbility","NodeData":{"Offset":"(371.981659,111.317764)"},"ID":17,"Name":"Try
         Hammer Windmill Ability","Instant":true,"Disabled":true,"Ability_windmillAbility":1,"SharedFloat_duration":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":3},"SharedTransform_targetKey":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true}}]}]}]},"DetachedTasks":[{"Type":"StudioScor.PlayerSystem.BehaviorTree.TryComboAbility","NodeData":{"Offset":"(1448.25427,1010.0575)"},"ID":18,"Name":"Try
-        Combo Ability","Instant":true,"Int32_maxComboCount":3,"SharedTransform_targetKey":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":null,"IsShared":true},"SharedFloat_distance":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":5}}],"Variables":[{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Self","IsShared":true},{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true}]}'
+        Combo Ability","Instant":true,"Int32_maxComboCount":3,"SharedTransform_targetKey":{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":null,"IsShared":true},"SharedFloat_distance":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":5}}]}'
       fieldSerializationData:
         typeName: []
         fieldNameHash: 

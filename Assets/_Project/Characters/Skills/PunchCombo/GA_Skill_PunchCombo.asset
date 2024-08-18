@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GA_Skill_PunchCombo
   m_EditorClassIdentifier: PF.PJT.Duet:PF.PJT.Duet.Pawn.PawnSkill:PunchComboSkill
   UseDebug: 0
-  abilityName: Punch Combo
+  _id: GA_Skill_PunchCombo
   abilityTag: {fileID: 11400000, guid: 54ac8190c9c04f54c8e8daee03f98240, type: 2}
   attributeTags:
   - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
@@ -28,7 +28,9 @@ MonoBehaviour:
     - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
   cancelAbilityTags: []
   _icon: {fileID: 21300000, guid: 179d4b0554e333e40bd434f926fd2424, type: 3}
+  _name: 
   _skillType: 1
+  _description: 
   _groundActions:
   - {fileID: 11400000, guid: 0c413131fe6183b458dae19ef6a242cd, type: 2}
   - {fileID: 11400000, guid: 8f3b1763a05154646a85681458b67374, type: 2}

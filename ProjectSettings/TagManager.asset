@@ -35,8 +35,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - IgnoreOnlyCharacter
+  - OverlapOnlyCharacter
   m_SortingLayers:
   - name: Default
     uniqueID: 0
