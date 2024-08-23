@@ -98,8 +98,12 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnSuccessedHit;
 
         [Header(" Gameplay Cue ")]
-        [SerializeField] private FGameplayCue _onHitToOtherCue;
-        [SerializeField] private FGameplayCue _onSuccessedPlayerHit;
+        [Header(" Attack Cue")]
+        [SerializeField][Range(0f, 1f)] private float _attackCueTime = 0.2f;
+        [SerializeField] private FGameplayCue _onAttackCue = FGameplayCue.Default;
+        [Header(" Hit Cue ")]
+        [SerializeField] private FGameplayCue _onHitToOtherCue = FGameplayCue.Default;
+        [SerializeField] private FGameplayCue _onSuccessedPlayerHit = FGameplayCue.Default;
 
         [Header(" Combo ")]
         [SerializeField] private GameplayTag _comboTag;
@@ -117,9 +121,13 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private readonly IPawnSystem _pawnSystem;
             private readonly IBodySystem _bodySystem;
             private readonly IGameplayEffectSystem _gameplayEffectSystem;
+            private readonly IDilationSystem _dilationSystem;
 
             private readonly AnimationPlayer.Events _animationEvents;
             private readonly TrailSphereCast _trailSphereCast = new();
+
+            private bool _wasPlayAttackCue;
+            private Cue _onAttackCue;
 
             public Spec(Ability ability, IAbilitySystem abilitySystem, int level) : base(ability, abilitySystem, level)
             {
@@ -129,6 +137,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _bodySystem = gameObject.GetBodySystem();
                 _pawnSystem = gameObject.GetPawnSystem();
                 _gameplayEffectSystem = gameObject.GetGameplayEffectSystem();
+                _dilationSystem = gameObject.GetDilationSystem();
+
+                _dilationSystem.OnChangedDilation += _dilationSystem_OnChangedDilation;
 
                 _animationID = Animator.StringToHash(_ability._animationName);
                 _animationEvents = new();
@@ -138,6 +149,21 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _animationEvents.OnStartedBlendOut += _animationEvents_OnStartedBlendOut;
                 _animationEvents.OnEnterNotifyState += _animationEvents_OnEnterNotifyState;
                 _animationEvents.OnExitNotifyState += _animationEvents_OnExitNotifyState;
+            }
+
+            private void _dilationSystem_OnChangedDilation(IDilationSystem dilation, float currentDilation, float prevDilation)
+            {
+                if (_onAttackCue is null)
+                    return;
+
+                if(currentDilation.SafeEquals(0f))
+                {
+                    _onAttackCue.Pause();
+                }
+                else if(currentDilation.SafeEquals(1f))
+                {
+                    _onAttackCue.Resume();
+                }
             }
 
             public override bool CanActiveAbility()
@@ -153,16 +179,47 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 _animationPlayer.Play(_animationID, _ability._fadeInTime);
                 _animationPlayer.AnimationEvents = _animationEvents;
+
+                _wasPlayAttackCue = !_ability._onAttackCue.Cue;
             }
             protected override void ExitAbility()
             {
                 base.ExitAbility();
 
                 _animationPlayer.TryStopAnimation(_animationID);
+
+                if (_onAttackCue is not null)
+                {
+                    _onAttackCue.Stop();
+                    _onAttackCue = null;
+                }
+            }
+            protected override void OnCancelAbility()
+            {
+                base.OnCancelAbility();
+
+                if (_onAttackCue is not null)
+                {
+                    _onAttackCue.Stop();
+                    _onAttackCue = null;
+                }
             }
             public void UpdateAbility(float deltaTime)
             {
-                return;
+                if(IsPlaying)
+                {
+                    if (!_wasPlayAttackCue)
+                    {
+                        float normalizedTime = _animationPlayer.NormalizedTime;
+
+                        if(normalizedTime >= _ability._attackCueTime)
+                        {
+                            _wasPlayAttackCue = true;
+
+                            OnAttackCue();
+                        }
+                    }
+                }
             }
 
             public void FixedUpdateAbility(float deltaTime)
@@ -292,8 +349,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                                                                     : hit.collider.ClosestPoint(_trailSphereCast.StartPosition);
                                 Vector3 rotation = Quaternion.LookRotation(hit.normal, Vector3.up).eulerAngles + hit.transform.TransformDirection(_ability._onHitToOtherCue.Rotation);
                                 Vector3 scale = _ability._onHitToOtherCue.Scale;
+                                float volume = _ability._onHitToOtherCue.Volume;
 
-                                _ability._onHitToOtherCue.Cue.Play(position, rotation, scale);
+                                _ability._onHitToOtherCue.Cue.Play(position, rotation, scale, volume);
                             }
                         }
                     }
@@ -320,6 +378,24 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     }
                 }
             }
+
+            private void OnAttackCue()
+            {
+                if (!IsPlaying)
+                    return;
+
+                if (!_ability._onAttackCue.Cue)
+                    return;
+
+                _onAttackCue = _ability._onAttackCue.PlayAttached(transform);
+                _onAttackCue.OnEndedCue += _onAttackCue_OnEndedCue;
+            }
+
+            private void _onAttackCue_OnEndedCue(Cue cue)
+            {
+                _onAttackCue = null;
+            }
+
 
             private void _animationEvents_OnEnterNotifyState(string eventName)
             {

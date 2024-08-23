@@ -6,6 +6,7 @@ using StudioScor.GameplayEffectSystem;
 using StudioScor.GameplayTagSystem;
 using StudioScor.PlayerSystem;
 using StudioScor.Utilities;
+using System;
 using UnityEngine;
 
 namespace PF.PJT.Duet.Pawn.PawnSkill
@@ -39,8 +40,13 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnSuccessedHit;
 
         [Header(" Gameplay Cue ")]
-        [SerializeField] private FGameplayCue _onHitToOtherCue;
-        [SerializeField] private FGameplayCue _onSuccessedPlayerHit;
+        [Header(" Attack Cue")]
+        [SerializeField] private FGameplayCue _onAttackCue = FGameplayCue.Default;
+        [SerializeField][Range(0f, 1f)] private float _attackCueTime = 0.2f;
+
+        [Header(" Hit Cue ")]
+        [SerializeField] private FGameplayCue _onHitToOtherCue = FGameplayCue.Default;
+        [SerializeField] private FGameplayCue _onSuccessedPlayerHit = FGameplayCue.Default;
 
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
@@ -54,6 +60,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private readonly AnimationPlayer _animationPlayer;
             private readonly IPawnSystem _pawnSystem;
             private readonly IBodySystem _bodySystem;
+            private readonly IDilationSystem _dilationSystem;
             private readonly IGameplayEffectSystem _gameplayEffectSystem;
 
             private readonly int _animationHash;
@@ -63,7 +70,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             private readonly MatchTargetWeightMask _matchTargetWeight = new MatchTargetWeightMask(new Vector3(1, 0, 1), 0);
             private Vector3 _moveDirection;
-            private bool _wasStartedMovement;
+
+            private bool _wasPlayAttackCue;
+            private Cue _onAttackCue;
 
             private CoolTimeEffect.Spec _coolTimeSpec;
             public float CoolTime => _ability._coolTimeEffect ? _ability._coolTimeEffect.Duration : 0f;
@@ -78,6 +87,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _pawnSystem = gameObject.GetPawnSystem();
                 _bodySystem = gameObject.GetBodySystem();
                 _gameplayEffectSystem = gameObject.GetGameplayEffectSystem();
+                _dilationSystem = gameObject.GetDilationSystem();
+
+                _dilationSystem.OnChangedDilation += _dilationSystem_OnChangedDilation;
 
                 _animationHash = Animator.StringToHash(_ability._rushAnimationName);
                 _animationEvents.OnCanceled += _animationEvents_OnCanceled;
@@ -87,6 +99,20 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _animationEvents.OnExitNotifyState += _animationEvents_OnExitNotifyState;
             }
 
+            private void _dilationSystem_OnChangedDilation(IDilationSystem dilation, float currentDilation, float prevDilation)
+            {
+                if (_onAttackCue is null)
+                    return;
+
+                if(currentDilation.SafeEquals(0f))
+                {
+                    _onAttackCue.Pause();
+                }
+                else if(currentDilation.SafeEquals(1f))
+                {
+                    _onAttackCue.Resume();
+                }
+            }
 
             public override bool CanActiveAbility()
             {
@@ -106,9 +132,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _animationPlayer.Play(_animationHash, _ability._fadeInTime);
                 _animationPlayer.AnimationEvents = _animationEvents;
 
-                
+                _wasPlayAttackCue = !_ability._onAttackCue.Cue;
 
-                if(_ability._coolTimeEffect)
+                if (_ability._coolTimeEffect)
                 {
                     var effect = _gameplayEffectSystem.TryTakeEffect(_ability._coolTimeEffect, gameObject, Level, null);
 
@@ -123,6 +149,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             protected override void OnCancelAbility()
             {
                 base.OnCancelAbility();
+
+                if(_onAttackCue is not null)
+                {
+                    _onAttackCue.Stop();
+                }
 
                 if(_animationPlayer.IsPlayingHash(_animationHash))
                 {
@@ -148,6 +179,13 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                         float normalizedTime = _animationPlayer.NormalizedTime;
 
                         UpdateMovement(normalizedTime);
+
+                        if(!_wasPlayAttackCue && normalizedTime >= _ability._attackCueTime)
+                        {
+                            _wasPlayAttackCue = true;
+
+                            OnAttackCue();
+                        } 
                     }
                 }
             }
@@ -182,6 +220,22 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                                                       _matchTargetWeight,
                                                       _ability._moveStartTime,
                                                       _ability._moveEndTime);
+            }
+            private void OnAttackCue()
+            {
+                if (!IsPlaying)
+                    return;
+
+                if (!_ability._onAttackCue.Cue)
+                    return;
+
+                _onAttackCue = _ability._onAttackCue.PlayAttached(transform);
+                _onAttackCue.OnEndedCue += _onAttackCue_OnEndedCue;
+            }
+
+            private void _onAttackCue_OnEndedCue(Cue cue)
+            {
+                _onAttackCue = null;
             }
 
             private void OnTurn()
@@ -267,8 +321,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                                                                     : hit.collider.ClosestPoint(_sphereCast.StartPosition);
                                 Vector3 rotation = Quaternion.LookRotation(hit.normal, Vector3.up).eulerAngles + hit.transform.TransformDirection(_ability._onHitToOtherCue.Rotation);
                                 Vector3 scale = _ability._onHitToOtherCue.Scale;
+                                float volume = _ability._onHitToOtherCue.Volume;
 
-                                _ability._onHitToOtherCue.Cue.Play(position, rotation, scale);
+                                _ability._onHitToOtherCue.Cue.Play(position, rotation, scale, volume);
                             }
                         }
                     }

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef89c048269c3b44da8ce047e1af9ec9, type: 3}
+  m_Name: GA_Reword_Buff_AttackPoint
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _id: GA_Reword_Buff_AttackPoint
+  abilityTag: {fileID: 0}
+  attributeTags: []
+  conditionTags:
+    requireds: []
+    obstacleds: []
+  grantTags:
+    owneds: []
+    blocks: []
+  cancelAbilityTags: []
+  _icon: {fileID: 0}
+  _name: Overflowing Power
+  _description: You have a lot of energy all over your body. It increases your {0}
+    by {1}%.
+  _statTag: {fileID: 11400000, guid: ec71c03f010d2164cadd48f171f12fd0, type: 2}
+  _modifierType: 200
+  _value: 0.1
+  _order: 0

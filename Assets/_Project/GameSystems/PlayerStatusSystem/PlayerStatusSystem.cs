@@ -3,7 +3,7 @@ using StudioScor.StatusSystem;
 using StudioScor.Utilities;
 using UnityEngine;
 
-namespace PF.PJT.Duet.System
+namespace PF.PJT.Duet
 {
     public class PlayerStatusSystem : BaseMonoBehaviour
     {

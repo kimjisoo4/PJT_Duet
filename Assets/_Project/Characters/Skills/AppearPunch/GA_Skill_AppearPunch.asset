@@ -76,18 +76,27 @@ MonoBehaviour:
   _applyGameplayEffectsOnHitToSelf: []
   _applyGameplayEffectsOnSuccessedHit:
   - {fileID: 11400000, guid: c8895f0a0c13dab4f83a755b7fc2366b, type: 2}
+  _onAbilityCue:
+    Cue: {fileID: 11400000, guid: c3356f4637bbfc64f96255725e509cf7, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0, y: 0, z: 0}
+    Volume: 1
   _onImpactCue:
     Cue: {fileID: 11400000, guid: b9d949594b0cdc24ebdb4043eee368d7, type: 2}
     Position: {x: 0, y: 1, z: 1}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
+    Volume: 1
   _onHitToOtherCue:
     Cue: {fileID: 11400000, guid: 52998c6953a8b55488608bfe21ab58f1, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 0, y: 0, z: 0}
+    Volume: 1
   _onSuccessedPlayerHit:
     Cue: {fileID: 11400000, guid: 0f6d4545bf2eabd4eb232183e15595c9, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
+    Volume: 1

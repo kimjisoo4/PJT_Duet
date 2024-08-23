@@ -37,7 +37,7 @@ namespace StudioScor.Utilities
 
         private void SetContainer(GameObject newContainer)
         {
-            Log($"{nameof(SetContainer)} - {newContainer}");
+            Log($"[Pool]{nameof(SetContainer)} - {newContainer}");
 
             _instContainer = newContainer;
 

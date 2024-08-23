@@ -30,8 +30,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private FGameplayCue[] _projectileCues;
 
         [Header(" Trace ")]
-        [SerializeField] private float[] _changeChargeLevelTraceRadius;
         [SerializeField] private Variable_LayerMask _traceLayer;
+        [SerializeField] private float[] _changeChargeLevelTraceRadius;
 
         [Header(" Gameplay Cue ")]
         [SerializeField] private FGameplayCue[] _chargingCues;

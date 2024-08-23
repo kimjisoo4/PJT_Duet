@@ -3,7 +3,7 @@ using StudioScor.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace PF.PJT.Duet.System
+namespace PF.PJT.Duet
 {
 
     public class InputSkillSlotUI : BaseMonoBehaviour

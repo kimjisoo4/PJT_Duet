@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace PF.PJT.Duet
 {
-    public abstract class EquipmentItem : BaseScriptableObject, IItem, IDisplayItem
+    public abstract class EquipmentItem : BaseScriptableObject, IItem, IDisplayIcon, IDisplayName, IDisplayDescription
     {
         [Header(" [ Equipment Item Data ] ")]
         [SerializeField] private string _id = "EquipmentItemData_";

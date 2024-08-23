@@ -26,7 +26,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private Variable_LayerMask _traceLayer;
         [SerializeField] private float _traceRadius = 1f;
 
-
         [Header(" Gameplay Effects ")]
         [SerializeField] private CoolTimeEffect _coolTimeEffect;
         [SerializeField] private TakeDamageEffect _takeDamageEffect;
@@ -34,6 +33,10 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnSuccessedHit;
 
         [Header(" Gameplay Cue ")]
+        [Header(" Attack Cue ")]
+        [SerializeField] private FGameplayCue _onAttackCue;
+        [SerializeField][Range(0f, 1f)] private float _attackCueTime = 0.2f;
+        [Space(5f)]
         [SerializeField] private FGameplayCue _onHitToOtherCue;
         [SerializeField] private FGameplayCue _onSuccessedPlayerHit;
         [SerializeField] private FGameplayCue _onHitGroundFX;
@@ -58,6 +61,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private readonly AnimationPlayer.Events _animationEvents;
             private readonly TrailSphereCast _sphereCast = new();
 
+            private Cue _onAttackCue;
+            private bool _wasPlayAttackCue;
 
             public Spec(Ability ability, IAbilitySystem abilitySystem, int level) : base(ability, abilitySystem, level)
             {
@@ -93,6 +98,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 _animationPlayer.Play(_animationHash, _ability._fadeInTime);
                 _animationPlayer.AnimationEvents = _animationEvents;
+
+                _wasPlayAttackCue = !_ability._onAttackCue.Cue;
             }
             protected override void ExitAbility()
             {
@@ -100,17 +107,40 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 _animationPlayer.TryStopAnimation(_animationHash);
             }
+            public override void CancelAbilityFromSource(object source)
+            {
+                base.CancelAbilityFromSource(source);
+
+                if(_onAttackCue is not null)
+                {
+                    _onAttackCue.Stop();
+                    _onAttackCue = null;
+                }
+            }
+
             private void PlayHitGroundFX()
             {
                 if(_ability._onHitGroundFX.Cue)
                 {
-                    _ability._onHitGroundFX.PlayFromTarget(transform);
+                    _ability._onHitGroundFX.PlayAttached(transform);
                 }
             }
 
 
             public void UpdateAbility(float deltaTime)
             {
+                if(IsPlaying)
+                {
+                    if(!_wasPlayAttackCue)
+                    {
+                        float normalizedTime = _animationPlayer.NormalizedTime;
+
+                        if(normalizedTime >= _ability._attackCueTime)
+                        {
+                            OnAttackCue();
+                        }
+                    }
+                }
                 return;
             }
 
@@ -120,6 +150,25 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 {
                     UpdateTrace();
                 }
+            }
+
+            private void OnAttackCue()
+            {
+                if (!IsPlaying)
+                    return;
+
+                if (_wasPlayAttackCue)
+                    return;
+
+                _wasPlayAttackCue = true;
+
+                _onAttackCue = _ability._onAttackCue.PlayFromTarget(transform);
+                _onAttackCue.OnEndedCue += _onAttackCue_OnEndedCue;
+            }
+
+            private void _onAttackCue_OnEndedCue(Cue cue)
+            {
+                _onAttackCue = null;
             }
 
             private void OnCombo()
@@ -240,8 +289,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                                                                     : hit.collider.ClosestPoint(_sphereCast.StartPosition);
                                 Vector3 rotation = Quaternion.LookRotation(hit.normal, Vector3.up).eulerAngles + hit.transform.TransformDirection(_ability._onHitToOtherCue.Rotation);
                                 Vector3 scale = _ability._onHitToOtherCue.Scale;
+                                float volume = _ability._onHitToOtherCue.Volume;
 
-                                _ability._onHitToOtherCue.Cue.Play(position, rotation, scale);
+                                _ability._onHitToOtherCue.Cue.Play(position, rotation, scale, volume);
                             }
                         }
                     }

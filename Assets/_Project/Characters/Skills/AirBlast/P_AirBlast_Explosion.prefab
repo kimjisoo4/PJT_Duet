@@ -61,14 +61,17 @@ MonoBehaviour:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 0.8, y: 0.8, z: 0.8}
+    Volume: 0.5
   - Cue: {fileID: 11400000, guid: 2b24857e9f58b12449941512ddb06530, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 1.2, y: 1.2, z: 1.2}
+    Volume: 0.7
   - Cue: {fileID: 11400000, guid: 2b24857e9f58b12449941512ddb06530, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 2, y: 2, z: 2}
+    Volume: 1
   _applyGameplayEffectsOnHitToOther: []
 --- !u!114 &396257148805158443
 MonoBehaviour:

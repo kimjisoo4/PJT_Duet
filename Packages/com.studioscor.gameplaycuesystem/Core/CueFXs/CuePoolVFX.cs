@@ -50,7 +50,7 @@ namespace StudioScor.GameplayCueSystem.Utilities
         }
 
 
-        public override GameplayCueComponent GetCue()
+        public override ICueActor GetCueActor()
         {
             return GetItem.GetComponent<GameplayCueComponent>();
         }

@@ -762,12 +762,11 @@ ModelImporter:
       - time: 0.51649475
         functionName: AnimNotify
         data: 
-        objectReferenceParameter: {fileID: 11400000, guid: b762665ffa3dbd34d931cb5bb1da59fb,
-          type: 2}
+        objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0
+      - time: 1
         functionName: FootL
         data: 
         objectReferenceParameter: {instanceID: 0}

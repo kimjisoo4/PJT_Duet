@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 116c4f70a82a11b469a59780ec48c57b, type: 3}
+  m_Name: SFX_Impact_Land
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _clips:
+  - {fileID: 8300000, guid: ab79b585b82d8314fab0d87681298671, type: 3}
+  - {fileID: 8300000, guid: 7a8ab167e094d404ca3b19cef5a94e81, type: 3}
+  - {fileID: 8300000, guid: 83830c530d8b59d4e8b6a553875dd247, type: 3}
+  - {fileID: 8300000, guid: ecf758e93b41127458c62172cb046729, type: 3}
+  - {fileID: 8300000, guid: 2c5a5a13e8e6ba843bc770263f7ffaad, type: 3}
+  _audioType: 2

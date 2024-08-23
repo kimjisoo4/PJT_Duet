@@ -42,7 +42,7 @@ MonoBehaviour:
   _readyAnimFadeInTime: 0.1
   _readyAnimFixedTransition: 1
   _chargingMotionTime: motionTime
-  _maxChargeTime: 2
+  _maxChargeTime: 1
   _shotAnimationName: AirBlast_Shot
   _shotAnimFadeInTime: 0.2
   _shotAnimFixedTransition: 0
@@ -67,16 +67,20 @@ MonoBehaviour:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 0.5, y: 0.5, z: 0.5}
+    Volume: 0
   _shotCues:
   - Cue: {fileID: 11400000, guid: 7c666569905d4c0479b4b0e36cac019b, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 0.8, y: 0.8, z: 0.8}
+    Volume: 1
   - Cue: {fileID: 11400000, guid: 7c666569905d4c0479b4b0e36cac019b, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
+    Volume: 1
   - Cue: {fileID: 11400000, guid: 7c666569905d4c0479b4b0e36cac019b, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 1.2, y: 1.2, z: 1.2}
+    Volume: 1

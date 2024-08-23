@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 116c4f70a82a11b469a59780ec48c57b, type: 3}
+  m_Name: SFX_Muzzle_Swing_Light
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _clips:
+  - {fileID: 8300000, guid: e3080da3e76764046bbd9f3cd3826527, type: 3}
+  - {fileID: 8300000, guid: 6212bab7020af114db228aeafe41a923, type: 3}
+  - {fileID: 8300000, guid: dfbc3a4b40202e64e99e428d582db07e, type: 3}
+  - {fileID: 8300000, guid: 1eb7574a1166d4a4a87ad3ba3b811d27, type: 3}
+  - {fileID: 8300000, guid: d4f61a37e54d3ed43995b533042b01ff, type: 3}
+  _audioType: 2

@@ -46,14 +46,23 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b4ab5a2badaa60840aea4fc5cd06760e, type: 2}
   _applyGameplayEffectsOnSuccessedHit:
   - {fileID: 11400000, guid: c8895f0a0c13dab4f83a755b7fc2366b, type: 2}
+  _attackCueTime: 0.3
+  _onAttackCue:
+    Cue: {fileID: 11400000, guid: 8794c298dffc4fd46a561f8a56daec0a, type: 2}
+    Position: {x: 0.25, y: 0.9, z: 0.5}
+    Rotation: {x: 10, y: 90, z: 180}
+    Scale: {x: 0.5, y: 1, z: 1}
+    Volume: 1
   _onHitToOtherCue:
     Cue: {fileID: 11400000, guid: 52998c6953a8b55488608bfe21ab58f1, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
+    Volume: 1
   _onSuccessedPlayerHit:
     Cue: {fileID: 11400000, guid: 0f6d4545bf2eabd4eb232183e15595c9, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
+    Volume: 0
   _comboTag: {fileID: 11400000, guid: 448fc948312b68743b0b376ea2b3cbe1, type: 2}

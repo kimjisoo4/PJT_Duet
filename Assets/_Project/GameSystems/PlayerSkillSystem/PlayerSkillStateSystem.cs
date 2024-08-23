@@ -5,10 +5,11 @@ using StudioScor.AbilitySystem;
 using StudioScor.PlayerSystem;
 using StudioScor.StatusSystem;
 using StudioScor.Utilities;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace PF.PJT.Duet.System
+namespace PF.PJT.Duet
 {
     public class PlayerSkillStateSystem : BaseMonoBehaviour
     {
@@ -24,10 +25,7 @@ namespace PF.PJT.Duet.System
 
         private IPlayerController _playerController;
 
-        private IAbilitySystem _currentAbilitySystem;
-
-        private IAbilitySystem _mainAbilitySystem;
-        private IAbilitySystem _subAbilitySystem;
+        private readonly Dictionary<ICharacter, IAbilitySystem> _abilitySystems = new();
 
         private void Start()
         {
@@ -47,20 +45,24 @@ namespace PF.PJT.Duet.System
 
             if (_playerController is not null)
             {
+                _playerController.OnAddedCharacter -= _playerController_OnAddedCharacter;
+                _playerController.OnRemovedCharacter -= _playerController_OnRemovedCharacter;
                 _playerController.OnChangedCurrentCharacter -= _playerController_OnChangedCurrentCharacter;
+
+                _playerController = null;
             }
 
-            if (_mainAbilitySystem is not null)
+
+            foreach (var abilitySystem in _abilitySystems.Values)
             {
-                _mainAbilitySystem.OnGrantedAbility -= _abilitySystem_OnGrantedAbility;
-                _mainAbilitySystem.OnRemovedAbility -= _abilitySystem_OnRemovedAbility;
+                if (abilitySystem is not null)
+                {
+                    abilitySystem.OnGrantedAbility -= _abilitySystem_OnGrantedAbility;
+                    abilitySystem.OnRemovedAbility -= _abilitySystem_OnRemovedAbility;
+                }
             }
 
-            if (_subAbilitySystem is not null)
-            {
-                _subAbilitySystem.OnGrantedAbility -= _abilitySystem_OnGrantedAbility;
-                _subAbilitySystem.OnRemovedAbility -= _abilitySystem_OnRemovedAbility;
-            }
+            _abilitySystems.Clear();
         }
 
 
@@ -73,21 +75,54 @@ namespace PF.PJT.Duet.System
         {
             _playerController = _playerManager.PlayerController.gameObject.GetComponent<IPlayerController>();
 
-            _mainAbilitySystem = _playerController.MainCharacter.gameObject.GetAbilitySystem();
-            _subAbilitySystem = _playerController.SubCharacter.gameObject.GetAbilitySystem();
+            if (_playerController.CurrentCharacter is not null)
+            {
+                _abilitySystems.Add(_playerController.CurrentCharacter, _playerController.CurrentCharacter.gameObject.GetAbilitySystem());
+            }
 
-            _mainAbilitySystem.OnGrantedAbility += _abilitySystem_OnGrantedAbility;
-            _mainAbilitySystem.OnRemovedAbility += _abilitySystem_OnRemovedAbility;
-            _subAbilitySystem.OnGrantedAbility += _abilitySystem_OnGrantedAbility;
-            _subAbilitySystem.OnRemovedAbility += _abilitySystem_OnRemovedAbility;
+            if (_playerController.NextCharacter is not null)
+            {
+                _abilitySystems.Add(_playerController.NextCharacter, _playerController.NextCharacter.gameObject.GetAbilitySystem());
+            }
+
+            foreach (var abilitySystem in _abilitySystems.Values)
+            {
+                abilitySystem.OnGrantedAbility += _abilitySystem_OnGrantedAbility;
+                abilitySystem.OnRemovedAbility += _abilitySystem_OnRemovedAbility;
+            }
 
             UpdateCurrentCharacter();
 
+            _playerController.OnAddedCharacter += _playerController_OnAddedCharacter;
+            _playerController.OnRemovedCharacter += _playerController_OnRemovedCharacter;
             _playerController.OnChangedCurrentCharacter += _playerController_OnChangedCurrentCharacter;
         }
-       
 
-        private void _playerController_OnChangedCurrentCharacter(IPlayerController playerController)
+        private void _playerController_OnAddedCharacter(IPlayerController controller, ICharacter character)
+        {
+            var abilitySystem = character.gameObject.GetAbilitySystem();
+
+            _abilitySystems.Add(character, abilitySystem);
+
+            abilitySystem.OnGrantedAbility += _abilitySystem_OnGrantedAbility;
+            abilitySystem.OnRemovedAbility += _abilitySystem_OnRemovedAbility;
+
+            UpdateCurrentCharacter();
+        }
+        private void _playerController_OnRemovedCharacter(IPlayerController controller, ICharacter character)
+        {
+            if(_abilitySystems.TryGetValue(character, out IAbilitySystem abilitySystem))
+            {
+                _abilitySystems.Remove(character);
+
+                abilitySystem.OnGrantedAbility -= _abilitySystem_OnGrantedAbility;
+                abilitySystem.OnRemovedAbility -= _abilitySystem_OnRemovedAbility;
+            }
+
+            UpdateCurrentCharacter();
+        }
+
+        private void _playerController_OnChangedCurrentCharacter(IPlayerController controller, ICharacter currentCharacter, ICharacter prevCharacter)
         {
             UpdateCurrentCharacter();
         }
@@ -102,42 +137,28 @@ namespace PF.PJT.Duet.System
 
         private void UpdateCurrentCharacter()
         {
-            IAbilitySystem targetAbilitySystem;
-
-            if (_playerController.IsPlayingMainCharacter)
-            {
-                targetAbilitySystem = _mainAbilitySystem;
-            }
-            else
-            {
-                targetAbilitySystem = _subAbilitySystem;
-            }
-
-            if (_currentAbilitySystem == targetAbilitySystem)
-                return;
-
             ClearSlots();
-
-            _currentAbilitySystem = targetAbilitySystem;
 
             UpdateSlotUIs();
         }
 
         private void UpdateSlotUIs()
         {
-            for (int i = 0; i < _currentAbilitySystem.Abilities.Count(); i++)
+            var currentAbilitySystem = _abilitySystems[_playerController.CurrentCharacter];
+
+            for (int i = 0; i < currentAbilitySystem.Abilities.Count(); i++)
             {
-                var ability = _currentAbilitySystem.Abilities.ElementAt(i);
+                var ability = currentAbilitySystem.Abilities.ElementAt(i);
 
                 SetSlot(ability.Key, ability.Value);
             }
 
-            var tagCharacter = _playerController.IsPlayingMainCharacter ? _playerController.SubCharacter : _playerController.MainCharacter;
+            var tagCharacter = _playerController.NextCharacter;
 
             _tagCharacterSlot.SetCharacter(tagCharacter);
             _tagCharacterStatusAmount.SetTarget(tagCharacter.gameObject);
 
-            var tagAbilitySystem = _playerController.IsPlayingMainCharacter ? _subAbilitySystem : _mainAbilitySystem;
+            var tagAbilitySystem = _abilitySystems[_playerController.NextCharacter];
 
             for (int i = 0; i < tagAbilitySystem.Abilities.Count(); i++)
             {
@@ -179,7 +200,13 @@ namespace PF.PJT.Duet.System
 
         private void _abilitySystem_OnRemovedAbility(IAbilitySystem abilitySystem, IAbilitySpec abilitySpec)
         {
-            if (abilitySystem != _currentAbilitySystem)
+            if (_playerController is null || _playerController.CurrentCharacter is null || _abilitySystems is null)
+                return;
+
+            if (!_abilitySystems.TryGetValue(_playerController.CurrentCharacter, out IAbilitySystem currentAbilitySystem))
+                return;
+
+            if (abilitySystem != currentAbilitySystem)
                 return;
 
             if (abilitySpec.Ability is not ISkill skill)
@@ -204,7 +231,13 @@ namespace PF.PJT.Duet.System
 
         private void _abilitySystem_OnGrantedAbility(IAbilitySystem abilitySystem, IAbilitySpec abilitySpec)
         {
-            if (abilitySystem != _currentAbilitySystem)
+            if (_abilitySystems is null)
+                return;
+
+            if (!_abilitySystems.TryGetValue(_playerController.CurrentCharacter, out IAbilitySystem currentAbilitySystem))
+                return;
+
+            if (abilitySystem != currentAbilitySystem)
                 return;
 
             SetSlot(abilitySpec.Ability, abilitySpec);

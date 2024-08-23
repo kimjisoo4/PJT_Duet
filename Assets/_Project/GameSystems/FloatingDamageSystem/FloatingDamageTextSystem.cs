@@ -3,7 +3,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-namespace PF.PJT.Duet.System
+namespace PF.PJT.Duet
 {
     public class FloatingDamageTextSystem : BaseMonoBehaviour
     {

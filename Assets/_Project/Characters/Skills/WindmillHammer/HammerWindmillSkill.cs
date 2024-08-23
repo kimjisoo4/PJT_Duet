@@ -37,8 +37,16 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnSuccessedHit;
 
         [Header(" Gameplay Cue ")]
-        [SerializeField] private FGameplayCue _onHitToOtherCue;
-        [SerializeField] private FGameplayCue _onSuccessedPlayerHit;
+        [Header(" Windmill Loop Cue ")]
+        [SerializeField][Range(0f, 1f)] private float _onWindmillTime = 0.2f;
+        [SerializeField] private FGameplayCue _onWimdmillCue = FGameplayCue.Default;
+
+        [Header(" Attack Cue ")]
+        [SerializeField] private FGameplayCue _onAttackCue = FGameplayCue.Default;
+
+        [Space(5f)]
+        [SerializeField] private FGameplayCue _onHitToOtherCue = FGameplayCue.Default;
+        [SerializeField] private FGameplayCue _onSuccessedPlayerHit = FGameplayCue.Default;
 
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
@@ -73,6 +81,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private EState _animationState;
             private bool _wasRemovedTag = false;
 
+            private bool _wasPlayWindmillCue;
+            private Cue _windmillCue;
 
             private CoolTimeEffect.Spec _coolTimeSpec;
             public float CoolTime => _ability._coolTimeEffect ? _ability._coolTimeEffect.Duration : 0f;
@@ -111,6 +121,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 base.EnterAbility();
 
                 TransitionState(EState.Start);
+
+                _wasPlayWindmillCue = !_ability._onWimdmillCue.Cue;
 
                 if (_ability._coolTimeEffect)
                 {
@@ -159,6 +171,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                         if (_hitTimer.IsFinished)
                         {
+                            if(_ability._onAttackCue.Cue)
+                            {
+                                _ability._onAttackCue.PlayAttached(transform);
+                            }
+                            
                             EndTrace();
                             OnTrace();
 
@@ -252,6 +269,14 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             }
             private void UpdateWindmillStart(float deltaTime)
             {
+                if(!_wasPlayWindmillCue)
+                {
+                    if(_animationPlayer.NormalizedTime >= _ability._onWindmillTime)
+                    {
+                        _wasPlayWindmillCue = true;
+                        _windmillCue = _ability._onWimdmillCue.PlayAttached(transform);
+                    }
+                }
             }
             private void EndWindmillStart()
             {
@@ -261,6 +286,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private void OnWindmillLoop()
             {
             }
+
             private void UpdateWindmillLoop(float deltaTime)
             {
                 if (_animationPlayer.Animator.TryGetAnimatorState(0, _loopAnimationHash, out AnimatorStateInfo animatorState))
@@ -275,6 +301,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             }
             private void EndWindmillLoop()
             {
+                if(_windmillCue is not null)
+                {
+                    _windmillCue.Stop();
+                    _windmillCue = null;
+                }
             }
 
 
@@ -491,8 +522,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                                                                     : hit.collider.ClosestPoint(_sphereCast.StartPosition);
                                 Vector3 rotation = Quaternion.LookRotation(hit.normal, Vector3.up).eulerAngles + hit.transform.TransformDirection(_ability._onHitToOtherCue.Rotation);
                                 Vector3 scale = _ability._onHitToOtherCue.Scale;
+                                float volume = _ability._onHitToOtherCue.Volume;
 
-                                _ability._onHitToOtherCue.Cue.Play(position, rotation, scale);
+                                _ability._onHitToOtherCue.Cue.Play(position, rotation, scale, volume);
                             }
                         }
                     }

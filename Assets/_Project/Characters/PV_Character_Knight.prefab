@@ -128,12 +128,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1287615726016426125}
   m_PrefabAsset: {fileID: 0}
---- !u!143 &6612291660113492245 stripped
-CharacterController:
-  m_CorrespondingSourceObject: {fileID: 5340446263873489304, guid: d8fea1572d399c84fb957bd8db6e8c57,
-    type: 3}
-  m_PrefabInstance: {fileID: 1287615726016426125}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5259166971033661827
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -147,21 +141,16 @@ PrefabInstance:
       propertyPath: _owner
       value: 
       objectReference: {fileID: 5244778159239284206}
+    - target: {fileID: 7037511030163121765, guid: af65ea7e3d102f140801dd4a89cf8318,
+        type: 3}
+      propertyPath: _owner
+      value: 
+      objectReference: {fileID: 5244778159239284206}
     - target: {fileID: 7886334749642239807, guid: af65ea7e3d102f140801dd4a89cf8318,
         type: 3}
       propertyPath: _owner
       value: 
       objectReference: {fileID: 5244778159239284206}
-    - target: {fileID: 8178628174744652308, guid: af65ea7e3d102f140801dd4a89cf8318,
-        type: 3}
-      propertyPath: characterController
-      value: 
-      objectReference: {fileID: 6612291660113492245}
-    - target: {fileID: 8412305600148544024, guid: af65ea7e3d102f140801dd4a89cf8318,
-        type: 3}
-      propertyPath: m_CullingMode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8451574245482521740, guid: af65ea7e3d102f140801dd4a89cf8318,
         type: 3}
       propertyPath: _owner

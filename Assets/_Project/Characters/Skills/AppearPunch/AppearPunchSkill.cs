@@ -39,6 +39,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnSuccessedHit;
 
         [Header(" Gameplay Cue ")]
+        [SerializeField] private FGameplayCue _onAbilityCue;
         [SerializeField] private FGameplayCue _onImpactCue;
         [SerializeField] private FGameplayCue _onHitToOtherCue;
         [SerializeField] private FGameplayCue _onSuccessedPlayerHit;
@@ -146,6 +147,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 _rotationSystem.SetRotation(Quaternion.LookRotation(_moveDirection, Vector3.up), false);
                 _movementValue.OnMovement(_ability._moveDistance, _ability._moveCurve);
+
+                if(_ability._onAbilityCue.Cue)
+                {
+                    _ability._onAbilityCue.PlayFromTarget(transform);
+                }
             }
 
             protected override void ExitAbility()
@@ -279,8 +285,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                                                                     : hit.collider.ClosestPoint(_sphereCast.StartPosition);
                                 Vector3 rotation = Quaternion.LookRotation(hit.normal, Vector3.up).eulerAngles + hit.transform.TransformDirection(_ability._onHitToOtherCue.Rotation);
                                 Vector3 scale = _ability._onHitToOtherCue.Scale;
+                                float volume = _ability._onHitToOtherCue.Volume;
 
-                                _ability._onHitToOtherCue.Cue.Play(position, rotation, scale);
+                                _ability._onHitToOtherCue.Cue.Play(position, rotation, scale, volume);
                             }
                         }
                     }

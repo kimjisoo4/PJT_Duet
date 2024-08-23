@@ -3,9 +3,11 @@ using StudioScor.GameplayTagSystem;
 using StudioScor.StatusSystem;
 using StudioScor.Utilities;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace PF.PJT.Duet.Pawn.PawnAbility
 {
+   
     [CreateAssetMenu(menuName = "Project/Duet/PawnAbility/Effect/new Apply Damage Ability", fileName = "GA_PawnAbiltiy_ApplyDamage")]
     public class ApplyDamageAbility : GASAbility
     {
@@ -63,7 +65,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
 
                 _ability._damageResultEvent.Invoke(new FDamageResult(damage, transform.position, damageInfo.Type));
 
-                GameplayTagSystem.TriggerTag(_ability._onHitTriggerTag);
+                GameplayTagSystem.TriggerTag(_ability._onHitTriggerTag, damageInfo);
             }
         }
     }

@@ -214,6 +214,9 @@ MonoBehaviour:
   - AbilityName: 'GA_PawnAbiltiy_TriggerShaderFloat_Hit [ Level : 0 ]'
     Ability: {fileID: 11400000, guid: c4f27ef6a1f68de42b1b7dadf88d0f9b, type: 2}
     Level: 0
+  - AbilityName: 'GA_PawnAbiltiy_Footstep [ Level : 0 ]'
+    Ability: {fileID: 11400000, guid: f6c68be09770f4d4b96ba7f242d02398, type: 2}
+    Level: 0
 --- !u!114 &2224922915931206671
 MonoBehaviour:
   m_ObjectHideFlags: 0

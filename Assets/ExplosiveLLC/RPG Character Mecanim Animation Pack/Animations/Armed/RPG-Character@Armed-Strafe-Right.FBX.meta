@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: f1fcdfeef7dab6448a8c158e298e726a
 ModelImporter:
-  serializedVersion: 19301
+  serializedVersion: 22200
   internalIDToNameTable:
   - first:
       1: 100000
@@ -758,22 +758,23 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: Motion
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: "\nRetargeting quality report for clip 'Take 001':\n\tLeftUpperArm
-      average position error 5.4 mm and maximum position error 5.4 mm at time 0:17
-      (70.8%) Frame 17\n\tLeftLowerArm average position error 5.4 mm and maximum
-      position error 5.4 mm at time 0:18 (75.0%) Frame 18\n\tLeftHand average position
-      error 5.4 mm and maximum position error 5.4 mm at time 0:18 (75.0%) Frame 18\n\tRightUpperArm
-      average position error 5.4 mm and maximum position error 5.4 mm at time 0:
-      7 (29.2%) Frame 7\n\tRightLowerArm average position error 5.3 mm and maximum
-      position error 5.4 mm at time 0:10 (41.7%) Frame 10\n\tRightHand average position
-      error 5.4 mm and maximum position error 5.4 mm at time 0: 7 (29.2%) Frame 7\n\tHead
-      average position error 5.4 mm and maximum position error 5.4 mm at time 0:
-      0 (0.0%) Frame 0\n"
+      average position error 5.4 mm and maximum position error 5.4 mm at time 0:18
+      (75.0%) Frame 18\n\tLeftLowerArm average position error 5.3 mm and maximum
+      position error 5.4 mm at time 0: 8 (33.3%) Frame 8\n\tLeftHand average position
+      error 5.4 mm and maximum position error 5.4 mm at time 0: 7 (29.2%) Frame 7\n\tRightUpperArm
+      average position error 5.4 mm and maximum position error 5.4 mm at time 0:19
+      (79.2%) Frame 19\n\tRightLowerArm average position error 5.5 mm and maximum
+      position error 5.6 mm at time 0:23 (95.8%) Frame 23\n\tRightHand average position
+      error 5.4 mm and maximum position error 5.4 mm at time 0: 4 (16.7%) Frame 4\n\tHead
+      average position error 5.4 mm and maximum position error 5.4 mm at time 0:18
+      (75.0%) Frame 18\n"
     animationDoRetargetingWarnings: 1
     importAnimatedCustomProperties: 0
     importConstraints: 0
@@ -817,7 +818,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0
+      - time: 1
         functionName: FootR
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -836,27 +837,35 @@ ModelImporter:
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
+    importPhysicalCameras: 1
     importVisibility: 0
     importBlendShapes: 0
     importCameras: 0
     importLights: 0
+    nodeNameCollisionStrategy: 0
     fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 0
+    bakeAxisConversion: 0
     preserveHierarchy: 0
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
+    optimizeBones: 1
     meshOptimizationFlags: 0
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 0
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 2
@@ -1580,6 +1589,9 @@ ModelImporter:
   animationType: 3
   humanoidOversampling: 1
   avatarSetup: 2
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

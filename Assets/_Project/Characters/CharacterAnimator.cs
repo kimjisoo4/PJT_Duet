@@ -1,9 +1,12 @@
-﻿using StudioScor.Utilities;
-using UnityEngine;
+﻿using StudioScor.GameplayTagSystem;
 using StudioScor.MovementSystem;
-using StudioScor.GameplayTagSystem;
+using StudioScor.Utilities;
+using UnityEngine;
+using UnityEngine.Pool;
+
 namespace PF.PJT.Duet.Pawn
 {
+
     public class CharacterAnimator : BaseMonoBehaviour
     {
         [Header(" [ Character Animator ] ")]

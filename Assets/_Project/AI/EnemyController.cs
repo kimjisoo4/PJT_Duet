@@ -7,7 +7,12 @@ using UnityEngine;
 
 namespace PF.PJT.Duet.Controller.Enemy
 {
-    public class EnemyController : BaseMonoBehaviour
+    public interface IEnemyController
+    {
+        public void SetTargetKey(Transform target);
+    }
+
+    public class EnemyController : BaseMonoBehaviour, IEnemyController
     {
         [Header(" [ Enemy Controller ] ")]
         [SerializeField] private PlayerManager _playerManager;
@@ -238,7 +243,13 @@ namespace PF.PJT.Duet.Controller.Enemy
 
             var target = _targetKey.Value;
 
-            if (prevPawn is null || target != prevPawn.transform)
+            if(prevPawn is null)
+            {
+                Log($" Prev Pawn Is Null");
+                return;
+            }
+
+            if (target != prevPawn.transform)
             {
                 Log($"Target Not Equal [ Target - {target} :: Prev Pawn - {prevPawn.transform}]");
 

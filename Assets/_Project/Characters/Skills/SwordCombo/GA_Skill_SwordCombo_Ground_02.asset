@@ -38,7 +38,7 @@ MonoBehaviour:
   _turnTag: {fileID: 11400000, guid: 6d15f3d07c563074d9dd397fd12a0276, type: 2}
   _tracePoint: {fileID: 11400000, guid: fd15a44b8089f3d4eb7a7e059924865f, type: 2}
   _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
-  _traceRadius: 1
+  _traceRadius: 1.2
   _coolTimeEffect: {fileID: 0}
   _takeDamageEffect: {fileID: 11400000, guid: 7b1a53aa683950a4793a23af0ddc97b6, type: 2}
   _applyGameplayEffectsOnHitToOther:
@@ -47,14 +47,23 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b4ab5a2badaa60840aea4fc5cd06760e, type: 2}
   _applyGameplayEffectsOnSuccessedHit:
   - {fileID: 11400000, guid: c8895f0a0c13dab4f83a755b7fc2366b, type: 2}
+  _attackCueTime: 0.3
+  _onAttackCue:
+    Cue: {fileID: 11400000, guid: 7a11d6b73fc82e645a8dd39ddc744431, type: 2}
+    Position: {x: 0, y: 1, z: 0.75}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0.8, y: 0.8, z: 1.6}
+    Volume: 1
   _onHitToOtherCue:
     Cue: {fileID: 11400000, guid: 6c85673d7edaa62439a2920702e6d37b, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
+    Volume: 1
   _onSuccessedPlayerHit:
     Cue: {fileID: 11400000, guid: 0f6d4545bf2eabd4eb232183e15595c9, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
+    Volume: 0
   _comboTag: {fileID: 11400000, guid: c583f79ff7c13be4494a9f1f276fb035, type: 2}

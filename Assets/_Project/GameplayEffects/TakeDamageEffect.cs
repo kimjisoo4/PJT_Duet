@@ -9,7 +9,7 @@ using UnityEngine.Pool;
 namespace PF.PJT.Duet.Pawn.Effect
 {
     [CreateAssetMenu(menuName = "Project/Duet/GameplayEffect/new Take Damage Effect", fileName = "GE_TakeDamage")]
-    public class TakeDamageEffect : GASGameplayEffect
+    public class TakeDamageEffect : GASGameplayEffect, IDisplayDamage
     {
         public class Element
         {
@@ -72,9 +72,10 @@ namespace PF.PJT.Duet.Pawn.Effect
         [SerializeField] private GameplayTag _onAttackHitTag;
 
         private static IObjectPool<Spec> _pool;
-
         public StatTag BaseStat => _baseStat;
         public float DamageRatio => _damageRatio;
+        public DamageType DamageType => _damageType;
+        public string Damage => $"<b>{_damageRatio * 100:F0}</b>";
 
         public override IGameplayEffectSpec CreateSpec(IGameplayEffectSystem gameplayEffectSystem, GameObject instigator = null, int level = 0, object data = null)
         {
@@ -103,7 +104,7 @@ namespace PF.PJT.Duet.Pawn.Effect
 
             private IDamageableSystem _damageableSystem;
             private IStatSystem _statSystem;
-
+            private IStatSystem _instigatorStatSystem;
             public override void SetupSpec(GameplayEffect gameplayEffect, IGameplayEffectSystem gameplayEffectSystem, GameObject instigator, int level = 0, object data = null)
             {
                 base.SetupSpec(gameplayEffect, gameplayEffectSystem, instigator, level, data);
@@ -111,6 +112,7 @@ namespace PF.PJT.Duet.Pawn.Effect
                 _gameplayEffect = gameplayEffect as TakeDamageEffect;
                 _damageableSystem = gameObject.GetComponent<IDamageableSystem>();
                 _statSystem = gameObject.GetStatSystem();
+                _instigatorStatSystem = instigator.GetStatSystem();
             }
             public override bool CanTakeEffect()
             {
@@ -126,9 +128,9 @@ namespace PF.PJT.Duet.Pawn.Effect
             {
                 base.OnEnterEffect();
 
-                if (_statSystem is not null)
+                if (_instigatorStatSystem is not null)
                 {
-                    var baseStat = _statSystem.GetOrCreateValue(_gameplayEffect._baseStat);
+                    var baseStat = _instigatorStatSystem.GetOrCreateValue(_gameplayEffect._baseStat);
 
                     float damage = baseStat.Value * _gameplayEffect._damageRatio;
                     Element damageData = (Element)Data;

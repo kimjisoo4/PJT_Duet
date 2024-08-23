@@ -137,13 +137,19 @@ namespace PF.PJT.Duet
 
         private void SelectEventListener_OnSelected(ISelectEventListener selectEventListener, UnityEngine.EventSystems.BaseEventData obj)
         {
-            var reword = _rewordSelects.First(x => x.gameObject == selectEventListener.gameObject);
+            var reword = _rewordSelects.FirstOrDefault(x => x.gameObject == selectEventListener.gameObject);
+
+            if (!reword || !reword.EquipmentItem)
+                return;
 
             OnSelectReword(reword.EquipmentItem);
         }
         private void SubmitEventListener_OnSubmited(ISubmitEventListener submitEventListener, UnityEngine.EventSystems.BaseEventData obj)
         {
-            var reword = _rewordSelects.First(x => x.gameObject == submitEventListener.gameObject);
+            var reword = _rewordSelects.FirstOrDefault(x => x.gameObject == submitEventListener.gameObject);
+
+            if (!reword || !reword.EquipmentItem)
+                return;
 
             OnSubmitReword(reword.EquipmentItem);
         }

@@ -207,6 +207,7 @@ GameObject:
   - component: {fileID: 6107398047952618893}
   - component: {fileID: 2909845703386587738}
   - component: {fileID: 8484495214392774732}
+  - component: {fileID: 5016722226918709430}
   m_Layer: 0
   m_Name: P_Model_Human_Fighter
   m_TagString: Untagged
@@ -332,16 +333,61 @@ MonoBehaviour:
   _unityEvents:
     _onFootR:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 5016722226918709430}
+          m_TargetAssemblyTypeName: PF.PJT.Duet.Pawn.FootstepEventComponent, PF.PJT.Duet
+          m_MethodName: Footstep
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 11400000, guid: b528a909f1f35664aa204d32fc13cb75,
+              type: 2}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     _onFootL:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 5016722226918709430}
+          m_TargetAssemblyTypeName: PF.PJT.Duet.Pawn.FootstepEventComponent, PF.PJT.Duet
+          m_MethodName: Footstep
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 11400000, guid: 1bb013298a14c504397731511af9a38a,
+              type: 2}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     _onHit:
       m_PersistentCalls:
         m_Calls: []
     _onLand:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &5016722226918709430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5502274508143566460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b23eb718d4cb43f4394eb628c5cd52e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _owner: {fileID: 0}
+  _footstepTriggerTag: {fileID: 11400000, guid: bad29a5b0d22bbf46bd3e9b421185428,
+    type: 2}
+  _footstepInterval: 0.2
+  _footstepSpeed: 1
+  _footstepHeight: 0.2
 --- !u!1 &5607516610639556546
 GameObject:
   m_ObjectHideFlags: 0

@@ -64,6 +64,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _owner: {fileID: 0}
+--- !u!1 &8005986957228415437
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3143799350000824456}
+  - component: {fileID: 1553953762968530744}
+  m_Layer: 0
+  m_Name: BodyPart_Foot_L
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3143799350000824456
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8005986957228415437}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: -0, z: 0.7071068, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8495114699423965838}
+  m_LocalEulerAnglesHint: {x: 180, y: -90, z: 0}
+--- !u!114 &1553953762968530744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8005986957228415437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0066da9c095e4a94eaa321bcbf42b6a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _BodyTag: {fileID: 11400000, guid: 1bb013298a14c504397731511af9a38a, type: 2}
+  _canEquiped: 1
+  _useAutoAttach: 1
+  _useAutoDetach: 0
 --- !u!1 &8386216135319225712
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,6 +177,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _owner: {fileID: 0}
+--- !u!1 &8411218691597642682
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8307824534900966427}
+  - component: {fileID: 8260055409020922164}
+  m_Layer: 0
+  m_Name: BodyPart_Foot_R
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8307824534900966427
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8411218691597642682}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8494961928594471618}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &8260055409020922164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8411218691597642682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0066da9c095e4a94eaa321bcbf42b6a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _BodyTag: {fileID: 11400000, guid: b528a909f1f35664aa204d32fc13cb75, type: 2}
+  _canEquiped: 1
+  _useAutoAttach: 1
+  _useAutoDetach: 0
 --- !u!1 &8496463277723797368
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,6 +486,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8495294162774587872}
+  - {fileID: 8307824534900966427}
   m_Father: {fileID: 8501280239463519654}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8496514245677320558
@@ -687,6 +786,7 @@ GameObject:
   - component: {fileID: 7886334749642239807}
   - component: {fileID: 6658922670849518193}
   - component: {fileID: -3268235524289507874}
+  - component: {fileID: 7037511030163121765}
   m_Layer: 0
   m_Name: P_Model_Human_Knight
   m_TagString: Untagged
@@ -702,7 +802,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8497223780413371598}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -726,7 +826,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 32562d1256a1b3b4ca9be3d6ce7adf64, type: 3}
   m_Controller: {fileID: 22100000, guid: 2b4c9d119d91db8478b18312f845b087, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
@@ -816,16 +916,61 @@ MonoBehaviour:
   _unityEvents:
     _onFootR:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 7037511030163121765}
+          m_TargetAssemblyTypeName: PF.PJT.Duet.Pawn.FootstepEventComponent, PF.PJT.Duet
+          m_MethodName: Footstep
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 11400000, guid: b528a909f1f35664aa204d32fc13cb75,
+              type: 2}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     _onFootL:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 7037511030163121765}
+          m_TargetAssemblyTypeName: PF.PJT.Duet.Pawn.FootstepEventComponent, PF.PJT.Duet
+          m_MethodName: Footstep
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 11400000, guid: 1bb013298a14c504397731511af9a38a,
+              type: 2}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     _onHit:
       m_PersistentCalls:
         m_Calls: []
     _onLand:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &7037511030163121765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8497223780413371598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b23eb718d4cb43f4394eb628c5cd52e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _owner: {fileID: 0}
+  _footstepTriggerTag: {fileID: 11400000, guid: bad29a5b0d22bbf46bd3e9b421185428,
+    type: 2}
+  _footstepInterval: 0.2
+  _footstepSpeed: 1
+  _footstepHeight: 0.2
 --- !u!1 &8497239307868615048
 GameObject:
   m_ObjectHideFlags: 0
@@ -2379,6 +2524,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8495146562778151956}
+  - {fileID: 3143799350000824456}
   m_Father: {fileID: 8495211633612374832}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8497945177889741966

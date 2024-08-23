@@ -9,9 +9,9 @@ namespace PF.PJT.Duet
         [SerializeField] private Vector3 _position;
         [SerializeField] private DamageType _damageType;
 
-        public float Damage => _damage;
-        public Vector3 Position => _position;
-        public DamageType DamageType => _damageType;
+        public readonly float Damage => _damage;
+        public readonly Vector3 Position => _position;
+        public readonly DamageType DamageType => _damageType;
 
         public FDamageResult(float damage, Vector3 position, DamageType damageType)
         {

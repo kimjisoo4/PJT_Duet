@@ -40,6 +40,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnSuccessedHit;
 
         [Header(" Gameplay Cue ")]
+        [SerializeField] private FGameplayCue _onAbilityCue;
         [SerializeField] private FGameplayCue _onImpactCue;
         [SerializeField] private FGameplayCue _onHitToOtherCue;
         [SerializeField] private FGameplayCue _onSuccessedPlayerHit;
@@ -129,6 +130,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                         _coolTimeSpec = effect.effectSpec as CoolTimeEffect.Spec;
                         _coolTimeSpec.OnEndedEffect += _coolTimeSpec_OnEndedEffect;
                     }
+                }
+
+                if(_ability._onAbilityCue.Cue)
+                {
+                    _ability._onAbilityCue.PlayFromTarget(transform);
                 }
             }
 
@@ -316,8 +322,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                                 Quaternion hitRotation = hit.normal.SafeEquals(Vector3.zero) ? Quaternion.identity : Quaternion.LookRotation(hit.normal, Vector3.up);
                                 Vector3 rotation = hitRotation.eulerAngles + hit.transform.TransformDirection(_ability._onHitToOtherCue.Rotation);
                                 Vector3 scale = _ability._onHitToOtherCue.Scale;
+                                float volume = _ability._onHitToOtherCue.Volume;
 
-                                _ability._onHitToOtherCue.Cue.Play(position, rotation, scale);
+                                _ability._onHitToOtherCue.Cue.Play(position, rotation, scale, volume);
                             }
                         }
                     }

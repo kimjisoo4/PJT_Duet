@@ -65,8 +65,8 @@ namespace StudioScor.Utilities
             
         }
         [Header(" [ Explosive LLC Event Listener ] ")]
-        [SerializeField] private bool _useUnityEvent = true;
-        [SerializeField][SCondition(nameof(_useUnityEvent))] private UnityEvents _unityEvents;
+        [SerializeField] private bool _useUnityEvent = false;
+        [SerializeField] private UnityEvents _unityEvents;
 
         public event UnityAction OnFootR;
         public event UnityAction OnFootL;

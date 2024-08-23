@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a70839a6f4c1f94e8036e88f4d27628, type: 3}
+  m_Name: GA_Enchant_AttackFire
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _id: GA_Enchant_AttackFire
+  abilityTag: {fileID: 11400000, guid: 71ac272661e1cf040ba0023e4f51e94c, type: 2}
+  attributeTags:
+  - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
+  conditionTags:
+    requireds: []
+    obstacleds: []
+  grantTags:
+    owneds: []
+    blocks: []
+  cancelAbilityTags: []
+  _icon: {fileID: 0}
+  _name: Encahnt Fire
+  _description: When an attack hits, it deals an additional {1}% of the {0} as {2}
+  _onAttackHitTag: {fileID: 11400000, guid: 9063c96f2eaa0b04aa9fd0ede7483ce0, type: 2}
+  _takeDamageEffect: {fileID: 11400000, guid: 8f2d48f187e2f0a41b28acc2d2311d11, type: 2}
+  _onHitCue:
+    Cue: {fileID: 11400000, guid: 5a2ca1c359dc9a747851f9e706d10008, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0.5, y: 0.5, z: 0.5}
+    Volume: 0.5

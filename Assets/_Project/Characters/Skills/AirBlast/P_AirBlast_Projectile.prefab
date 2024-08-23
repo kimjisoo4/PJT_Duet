@@ -87,48 +87,55 @@ MonoBehaviour:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 0.8, y: 0.8, z: 0.8}
+    Volume: 0
   - Cue: {fileID: 11400000, guid: cf92b3a96e5189f439957a620ed622cf, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
+    Volume: 0
   - Cue: {fileID: 11400000, guid: cf92b3a96e5189f439957a620ed622cf, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 1.5, y: 1.5, z: 1.5}
+    Volume: 0
   _changeChargeLevelTraceRadius:
   - 0.5
   - 0.6
   - 0.8
-  _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
+  _traceLayer: {fileID: 11400000, guid: f3a409a5ae9453c4f9258b6f9cb6a74c, type: 2}
   _chargingCues:
   - Cue: {fileID: 11400000, guid: 7ce1680a92d92d04eb27ba05bf011d58, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 0.3, y: 0.3, z: 0.3}
+    Volume: 1
   - Cue: {fileID: 11400000, guid: 7ce1680a92d92d04eb27ba05bf011d58, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 0.4, y: 0.4, z: 0.4}
+    Volume: 1
   - Cue: {fileID: 11400000, guid: 7ce1680a92d92d04eb27ba05bf011d58, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 0.6, y: 0.6, z: 0.6}
+    Volume: 1
   _changeChargeLevelCues:
   - Cue: {fileID: 11400000, guid: 12ddacb4fbe776d4dadf73ddb66824c1, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
+    Volume: 1
   - Cue: {fileID: 11400000, guid: ac4d24d7665de7d49a01953da7455317, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
+    Volume: 1
   - Cue: {fileID: 11400000, guid: cf7fa3804e4818e4285b4dfebfbcffaa, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
-  _takeDamageEffects: []
-  _applyGameplayEffectsOnHitToOther: []
-  _applyGameplayEffectsOnSuccessedHit: []
+    Volume: 1
+  _addedApplyGameplayEffectsOnHitToOther: []
 --- !u!114 &7880404039890585289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,6 +225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
+  _poolContainer: {fileID: 0}
   _releasedWhenDisable: 1
   _onCreated:
     m_PersistentCalls:
@@ -254,3 +262,6 @@ MonoBehaviour:
     _onEndedRaycast:
       m_PersistentCalls:
         m_Calls: []
+  _useAlwaysDrawGizmos: 0
+  _isWire: 1
+  _gizmosColor: {r: 1, g: 0, b: 0, a: 1}

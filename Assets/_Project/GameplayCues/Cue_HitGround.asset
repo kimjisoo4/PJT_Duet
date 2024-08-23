@@ -18,7 +18,9 @@ MonoBehaviour:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: -90, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
+    Volume: 0
   - Cue: {fileID: 11400000, guid: 31e23370481db8c44b8445df6e02cbb9, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
+    Volume: 0

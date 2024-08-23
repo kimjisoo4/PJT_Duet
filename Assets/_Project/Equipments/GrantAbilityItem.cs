@@ -10,10 +10,10 @@ namespace PF.PJT.Duet
     {
         [Header(" [ Grant Ability Item ] ")]
         [SerializeField] private Ability _ability;
-        public override Sprite Icon => ((ISkill)_ability).Icon;
-        public override string Name => ((ISkill)_ability).Name;
-        public override string Description => ((ISkill)_ability).GetDescription();
 
+        public override Sprite Icon => ((IRewordAbility)_ability).Icon;
+        public override string Name => ((IRewordAbility)_ability).Name;
+        public override string Description => ((IRewordAbility)_ability).Description;
 
         protected override EquipmentItemSpec GetSpec()
         {
@@ -41,8 +41,8 @@ namespace PF.PJT.Duet
 
                 _playerController = owner.GetComponent<IPlayerController>();
 
-                var mainCharacter = _playerController.MainCharacter.gameObject;
-                var subCharacter = _playerController.SubCharacter.gameObject;
+                var mainCharacter = _playerController.CurrentCharacter.gameObject;
+                var subCharacter = _playerController.NextCharacter.gameObject;
 
                 if (mainCharacter.TryGetAbilitySystem(out _mainCharacterAbilitySystem))
                 {

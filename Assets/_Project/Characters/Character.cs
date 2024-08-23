@@ -1,5 +1,4 @@
-﻿using PF.PJT.Duet.Pawn.PawnSkill;
-using StudioScor.AbilitySystem;
+﻿using StudioScor.AbilitySystem;
 using StudioScor.GameplayEffectSystem;
 using StudioScor.GameplayTagSystem;
 using StudioScor.MovementSystem;
@@ -8,10 +7,10 @@ using StudioScor.RotationSystem;
 using StudioScor.StatSystem;
 using StudioScor.StatusSystem;
 using StudioScor.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
 namespace PF.PJT.Duet.Pawn
 {
     public interface IKnockbackable
@@ -208,12 +207,11 @@ namespace PF.PJT.Duet.Pawn
             if (!gameObject.activeSelf)
                 gameObject.SetActive(true);
 
-
             if(!_pawnSystem.IsPossessed)
             {
                 if (_enemyControllers is not null && _enemyControllers.Count() > 0)
                 {
-                    var controller = _enemyControllers[Random.Range(0, _enemyControllers.Length)];
+                    var controller = _enemyControllers[UnityEngine.Random.Range(0, _enemyControllers.Length)];
                     var controllerActor = controller.Get();
 
                     if (controllerActor.TryGetControllerSystem(out IControllerSystem controllerSystem))

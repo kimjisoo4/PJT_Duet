@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e098d29d4abaa743a04067977fe443e, type: 3}
   m_Name: Event.OnHit
   m_EditorClassIdentifier: 
-  Description: ' Description Is Not Include In Build.'
+  Description: On Hit Event From Apply Take Damage Ability.

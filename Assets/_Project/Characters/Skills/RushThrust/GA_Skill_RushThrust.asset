@@ -20,7 +20,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
   conditionTags:
     requireds: []
-    obstacleds: []
+    obstacleds:
+    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+    - {fileID: 11400000, guid: 08e9c4a810fff2044a1f26bae2fbd9c8, type: 2}
   grantTags:
     owneds:
     - {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
@@ -42,7 +44,7 @@ MonoBehaviour:
   _moveEndTime: 0.65
   _turnTag: {fileID: 11400000, guid: 6d15f3d07c563074d9dd397fd12a0276, type: 2}
   _tracePoint: {fileID: 11400000, guid: fd15a44b8089f3d4eb7a7e059924865f, type: 2}
-  _traceRadius: 1
+  _traceRadius: 1.5
   _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
   _coolTimeEffect: {fileID: 11400000, guid: e654f3ac64f5c4540a8f1f7b71462b8e, type: 2}
   _takeDamageEffect: {fileID: 11400000, guid: 1c0a148d4f0714e49a457b001f3ed823, type: 2}
@@ -51,13 +53,22 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b4ab5a2badaa60840aea4fc5cd06760e, type: 2}
   _applyGameplayEffectsOnSuccessedHit:
   - {fileID: 11400000, guid: c8895f0a0c13dab4f83a755b7fc2366b, type: 2}
+  _onAttackCue:
+    Cue: {fileID: 11400000, guid: 7a11d6b73fc82e645a8dd39ddc744431, type: 2}
+    Position: {x: 0.25, y: 1, z: 0}
+    Rotation: {x: 0, y: 90, z: 180}
+    Scale: {x: 2, y: 1, z: 1}
+    Volume: 1
+  _attackCueTime: 0.425
   _onHitToOtherCue:
     Cue: {fileID: 11400000, guid: 6c85673d7edaa62439a2920702e6d37b, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
+    Volume: 1
   _onSuccessedPlayerHit:
     Cue: {fileID: 11400000, guid: 0f6d4545bf2eabd4eb232183e15595c9, type: 2}
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 1, y: 1, z: 1}
+    Volume: 1

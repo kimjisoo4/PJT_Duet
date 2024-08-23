@@ -140,6 +140,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
         private void _explosionCue_OnEndedCue(Cue cue)
         {
+            if (!gameObject)
+                return;
+
             gameObject.SetActive(false);
 
             _explosionCue = null;

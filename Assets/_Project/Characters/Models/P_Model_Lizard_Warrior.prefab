@@ -2157,6 +2157,7 @@ GameObject:
   - component: {fileID: 6574477702588529090}
   - component: {fileID: 1998099668885595090}
   - component: {fileID: 2888176214608807553}
+  - component: {fileID: 1643326319148127704}
   m_Layer: 0
   m_Name: P_Model_Lizard_Warrior
   m_TagString: Untagged
@@ -2191,7 +2192,7 @@ Animator:
   m_GameObject: {fileID: 1219489387218585577}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 9acfdeff55dd4498aaf526baf0e420c5, type: 3}
-  m_Controller: {fileID: 9100000, guid: b5b1b391b5cf0a64fb238d02435302f1, type: 2}
+  m_Controller: {fileID: 22100000, guid: b8ea7dce3ed71fd4fb4da5f23e7cd20d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -2265,6 +2266,25 @@ MonoBehaviour:
   _OnChangedRootMotionState:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1643326319148127704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219489387218585577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b23eb718d4cb43f4394eb628c5cd52e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _owner: {fileID: 0}
+  _footstepTriggerTag: {fileID: 11400000, guid: bad29a5b0d22bbf46bd3e9b421185428,
+    type: 2}
+  _footstepInterval: 0.2
+  _footstepSpeed: 1
+  _footstepHeight: 0.2
 --- !u!1 &1219489387218585579
 GameObject:
   m_ObjectHideFlags: 0
