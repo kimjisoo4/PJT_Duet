@@ -32,7 +32,17 @@
 > &nbsp;  적 캐릭터로 Hammer Ork 추가.    
 > &nbsp;  Hammer Ork 의 기본 공격, 휠윈드 공격, 닷지 추가.    
 > &nbsp;  적의 AI 를 Behavior Tree 로 변경함. 플레이어와의 거리에 따라 기본 공격 또는 휠윈드 공격을 하도록함.        
-> &nbsp;  기존에 사용하던 State Machine 은 제거함.    
+> &nbsp;  기존에 사용하던 State Machine 은 제거함.
+#### 7월 15일 ~ 7월 20일
+> &nbsp;  리자드맨 전사 추가. 기본 3 연속 공격만 있음.
+> &nbsp;  기본적인 Room System 추가. Trigger 에 플레이어가 닿으면 몬스터는 스폰하고. 모든 몬스터가 제거되면 방이 종료됨.      
+> &nbsp;  몬스터 및 몬스터의 컨트롤러를 Pool 로 관리할 수 있도록 변경함.    
+> &nbsp;  플레이어 캐릭터가 사망할 경우, 자동으로 다음 캐릭터로 전환되도록 변경함.    
+#### 8월 12일 ~ 8월 18일
+> &nbsp;  기본적인 Reword System 추가. 보상 목록에 받을 수 있는 보상이 있으면 랜덤으로 보상을 선택할 수 있게함. 현재 보상은 Enchant Attack Fire 1개만 설정되어 있음.   
+> &nbsp;  보상으로 획득할 수 있는 Enchant Attack Fire 추가. 공격 성공시 추가 데미지를 입힘.     
+> &nbsp;  플레이어 캐릭터가 모두 죽었을 때, GameOver UI 를 출력하도록 수정함.
+> &nbsp;  플레이어 및 몬스터의 피격, 슈퍼아머, 죽음 시의 쉐이더 이펙트 추가.        
 
 &nbsp; [Build 파일 다운로드](https://drive.google.com/drive/folders/1lWb3SZCT2R_x6VnrLfdgjaFJJqnDiTvs?usp=drive_link)    
  
