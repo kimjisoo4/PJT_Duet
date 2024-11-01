@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: VFX_Pool_Muzzle_Air
   m_EditorClassIdentifier: 
   UseDebug: 0
-  pooled: {fileID: -9007640589961127278, guid: ea99eae7510255642af6ca204b434830, type: 3}
-  startSize: 5
+  _pooled: {fileID: -9007640589961127278, guid: ea99eae7510255642af6ca204b434830,
+    type: 3}
+  _startSize: 5

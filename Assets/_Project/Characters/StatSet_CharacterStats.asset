@@ -13,48 +13,21 @@ MonoBehaviour:
   m_Name: StatSet_CharacterStats
   m_EditorClassIdentifier: 
   _stats:
-  - HeaderName: MaxHP [ 100.00 ~ 100.00 ]
-    Tag: {fileID: 11400000, guid: 1c3d390ae00b72b4c98d7ab1e19df4d5, type: 2}
-    Value:
-      _Min: 100
-      _Max: 100
-      _Round: 0
-      _MaxLevel: 0
-      _UseCurve: 0
-      _Curve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 0
-      _Values: []
-  - HeaderName: AttackPoint [ 10.00 ~ 10.00 ]
-    Tag: {fileID: 11400000, guid: ec71c03f010d2164cadd48f171f12fd0, type: 2}
-    Value:
-      _Min: 10
-      _Max: 10
-      _Round: 0
-      _MaxLevel: 0
-      _UseCurve: 0
-      _Curve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 0
-      _Values: []
-  - HeaderName: MoveSpeed [ 5.00 ~ 5.00 ]
-    Tag: {fileID: 11400000, guid: 99b0d60dd64574d46adad3e32e9e38ef, type: 2}
-    Value:
-      _Min: 5
-      _Max: 5
-      _Round: 0
-      _MaxLevel: 0
-      _UseCurve: 0
-      _Curve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 0
-      _Values: []
+  - HeaderName: 'Max Hp [ 100.00 ]'
+    _tag: {fileID: 11400000, guid: 1c3d390ae00b72b4c98d7ab1e19df4d5, type: 2}
+    _value: 100
+  - HeaderName: 'Attack Point [ 10.00 ]'
+    _tag: {fileID: 11400000, guid: ec71c03f010d2164cadd48f171f12fd0, type: 2}
+    _value: 10
+  - HeaderName: 'Movemet Speed [ 5.00 ]'
+    _tag: {fileID: 11400000, guid: 99b0d60dd64574d46adad3e32e9e38ef, type: 2}
+    _value: 5
+  - HeaderName: 'Gravity [ 20.00 ]'
+    _tag: {fileID: 11400000, guid: 0142f36b3d6d179488957a99669188aa, type: 2}
+    _value: 20
+  - HeaderName: 'Drag [ 20.00 ]'
+    _tag: {fileID: 11400000, guid: 017962be25da552409175ea9f3f009b0, type: 2}
+    _value: 20
+  - HeaderName: 'Mass [ 1.00 ]'
+    _tag: {fileID: 11400000, guid: f1fcbd396f14f9545854e8e671764a8a, type: 2}
+    _value: 1

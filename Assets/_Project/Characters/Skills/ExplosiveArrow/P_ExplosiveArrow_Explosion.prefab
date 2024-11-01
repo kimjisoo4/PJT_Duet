@@ -1,0 +1,173 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4274609438624558773
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5462810338589180652}
+  - component: {fileID: 3276603769149534868}
+  - component: {fileID: 7115417442108496530}
+  - component: {fileID: 6695960972349524884}
+  - component: {fileID: 590990798859173598}
+  - component: {fileID: -1522798544151585831}
+  m_Layer: 0
+  m_Name: P_ExplosiveArrow_Explosion
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5462810338589180652
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4274609438624558773}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3276603769149534868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4274609438624558773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65bf51735f952d2468abc245db467600, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _pooledObject: {fileID: 7115417442108496530}
+  _traceRadius: 3
+  _traceAngle: 45
+  _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
+  _explosionCue:
+    Cue: {fileID: 11400000, guid: d7a7e2282730ee54b9e08b08d9dd3018, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    Volume: 1
+  _lifeTime: 0.2
+--- !u!114 &7115417442108496530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4274609438624558773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35730cd99405cd74180e27123e3e76a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _poolContainer: {fileID: 11400000, guid: 325698a684cd38f47ade105360d87f62, type: 2}
+  _useUnityEvent: 0
+  _unityEvents:
+    _onCreated:
+      m_PersistentCalls:
+        m_Calls: []
+    _onActivated:
+      m_PersistentCalls:
+        m_Calls: []
+    _onReleased:
+      m_PersistentCalls:
+        m_Calls: []
+--- !u!114 &6695960972349524884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4274609438624558773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8a863ed67b16544e9e8d53f4b24f9ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _timer:
+    <UseDebug>k__BackingField: 0
+    _duration: 0.2
+  _exitAction: 1
+  _playExitActionInCancel: 0
+  isAutoPlaying: 0
+  _useUnityEvent: 0
+  _unityEvents:
+    _onStartedTimer:
+      m_PersistentCalls:
+        m_Calls: []
+    _onFinishedTimer:
+      m_PersistentCalls:
+        m_Calls: []
+    _onCanceledTimer:
+      m_PersistentCalls:
+        m_Calls: []
+    _onEndedTimer:
+      m_PersistentCalls:
+        m_Calls: []
+    _onPausedTimer:
+      m_PersistentCalls:
+        m_Calls: []
+    _onResumedTimer:
+      m_PersistentCalls:
+        m_Calls: []
+--- !u!114 &590990798859173598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4274609438624558773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fa39351e8e3fb48acd2e762c98208a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 1
+  _overlapSphereCast:
+    <UseDebug>k__BackingField: 1
+    _owner: {fileID: 4274609438624558773}
+    _tracePosition: {x: 0, y: 0, z: 0}
+    _useInLocalSpace: 1
+    _traceRadius: 3
+    _traceLayer:
+      serializedVersion: 2
+      m_Bits: 0
+    _maxHitCount: 10
+  _useUnityEvent: 0
+  _unityEvents:
+    _onStartedRaycast:
+      m_PersistentCalls:
+        m_Calls: []
+    _onEndedRaycast:
+      m_PersistentCalls:
+        m_Calls: []
+  _useAlwaysDrawGizmos: 0
+  _isWire: 1
+  _gizmosColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &-1522798544151585831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4274609438624558773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67579ee5ed198f84da457030870de5d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0

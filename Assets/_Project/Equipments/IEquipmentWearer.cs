@@ -5,17 +5,17 @@ namespace PF.PJT.Duet
 {
     public interface IEquipmentWearer
     {
-        public delegate void EquipmentEventHandler(IEquipmentWearer equipmentWearer, IEquipment equipment);
+        public delegate void EquipmentEventHandler(IEquipmentWearer equipmentWearer, IEquipmentItemSpec equipment);
         public GameObject gameObject { get; }
         public Transform transform { get; }
         
-        public IReadOnlyList<IEquipment> Equipments { get; }
+        public IReadOnlyList<IEquipmentItemSpec> Equipments { get; }
 
-        public bool CanEquiping(IEquipment equipment);
-        public bool CanUnequiping(IEquipment equipment);
+        public bool CanEquiping(IEquipmentItemSpec equipment);
+        public bool CanUnequiping(IEquipmentItemSpec equipment);
 
-        public void Equip(IEquipment equipment);
-        public void Unequip(IEquipment equipment);
+        public void Equip(IEquipmentItemSpec equipment);
+        public void Unequip(IEquipmentItemSpec equipment);
 
         public event EquipmentEventHandler OnEquipped;
         public event EquipmentEventHandler OnUnequipped;

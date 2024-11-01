@@ -36,13 +36,10 @@ namespace StudioScor.PlayerSystem.BehaviorTree
 
             _abilitySystem = Pawn.gameObject.GetAbilitySystem();
 
-            var ability = _abilitySystem.TryActivateAbility(_windmillAbility);
-
-            if(ability.isActivate)
+            if(_abilitySystem.TryActivateAbility(_windmillAbility, out _abilitySpec))
             {
                 _abilityResult = EAbilityResult.Played;
                 _remainTime = _duration.Value;
-                _abilitySpec = ability.abilitySpec;
 
                 _abilitySpec.OnCanceledAbility += _abilitySpec_OnCanceledAbility;
                 _abilitySpec.OnFinishedAbility += _abilitySpec_OnFinishedAbility;

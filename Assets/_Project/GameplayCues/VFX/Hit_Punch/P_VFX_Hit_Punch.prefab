@@ -9665,6 +9665,7 @@ GameObject:
   - component: {fileID: 3757114742808893399}
   - component: {fileID: 5850695433038142547}
   - component: {fileID: 6064875541528481297}
+  - component: {fileID: -1853054611871807939}
   m_Layer: 0
   m_Name: P_VFX_Hit_Punch
   m_TagString: Untagged
@@ -9699,7 +9700,7 @@ ParticleSystem:
   serializedVersion: 8
   lengthInSec: 1
   simulationSpeed: 1
-  stopAction: 1
+  stopAction: 3
   cullingMode: 3
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -14513,10 +14514,44 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _poolContainer: {fileID: 0}
-  _releasedWhenDisable: 1
-  _onCreated:
+  _useUnityEvent: 0
+  _unityEvents:
+    _onCreated:
+      m_PersistentCalls:
+        m_Calls: []
+    _onActivated:
+      m_PersistentCalls:
+        m_Calls: []
+    _onReleased:
+      m_PersistentCalls:
+        m_Calls: []
+--- !u!114 &-1853054611871807939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8592376528325535993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df990556a1e53614aa383a4e095d6ef0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _useDisable: 0
+  _useUnityEvent: 1
+  _onStoppedParticle:
     m_PersistentCalls:
-      m_Calls: []
-  _onReleased:
-    m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6064875541528481297}
+        m_TargetAssemblyTypeName: StudioScor.Utilities.PooledObject, StudioScor.Utilities
+        m_MethodName: Release
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

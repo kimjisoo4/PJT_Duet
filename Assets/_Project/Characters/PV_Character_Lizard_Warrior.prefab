@@ -728,6 +728,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_Model_Lizard_Warrior
       objectReference: {fileID: 0}
+    - target: {fileID: 1643326319148127704, guid: 064a7ca3ee2854543a31158b6024404a,
+        type: 3}
+      propertyPath: _owner
+      value: 
+      objectReference: {fileID: 2319350652745536190}
     - target: {fileID: 1998099668885595090, guid: 064a7ca3ee2854543a31158b6024404a,
         type: 3}
       propertyPath: _owner
@@ -758,6 +763,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 528085018313457959, guid: d8fea1572d399c84fb957bd8db6e8c57,
+        type: 3}
+      propertyPath: _team
+      value: 
+      objectReference: {fileID: 11400000, guid: 4735e46be9ed8e24391d588152cc90e0,
+        type: 2}
     - target: {fileID: 1636214637397337428, guid: d8fea1572d399c84fb957bd8db6e8c57,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -867,17 +878,6 @@ PrefabInstance:
       propertyPath: useAutoPossesed
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5849666587521794672, guid: d8fea1572d399c84fb957bd8db6e8c57,
-        type: 3}
-      propertyPath: _useAutoPossesed
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5849666587521794672, guid: d8fea1572d399c84fb957bd8db6e8c57,
-        type: 3}
-      propertyPath: _defaultController
-      value: 
-      objectReference: {fileID: 5460970652228012994, guid: a1f271e8679e6cd4b8349bd9550c21e6,
-        type: 3}
     - target: {fileID: 6419800303973250403, guid: d8fea1572d399c84fb957bd8db6e8c57,
         type: 3}
       propertyPath: m_Name
@@ -901,6 +901,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: -811595640603914925}
+    - targetCorrespondingSourceObject: {fileID: 6419800303973250403, guid: d8fea1572d399c84fb957bd8db6e8c57,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1377252625559567126}
   m_SourcePrefab: {fileID: 100100000, guid: d8fea1572d399c84fb957bd8db6e8c57, type: 3}
 --- !u!1 &2319350652745536190 stripped
 GameObject:
@@ -922,13 +926,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _poolContainer: {fileID: 11400000, guid: 1926d896cf7d74f46a3c485158eba4f4, type: 2}
-  _releasedWhenDisable: 1
-  _onCreated:
-    m_PersistentCalls:
-      m_Calls: []
-  _onReleased:
-    m_PersistentCalls:
-      m_Calls: []
+  _useUnityEvent: 0
+  _unityEvents:
+    _onCreated:
+      m_PersistentCalls:
+        m_Calls: []
+    _onActivated:
+      m_PersistentCalls:
+        m_Calls: []
+    _onReleased:
+      m_PersistentCalls:
+        m_Calls: []
+--- !u!195 &1377252625559567126
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2319350652745536190}
+  m_Enabled: 0
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 5
+  m_Acceleration: 0
+  avoidancePriority: 50
+  m_AngularSpeed: 0
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!4 &8038164432535028361 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1636214637397337428, guid: d8fea1572d399c84fb957bd8db6e8c57,

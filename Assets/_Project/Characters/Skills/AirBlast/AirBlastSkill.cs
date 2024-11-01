@@ -17,6 +17,27 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
     [CreateAssetMenu(menuName = "Project/Duet/PawnSkill/new Air Blast Skill", fileName = "GA_Skill_AirBlast")]
     public class AirBlastSkill : CharacterSkill
     {
+        [System.Serializable]
+        private struct FExplosionGameplayEffect
+        {
+            [SerializeField] private GameplayEffect _applyTakeDamageEffect;
+            [SerializeField] private GameplayEffect _applyRadialKnockbackEffect;
+            [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnHitToOther;
+            public readonly GameplayEffect ApplyTakeDamageEffect => _applyTakeDamageEffect;
+            public readonly GameplayEffect ApplyRadialKnockbackEffect => _applyRadialKnockbackEffect;
+            public readonly GameplayEffect[] ApplyGameplayEffectsOnHitToOther => _applyGameplayEffectsOnHitToOther;
+        }
+
+        [System.Serializable]
+        private struct FProjectileGameplayEffect
+        {
+            [SerializeField] private GameplayEffect _applyTakeDamageEffect;
+            [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnHitToOther;
+            public readonly GameplayEffect ApplyTakeDamageEffect => _applyTakeDamageEffect;
+            public readonly GameplayEffect[] ApplyGameplayEffectsOnHitToOther => _applyGameplayEffectsOnHitToOther;
+        }
+
+
         [Header(" [ Air Blast Skill ] ")]
         [Header(" Animations ")]
         [SerializeField] private string _readyAnimationName = "AirBlast_Start";
@@ -31,16 +52,16 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private bool _shotAnimFixedTransition = false;
 
         [Header(" Turn ")]
-        [SerializeField] private GameplayTag _turnTag;
+        [SerializeField] private GameplayTagSO _turnTag;
 
         [Header(" Projectile ")]
-        [SerializeField] private SimplePoolContainer _projectile;
+        [SerializeField] private PoolContainer _projectile;
         [SerializeField] private BodyTag _spawnPoint;
+        [SerializeField] private FProjectileGameplayEffect[] _applyProjectileGameplayEffects;
 
-        [Header(" Gameplay Effects ")]
-        [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnHitToOther_01;
-        [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnHitToOther_02;
-        [SerializeField] private GameplayEffect[] _applyGameplayEffectsOnHitToOther_03;
+        [Header(" Explosion ")]
+        [SerializeField] private PoolContainer _explosionPool;
+        [SerializeField] private FExplosionGameplayEffect[] _applyExplosionGameplayEffects;
 
         [Header(" CoolTime ")]
         [SerializeField] private CoolTimeEffect _coolTimeEffect;
@@ -53,15 +74,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         {
             float time = _maxChargeTime;
 
-            var takeDamage_01 = _applyGameplayEffectsOnHitToOther_01.First(x => x is TakeDamageEffect) as TakeDamageEffect;
-            var takeDamage_02 = _applyGameplayEffectsOnHitToOther_02.First(x => x is TakeDamageEffect) as TakeDamageEffect;
-            var takeDamage_03 = _applyGameplayEffectsOnHitToOther_03.First(x => x is TakeDamageEffect) as TakeDamageEffect;
+            var takeDamage_01 = _applyExplosionGameplayEffects[0].ApplyTakeDamageEffect as IDisplayDamage;
+            var takeDamage_02 = _applyExplosionGameplayEffects[1].ApplyTakeDamageEffect as IDisplayDamage;
+            var takeDamage_03 = _applyExplosionGameplayEffects[2].ApplyTakeDamageEffect as IDisplayDamage;
 
-            float damage_01 = takeDamage_01.DamageRatio * 100;
-            float damage_02 = takeDamage_02.DamageRatio * 100;
-            float damage_03 = takeDamage_03.DamageRatio * 100;
-
-            return string.Format(Description, time, damage_01, damage_02, damage_03);
+            return string.Format(Description, time, takeDamage_01.Damage, takeDamage_02.Damage, takeDamage_03.Damage);
         }
 
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
@@ -69,37 +86,246 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             return new Spec(this, abilitySystem, level);
         }
 
-        public class Spec : GASAbilitySpec, IUpdateableAbilitySpec, ISkillState
+        public class Spec : GASAbilitySpec, IUpdateableAbilitySpec, ISkillState, ITakeDamageAbility
         {
+            public abstract class AirBlastState : BaseStateClass
+            {
+                private readonly Spec _spec;
+
+                protected Spec Spec => _spec;
+                protected AirBlastSkill Ability => _spec._ability;
+                protected AnimationPlayer AnimationPlayer => _spec._animationPlayer;
+                protected FiniteStateMachineSystemWithKey<EState, AirBlastState> StateMachine => _spec._stateMachine;
+
+                public override bool UseDebug => _spec.UseDebug;
+                public override UnityEngine.Object Context => _spec.Context;
+
+                public AirBlastState(Spec spec)
+                {
+                    _spec = spec;
+                }
+
+                public virtual void UpdateState(float deltaTime)
+                {
+
+                }
+            }
+            public class ReadyState : AirBlastState
+            {
+                private readonly int _animationHash;
+                private readonly AnimationPlayer.Events _animationEvents;
+                private bool _wasStartedAnimation = false;
+
+                public ReadyState(Spec spec) : base(spec)
+                {
+                    _animationHash = Animator.StringToHash(Ability._readyAnimationName);
+
+                    _animationEvents = new();
+                    _animationEvents.OnStarted += _animationEvents_OnStarted;
+                    _animationEvents.OnFailed += _animationEvents_OnFailed;
+                    _animationEvents.OnCanceled += _animationEvents_OnCanceled;
+                    _animationEvents.OnFinished += _animationEvents_OnFinished;
+                }
+                protected override void EnterState()
+                {
+                    _wasStartedAnimation = false;
+
+                    AnimationPlayer.Play(_animationHash, Ability._readyAnimFadeInTime, fixedTransition: Ability._readyAnimFixedTransition);
+                    AnimationPlayer.AnimationEvents = _animationEvents;
+
+                    Spec._turnToggle.OnToggle();
+                }
+
+                protected override void ExitState()
+                {
+                    Spec._turnToggle.OffToggle();
+                }
+                private void _animationEvents_OnStarted()
+                {
+                    _wasStartedAnimation = true;
+                }
+
+                private void _animationEvents_OnFailed()
+                {
+                    if (!IsActivate)
+                        return;
+
+                    Spec.CancelAbility();
+                }
+
+                private void _animationEvents_OnCanceled()
+                {
+                    if (!IsActivate)
+                        return;
+
+                    if (!_wasStartedAnimation)
+                        return;
+
+                    Spec.CancelAbility();
+                }
+
+                private void _animationEvents_OnFinished()
+                {
+                    if (!IsActivate)
+                        return;
+
+                    Spec.OnSpawnAirBlast();
+
+                    if (!StateMachine.TrySetState(EState.Charge))
+                    {
+                        StateMachine.TrySetState(EState.Shoot);
+                    }
+                }
+            }
+            public class ChargeState : AirBlastState
+            {
+                private readonly ITimer _timer = new Timer();
+                private readonly int _motionTimeHash;
+
+                public ChargeState(Spec spec) : base(spec)
+                {
+                    _motionTimeHash = Animator.StringToHash(Ability._chargingMotionTime);
+                }
+
+                public override bool CanEnterState()
+                {
+                    if (!base.CanEnterState())
+                        return false;
+
+                    if (Spec._wasReleased)
+                        return false;
+
+                    return true;
+                }
+                protected override void EnterState()
+                {
+                    Spec._turnToggle.OnToggle();
+                    Spec._chargeable.OnCharging();
+
+                    _timer.OnTimer(Ability._maxChargeTime);
+
+                    AnimationPlayer.Animator.SetFloat(_motionTimeHash, 0f);
+                }
+
+                public override void UpdateState(float deltaTime)
+                {
+                    if (StateMachine.TrySetState(EState.Shoot))
+                        return;
+
+                    if (!_timer.IsPlaying)
+                        return;
+
+                    _timer.UpdateTimer(deltaTime);
+
+                    float normalizedTime = _timer.NormalizedTime;
+
+                    Spec._animationPlayer.Animator.SetFloat(_motionTimeHash, normalizedTime);
+                    Spec._chargeable.SetStrength(normalizedTime);
+                }
+
+                protected override void ExitState()
+                {
+                    Spec._turnToggle.OffToggle();
+                    _timer.EndTimer();
+
+                    if (Spec._chargeable is not null)
+                        Spec._chargeable.FinishCharging();
+                }
+            }
+
+            public class ShootState : AirBlastState
+            {
+                private readonly int _animationHash;
+                private readonly AnimationPlayer.Events _animationEvents;
+                private bool _wasStartedAnimation = false;
+                public ShootState(Spec spec) : base(spec)
+                {
+                    _animationHash = Animator.StringToHash(Ability._shotAnimationName);
+
+                    _animationEvents = new();
+                    _animationEvents.OnStarted += _animationEvents_OnStarted;
+                    _animationEvents.OnFailed += _animationEvents_OnFailed;
+                    _animationEvents.OnCanceled += _animationEvents_OnCanceled;
+                    _animationEvents.OnFinished += _animationEvents_OnFinished;
+                    _animationEvents.OnNotify += _animationEvents_OnNotify;
+                }
+
+                
+
+                public override bool CanEnterState()
+                {
+                    if (!base.CanEnterState())
+                        return false;
+
+                    if (!Spec._wasReleased)
+                        return false;
+
+                    return true;
+                }
+                protected override void EnterState()
+                {
+                    _wasStartedAnimation = false;
+                    AnimationPlayer.Play(_animationHash, Ability._shotAnimFadeInTime, fixedTransition: Ability._shotAnimFixedTransition);
+                    AnimationPlayer.AnimationEvents = _animationEvents;
+                }
+                private void _animationEvents_OnStarted()
+                {
+                    _wasStartedAnimation = true;
+                }
+                private void _animationEvents_OnFailed()
+                {
+                    Spec.CancelAbility();
+                }
+                private void _animationEvents_OnCanceled()
+                {
+                    if (_wasStartedAnimation)
+                        return;
+
+                    Spec.CancelAbility();
+                }
+                private void _animationEvents_OnFinished()
+                {
+                    Spec.TryFinishAbility();
+                }
+
+                private void _animationEvents_OnNotify(string eventName)
+                {
+                    switch (eventName)
+                    {
+                        case "Shoot":
+                            Spec.OnShootAirBlast();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
             public enum EState
             {
                 None,
                 Ready,
                 Charge,
-                Shot,
-                Finish,
+                Shoot,
             }
 
             protected new readonly AirBlastSkill _ability;
 
             private readonly IBodySystem _bodySystem;
             private readonly IGameplayEffectSystem _gameplayEffectSystem;
+            private readonly IRelationshipSystem _relationshipSystem;
             private readonly AnimationPlayer _animationPlayer;
 
-            private readonly int _readyAnimationHash;
-            private readonly int _shotAnimationHash;
-            private readonly int _chargeMotionTimeHash;
+            private readonly FiniteStateMachineSystemWithKey<EState, AirBlastState> _stateMachine;
+            private readonly ReadyState _readyState;
+            private readonly ChargeState _chargeState;
+            private readonly ShootState _shootState;
 
-            private readonly Timer _chargingTimer = new();
+            private readonly Toggleable _turnToggle;
 
-            private EState _abilityState;
-            private IBodyPart _bodypart;
             private bool _wasReleased = false;
-            private bool _wasGrantedTurnTag;
-            private readonly AnimationPlayer.Events _animationEvents;
-
-
-            private ISpawnedActorToAbility _spawnedActor;
+            private IBodyPart _bodypart;
+            private ISpawnedActorByAbility _spawnedActor;
             private IChargeable _chargeable;
 
             private CoolTimeEffect.Spec _coolTimeEffectSpec;
@@ -115,16 +341,21 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 _animationPlayer = gameObject.GetComponentInChildren<AnimationPlayer>(true);
                 _bodySystem = gameObject.GetBodySystem();
+                _relationshipSystem = gameObject.GetRelationshipSystem();
                 _gameplayEffectSystem = gameObject.GetGameplayEffectSystem();
 
-                _readyAnimationHash = Animator.StringToHash(_ability._readyAnimationName);
-                _chargeMotionTimeHash = Animator.StringToHash(_ability._chargingMotionTime);
-                _shotAnimationHash = Animator.StringToHash(_ability._shotAnimationName);
+                _turnToggle = new();
+                _turnToggle.OnChangedToggleState += _turnToggle_OnChangedToggleState;
 
-                _animationEvents = new();
-                _animationEvents.OnNotify += _animationPlayer_OnNotify;
+                _readyState = new(this);
+                _chargeState = new(this);
+                _shootState = new(this);
+
+                _stateMachine = new(EState.Ready, _readyState);
+                _stateMachine.AddState(EState.Charge, _chargeState);
+                _stateMachine.AddState(EState.Shoot, _shootState);
+
             }
-
             public override bool CanActiveAbility()
             {
                 if (_ability._coolTimeEffect && _gameplayEffectSystem.HasEffect(_ability._coolTimeEffect))
@@ -141,25 +372,22 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 _wasReleased = false;
 
-                TransitionState(EState.Ready);
+                _stateMachine.Start();
             }
             protected override void ExitAbility()
             {
                 base.ExitAbility();
 
-                TransitionState(EState.None);
-                EndTurn();
+                _stateMachine.End();
 
-                _chargeable = null;
                 _spawnedActor = null;
+                _chargeable = null;
 
                 if (_ability._coolTimeEffect)
                 {
-                    var takeEffect = _gameplayEffectSystem.TryTakeEffect(_ability._coolTimeEffect, gameObject, Level);
-
-                    if (takeEffect.isActivate)
+                    if(_gameplayEffectSystem.TryApplyGameplayEffect(_ability._coolTimeEffect, gameObject, Level, null, out var spec))
                     {
-                        _coolTimeEffectSpec = takeEffect.effectSpec as CoolTimeEffect.Spec;
+                        _coolTimeEffectSpec = spec as CoolTimeEffect.Spec;
                         _coolTimeEffectSpec.OnEndedEffect += _coolTimeEffectSpec_OnEndedEffect;
                     }
                 }
@@ -171,49 +399,31 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 if (_chargeable is not null)
                 {
                     _chargeable.CancelCharging();
+                    _chargeable = null;
                 }
 
                 if (_spawnedActor is not null)
                 {
-                    var bodyPart = _bodySystem.GetBodyPart(_ability._spawnPoint);
-
-                    if (_spawnedActor.transform.parent == bodyPart.transform)
-                    {
-                        _spawnedActor.gameObject.SetActive(false);
-                    }
+                    _spawnedActor.Inactivate();
+                    _spawnedActor = null;
                 }
-            }
-
-            private void _coolTimeEffectSpec_OnEndedEffect(IGameplayEffectSpec effectSpec)
-            {
-                effectSpec.OnEndedEffect -= _coolTimeEffectSpec_OnEndedEffect;
-
-                _coolTimeEffectSpec = null;
             }
 
             protected override void OnReleaseAbility()
             {
                 base.OnReleaseAbility();
 
-                if (_abilityState == EState.Charge)
-                {
-                    TransitionState(EState.Shot);
-                }
-                else
-                {
-                    _wasReleased = true;
-                }
+                _wasReleased = true;
             }
 
             public void UpdateAbility(float deltaTime)
             {
                 if (IsPlaying)
                 {
-                    OnUpdateAbility(deltaTime);
-                }
-                else
-                {
-
+                    if(_stateMachine.IsPlaying)
+                    {
+                        _stateMachine.CurrentState.UpdateState(deltaTime);
+                    }
                 }
             }
             public void FixedUpdateAbility(float deltaTime)
@@ -221,117 +431,112 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 return;
             }
 
-
-            private void OnUpdateAbility(float deltaTime)
+            public void OnHit(ISpawnedActorByAbility spawnedActor, RaycastHit[] hits, int hitCount)
             {
-                switch (_abilityState)
-                {
-                    case EState.None:
-                        break;
-                    case EState.Ready:
-                        UpdateInReady(deltaTime);
-                        break;
-                    case EState.Charge:
-                        UpdateInCharge(deltaTime);
-                        break;
-                    case EState.Shot:
-                        UpdateInShot(deltaTime);
-                        break;
-                    case EState.Finish:
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            private void TransitionState(EState newState)
-            {
-                switch (_abilityState)
-                {
-                    case EState.None:
-                        break;
-                    case EState.Ready:
-                        EndReady();
-                        break;
-                    case EState.Charge:
-                        EndCharge();
-                        break;
-                    case EState.Shot:
-                        EndShot();
-                        break;
-                    case EState.Finish:
-                        break;
-                    default:
-                        break;
-                }
-
-                _abilityState = newState;
-
-                switch (_abilityState)
-                {
-                    case EState.None:
-                        break;
-                    case EState.Ready:
-                        OnReady();
-                        break;
-                    case EState.Charge:
-                        OnCharge();
-                        break;
-                    case EState.Shot:
-                        OnShot();
-                        break;
-                    case EState.Finish:
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            private void OnTurn()
-            {
-                if (_wasGrantedTurnTag)
+                if (hitCount == 0)
                     return;
 
-                _wasGrantedTurnTag = true;
+                bool isProjectile = spawnedActor.gameObject.TryGetComponent(out IProjectile projectile);
+                Log($"{nameof(OnHit)} -{(isProjectile ? "Projectile" : "Explosion")}");
 
-                if (_ability._turnTag)
-                    GameplayTagSystem.AddOwnedTag(_ability._turnTag);
-            }
-            private void EndTurn()
-            {
-                if (!_wasGrantedTurnTag)
-                    return;
+                int chargeLevel = 0;
 
-                _wasGrantedTurnTag = false;
+                if(spawnedActor.gameObject.TryGetComponent(out IChargeable chargeable))
+                {
+                    chargeLevel = chargeable.CurrentChargeLevel;
+                }
 
-                if (_ability._turnTag)
-                    GameplayTagSystem.RemoveOwnedTag(_ability._turnTag);
-            }
+                for (int i = 0; i < hitCount; i++)
+                {
+                    var hit = hits[i];
 
-            private void OnReady()
-            {
-                _animationPlayer.Play(_readyAnimationHash, _ability._readyAnimFadeInTime, fixedTransition: _ability._readyAnimFixedTransition);
-                _animationPlayer.AnimationEvents = _animationEvents;
+                    if (!hit.transform.TryGetActor(out IActor actor))
+                        continue;
 
-                OnTurn();
-            }
+                    var hitActor = actor.gameObject;
+
+                    if (!hitActor.TryGetReleationshipSystem(out IRelationshipSystem hitRelationshipSystem)
+                        || _relationshipSystem.CheckRelationship(hitRelationshipSystem) != ERelationship.Hostile)
+                        continue;
+
+                    if (!hitActor.TryGetGameplayEffectSystem(out IGameplayEffectSystem hitGameplayEffectSystem))
+                        continue;
+
+                    if(isProjectile)
+                    {
+                        int effectIndex = Mathf.Min(chargeLevel, _ability._applyProjectileGameplayEffects.Length - 1);
+                        var projectileEffect = _ability._applyProjectileGameplayEffects.ElementAtOrDefault(effectIndex);
+
+                        if (projectileEffect.ApplyTakeDamageEffect)
+                        {
+                            Vector3 direction = projectile.Velocity.normalized;
+
+                            var element = TakeDamageEffect.Element.Get(hit.point, hit.normal, hit.collider, direction, spawnedActor.gameObject, gameObject);
+                            hitGameplayEffectSystem.TryApplyGameplayEffect(projectileEffect.ApplyTakeDamageEffect, gameObject, Level, element);
+                            element.Release();
+                        }
+
+                        if(!projectileEffect.ApplyGameplayEffectsOnHitToOther.IsNullOrEmpty())
+                        {
+                            foreach (var gameplayEffect in projectileEffect.ApplyGameplayEffectsOnHitToOther)
+                            {
+                                hitGameplayEffectSystem.TryApplyGameplayEffect(gameplayEffect, gameObject, Level);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        int effectIndex = Mathf.Min(chargeLevel, _ability._applyExplosionGameplayEffects.Length - 1);
+                        var explosionEffect = _ability._applyExplosionGameplayEffects.ElementAtOrDefault(effectIndex);
+
+                        if (explosionEffect.ApplyTakeDamageEffect)
+                        {
+                            var element = TakeDamageEffect.Element.Get(hit.point, hit.normal, hit.collider, spawnedActor.transform.forward, spawnedActor.gameObject, gameObject);
+                            hitGameplayEffectSystem.TryApplyGameplayEffect(explosionEffect.ApplyTakeDamageEffect, gameObject, Level, element);
+                            element.Release();
+                        }
+
+                        if(explosionEffect.ApplyRadialKnockbackEffect)
+                        {
+                            var element = TakeRadialKnockbackEffect.Element.Get(spawnedActor.transform.position);
+                            hitGameplayEffectSystem.TryApplyGameplayEffect(explosionEffect.ApplyRadialKnockbackEffect, gameObject, Level, element);
+                            element.Release();
+                        }
+
+                        if (!explosionEffect.ApplyGameplayEffectsOnHitToOther.IsNullOrEmpty())
+                        {
+                            foreach (var gameplayEffect in explosionEffect.ApplyGameplayEffectsOnHitToOther)
+                            {
+                                hitGameplayEffectSystem.TryApplyGameplayEffect(gameplayEffect, gameObject, Level);
+                            }
+                        }
+                    }
+                }
+            
+                if(isProjectile)
+                {
+                    OnSpawnExplosion(spawnedActor.transform.position, spawnedActor.transform.rotation, chargeLevel);
+                    spawnedActor.Inactivate();
+                }
+            } 
 
             private void OnSpawnAirBlast()
             {
-                var actor = _ability._projectile.Get();
-
-                _spawnedActor = actor.GetComponent<ISpawnedActorToAbility>();
-
-                _spawnedActor.SetOwner(gameObject, this);
+                Log($"{nameof(OnSpawnAirBlast)}");
 
                 _bodypart = _bodySystem.GetBodyPart(_ability._spawnPoint);
 
-                _spawnedActor.transform.SetParent(_bodypart.transform, false);
-                _spawnedActor.transform.SetLocalPositionAndRotation(default, default);
-                _spawnedActor.gameObject.SetActive(true);
+                var actor = _ability._projectile.Get();
+                actor.transform.SetPositionAndRotation(_bodypart.transform.position, _bodypart.transform.rotation);
+                actor.transform.SetParent(_bodypart.transform, true);
 
-                _chargeable = _spawnedActor.gameObject.GetComponent<IChargeable>();
-                _chargeable.OnCharging(0f);
+                actor.gameObject.SetActive(true);
+
+                _spawnedActor = actor.GetComponent<ISpawnedActorByAbility>();
+                _spawnedActor.Activate(gameObject, this);
+
+                _chargeable = actor.GetComponent<IChargeable>();
+                _chargeable.OnCharging();
 
                 if (_ability._spawnedCue.Cue)
                 {
@@ -339,107 +544,23 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 }
             }
 
-            private void UpdateInReady(float deltaTime)
+            private void OnShootAirBlast()
             {
-                switch (_animationPlayer.State)
-                {
-                    case EAnimationState.Failed:
-                    case EAnimationState.Canceled:
-                        CancelAbility();
-                        return;
-                    case EAnimationState.BlendOut:
-                    case EAnimationState.Finish:
-                        OnSpawnAirBlast();
+                Log($"{nameof(OnShootAirBlast)}");
 
-                        if (_wasReleased)
-                        {
-                            TransitionState(EState.Shot);
-                        }
-                        else
-                        {
-                            TransitionState(EState.Charge);
-                        }
-                        
-                        return;
-                    default:
-                        break;
-                }
-            }
-            private void EndReady()
-            {
-            }
+                _chargeable.FinishCharging();
 
-
-            private void OnCharge()
-            {
-                if(_wasReleased)
-                {
-                    TransitionState(EState.Shot);
-                }
-                else
-                {
-                    OnTurn();
-                    _chargingTimer.OnTimer(_ability._maxChargeTime);
-                    _animationPlayer.Animator.SetFloat(_chargeMotionTimeHash, 0f);
-                }
-            }
-            private void UpdateInCharge(float deltaTime)
-            {
-                _chargingTimer.UpdateTimer(deltaTime);
-
-                float normalizedTime = _chargingTimer.NormalizedTime;
-
-                _animationPlayer.Animator.SetFloat(_chargeMotionTimeHash, normalizedTime);
-                _chargeable.SetStrength(normalizedTime);
-            }
-            private void EndCharge()
-            {
-                _chargingTimer.EndTimer();
-                EndTurn();
-             
-                if(_chargeable is not null)
-                    _chargeable.FinishCharging();
-            }
-
-
-            private void OnShot()
-            {
-                _animationPlayer.Play(_shotAnimationHash, _ability._shotAnimFadeInTime, fixedTransition: _ability._shotAnimFixedTransition);
-                _animationPlayer.AnimationEvents = _animationEvents;
-            }
-
-            private void OnShotAirBlast()
-            {
-                GameplayEffect[] applyGameplayEffects;
-
-                switch (_chargeable.CurrentChargeLevel)
-                {
-                    case 0:
-                        applyGameplayEffects = _ability._applyGameplayEffectsOnHitToOther_01;
-                        break;
-                    case 1:
-                        applyGameplayEffects = _ability._applyGameplayEffectsOnHitToOther_02;
-                        break;
-                    default:
-                        applyGameplayEffects = _ability._applyGameplayEffectsOnHitToOther_03;
-                        break;
-                }
-
-                _spawnedActor.SetApplyGameplayEffectToOther(applyGameplayEffects);
-                _spawnedActor.transform.SetParent(null, true);
+                int chargedLevel = _chargeable.CurrentChargeLevel;
 
                 FGameplayCue shotCue;
-                
-                if(_chargeable is not null)
+
+                if (chargedLevel > _ability._shotCues.LastIndex())
                 {
-                    if (_chargeable.CurrentChargeLevel > _ability._shotCues.LastIndex())
-                        shotCue = _ability._shotCues.Last();
-                    else
-                        shotCue = _ability._shotCues.ElementAt(_chargeable.CurrentChargeLevel);
+                    shotCue = _ability._shotCues.Last();
                 }
                 else
                 {
-                    shotCue = _ability._shotCues.FirstOrDefault();
+                    shotCue = _ability._shotCues.ElementAt(chargedLevel);
                 }
 
                 if (shotCue.Cue)
@@ -449,56 +570,52 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     shotCue.PlayFromTarget(_bodypart.transform);
                 }
 
+                _spawnedActor.Play();
+
+                _spawnedActor = null;
                 _chargeable = null;
-
-                var projectile = _spawnedActor.gameObject.GetComponent<IProjectileActor>();
-                projectile.OnProjectile();
             }
 
-            private void UpdateInShot(float deltaTime)
+            private void OnSpawnExplosion(Vector3 position, Quaternion rotation, int level)
             {
-                switch (_animationPlayer.State)
+                var pooledActor = _ability._explosionPool.Get();
+
+                pooledActor.transform.SetPositionAndRotation(position, rotation);
+                pooledActor.gameObject.SetActive(true);
+
+                if (pooledActor.gameObject.TryGetComponent(out IChargeable chargeable))
                 {
-                    case EAnimationState.Failed:
-                    case EAnimationState.Canceled:
-                        CancelAbility();
-                        return;
-                    case EAnimationState.BlendOut:
-                    case EAnimationState.Finish:
-                        TryFinishAbility();
-                        return;
-                    default:
-                        break;
+                    chargeable.SetChargeLevel(level);
+                }
+
+                var spawnedActor = pooledActor.gameObject.GetComponent<ISpawnedActorByAbility>();
+                spawnedActor.Activate(gameObject, this);
+
+                spawnedActor.Play();
+            }
+
+
+            private void _coolTimeEffectSpec_OnEndedEffect(IGameplayEffectSpec effectSpec)
+            {
+                effectSpec.OnEndedEffect -= _coolTimeEffectSpec_OnEndedEffect;
+
+                _coolTimeEffectSpec = null;
+            }
+            private void _turnToggle_OnChangedToggleState(Toggleable toggleable, bool isOn)
+            {
+                Log($"{toggleable} - {(isOn ? "On" : "Off")}");
+
+                if (isOn)
+                {
+                    if (_ability._turnTag)
+                        GameplayTagSystem.AddOwnedTag(_ability._turnTag);
+                }
+                else
+                {
+                    if (_ability._turnTag)
+                        GameplayTagSystem.RemoveOwnedTag(_ability._turnTag);
                 }
             }
-            private void EndShot()
-            {
-
-            }
-
-
-            
-
-            private void _animationPlayer_OnNotify(string eventName)
-            {
-                if (!IsPlaying)
-                    return;
-
-                switch (eventName)
-                {
-                    case "Spawn":
-                        OnSpawnAirBlast();
-                        break;
-
-                    case "Shot":
-                        OnShotAirBlast();
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-
         }
     }
 }

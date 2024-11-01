@@ -1,11 +1,40 @@
 ﻿using StudioScor.Utilities;
 using System.Linq;
+using UnityEngine;
 
 namespace PF.PJT.Duet
 {
     public static class EquipmentUtilities
     {
-        public static bool TryEquipItem(this IEquipmentWearer equipmentWearer, IEquipment equipment)
+        public static IEquipmentWearer GetEquipmnentWearer(this GameObject gameObject)
+        {
+            return gameObject.GetComponent<IEquipmentWearer>();
+        }
+        public static IEquipmentWearer GetEquipmnentWearer(this Component component)
+        {
+            return component.gameObject.GetComponent<IEquipmentWearer>();
+        }
+
+        public static bool HasEquipmnentWearer(this GameObject gameObject)
+        {
+            return gameObject.TryGetComponent(out IEquipmentWearer _);
+        }
+        public static bool HasEquipmnentWearer(this Component component)
+        {
+            return component.gameObject.TryGetComponent(out IEquipmentWearer _);
+        }
+
+        public static bool TryGetEquipmnentWearer(this GameObject gameObject, out IEquipmentWearer equipmentWearer)
+        {
+            return gameObject.TryGetComponent(out equipmentWearer);
+        }
+        public static bool TryGetEquipmnentWearer(this Component component, out IEquipmentWearer equipmentWearer)
+        {
+            return component.gameObject.TryGetComponent(out equipmentWearer);
+        }
+
+
+        public static bool TryEquipItem(this IEquipmentWearer equipmentWearer, IEquipmentItemSpec equipment)
         {
             if (!equipmentWearer.CanEquiping(equipment))
                 return false;
@@ -18,7 +47,7 @@ namespace PF.PJT.Duet
 
             return true;
         }
-        public static bool TryUnequipItem(this IEquipmentWearer equipmentWearer, IEquipment equipment)
+        public static bool TryUnequipItem(this IEquipmentWearer equipmentWearer, IEquipmentItemSpec equipment)
         {
             if (!equipmentWearer.CanUnequiping(equipment))
                 return false;
@@ -32,7 +61,7 @@ namespace PF.PJT.Duet
             return true;
         }
 
-        public static bool Contains(this IEquipmentWearer equipmentWearer, IEquipment equipment)
+        public static bool Contains(this IEquipmentWearer equipmentWearer, IEquipmentItemSpec equipment)
         {
             if (equipmentWearer is null)
                 return false;

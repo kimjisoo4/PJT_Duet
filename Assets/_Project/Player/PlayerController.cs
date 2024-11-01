@@ -2,6 +2,9 @@ using PF.PJT.Duet.Pawn;
 using StudioScor.InputSystem;
 using StudioScor.PlayerSystem;
 using StudioScor.Utilities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static PF.PJT.Duet.Controller.IPlayerController;
@@ -14,12 +17,13 @@ namespace PF.PJT.Duet.Controller
         public delegate void PlayerControllerCharacterStateHandler(IPlayerController controller, ICharacter character);
         public delegate void PlayerControllerStateHandler(IPlayerController playerController);
         
+        public IReadOnlyList<ICharacter> Characters { get; }
         public ICharacter CurrentCharacter { get; }
         public ICharacter NextCharacter { get; }
 
         public void AddCharacter(ICharacter addCharacter);
         public void RemoveCharacter(ICharacter removeCharacter);
-
+        public void SetCurrentCharacter(ICharacter nextCharacter, bool useAppearSkill);
 
         public event PlayerChangeCharacterStateHandler OnChangedCurrentCharacter;
 
@@ -34,6 +38,7 @@ namespace PF.PJT.Duet.Controller
         [SerializeField] private PlayerInput _playerInput;
         [SerializeField] private LookAxisComponent _lookAxisComp;
         [SerializeField] private GameObject _subPlayerController;
+        [SerializeField] private int _maxCharacterCount = 2;
 
         [Header(" Input Reference ")]
         [SerializeField] private InputActionReference _changeActionReference;
@@ -42,18 +47,20 @@ namespace PF.PJT.Duet.Controller
         [SerializeField] private InputActionReference _attackActionReference;
         [SerializeField] private InputActionReference _skillActionReference;
         [SerializeField] private InputActionReference _dashActionReference;
+        [SerializeField] private InputActionReference _jumpActionReference;
 
         [Header(" GameEvents ")]
         [SerializeField] private GameEvent _onDeadAllCharacter;
 
         [Header(" Change Test ")]
+        [ContextMenuItem("Swap Character", nameof(SwapCharacterAB))]
         [SerializeField] private GameObject _characterA;
+        [ContextMenuItem("Swap Character", nameof(SwapCharacterAB))]
         [SerializeField] private GameObject _characterB;
 
         private Camera _mainCamera;
         
         private IControllerSystem _controllerSystem;
-        private IControllerSystem _nextControllerSystem;
 
         private InputAction _moveInputAction;
         private InputAction _lookInputAction;
@@ -61,22 +68,41 @@ namespace PF.PJT.Duet.Controller
         private InputAction _attackInputAction;
         private InputAction _skillInputAction;
         private InputAction _dashInputAction;
+        private InputAction _jumpInputAction;
 
         private Vector2 _inputMoveDirection;
         private float _inputMoveStrength;
         private Vector2 _inputLookDirection;
 
-        private ICharacter _currentCharacter;
-        private ICharacter _nextCharacter;
+        private readonly List<ICharacter> _characters = new();
 
         public event PlayerChangeCharacterStateHandler OnChangedCurrentCharacter;
 
         public event PlayerControllerCharacterStateHandler OnAddedCharacter;
         public event PlayerControllerCharacterStateHandler OnRemovedCharacter;
 
+        public IReadOnlyList<ICharacter> Characters => _characters;
+        public ICharacter PrevCharacter => _prevCharacter;
         public ICharacter CurrentCharacter => _currentCharacter;
         public ICharacter NextCharacter => _nextCharacter;
 
+        private int _currentCharacterIndex = 0;
+
+        private ICharacter _currentCharacter;
+        private ICharacter _prevCharacter;
+        private ICharacter _nextCharacter;
+
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
+        private void SwapCharacterAB()
+        {
+#if UNITY_EDITOR
+            var temp = _characterA;
+            _characterA = _characterB;
+            _characterB = temp;
+
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
+        }
         private void Awake()
         {
             InitPlayerController();
@@ -116,18 +142,18 @@ namespace PF.PJT.Duet.Controller
             _mainCamera = Camera.main;
 
             _controllerSystem = gameObject.GetControllerSystem();
-            _nextControllerSystem = _subPlayerController.GetControllerSystem();
         }
 
         #region Controller
         private void SetupControllerSystem()
         {
-            
             _controllerSystem.OnPossessedPawn += _controllerSystem_OnPossessedPawn;
             _controllerSystem.OnUnPossessedPawn += _controllerSystem_OnUnPossessedPawn;
         }
         private void ResetController()
         {
+            Log(nameof(ResetController));
+
             if(_controllerSystem is not null)
             {
                 _controllerSystem.OnPossessedPawn -= _controllerSystem_OnPossessedPawn;
@@ -142,33 +168,89 @@ namespace PF.PJT.Duet.Controller
             }
         }
 
-        private void SetCurrentCharacter(ICharacter nextCharacter)
+        private void UpdateSubCharacters()
         {
+            Log(nameof(UpdateSubCharacters));
+
+            _currentCharacterIndex = _characters.IndexOf(_currentCharacter);
+
+            int prevIndex = _currentCharacterIndex - 1;
+            prevIndex = prevIndex >= 0 ? prevIndex : _characters.Count + prevIndex;
+
+            int nextIndex = (_currentCharacterIndex + 1) % _characters.Count;
+            
+            var prevCharacter = _characters[prevIndex];
+            var nextCharacter = _characters[nextIndex];
+
+            if(_currentCharacter != prevCharacter)
+            {
+                _prevCharacter = prevCharacter;
+                Log($"Prev Character - {_prevCharacter.CharacterInformationData.Name}");
+            }
+
+            if (_currentCharacter != nextCharacter)
+            {
+                _nextCharacter = nextCharacter;
+                Log($"Next Character - {_nextCharacter.CharacterInformationData.Name}");
+            }
+        }
+        private void ChangePrevCharacter()
+        {
+            if (_characters.Count <= 1)
+                return;
+
+            int index = _currentCharacterIndex - 1;
+            index = index >= 0 ? index : _characters.Count + index;
+
+            var character = _characters.ElementAtOrDefault(index);
+
+            SetCurrentCharacter(character, true);
+        }
+        private void ChangeNextCharacter()
+        {
+            if (_characters.Count <= 1)
+                return;
+
+            int index = (_currentCharacterIndex + 1) % _characters.Count;
+            var character = _characters.ElementAtOrDefault(index);
+
+            SetCurrentCharacter(character, true);
+        }
+
+        public void SetCurrentCharacter(ICharacter nextCharacter, bool useAppearSkill)
+        {
+            if (nextCharacter is null)
+                return;
+
             if (_currentCharacter == nextCharacter)
                 return;
 
-            if (!nextCharacter.CanAppear())
+            if(!nextCharacter.CanAppear())
                 return;
+
+            Log(nameof(SetCurrentCharacter));
 
             ReleaseAllInput();
 
-            _nextCharacter = _currentCharacter;
+            var prevCharacter = _currentCharacter;
             _currentCharacter = nextCharacter;
 
-            var prevPawn = _nextCharacter.gameObject.GetPawnSystem();
+            UpdateSubCharacters();
+
             var pawn = _currentCharacter.gameObject.GetPawnSystem();
+            _controllerSystem.Possess(pawn);
 
-            _controllerSystem.OnPossess(pawn);
-            _nextControllerSystem.OnPossess(prevPawn);
+            if(prevCharacter is not null)
+            {
+                _currentCharacter.Teleport(prevCharacter.transform.position, prevCharacter.transform.rotation);
 
-            _currentCharacter.Teleport(_nextCharacter.transform.position, _nextCharacter.transform.rotation);
+                if (prevCharacter.CanLeave())
+                    prevCharacter.Leave();
+            }
 
-            if(_nextCharacter.CanLeave())
-                _nextCharacter.Leave();
+            _currentCharacter.Appear(useAppearSkill);
 
-            _currentCharacter.Appear();
-
-            Inovke_OnChangedCurrentCharacter(_nextCharacter);
+            Inovke_OnChangedCurrentCharacter(prevCharacter);
         }
 
         private void UpdateController(float deltaTime)
@@ -218,7 +300,14 @@ namespace PF.PJT.Duet.Controller
             _dashInputAction = actionMap.FindAction(_dashActionReference.action.name);
             _dashInputAction.started += DashAction_started;
             _dashInputAction.canceled += DashAction_canceled;
+
+            _jumpInputAction = actionMap.FindAction(_jumpActionReference.action.name);
+            _jumpInputAction.started += _jumpInputAction_started;
+            _jumpInputAction.canceled += _jumpInputAction_canceled;
         }
+
+       
+
         private void ResetInput()
         {
             if (_moveInputAction is not null)
@@ -260,28 +349,36 @@ namespace PF.PJT.Duet.Controller
                 _skillInputAction = null;
             }
 
-            if(_dashInputAction is not null)
+            if (_dashInputAction is not null)
             {
                 _dashInputAction.started -= DashAction_started;
                 _dashInputAction.canceled -= DashAction_canceled;
 
                 _dashInputAction = null;
             }
+
+            if (_jumpInputAction is not null)
+            {
+                _jumpInputAction.started -= _jumpInputAction_started;
+                _jumpInputAction.canceled -= _jumpInputAction_canceled;
+
+                _jumpInputAction = null;
+            }
         }
 
         private void ReleaseAllInput()
         {
-            if (_currentCharacter is null)
+            if (CurrentCharacter is null)
                 return;
 
             if (_attackInputAction.IsPressed())
-                _currentCharacter.SetInputAttack(false);
+                CurrentCharacter.SetInputAttack(false);
 
             if (_skillInputAction.IsPressed())
-                _currentCharacter.SetInputSkill(false);
+                CurrentCharacter.SetInputSkill(false);
 
             if (_dashInputAction.IsPressed())
-                _currentCharacter.SetInputDash(false);
+                CurrentCharacter.SetInputDash(false);
         }
 
         private void _lookInputAction_performed(InputAction.CallbackContext obj)
@@ -309,60 +406,75 @@ namespace PF.PJT.Duet.Controller
 
         private void ChangeAction_started(InputAction.CallbackContext obj)
         {
-            SetCurrentCharacter(_nextCharacter);
+            ChangeNextCharacter();
         }
         private void AttackAction_started(InputAction.CallbackContext obj)
         {
-            if (_currentCharacter is null)
+            if (CurrentCharacter is null)
                 return;
 
-            _currentCharacter.SetInputAttack(true);
+            CurrentCharacter.SetInputAttack(true);
         }
 
         private void AttackAction_canceled(InputAction.CallbackContext obj)
         {
-            if (_currentCharacter is null)
+            if (CurrentCharacter is null)
                 return;
 
-            _currentCharacter.SetInputAttack(false);
+            CurrentCharacter.SetInputAttack(false);
         }
 
         private void _skillInputAction_started(InputAction.CallbackContext obj)
         {
-            if (_currentCharacter is null)
+            if (CurrentCharacter is null)
                 return;
 
-            _currentCharacter.SetInputSkill(true);
+            CurrentCharacter.SetInputSkill(true);
         }
         private void _skillInputAction_canceled(InputAction.CallbackContext obj)
         {
-            if (_currentCharacter is null)
+            if (CurrentCharacter is null)
                 return;
 
-            _currentCharacter.SetInputSkill(false);
+            CurrentCharacter.SetInputSkill(false);
         }
 
 
         private void DashAction_started(InputAction.CallbackContext obj)
         {
-            if (_currentCharacter is null)
+            if (CurrentCharacter is null)
                 return;
 
-            _currentCharacter.SetInputDash(true);
+            CurrentCharacter.SetInputDash(true);
         }
         private void DashAction_canceled(InputAction.CallbackContext obj)
         {
-            if (_currentCharacter is null)
+            if (CurrentCharacter is null)
                 return;
 
-            _currentCharacter.SetInputDash(false);
+            CurrentCharacter.SetInputDash(false);
+        }
+
+        private void _jumpInputAction_started(InputAction.CallbackContext obj)
+        {
+            if (CurrentCharacter is null)
+                return;
+
+            CurrentCharacter.SetInputJump(true);
+        }
+        private void _jumpInputAction_canceled(InputAction.CallbackContext obj)
+        {
+            if (CurrentCharacter is null)
+                return;
+
+            CurrentCharacter.SetInputJump(false);
         }
 
         #endregion
 
         private void FollowPawn(float deltaTime)
         {
-            if (!_controllerSystem.IsPossess)
+            if (!_controllerSystem.IsPossessed)
                 return;
 
             transform.SetPositionAndRotation(_controllerSystem.Pawn.transform.position, _controllerSystem.Pawn.transform.rotation);
@@ -370,92 +482,99 @@ namespace PF.PJT.Duet.Controller
 
         private void SetupCharacter()
         {
-            if (_controllerSystem.IsPossess)
+            if (_characterA)
             {
-                var character = _controllerSystem.Pawn.gameObject.GetComponent<ICharacter>();
-
+                var character = _characterA.GetComponent<ICharacter>();
                 AddCharacter(character);
-
-
-                var nextCharacterActor = character.gameObject != _characterA ? _characterA : _characterB;
-                var nextCharacter = nextCharacterActor.GetComponent<ICharacter>();
-                
-                AddCharacter(nextCharacter);
             }
-            else
+
+            if(_characterB)
             {
-                var currentCharacter = _characterA.GetComponent<ICharacter>();
-                AddCharacter(currentCharacter);
-
-
-                var nextCharacter = _characterB.GetComponent<ICharacter>();
-                AddCharacter(nextCharacter);
+                var character = _characterB.GetComponent<ICharacter>();
+                AddCharacter(character);
             }
 
             Inovke_OnChangedCurrentCharacter(null);
 
-            _nextCharacter.Leave();
+            if(_nextCharacter is not null)
+            {
+                _nextCharacter.Leave();
+            }
         }
 
         private void ResetCharacter()
         {
-            if(_currentCharacter is not null)
+            foreach (var character in _characters)
             {
-                _currentCharacter.OnDead -= _currentCharacter_OnDead;
-                _currentCharacter = null;
+                character.OnDead -= _currentCharacter_OnDead;
             }
 
-            if(_nextCharacter is not null)
-            {
-                _nextCharacter.OnDead -= _currentCharacter_OnDead;
-                _nextCharacter = null;
-            }
+            _characters.Clear();
         }
         public void AddCharacter(ICharacter addCharacter)
         {
-            if (_currentCharacter is null)
+            if (_characters.Contains(addCharacter))
+                return;
+
+            _characters.Add(addCharacter);
+
+            OnAddCharacter(addCharacter);
+
+            int count = _characters.Count;
+
+            if(count > _maxCharacterCount)
             {
-                OnAddCharacter(addCharacter);
-                
-                _currentCharacter = addCharacter;
+                for(int i = 0; i < count; i++)
+                {
+                    if (_characters[i].IsDead)
+                    {
+                        RemoveCharacter(_characters[i]);
+                        break;
+                    }
+                    else if(i + 1 == count)
+                    {
+                        var currentCharacter = CurrentCharacter;
 
-                var currentPawn = addCharacter.gameObject.GetPawnSystem();
-                _controllerSystem.OnPossess(currentPawn);
+                        SetCurrentCharacter(addCharacter, false);
 
+                        RemoveCharacter(currentCharacter);
+                        break;
+                    }
+                }
             }
-            else if (_nextCharacter is null)
+            else if (count == 1)
             {
-                OnAddCharacter(addCharacter);
-                
-                _nextCharacter = addCharacter;
+                _currentCharacterIndex = 0;
 
-                var nextPawn = addCharacter.gameObject.GetPawnSystem();
-                _nextControllerSystem.OnPossess(nextPawn);
+                SetCurrentCharacter(addCharacter, false);
+            }
+            else
+            {
+                addCharacter.Leave();
             }
 
+            UpdateSubCharacters();
+            
             Invoke_OnAddedCharacter(addCharacter);
         }
 
         public void RemoveCharacter(ICharacter removeCharacter)
         {
-            if(removeCharacter == _currentCharacter)
+            if (!_characters.Contains(removeCharacter))
+                return;
+
+            int index = _characters.IndexOf(removeCharacter);
+            _characters.RemoveAt(index);
+
+            OnRemoveCharacter(removeCharacter);
+
+            if(CurrentCharacter == removeCharacter)
             {
-                OnRemoveCharacter(_currentCharacter);
-
-                var currentPawn = removeCharacter.gameObject.GetPawnSystem();
-
-                _currentCharacter = null;
-                
-                _controllerSystem.UnPossess(currentPawn);
+                SetCurrentCharacter(NextCharacter, true);
             }
-            else if (removeCharacter == _nextCharacter)
+            else
             {
-                OnRemoveCharacter(_nextCharacter);
-
-                var nextPawn = removeCharacter.gameObject.GetPawnSystem();
-                _nextCharacter = null;
-
-                _nextControllerSystem.OnPossess(nextPawn);
+                UpdateSubCharacters();
             }
 
             Invoke_OnRemoveCharacter(removeCharacter);
@@ -471,9 +590,9 @@ namespace PF.PJT.Duet.Controller
         }
         private void _currentCharacter_OnDead(ICharacter character)
         {
-            if (_nextCharacter is not null && !_nextCharacter.IsDead)
+            if (NextCharacter is not null && !NextCharacter.IsDead)
             {
-                SetCurrentCharacter(_nextCharacter);
+                SetCurrentCharacter(NextCharacter, true);
             }
             else
             {
@@ -496,9 +615,9 @@ namespace PF.PJT.Duet.Controller
 
         private void Inovke_OnChangedCurrentCharacter(ICharacter prevCharacter)
         {
-            Log($"{nameof(OnChangedCurrentCharacter)} - Current Character {(_currentCharacter is null ? "Null" : _currentCharacter.gameObject)} || Prev Characvter {(prevCharacter is null ? "Null" : prevCharacter.gameObject)}");
+            Log($"{nameof(OnChangedCurrentCharacter)} - Current Character {(CurrentCharacter is null ? "Null" : CurrentCharacter.gameObject)} || Prev Characvter {(prevCharacter is null ? "Null" : prevCharacter.gameObject)}");
 
-            OnChangedCurrentCharacter?.Invoke(this, _currentCharacter, prevCharacter);
+            OnChangedCurrentCharacter?.Invoke(this, CurrentCharacter, prevCharacter);
         }
     }
 

@@ -4839,6 +4839,7 @@ GameObject:
   - component: {fileID: 192463201115190538}
   - component: {fileID: -757610460358567087}
   - component: {fileID: 3625863934069366995}
+  - component: {fileID: -7388274507487102650}
   m_Layer: 0
   m_Name: P_VFX_Whirldwind_Loop
   m_TagString: Untagged
@@ -4873,7 +4874,7 @@ ParticleSystem:
   serializedVersion: 8
   lengthInSec: 0.2
   simulationSpeed: 1
-  stopAction: 1
+  stopAction: 3
   cullingMode: 3
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -9670,13 +9671,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _poolContainer: {fileID: 0}
-  _releasedWhenDisable: 1
-  _onCreated:
-    m_PersistentCalls:
-      m_Calls: []
-  _onReleased:
-    m_PersistentCalls:
-      m_Calls: []
+  _useUnityEvent: 0
+  _unityEvents:
+    _onCreated:
+      m_PersistentCalls:
+        m_Calls: []
+    _onActivated:
+      m_PersistentCalls:
+        m_Calls: []
+    _onReleased:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!114 &3625863934069366995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9694,6 +9699,36 @@ MonoBehaviour:
   - {fileID: 7348297139938451213}
   - {fileID: 3388809290599841324}
   - {fileID: 3905661107441268073}
+--- !u!114 &-7388274507487102650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4950977479288362781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df990556a1e53614aa383a4e095d6ef0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _useDisable: 0
+  _useUnityEvent: 1
+  _onStoppedParticle:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -757610460358567087}
+        m_TargetAssemblyTypeName: StudioScor.Utilities.PooledObject, StudioScor.Utilities
+        m_MethodName: Release
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5235469093873669577
 GameObject:
   m_ObjectHideFlags: 0

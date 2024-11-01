@@ -1,6 +1,7 @@
 ﻿using StudioScor.AbilitySystem;
 using StudioScor.GameplayCueSystem;
 using StudioScor.GameplayTagSystem;
+using StudioScor.MovementSystem;
 using StudioScor.Utilities;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
     public class FootstepEffectAbility : GASAbility
     {
         [Header(" [ Footstep Effect Ability ] ")]
-        [SerializeField] private GameplayTag _footstepTriggerTag;
+        [SerializeField] private GameplayTagSO _footstepTriggerTag;
         [SerializeField] private FGameplayCue _footstepCue;
 
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
@@ -21,10 +22,12 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
         public class Spec : GASPassiveAbilitySpec
         {
             protected new readonly FootstepEffectAbility _ability;
+            private readonly IMovementSystem _movementSystem;
 
             public Spec(Ability ability, IAbilitySystem abilitySystem, int level) : base(ability, abilitySystem, level)
             {
                 _ability = ability as FootstepEffectAbility;
+                _movementSystem = gameObject.GetMovementSystem();
             }
 
             protected override void OnGrantAbility()
@@ -40,9 +43,12 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                 GameplayTagSystem.OnTriggeredTag -= GameplayTagSystem_OnTriggeredTag;
             }
 
-            private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag, object data = null)
+            private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag, object data = null)
             {
                 if (!IsPlaying)
+                    return;
+
+                if (!_movementSystem.IsGrounded)
                     return;
 
                 if (_ability._footstepTriggerTag != gameplayTag)

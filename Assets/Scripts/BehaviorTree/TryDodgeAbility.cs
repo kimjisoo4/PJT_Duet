@@ -62,12 +62,9 @@ namespace StudioScor.PlayerSystem.BehaviorTree
 
             ControllerSystem.SetMoveDirection(direction, 1f);
 
-            var ability = _abilitySystem.TryActivateAbility(_dodgeAbility);
-
-            if(ability.isActivate)
+            if(_abilitySystem.TryActivateAbility(_dodgeAbility, out _abilitySpec))
             {
                 _abilityResult = EAbilityResult.Played;
-                _abilitySpec = ability.abilitySpec;
 
                 _abilitySpec.OnCanceledAbility += _abilitySpec_OnCanceledAbility;
                 _abilitySpec.OnFinishedAbility += _abilitySpec_OnFinishedAbility;

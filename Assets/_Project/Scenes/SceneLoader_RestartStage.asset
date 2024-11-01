@@ -14,3 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   loadSceneMode: 0
+  _useLoadingScene: 1
+  _loadingScene:
+    <UseDebug>k__BackingField: 0
+    sceneFiledType: 2
+    sceneName: 
+    sceneNumber: 0
+    Target: {fileID: 102900000, guid: 51274fb74b2e13f4d9d9a9555ccae18e, type: 3}
+    targetSceneName: Loading

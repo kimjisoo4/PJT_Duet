@@ -47,16 +47,11 @@ namespace PF.PJT.Duet.Pawn.Effect
                 _knockbackable = gameObject.GetComponent<IKnockbackable>();
             }
 
-            public override bool CanTakeEffect()
+            public override void ReleaseSpec()
             {
-                if(!base.CanTakeEffect())
-                {
-                    _pool.Release(this);
+                base.ReleaseSpec();
 
-                    return false;
-                }
-
-                return true;
+                _pool.Release(this);
             }
             protected override void OnEnterEffect()
             {
@@ -70,12 +65,6 @@ namespace PF.PJT.Duet.Pawn.Effect
 
                     _knockbackable.TakeKnockback(direction, distance, duration);
                 }
-            }
-            protected override void OnExitEffect()
-            {
-                base.OnExitEffect();
-
-                _pool.Release(this);
             }
         }
     }

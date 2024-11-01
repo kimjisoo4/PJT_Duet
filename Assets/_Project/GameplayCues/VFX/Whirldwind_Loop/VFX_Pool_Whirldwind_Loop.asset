@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: VFX_Pool_Whirldwind_Loop
   m_EditorClassIdentifier: 
   UseDebug: 0
-  pooled: {fileID: -757610460358567087, guid: 005ba144aaae0844f924d7676f251a9e, type: 3}
-  startSize: 3
+  _pooled: {fileID: -757610460358567087, guid: 005ba144aaae0844f924d7676f251a9e, type: 3}
+  _startSize: 5

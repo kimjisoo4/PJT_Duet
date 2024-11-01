@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: VFX_Pool_Swing_Slash
   m_EditorClassIdentifier: 
   UseDebug: 0
-  pooled: {fileID: 7681012205299874583, guid: 67c048500a1613244a9d08ecdce42efe, type: 3}
-  startSize: 5
+  _pooled: {fileID: 7681012205299874583, guid: 67c048500a1613244a9d08ecdce42efe, type: 3}
+  _startSize: 5

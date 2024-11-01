@@ -20,9 +20,9 @@ namespace PF.PJT.Duet
         [SerializeField] private GameObjectListVariable _activeUIVariable;
 
         [Header(" Reword Datas ")]
-        [SerializeField] private List<EquipmentItem> _stageRewordDatas;
+        [SerializeField] private List<ItemSO> _stageRewordDatas;
 
-        private readonly List<EquipmentItem> _selectedRewords = new();
+        private readonly List<ItemSO> _selectedRewords = new();
 
         private void Awake()
         {
@@ -107,27 +107,22 @@ namespace PF.PJT.Duet
             _activeUIVariable.Remove(gameObject);
         }
 
-        private void OnSubmitReword(EquipmentItem equipmentItem)
+        private void OnSubmitReword(ItemSO submitItem)
         {
             if(_playerManager.HasPlayerController)
             {
-                if(_playerManager.PlayerController.gameObject.TryGetComponent(out IEquipmentWearer equipmentWearer))
+                if (submitItem.TryUseItem(_playerManager.PlayerController.gameObject))
                 {
-                    var equipment = equipmentItem.CreateSpec();
+                    _selectedRewords.Remove(submitItem);
 
-                    if (equipmentWearer.TryEquipItem(equipment))
-                    {
-                        _selectedRewords.Remove(equipmentItem);
-
-                        EndStageReword();
-                    }
+                    EndStageReword();
                 }
             }
         }
 
-        private void OnSelectReword(EquipmentItem equipmentItem)
+        private void OnSelectReword(ItemSO selectItem)
         {
-            _rewordInformation.SetData(equipmentItem);
+            _rewordInformation.SetData(selectItem);
         }
 
         private void _onStageReword_OnTriggerEvent()
@@ -139,19 +134,19 @@ namespace PF.PJT.Duet
         {
             var reword = _rewordSelects.FirstOrDefault(x => x.gameObject == selectEventListener.gameObject);
 
-            if (!reword || !reword.EquipmentItem)
+            if (!reword || !reword.ItemData)
                 return;
 
-            OnSelectReword(reword.EquipmentItem);
+            OnSelectReword(reword.ItemData);
         }
         private void SubmitEventListener_OnSubmited(ISubmitEventListener submitEventListener, UnityEngine.EventSystems.BaseEventData obj)
         {
             var reword = _rewordSelects.FirstOrDefault(x => x.gameObject == submitEventListener.gameObject);
 
-            if (!reword || !reword.EquipmentItem)
+            if (!reword || !reword.ItemData)
                 return;
 
-            OnSubmitReword(reword.EquipmentItem);
+            OnSubmitReword(reword.ItemData);
         }
     }
 }

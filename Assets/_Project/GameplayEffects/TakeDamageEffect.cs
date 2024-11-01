@@ -69,9 +69,9 @@ namespace PF.PJT.Duet.Pawn.Effect
         [SerializeField] private bool _isAdditionalDamage = false;
 
         [Header(" Gameplay Tag Trigger Event ")]
-        [SerializeField] private GameplayTag _onAttackHitTag;
+        [SerializeField] private GameplayTagSO _onAttackHitTag;
 
-        private static IObjectPool<Spec> _pool;
+        private static IObjectPool<Spec> _pool = null;
         public StatTag BaseStat => _baseStat;
         public float DamageRatio => _damageRatio;
         public DamageType DamageType => _damageType;
@@ -114,15 +114,11 @@ namespace PF.PJT.Duet.Pawn.Effect
                 _statSystem = gameObject.GetStatSystem();
                 _instigatorStatSystem = instigator.GetStatSystem();
             }
-            public override bool CanTakeEffect()
+            public override void ReleaseSpec()
             {
-                if(!base.CanTakeEffect())
-                {
-                    _pool.Release(this);
-                    return false;
-                }
+                base.ReleaseSpec();
 
-                return true;
+                _pool.Release(this);
             }
             protected override void OnEnterEffect()
             {
@@ -139,7 +135,7 @@ namespace PF.PJT.Duet.Pawn.Effect
                                                        _gameplayEffect._damageType, 
                                                        damageData.HitPoint, 
                                                        damageData.HitNormal, 
-                                                       damageData.HitCollider, 
+                                                       damageData.HitCollider.transform, 
                                                        damageData.Direction, 
                                                        damageData.DamageCauser, 
                                                        damageData.Instigator);
@@ -155,13 +151,6 @@ namespace PF.PJT.Duet.Pawn.Effect
                         data.Release();
                     }
                 }
-            }
-
-            protected override void OnExitEffect()
-            {
-                base.OnExitEffect();
-
-                _pool.Release(this);
             }
         }
         

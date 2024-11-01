@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dadf61feb00e2f44877610b9c16fec1, type: 3}
+  m_Name: GA_PawnAbiltiy_Movement_StairMoveModifier
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _id: GA_PawnAbiltiy_Movement_StairMoveModifier
+  abilityTag: {fileID: 11400000, guid: 6b4c215e6f11fe148889241422a7d1b4, type: 2}
+  attributeTags: []
+  conditionTags:
+    requireds: []
+    obstacleds: []
+  grantTags:
+    owneds: []
+    blocks: []
+  cancelAbilityTags: []

@@ -8,13 +8,13 @@ namespace PF.PJT.Duet
     {
         [Header(" [ Equipment Wearer Component ] ")]
 
-        private readonly List<IEquipment> _equipments = new();
-        public IReadOnlyList<IEquipment> Equipments => _equipments;
+        private readonly List<IEquipmentItemSpec> _equipments = new();
+        public IReadOnlyList<IEquipmentItemSpec> Equipments => _equipments;
 
         public event IEquipmentWearer.EquipmentEventHandler OnEquipped;
         public event IEquipmentWearer.EquipmentEventHandler OnUnequipped;
 
-        public virtual bool CanEquiping(IEquipment equipment)
+        public virtual bool CanEquiping(IEquipmentItemSpec equipment)
         {
             if (equipment is null)
                 return false;
@@ -25,7 +25,7 @@ namespace PF.PJT.Duet
             return true;
         }
 
-        public virtual bool CanUnequiping(IEquipment equipment)
+        public virtual bool CanUnequiping(IEquipmentItemSpec equipment)
         {
             if (equipment is null)
                 return false;
@@ -36,10 +36,10 @@ namespace PF.PJT.Duet
             return true;
         }
 
-        protected virtual void OnEquip(IEquipment equipment) { }
-        protected virtual void OnUnequip(IEquipment equipment) { }
+        protected virtual void OnEquip(IEquipmentItemSpec equipment) { }
+        protected virtual void OnUnequip(IEquipmentItemSpec equipment) { }
 
-        public void Equip(IEquipment equipment)
+        public void Equip(IEquipmentItemSpec equipment)
         {
             if (equipment is null)
                 return;
@@ -53,7 +53,7 @@ namespace PF.PJT.Duet
             Inovke_OnEquipped(equipment);
         }
 
-        public void Unequip(IEquipment equipment)
+        public void Unequip(IEquipmentItemSpec equipment)
         {
             if (equipment is null)
                 return;
@@ -67,13 +67,13 @@ namespace PF.PJT.Duet
             Inovke_OnUnequipped(equipment);
         }
 
-        private void Inovke_OnEquipped(IEquipment equipment)
+        private void Inovke_OnEquipped(IEquipmentItemSpec equipment)
         {
             Log($"{nameof(OnEquipped)} - {equipment}");
 
             OnEquipped?.Invoke(this, equipment);
         }
-        private void Inovke_OnUnequipped(IEquipment equipment)
+        private void Inovke_OnUnequipped(IEquipmentItemSpec equipment)
         {
             Log($"{nameof(OnUnequipped)} - {equipment}");
 

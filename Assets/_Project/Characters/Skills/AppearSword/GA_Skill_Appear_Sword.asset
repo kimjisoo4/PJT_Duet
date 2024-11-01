@@ -35,32 +35,23 @@ MonoBehaviour:
   _name: 
   _skillType: 3
   _description: 
-  _appearAnimation: AppearSword
-  _fadeInTime: 0
-  _moveDistance: 4
-  _moveStartTime: 0
-  _moveEndTime: 0.3
+  _airAnimation: AppearSword_Air
+  _airAnimFadeTime: 0
+  _attackAnimation: AppearSword_Slash
+  _attackAnimFadeTime: 0.1
+  _moveDistance: 5
   _moveCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0.04136514
-      outSlope: 0.04136514
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.1640959
-    - serializedVersion: 3
-      time: 0.53964126
-      value: 0.70494837
-      inSlope: 1.6204834
-      outSlope: 1.6204834
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.11563004
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
@@ -70,6 +61,40 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0
       outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _jumpHeight: 3
+  _jumpMoveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 3.2201974
+      outSlope: 3.2201974
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.17062636
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -3.921934
+      outSlope: -3.921934
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.06911445
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -110,3 +135,6 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 0, y: 0, z: 0}
     Volume: 1
+  _testLayer:
+    serializedVersion: 2
+    m_Bits: 8

@@ -63,8 +63,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private readonly IPawnSystem _pawnSystem;
             private readonly IMovementSystem _movementSystem;
             private readonly IGameplayEffectSystem _gameplayEffectSystem;
+            
             private readonly AnimationPlayer _animationPlayer;
             private readonly AnimationPlayer.Events _animationEvents;
+            private bool _wasStartedAnimation = false;
+
             private readonly ReachValueToTime _moveValueToTime = new();
             private readonly int[] _animationIDs;
 
@@ -73,8 +76,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private readonly Timer _moveTimer = new();
             private FAnimationData _animationData;
             private Vector3 _moveDirection;
-
-            private readonly MatchTargetWeightMask _matchTargetWeight = new MatchTargetWeightMask(new Vector3(1, 0, 1), 0);
 
             public Spec(Ability ability, IAbilitySystem abilitySystem, int level) : base(ability, abilitySystem, level)
             {
@@ -86,7 +87,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 _animationPlayer = gameObject.GetComponentInChildren<AnimationPlayer>(true);
                 _animationEvents = new();
-
+                _animationEvents.OnStarted += _animationEvents_OnStarted;
                 _animationEvents.OnFailed += _animationPlayer_OnFailed;
                 _animationEvents.OnCanceled += _animationPlayer_OnCanceled;
                 _animationEvents.OnStartedBlendOut += _animationEvets_OnStartedBlendOut;
@@ -99,7 +100,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _motionTimeID = Animator.StringToHash(_ability._motionTime);
             }
 
-            
+           
             public override bool CanActiveAbility()
             {
                 if (_ability._coolTimeEffect && _gameplayEffectSystem.HasEffect(_ability._coolTimeEffect))
@@ -146,7 +147,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     _animationID = _animationIDs[1];
                     _animationData = _ability._animationDatas.Backward;
                 }
-                
+
+                _wasStartedAnimation = false;
 
                 _animationPlayer.Play(_animationID, _animationData.FadeInTime);
                 _animationPlayer.AnimationEvents = _animationEvents;
@@ -205,8 +207,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     UpdateMovement(normalizedTime);
                 }
             }
-
-
             private void UpdateMovement(float normalizedTime)
             {
                 _moveValueToTime.UpdateMovement(normalizedTime);
@@ -218,8 +218,16 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             private void _animationPlayer_OnCanceled()
             {
+                if (!_wasStartedAnimation)
+                    return;
+
                 CancelAbility();
             }
+            private void _animationEvents_OnStarted()
+            {
+                _wasStartedAnimation = true;
+            }
+
             private void _animationPlayer_OnFailed()
             {
                 CancelAbility();

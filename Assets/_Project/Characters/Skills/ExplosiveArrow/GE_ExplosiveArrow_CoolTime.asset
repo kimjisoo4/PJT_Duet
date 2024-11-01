@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68270fb2a42f1094fb729110c0aadeb5, type: 3}
+  m_Name: GE_ExplosiveArrow_CoolTime
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _effectType: 1
+  _duration: 5
+  _unscaledTime: 0
+  _effectTag: {fileID: 11400000, guid: 37ebd247559168c498dcc83db9fca11e, type: 2}
+  _attributeTags: []
+  _conditionTags:
+    requireds: []
+    obstacleds: []
+  _grantTags:
+    owneds: []
+    blocks:
+    - {fileID: 11400000, guid: 3e84e253eb40210429d679fcdb8ccab0, type: 2}
+  _cancelEffectTags: []

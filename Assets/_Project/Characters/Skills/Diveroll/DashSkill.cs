@@ -39,7 +39,10 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private readonly IMovementSystem _movementSystem;
             private readonly IRotationSystem _rotationSystem;
             private readonly IGameplayEffectSystem _gameplayEffectSystem;
+
             private readonly AnimationPlayer _animationPlayer;
+            private readonly AnimationPlayer.Events _animationEvents;
+            private bool _wasStartedAnimation;
 
             private readonly ReachValueToTime _reachValueToTime = new();
             private readonly Timer _timer = new();
@@ -58,10 +61,16 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _gameplayEffectSystem = gameObject.GetGameplayEffectSystem();
 
                 _animationPlayer = gameObject.GetComponentInChildren<AnimationPlayer>(true);
+                _animationEvents = new();
+                _animationEvents.OnStarted += _animationEvents_OnStarted;
+                _animationEvents.OnFailed += _animationEvents_OnFailed;
+                _animationEvents.OnCanceled += _animationEvents_OnCanceled;
 
                 _animationID = Animator.StringToHash(_ability._animationName);
                 _motionTime = Animator.StringToHash(_ability._motionTime);
             }
+
+            
 
             public override bool CanActiveAbility()
             {
@@ -74,7 +83,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 base.EnterAbility();
 
+                _wasStartedAnimation = false;
                 _animationPlayer.Play(_animationID, _ability._fadeInTime);
+                _animationPlayer.AnimationEvents = _animationEvents;
 
                 _dashDirection = _pawnSystem.MoveDirection;
                 
@@ -152,6 +163,23 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                         }
                     }
                 }
+            }
+
+            private void _animationEvents_OnFailed()
+            {
+                CancelAbility();
+            }
+
+            private void _animationEvents_OnCanceled()
+            {
+                if (!_wasStartedAnimation)
+                    return;
+
+                CancelAbility();
+            }
+            private void _animationEvents_OnStarted()
+            {
+                _wasStartedAnimation = true;
             }
 
         }

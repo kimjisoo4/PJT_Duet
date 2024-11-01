@@ -45,7 +45,7 @@ namespace PF.PJT.Duet.Pawn
     {
         [Header(" [ Footstep Event Component ] ")]
         [SerializeField] private GameObject _owner;
-        [SerializeField] private GameplayTag _footstepTriggerTag;
+        [SerializeField] private GameplayTagSO _footstepTriggerTag;
 
         [Space(5f)]
         [SerializeField] private float _footstepInterval = 0.2f;

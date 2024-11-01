@@ -36,12 +36,9 @@ namespace StudioScor.PlayerSystem.BehaviorTree
 
             _abilitySystem = Pawn.gameObject.GetAbilitySystem();
 
-            var ability = _abilitySystem.TryActivateAbility(_comboAbility);
-
-            if(ability.isActivate)
+            if(_abilitySystem.TryActivateAbility(_comboAbility, out _abilitySpec))
             {
                 _abilityResult = EAbilityResult.Played;
-                _abilitySpec = ability.abilitySpec;
                 _currentComboCount = 1;
 
                 _abilitySpec.OnFinishedAbility += AbilitySpec_OnFinishedAbility;

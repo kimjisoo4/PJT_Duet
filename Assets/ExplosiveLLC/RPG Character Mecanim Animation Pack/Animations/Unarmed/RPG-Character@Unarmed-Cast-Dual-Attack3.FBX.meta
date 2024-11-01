@@ -571,7 +571,7 @@ ModelImporter:
       events:
       - time: 0.4350453
         functionName: AnimNotify
-        data: Shot
+        data: Shoot
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0

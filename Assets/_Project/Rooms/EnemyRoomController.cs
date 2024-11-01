@@ -1,5 +1,6 @@
 ﻿using PF.PJT.Duet.Pawn;
 using StudioScor.Utilities;
+using System.Linq;
 using UnityEngine;
 
 
@@ -10,9 +11,9 @@ namespace PF.PJT.Duet
         [Header(" [ Enemy Room Controller ] ")]
         [SerializeField] private GameObject[] _doorActors;
         [SerializeField] private GameObject _triggerActor;
-        [SerializeField] private SimplePoolContainer[] _spawnEnemyPools;
+        [SerializeField] private PoolContainer[] _spawnEnemyPools;
         [SerializeField] private Transform[] _spawnPoints;
-        [SerializeField] private int _testSpawnCount = 5;
+        [SerializeField] private int _spawnCount = 5;
 
         [SerializeField] private GameEvent _rewordEvent;
 
@@ -68,12 +69,18 @@ namespace PF.PJT.Duet
         }
         private void OnSpawnEnemys()
         {
-            for(int i = 0; i < _testSpawnCount; i++)
+            for(int i = 0; i < _spawnCount; i++)
             {
+                var spawnPoint = _spawnPoints.ElementAtOrDefault(i);
+                if(!spawnPoint)
+                {
+                    Log($" Not Has Spawn Point", SUtility.STRING_COLOR_FAIL);
+                    break;
+                }
+
                 var spawnEnemyPool = _spawnEnemyPools[Random.Range(0, _spawnEnemyPools.Length)];
                 var enemy = spawnEnemyPool.Get();
 
-                var spawnPoint = _spawnPoints[i];
 
                 if (enemy.TryGetComponent(out ICharacter character))
                 {

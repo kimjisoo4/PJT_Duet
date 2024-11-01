@@ -277,11 +277,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _playerManager: {fileID: 11400000, guid: 13dbbcde627c89f49bc44e0a2795673d, type: 2}
+  _playerSkillStateUIActor: {fileID: 3521409275103044638}
   _attackSlot: {fileID: 3071812041523607067}
   _skillSlot: {fileID: 8369961736045331345}
   _tagCharacterSlot: {fileID: 6315335186277002955}
   _tagCharacterStatusAmount: {fileID: 5113328407411309851}
   _tagCharacterAppearSlot: {fileID: 8773290466874110642}
+  _inActiveVariable: {fileID: 11400000, guid: 55eb62273cf49ec42b3a7150f7cf5060, type: 2}
 --- !u!1001 &1076145846375549695
 PrefabInstance:
   m_ObjectHideFlags: 0

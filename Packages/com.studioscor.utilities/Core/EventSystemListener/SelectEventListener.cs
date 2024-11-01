@@ -2,9 +2,13 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace StudioScor.Utilities
 {
+
+
+
     public class SelectEventListener : BaseMonoBehaviour, ISelectHandler, IPointerEnterHandler, ISelectEventListener
     {
         [System.Serializable]
@@ -28,6 +32,7 @@ namespace StudioScor.Utilities
 
         [Header(" [ Select Event Listner ] ")]
         [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private Selectable _selectable;
         [SerializeField] private EInputHandlerType _inputType = EInputHandlerType.Both;
 
         [Header(" Unity Event ")]
@@ -43,11 +48,23 @@ namespace StudioScor.Utilities
             {
                 _canvasGroup = GetComponentInParent<CanvasGroup>();
             }
+            if(!_selectable)
+            {
+                _selectable = GetComponent<Selectable>();
+            }
 #endif
         }
 
         protected virtual void Awake()
         {
+            if (!_canvasGroup)
+            {
+                _canvasGroup = GetComponentInParent<CanvasGroup>();
+            }
+            if (!_selectable)
+            {
+                _selectable = GetComponent<Selectable>();
+            }
             if (_useUnityEvent)
             {
                 _unityEvents.AddUnityEvent(this);
@@ -59,11 +76,14 @@ namespace StudioScor.Utilities
             {
                 _unityEvents.RemoveUnityEvent(this);
             }
+
+            OnSelected = null;
         }
 
         public virtual bool CanSelect()
         {
-            if (_canvasGroup && !_canvasGroup.interactable)
+            if ((_canvasGroup && !_canvasGroup.interactable)
+                || (!_selectable.interactable))
                 return false;
 
             return true;

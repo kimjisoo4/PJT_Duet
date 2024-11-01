@@ -8,7 +8,7 @@ namespace StudioScor.PlayerSystem.BehaviorTree
         private IControllerSystem _controllerSystem;
         public IControllerSystem ControllerSystem => _controllerSystem;
         public IPawnSystem Pawn => ControllerSystem.Pawn;
-        public bool IsPossessed => ControllerSystem.IsPossess;
+        public bool IsPossessed => ControllerSystem.IsPossessed;
 
         public override void OnAwake()
         {

@@ -42,21 +42,9 @@ namespace PF.PJT.Duet.Pawn.Effect
                 base.SetupSpec(gameplayEffect, gameplayEffectSystem, instigator, level, data);
             }
 
-            public override bool CanTakeEffect()
+            public override void ReleaseSpec()
             {
-                if(!base.CanTakeEffect())
-                {
-                    _pool.Release(this);
-
-                    return false;
-                }
-
-                return true;
-            }
-
-            protected override void OnExitEffect()
-            {
-                base.OnExitEffect();
+                base.ReleaseSpec();
 
                 _pool.Release(this);
             }

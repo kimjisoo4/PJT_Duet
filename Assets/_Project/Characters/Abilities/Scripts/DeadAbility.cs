@@ -21,7 +21,9 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
         {
             protected new readonly DeadAbility _ability;
             private readonly AnimationPlayer _animationPlayer;
+            private readonly AnimationPlayer.Events _animationEvents;
             private readonly ICharacter _character;
+
 
             private readonly int ANIM_DEAD_ID = Animator.StringToHash("Dead");
 
@@ -30,14 +32,18 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                 _ability = ability as DeadAbility;
                 _character = gameObject.GetComponent<ICharacter>();
                 _animationPlayer = gameObject.GetComponentInChildren<AnimationPlayer>(true);
+                
+                _animationEvents = new();
+                _animationEvents.OnFailed += _animationPlayer_OnFailed;
+                _animationEvents.OnFinished += _animationPlayer_OnFinished;
             }
+
             protected override void EnterAbility()
             {
                 base.EnterAbility();
 
                 _animationPlayer.Play(ANIM_DEAD_ID);
-
-                _animationPlayer.OnFinished += _animationPlayer_OnFinished;
+                _animationPlayer.AnimationEvents = _animationEvents;
             }
 
             protected override void ExitAbility()
@@ -48,18 +54,31 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
 
                 foreach (var ability in _ability._grantAbilities)
                 {
-                    AbilitySystem.TryRemoveAbility(ability);
+                    AbilitySystem.RemoveAbility(ability);
                 }
             }
 
-            private void _animationPlayer_OnFinished()
+            private void EndAnimation()
             {
+                Log(nameof(EndAnimation));
+
                 _character.OnDie();
 
                 foreach (var ability in _ability._grantAbilities)
                 {
                     AbilitySystem.TryGrantAbility(ability);
                 }
+            }
+
+
+            private void _animationPlayer_OnFailed()
+            {
+                Debug.LogError("Failed");
+            }
+
+            private void _animationPlayer_OnFinished()
+            {
+                EndAnimation();
             }
         }
     }

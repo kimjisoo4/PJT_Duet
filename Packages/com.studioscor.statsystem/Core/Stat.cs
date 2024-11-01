@@ -5,7 +5,10 @@ using UnityEngine;
 namespace StudioScor.StatSystem
 {
     [Serializable]
-	public class Stat : ISerializationCallbackReceiver
+#if SCOR_ENABLE_VISUALSCRIPTING
+    [Unity.VisualScripting.IncludeInSettings(true)]
+#endif
+    public class Stat : ISerializationCallbackReceiver
 	{
 		#region Events
 		public delegate void ChangedValue(Stat stat, float currentValue, float prevValue);
@@ -76,7 +79,7 @@ namespace StudioScor.StatSystem
 
 		public void Remove()
         {
-			RemoveAllModifier();
+			RemoveAllModifiers();
 
 			_statModifiers.Clear();
         }
@@ -92,15 +95,25 @@ namespace StudioScor.StatSystem
 		{
 			if (_statModifiers.Count != 0)
 			{
+				bool insert = false;
+
 				for(int i = 0; i < _statModifiers.Count; i++)
 				{
 					var statModifier = _statModifiers[i];
 
 					if(statModifier.Order > modifier.Order)
 					{
-						_statModifiers.Insert(i, modifier);
+						insert = true;
+
+                        _statModifiers.Insert(i, modifier);
 					}
 				}
+
+				if(!insert)
+				{
+					_statModifiers.Add(modifier);
+
+                }
 			}
 			else
 			{
@@ -122,7 +135,7 @@ namespace StudioScor.StatSystem
 			return false;
 		}
 
-		public virtual void RemoveAllModifier()
+		public virtual void RemoveAllModifiers()
         {
 			if(_statModifiers.Count > 0)
             {

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 456470bf2ba4b2942b4cca8246a57033, type: 3}
   m_Name: GA_PawnAbiltiy_Dead
   m_EditorClassIdentifier: 
-  UseDebug: 0
+  UseDebug: 1
   _id: GA_PawnAbiltiy_Dead
   abilityTag: {fileID: 11400000, guid: be762f289462b7f41bf52fcc24df6022, type: 2}
   attributeTags: []
@@ -24,7 +24,8 @@ MonoBehaviour:
     owneds:
     - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
     - {fileID: 11400000, guid: a40dd7e3e3d12514894ca380fde04a21, type: 2}
-    blocks: []
+    blocks:
+    - {fileID: 11400000, guid: 2ec728a8400d61a4da454d4c66f9d97a, type: 2}
   cancelAbilityTags:
   - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
   _grantAbilities:

@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: VFX_Pool_Attack_Bite
   m_EditorClassIdentifier: 
   UseDebug: 0
-  pooled: {fileID: -6861641124083176060, guid: b161b686718ad4745ac13590ff10a5e2, type: 3}
-  startSize: 5
+  _pooled: {fileID: -6861641124083176060, guid: b161b686718ad4745ac13590ff10a5e2,
+    type: 3}
+  _startSize: 5

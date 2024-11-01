@@ -11,11 +11,30 @@ namespace StudioScor.Utilities
 		public delegate void ListMemberEventHandler(ListVariableObject<T> variable, T value);
 		#endregion
 
-		[SerializeField] protected List<T> _InitialValues;
-		[SerializeField][SReadOnly] protected List<T> _RuntimeValues;
+		[SerializeField] protected List<T> _initialValues;
+		[SerializeField][SReadOnly] protected List<T> _runtimeValues;
 
-		public IReadOnlyList<T> InitialValues => _InitialValues;
-		public IReadOnlyList<T> Values => _RuntimeValues;
+		public IReadOnlyList<T> InitialValues
+		{
+			get
+			{
+				if (_initialValues is null)
+					_initialValues = new();
+
+				return _initialValues;
+            }
+		}
+		public IReadOnlyList<T> Values
+		{
+			get
+            {
+				if (_runtimeValues is null)
+					_runtimeValues = new();
+
+				return _runtimeValues;
+            }
+		}
+		
 
 
 		public event ListMemberEventHandler OnAdded;
@@ -32,7 +51,10 @@ namespace StudioScor.Utilities
 
 		protected override void OnReset()
         {
-			_RuntimeValues = _InitialValues.ToList();
+			if(_initialValues is not null)
+			{
+                _runtimeValues = _initialValues.ToList();
+            }
 
 			OnAdded = null;
 			OnRemoved = null;
@@ -40,33 +62,45 @@ namespace StudioScor.Utilities
 
 		public void Clear()
         {
-			_RuntimeValues.Clear();
+			if (_runtimeValues is null)
+				_runtimeValues = new();
+
+            _runtimeValues.Clear();
 		}
 
         public virtual void Add(T member)
         {
-			if (_RuntimeValues.Contains(member))
+			if (_runtimeValues is null)
+				_runtimeValues = new();
+
+            if (_runtimeValues.Contains(member))
 				return;
 
-			_RuntimeValues.Add(member);
+			_runtimeValues.Add(member);
 
 			Invoke_OnAdded(member);
 		}
 		public virtual void Remove(T member)
         {
-            if (_RuntimeValues.Remove(member))
+            if (_runtimeValues is null)
+                _runtimeValues = new();
+
+            if (_runtimeValues.Remove(member))
             {
 				Invoke_OnRemoved(member);
             }
         }
 		public void RemoveAt(int index)
         {
-			if (_RuntimeValues.Count <= index)
+            if (_runtimeValues is null)
+                _runtimeValues = new();
+
+            if (_runtimeValues.Count <= index)
 				return;
 
-			var member = _RuntimeValues[index];
+			var member = _runtimeValues[index];
 
-			_RuntimeValues.RemoveAt(index);
+			_runtimeValues.RemoveAt(index);
 
 			Invoke_OnRemoved(member);
         }

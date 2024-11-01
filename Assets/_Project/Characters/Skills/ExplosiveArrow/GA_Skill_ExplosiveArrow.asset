@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d1a079bc9f601d4790e69c1aea17cc1, type: 3}
+  m_Name: GA_Skill_ExplosiveArrow
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _id: GA_Skill_ExplosiveArrow
+  abilityTag: {fileID: 11400000, guid: 3e84e253eb40210429d679fcdb8ccab0, type: 2}
+  attributeTags:
+  - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
+  - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
+  conditionTags:
+    requireds: []
+    obstacleds:
+    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+    - {fileID: 11400000, guid: 08e9c4a810fff2044a1f26bae2fbd9c8, type: 2}
+    - {fileID: 11400000, guid: d34c3ea90920a964a8f61d7fa2dce555, type: 2}
+  grantTags:
+    owneds:
+    - {fileID: 11400000, guid: a37abe0ec7c2eaf41aed4e316cc0f45f, type: 2}
+    - {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
+    blocks:
+    - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
+    - {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
+    - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
+  cancelAbilityTags: []
+  _icon: {fileID: 21300000, guid: 17c665723783e4543b1550ec735b0572, type: 3}
+  _name: Explosive Arrow
+  _skillType: 2
+  _description: 
+  _animationName: ExplosiveArrow
+  _fadeInTime: 0.2
+  _arrowPoolContainer: {fileID: 11400000, guid: f2532a703bd343a4dbe206ef980ebbec,
+    type: 2}
+  _arrowSpawnPointTag: {fileID: 11400000, guid: 50f6b7cb7f6e4fe41a8a29bd6ce1295e,
+    type: 2}
+  _arrowTag: {fileID: 11400000, guid: 17b1ddc07953e704e94c049426dc96e0, type: 2}
+  _explosivePoolContainer: {fileID: 11400000, guid: 325698a684cd38f47ade105360d87f62,
+    type: 2}
+  _turnTag: {fileID: 11400000, guid: 6d15f3d07c563074d9dd397fd12a0276, type: 2}
+  _coolTimeEffect: {fileID: 11400000, guid: 546d4454fcc0d8043929c0a0e7c41c0d, type: 2}
+  _arrowTakeDamageEffect: {fileID: 11400000, guid: 230b32b505610ae46859996d47af0086,
+    type: 2}
+  _arrowApplyGameplayEffectOnHitToOther: []
+  _explosiveTakeDamageEffect: {fileID: 11400000, guid: 2bf9a56a33ddbf947a38b2f72cdc5f44,
+    type: 2}
+  _explosiveTakeRadialKnockbackEffect: {fileID: 11400000, guid: 352a947fe552d8a4b94ff3860be69e44,
+    type: 2}
+  _explosiveApplyGameplayEffectOnHitToOther:
+  - {fileID: 11400000, guid: 980251062d702654ea3e3f25accb4e9d, type: 2}
+  _onShootCue:
+    Cue: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0, y: 0, z: 0}
+    Volume: 0
+  _onHitCue:
+    Cue: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0, y: 0, z: 0}
+    Volume: 0
+  _onExplosiveCue:
+    Cue: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0, y: 0, z: 0}
+    Volume: 0

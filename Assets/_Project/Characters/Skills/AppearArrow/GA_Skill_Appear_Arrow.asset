@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d29a35ed90fc4441a2513b5f5536bb4, type: 3}
+  m_Name: GA_Skill_Appear_Arrow
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _id: GA_Skill_Appear_Arrow
+  abilityTag: {fileID: 11400000, guid: 97c346309f098cc45a943a955de51a4c, type: 2}
+  attributeTags:
+  - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
+  - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
+  conditionTags:
+    requireds: []
+    obstacleds: []
+  grantTags:
+    owneds:
+    - {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
+    - {fileID: 11400000, guid: ad6c3d6668571ff4cbdcefdb4e2be194, type: 2}
+    blocks:
+    - {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
+    - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
+    - {fileID: 11400000, guid: 5892f453510d8d54f9605e3f5d51880e, type: 2}
+    - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
+    - {fileID: 11400000, guid: bb428e0c822c0f34aa7f7a75882f2dfb, type: 2}
+    - {fileID: 11400000, guid: 6b4c215e6f11fe148889241422a7d1b4, type: 2}
+  cancelAbilityTags: []
+  _icon: {fileID: 21300000, guid: e88f8e5e11321ac4eb0e2be1c1a72f28, type: 3}
+  _name: 
+  _skillType: 3
+  _description: 
+  _animationName: AppearArrow
+  _fadeInTime: 0
+  _addForcePower: 15
+  _arrowRainPool: {fileID: 11400000, guid: d2224621a64c19848a7fd79151596bb7, type: 2}
+  _spawnTraceRadius: 1
+  _spawnLimitDistance: 100
+  _spawnTraceLayer: {fileID: 11400000, guid: f3a409a5ae9453c4f9258b6f9cb6a74c, type: 2}
+  _groundTraceLayer: {fileID: 11400000, guid: 7c98386c86578e040af305a8d0f3b621, type: 2}
+  _traceRadius: 2.5
+  _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
+  _coolTimeEffect: {fileID: 11400000, guid: 7f491fb7e0d18564d9ed6fe3c480ce9d, type: 2}
+  _takeDamageEffect: {fileID: 11400000, guid: 49c44b01b5346294db476b0543754f66, type: 2}
+  _applyGameplayEffectsOnHitToOther:
+  - {fileID: 11400000, guid: 1845c6be4e0dc2841b107fb1b70a5dd6, type: 2}
+  _applyGameplayEffectsOnHitToSelf: []
+  _applyGameplayEffectsOnSuccessedHit: []
+  _areaEnterEffects:
+  - {fileID: 11400000, guid: ab4dd27e4aab1004cb7b2a6250852f37, type: 2}
+  _areaExitEffects:
+  - {fileID: 11400000, guid: b03af137150f0194caec76adfb94f9bd, type: 2}
+  _onAbilityCue:
+    Cue: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0, y: 0, z: 0}
+    Volume: 0
+  _onImpactCue:
+    Cue: {fileID: 11400000, guid: b5aa2188f6b8dec4b86768bd555065fe, type: 2}
+    Position: {x: 0, y: 2.5, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    Volume: 1
+  _onAreaPointCue:
+    Cue: {fileID: 11400000, guid: 2e355d2f670a61a4c9abbf2a21ec8ad1, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    Volume: 1
+  _onHitToOtherCue:
+    Cue: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0, y: 0, z: 0}
+    Volume: 0
+  _onSuccessedPlayerHit:
+    Cue: {fileID: 0}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 0, y: 0, z: 0}
+    Volume: 0

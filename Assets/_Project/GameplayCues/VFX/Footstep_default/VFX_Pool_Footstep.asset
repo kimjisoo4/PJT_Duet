@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: VFX_Pool_Footstep
   m_EditorClassIdentifier: 
   UseDebug: 0
-  pooled: {fileID: 1604445345836213826, guid: ecfb62ffc013d1944ae6798c8c311aed, type: 3}
-  startSize: 10
+  _pooled: {fileID: 1604445345836213826, guid: ecfb62ffc013d1944ae6798c8c311aed, type: 3}
+  _startSize: 5

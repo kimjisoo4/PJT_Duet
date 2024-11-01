@@ -8,13 +8,32 @@ namespace PF.PJT.Duet.Pawn.Effect
     [CreateAssetMenu(menuName = "Project/Duet/GameplayEffect/new Take Radial Knockback Effect", fileName = "GE_TakeRadialKnockback")]
     public class TakeRadialKnockbackEffect : GASGameplayEffect
     {
-        public struct FElement
+        public class Element
         {
+            private static IObjectPool<Element> _pool;
+
             public Vector3 Center { get; set; }
 
-            public FElement(Vector3 center)
+            public static Element Get(Vector3 center)
             {
-                Center = center;
+                if (_pool is null)
+                {
+                    _pool = new ObjectPool<Element>(Create);
+                }
+
+                var element = _pool.Get();
+                element.Center = center;
+
+                return element;
+            }
+
+            private static Element Create()
+            {
+                return new Element();
+            }
+            public void Release()
+            {
+                _pool.Release(this);
             }
         }
 
@@ -57,38 +76,24 @@ namespace PF.PJT.Duet.Pawn.Effect
                 _gameplayEffect = gameplayEffect as TakeRadialKnockbackEffect;
                 _knockbackable = gameObject.GetComponent<IKnockbackable>();
             }
-
-            public override bool CanTakeEffect()
+            public override void ReleaseSpec()
             {
-                if (!base.CanTakeEffect())
-                {
-                    _pool.Release(this);
+                base.ReleaseSpec();
 
-                    return false;
-                }
-
-                return true;
+                _pool.Release(this);
             }
-
             protected override void OnEnterEffect()
             {
                 base.OnEnterEffect();
 
                 if(_knockbackable is not null)
                 {
-                    var data = (FElement)Data;
+                    var data = (Element)Data;
 
                     Vector3 direction = data.Center.HorizontalDirection(GameplayEffectSystem.transform);
 
                     _knockbackable.TakeKnockback(direction, _gameplayEffect._knockbackDistance, _gameplayEffect._knockbackDuration);
                 }
-            }
-
-            protected override void OnExitEffect()
-            {
-                base.OnExitEffect();
-
-                _pool.Release(this);
             }
         }
     }

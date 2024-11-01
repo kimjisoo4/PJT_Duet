@@ -11,7 +11,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
     public class EnchantFireAttackReword : RewordAbility
     {
         [Header(" [ Enchant Fire Attack Skill ] ")]
-        [SerializeField] private GameplayTag _onAttackHitTag;
+        [SerializeField] private GameplayTagSO _onAttackHitTag;
 
         [Header(" Gameplay Effect ")]
         [SerializeField] private TakeDamageEffect _takeDamageEffect;
@@ -80,7 +80,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     {
                         var element = TakeDamageEffect.Element.Get(hitData.HitPoint, hitData.HitNormal, hitData.HitCollider, hitData.AttackDirection, gameObject, gameObject);
                         
-                        if(gameplayEffectSystem.TryTakeEffect(_ability._takeDamageEffect, gameObject, Level, element).isActivate)
+                        if(gameplayEffectSystem.TryApplyGameplayEffect(_ability._takeDamageEffect, gameObject, Level, element))
                         {
                             Vector3 position = hitData.HitPoint + actor.transform.TransformDirection(_ability._onHitCue.Position);
                             Vector3 eulerAngles = Quaternion.LookRotation(hitData.AttackDirection, Vector3.up) * _ability._onHitCue.Rotation;
@@ -94,12 +94,12 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 }
             }
 
-            private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag, object data = null)
+            private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag, object data = null)
             {
                 if (!IsPlaying)
                     return;
 
-                if (gameplayTag != _ability._onAttackHitTag)
+                if (_ability._onAttackHitTag != gameplayTag)
                     return;
 
                 if (data is not OnAttackHitData hitData)

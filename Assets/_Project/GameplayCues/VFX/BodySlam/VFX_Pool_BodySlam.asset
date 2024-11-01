@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: VFX_Pool_BodySlam
   m_EditorClassIdentifier: 
   UseDebug: 0
-  pooled: {fileID: 7336269733213503154, guid: d9183b10d505b14449071412785031a1, type: 3}
-  startSize: 5
+  _pooled: {fileID: 7336269733213503154, guid: d9183b10d505b14449071412785031a1, type: 3}
+  _startSize: 5

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd004059515ecfa468896b62ea756355, type: 3}
+  m_Name: GA_Skill_Jump
+  m_EditorClassIdentifier: 
+  UseDebug: 1
+  _id: GA_Skill_Jump
+  abilityTag: {fileID: 11400000, guid: 7c01c76c5cffbef408ae471eeda2068a, type: 2}
+  attributeTags:
+  - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
+  - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
+  conditionTags:
+    requireds: []
+    obstacleds:
+    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+    - {fileID: 11400000, guid: 08e9c4a810fff2044a1f26bae2fbd9c8, type: 2}
+    - {fileID: 11400000, guid: d34c3ea90920a964a8f61d7fa2dce555, type: 2}
+    - {fileID: 11400000, guid: a37abe0ec7c2eaf41aed4e316cc0f45f, type: 2}
+  grantTags:
+    owneds: []
+    blocks: []
+  cancelAbilityTags: []
+  _jumpStrangth: 12
+  _falldownSpeed: 40
+  _gravityStat: {fileID: 11400000, guid: 0142f36b3d6d179488957a99669188aa, type: 2}

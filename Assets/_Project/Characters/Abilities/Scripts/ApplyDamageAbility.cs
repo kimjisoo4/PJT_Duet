@@ -14,7 +14,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
         [Header(" Apply Damage Ability ")]
         [SerializeField] private StatusTag _hpTag;
         [SerializeField] private DamageResultEvent _damageResultEvent;
-        [SerializeField] private GameplayTag _onHitTriggerTag;
+        [SerializeField] private GameplayTagSO _onHitTriggerTag;
 
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {

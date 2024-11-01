@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e11dde4a73802304fb0f08f3fc645b7b, type: 3}
+  m_Name: GA_PawnAbiltiy_Movement_ForceMoveModifier
+  m_EditorClassIdentifier: 
+  UseDebug: 1
+  _id: GA_PawnAbiltiy_Movement_ForceMoveModifier
+  abilityTag: {fileID: 11400000, guid: 6a5e44a46db68d94fbf814755629c499, type: 2}
+  attributeTags: []
+  conditionTags:
+    requireds: []
+    obstacleds: []
+  grantTags:
+    owneds: []
+    blocks: []
+  cancelAbilityTags: []
+  _dragTag: {fileID: 11400000, guid: 017962be25da552409175ea9f3f009b0, type: 2}
+  _massTag: {fileID: 11400000, guid: f1fcbd396f14f9545854e8e671764a8a, type: 2}

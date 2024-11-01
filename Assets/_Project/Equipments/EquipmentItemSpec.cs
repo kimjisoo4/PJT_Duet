@@ -3,18 +3,24 @@ using UnityEngine;
 
 namespace PF.PJT.Duet
 {
-    public class EquipmentItemSpec : BaseClass, IEquipment 
+    public interface IEquipment
     {
-        protected readonly EquipmentItem _equipmentItem;
+        public Object Context { get; }
+        public bool UseDebug { get; }
+    }
+
+    public class EquipmentItemSpec : BaseClass, IEquipmentItemSpec 
+    {
+        protected readonly IEquipment _equipmentItem;
         private IEquipmentWearer _equipmentWearer;
         private bool _isEquipped;
         public bool IsEquipped => _isEquipped;
         public IEquipmentWearer EquipmentWearer => _equipmentWearer;
 
-        public override Object Context => _equipmentItem;
+        public override Object Context => _equipmentItem.Context;
         public override bool UseDebug => _equipmentItem.UseDebug;
 
-        public EquipmentItemSpec(EquipmentItem equipmentItemData)
+        public EquipmentItemSpec(IEquipment equipmentItemData)
         {
             _equipmentItem = equipmentItemData;
         }

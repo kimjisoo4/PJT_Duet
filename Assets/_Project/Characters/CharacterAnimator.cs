@@ -2,11 +2,9 @@
 using StudioScor.MovementSystem;
 using StudioScor.Utilities;
 using UnityEngine;
-using UnityEngine.Pool;
 
 namespace PF.PJT.Duet.Pawn
 {
-
     public class CharacterAnimator : BaseMonoBehaviour
     {
         [Header(" [ Character Animator ] ")]
@@ -14,7 +12,7 @@ namespace PF.PJT.Duet.Pawn
         [SerializeField] private float _dampTime = 0.1f;
 
         [Header(" Gameplay Tag ")]
-        [SerializeField] private GameplayTag _stiffenTag;
+        [SerializeField] private GameplayTagSO _stiffenTag;
 
         private IActor _actor;  
         private IMovementSystem _movementSystem;
@@ -23,6 +21,7 @@ namespace PF.PJT.Duet.Pawn
         private GameObject Owner => _actor.gameObject;
 
         private readonly int ANIM_IS_MOVING = Animator.StringToHash("isMoving");
+        private readonly int ANIM_IS_FALLING = Animator.StringToHash("isFalling");
         private readonly int ANIM_MOVE_SPEED = Animator.StringToHash("moveSpeed");
         private readonly int ANIM_SPEED_X = Animator.StringToHash("speedX");
         private readonly int ANIM_SPEED_Z = Animator.StringToHash("speedZ");
@@ -37,15 +36,24 @@ namespace PF.PJT.Duet.Pawn
             _movementSystem.OnStartedMovement += _movementSystem_OnStartedMovement;
             _movementSystem.OnFinishedMovement += _movementSystem_OnFinishedMovement;
 
+            _movementSystem.OnJumped += _movementSystem_OnJumped;
+            _movementSystem.OnLanded += _movementSystem_OnLanded;
+
             _gameplayTagSystem.OnGrantedOwnedTag += _gameplayTagSystem_OnGrantedOwnedTag;
             _gameplayTagSystem.OnRemovedOwnedTag += _gameplayTagSystem_OnRemovedOwnedTag;
         }
+
+        
+
         private void OnDestroy()
         {
             if (_movementSystem is not null)
             {
                 _movementSystem.OnStartedMovement -= _movementSystem_OnStartedMovement;
                 _movementSystem.OnFinishedMovement -= _movementSystem_OnFinishedMovement;
+
+                _movementSystem.OnJumped -= _movementSystem_OnJumped;
+                _movementSystem.OnLanded -= _movementSystem_OnLanded;
             }
 
             if (_gameplayTagSystem is not null)
@@ -55,16 +63,16 @@ namespace PF.PJT.Duet.Pawn
             }
         }
 
-        private void _gameplayTagSystem_OnGrantedOwnedTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
+        private void _gameplayTagSystem_OnGrantedOwnedTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
         {
-            if (gameplayTag == _stiffenTag)
+            if (_stiffenTag == gameplayTag)
             {
                 _animator.SetBool(ANIM_IS_STIFFEN, true);
             }
         }
-        private void _gameplayTagSystem_OnRemovedOwnedTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
+        private void _gameplayTagSystem_OnRemovedOwnedTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
         {
-            if(gameplayTag == _stiffenTag)
+            if(_stiffenTag == gameplayTag)
             {
                 _animator.SetBool(ANIM_IS_STIFFEN, false);
             }
@@ -78,6 +86,16 @@ namespace PF.PJT.Duet.Pawn
         {
             _animator.SetBool(ANIM_IS_MOVING, false);
         }
+
+        private void _movementSystem_OnJumped(IMovementSystem movementSystem)
+        {
+            _animator.SetBool(ANIM_IS_FALLING, true);
+        }
+        private void _movementSystem_OnLanded(IMovementSystem movementSystem)
+        {
+            _animator.SetBool(ANIM_IS_FALLING, false);
+        }
+
 
         private void OnEnable()
         {

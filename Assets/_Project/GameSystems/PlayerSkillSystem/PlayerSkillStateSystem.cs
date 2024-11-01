@@ -15,6 +15,7 @@ namespace PF.PJT.Duet
     {
         [Header(" [ Player Skill System ] ")]
         [SerializeField] private PlayerManager _playerManager;
+        [SerializeField] private GameObject _playerSkillStateUIActor;
         [SerializeField] private InputSkillSlotUI _attackSlot;
         [SerializeField] private InputSkillSlotUI _skillSlot;
 
@@ -23,10 +24,21 @@ namespace PF.PJT.Duet
         [SerializeField] private StatusUIToSimpleAmount _tagCharacterStatusAmount;
         [SerializeField] private InputSkillSlotUI _tagCharacterAppearSlot;
 
+        [Header(" Event ")]
+        [SerializeField] private GameObjectListVariable _inActiveVariable;
+
         private IPlayerController _playerController;
 
         private readonly Dictionary<ICharacter, IAbilitySystem> _abilitySystems = new();
 
+        private void Awake()
+        {
+            if(_inActiveVariable)
+            {
+                _inActiveVariable.OnAdded += _inActiveVariable_OnAdded;
+                _inActiveVariable.OnRemoved += _inActiveVariable_OnRemoved;
+            }
+        }
         private void Start()
         {
             if(_playerManager.HasPlayerController)
@@ -63,8 +75,34 @@ namespace PF.PJT.Duet
             }
 
             _abilitySystems.Clear();
+
+            if (_inActiveVariable)
+            {
+                _inActiveVariable.OnAdded -= _inActiveVariable_OnAdded;
+                _inActiveVariable.OnRemoved -= _inActiveVariable_OnRemoved;
+            }
+        }
+        private void _inActiveVariable_OnRemoved(ListVariableObject<GameObject> variable, GameObject value)
+        {
+            if (_inActiveVariable.Values.Count != 0)
+                return;
+
+            if (_playerSkillStateUIActor.activeSelf)
+                return;
+
+            _playerSkillStateUIActor.SetActive(true);
         }
 
+        private void _inActiveVariable_OnAdded(ListVariableObject<GameObject> variable, GameObject value)
+        {
+            if (_inActiveVariable.Values.Count == 0)
+                return;
+
+            if (!_playerSkillStateUIActor.activeSelf)
+                return;
+
+            _playerSkillStateUIActor.SetActive(false);
+        }
 
         private void _playerManager_OnChangedPlayerController(PlayerManager playerManager, IControllerSystem currentController, IControllerSystem prevController = null)
         {
@@ -144,37 +182,52 @@ namespace PF.PJT.Duet
 
         private void UpdateSlotUIs()
         {
-            var currentAbilitySystem = _abilitySystems[_playerController.CurrentCharacter];
-
-            for (int i = 0; i < currentAbilitySystem.Abilities.Count(); i++)
+            if(_playerController.CurrentCharacter is not null)
             {
-                var ability = currentAbilitySystem.Abilities.ElementAt(i);
+                if (_abilitySystems.TryGetValue(_playerController.CurrentCharacter, out IAbilitySystem currentAbilitySystem))
+                {
+                    for (int i = 0; i < currentAbilitySystem.Abilities.Count(); i++)
+                    {
+                        var ability = currentAbilitySystem.Abilities.ElementAt(i);
 
-                SetSlot(ability.Key, ability.Value);
+                        SetSlot(ability.Key, ability.Value);
+                    }
+                }
             }
+            
 
             var tagCharacter = _playerController.NextCharacter;
 
             _tagCharacterSlot.SetCharacter(tagCharacter);
-            _tagCharacterStatusAmount.SetTarget(tagCharacter.gameObject);
+            
 
-            var tagAbilitySystem = _abilitySystems[_playerController.NextCharacter];
-
-            for (int i = 0; i < tagAbilitySystem.Abilities.Count(); i++)
+            if (tagCharacter is not null)
             {
-                var ability = tagAbilitySystem.Abilities.ElementAt(i);
+                _tagCharacterStatusAmount.SetTarget(tagCharacter.gameObject);
 
-                if(ability.Key is ISkill skill && skill.SkillType == ESkillType.Appear)
+                if (_abilitySystems.TryGetValue(_playerController.NextCharacter, out IAbilitySystem tagAbilitySystem))
                 {
-                    var skillState = ability.Value as ISkillState;
+                    for (int i = 0; i < tagAbilitySystem.Abilities.Count(); i++)
+                    {
+                        var ability = tagAbilitySystem.Abilities.ElementAt(i);
 
-                    _tagCharacterAppearSlot.SetSkill(skill, skillState);
+                        if (ability.Key is ISkill skill && skill.SkillType == ESkillType.Appear)
+                        {
+                            var skillState = ability.Value as ISkillState;
+
+                            _tagCharacterAppearSlot.SetSkill(skill, skillState);
+                        }
+                    }
                 }
+            }
+            else
+            {
+                _tagCharacterAppearSlot.SetSkill(null, null);
             }
         }
 
 
-        private void SetSlot(Ability ability, IAbilitySpec spec)
+        private void SetSlot(IAbility ability, IAbilitySpec spec)
         {
             if (ability is ISkill skill)
             {

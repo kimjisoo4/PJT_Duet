@@ -17,7 +17,7 @@ namespace PF.PJT.Duet
             float strength = Mathf.InverseLerp(_shakeInRange.x, _shakeInRange.y, damageInfo.AppliedDamage);
             strength = Mathf.Min(strength, _maxShakeStrength);
 
-            Vector3 velocity = damageInfo.Direction * strength;
+            Vector3 velocity = damageInfo.AttackDirection * strength;
 
             _cinemachineImpulse.GenerateImpulse(velocity);
         }

@@ -4,6 +4,7 @@ using StudioScor.GameplayTagSystem;
 
 namespace StudioScor.AbilitySystem
 {
+
     public abstract class GASPassiveAbilitySpec : GASAbilitySpec
     {
         protected GASPassiveAbilitySpec(Ability ability, IAbilitySystem abilitySystem, int level) : base(ability, abilitySystem, level)
@@ -41,7 +42,7 @@ namespace StudioScor.AbilitySystem
         }
 
         #region Auto Toggle
-        private void GameplayTagEvent_OnGrantedOwnedTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
+        private void GameplayTagEvent_OnGrantedOwnedTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
         {
             if (IsPlaying)
             {
@@ -58,7 +59,7 @@ namespace StudioScor.AbilitySystem
                 }
             }
         }
-        private void GameplayTagEvent_OnRemovedOwnedTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
+        private void GameplayTagEvent_OnRemovedOwnedTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
         {
             if (IsPlaying)
             {
@@ -75,21 +76,21 @@ namespace StudioScor.AbilitySystem
                 }
             }
         }
-        private void GameplayTagEvent_OnGrantedBlockTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
+        private void GameplayTagEvent_OnGrantedBlockTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
         {
             if (IsPlaying)
             {
-                if (gameplayTag == _ability.AbilityTag || _ability.AttributeTags.Contains(gameplayTag))
+                if (_ability.AbilityTag == gameplayTag  || _ability.AttributeTags.Contains(gameplayTag))
                 {
                     TryFinishAbility();
                 }
             }
         }
-        private void GameplayTagEvent_OnRemovedBlockTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
+        private void GameplayTagEvent_OnRemovedBlockTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
         {
             if (!IsPlaying)
             {
-                if (gameplayTag == _ability.AbilityTag || _ability.AttributeTags.Contains(gameplayTag))
+                if (_ability.AbilityTag == gameplayTag || _ability.AttributeTags.Contains(gameplayTag))
                 {
                     TryActiveAbility();
                 }

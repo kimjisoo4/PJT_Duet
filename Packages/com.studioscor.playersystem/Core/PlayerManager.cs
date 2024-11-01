@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using StudioScor.Utilities;
+using UnityEngine.SceneManagement;
 
 namespace StudioScor.PlayerSystem
 {
@@ -40,6 +41,41 @@ namespace StudioScor.PlayerSystem
             _currentPlayerPawn = null;
         }
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+
+            SceneManager.sceneUnloaded += SceneManager_sceneUnloaded;
+        }
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+
+            SceneManager.sceneUnloaded -= SceneManager_sceneUnloaded;
+        }
+
+        private void UpdatePlayerState()
+        {
+            Log($"{nameof(UpdatePlayerState)}");
+
+            if (!HasPlayerPawn)
+            {
+                _playerPawn = null;
+                _currentPlayerPawn = null;
+            }
+
+            if (!HasPlayerController)
+            {
+                _playerController = null;
+                _currentPlayerController = null;
+            }
+        }
+
+        private void SceneManager_sceneUnloaded(Scene arg0)
+        {
+            UpdatePlayerState();
+        }
+
         public void SpawnPlayerPawn(Vector3 position, Quaternion rotation)
         {
             var instance = Instantiate(_defaultPlayerPawn, position, rotation);
@@ -78,7 +114,7 @@ namespace StudioScor.PlayerSystem
             {
                 Log(HasPlayerPawn ? "On Possess" : "Un Possess");
 
-                _playerController.OnPossess(_playerPawn);
+                _playerController.Possess(_playerPawn);
             }
 
             Invoke_OnChangedPlayerPawn(prevPawn);
@@ -100,7 +136,7 @@ namespace StudioScor.PlayerSystem
 
             if (_playerController is not null)
             {
-                _playerController.OnPossess(_playerPawn);
+                _playerController.Possess(_playerPawn);
             }
 
             Invoke_OnChangedPlayerController(prevController);

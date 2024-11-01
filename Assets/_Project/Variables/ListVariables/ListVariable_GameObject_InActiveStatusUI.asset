@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddf9160fb59c8d94291fb35fb4220840, type: 3}
+  m_Name: ListVariable_GameObject_InActiveStatusUI
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _Name: Active UI
+  _Description: 
+  _InitialValues: []
+  _RuntimeValues: []

@@ -65,6 +65,12 @@ PrefabInstance:
       objectReference: {fileID: 4400127323478148429}
     - target: {fileID: 4193450265519391899, guid: d8fea1572d399c84fb957bd8db6e8c57,
         type: 3}
+      propertyPath: _jumpAbility
+      value: 
+      objectReference: {fileID: 11400000, guid: 8c28e6d363ebed54ca4496109f363b03,
+        type: 2}
+    - target: {fileID: 4193450265519391899, guid: d8fea1572d399c84fb957bd8db6e8c57,
+        type: 3}
       propertyPath: _skillAbility
       value: 
       objectReference: {fileID: 11400000, guid: 358f4e3565ec4034499ddde921eed94d,

@@ -13,13 +13,15 @@ GameObject:
   - component: {fileID: 396257148805158443}
   - component: {fileID: 5726285272375439395}
   - component: {fileID: -7321390917376299596}
+  - component: {fileID: -8931332544135520097}
+  - component: {fileID: 5640000496846510202}
   m_Layer: 0
   m_Name: P_AirBlast_Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4654062934846591577
 Transform:
   m_ObjectHideFlags: 0
@@ -48,9 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  _traceTimer:
-    <UseDebug>k__BackingField: 0
-    _duration: 0.2
+  _pooledObject: {fileID: -7321390917376299596}
   _chargeTraceRadiuses:
   - 0.8
   - 1.2
@@ -72,7 +72,6 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 2, y: 2, z: 2}
     Volume: 1
-  _applyGameplayEffectsOnHitToOther: []
 --- !u!114 &396257148805158443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,10 +160,66 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _poolContainer: {fileID: 0}
-  _releasedWhenDisable: 1
-  _onCreated:
-    m_PersistentCalls:
-      m_Calls: []
-  _onReleased:
-    m_PersistentCalls:
-      m_Calls: []
+  _useUnityEvent: 0
+  _unityEvents:
+    _onCreated:
+      m_PersistentCalls:
+        m_Calls: []
+    _onActivated:
+      m_PersistentCalls:
+        m_Calls: []
+    _onReleased:
+      m_PersistentCalls:
+        m_Calls: []
+--- !u!114 &-8931332544135520097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2310495241380769694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8a863ed67b16544e9e8d53f4b24f9ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _timer:
+    <UseDebug>k__BackingField: 0
+    _duration: 0.2
+  _exitAction: 1
+  _playExitActionInCancel: 0
+  isAutoPlaying: 0
+  _useUnityEvent: 0
+  _unityEvents:
+    _onStartedTimer:
+      m_PersistentCalls:
+        m_Calls: []
+    _onFinishedTimer:
+      m_PersistentCalls:
+        m_Calls: []
+    _onCanceledTimer:
+      m_PersistentCalls:
+        m_Calls: []
+    _onEndedTimer:
+      m_PersistentCalls:
+        m_Calls: []
+    _onPausedTimer:
+      m_PersistentCalls:
+        m_Calls: []
+    _onResumedTimer:
+      m_PersistentCalls:
+        m_Calls: []
+--- !u!114 &5640000496846510202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2310495241380769694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67579ee5ed198f84da457030870de5d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0

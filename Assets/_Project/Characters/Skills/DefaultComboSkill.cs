@@ -55,14 +55,12 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 {
                     var action = _ability._groundActions[i];
 
-                    var grantAbility = _abilitySystem.TryGrantAbility(action, Level);
-
-                    if(grantAbility.isGrant)
+                    if (_abilitySystem.TryGrantAbility(action, Level, out IAbilitySpec abilitySpec))
                     {
-                        _groundSpecs[i] = grantAbility.abilitySpec;
+                        _groundSpecs[i] = abilitySpec;
 
-                        grantAbility.abilitySpec.OnCanceledAbility += AbilitySpec_OnCanceledAbility;
-                        grantAbility.abilitySpec.OnFinishedAbility += AbilitySpec_OnFinishedAbility;
+                        abilitySpec.OnCanceledAbility += AbilitySpec_OnCanceledAbility;
+                        abilitySpec.OnFinishedAbility += AbilitySpec_OnFinishedAbility;
                     }
                 }
             }
@@ -74,12 +72,12 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 for (int i = 0; i < length; i++)
                 {
-                    var action = _groundSpecs[i];
+                    var abilitySpec = _groundSpecs[i];
 
-                    if (_abilitySystem.TryRemoveAbility(action.Ability))
+                    if (_abilitySystem.RemoveAbility(abilitySpec.Ability))
                     {
-                        action.OnCanceledAbility -= AbilitySpec_OnCanceledAbility;
-                        action.OnFinishedAbility -= AbilitySpec_OnFinishedAbility;
+                        abilitySpec.OnCanceledAbility -= AbilitySpec_OnCanceledAbility;
+                        abilitySpec.OnFinishedAbility -= AbilitySpec_OnFinishedAbility;
                     }
                 }
 

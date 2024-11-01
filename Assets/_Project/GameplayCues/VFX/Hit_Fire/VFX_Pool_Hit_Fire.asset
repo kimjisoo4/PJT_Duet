@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: VFX_Pool_Hit_Fire
   m_EditorClassIdentifier: 
   UseDebug: 0
-  pooled: {fileID: 2104578070783519809, guid: 11bc433122857d340a052256314abd9b, type: 3}
-  startSize: 5
+  _pooled: {fileID: 2104578070783519809, guid: 11bc433122857d340a052256314abd9b, type: 3}
+  _startSize: 5

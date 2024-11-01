@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f18c975c8f3c98341bd498d036abcecc, type: 3}
   m_Name: GA_Skill_AirBlast
   m_EditorClassIdentifier: 
-  UseDebug: 0
+  UseDebug: 1
   _id: GA_Skill_AirBlast
   abilityTag: {fileID: 11400000, guid: 05a37e651f6bda54ca91a5b46959494b, type: 2}
   attributeTags:
@@ -23,6 +23,7 @@ MonoBehaviour:
     obstacleds:
     - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
     - {fileID: 11400000, guid: 08e9c4a810fff2044a1f26bae2fbd9c8, type: 2}
+    - {fileID: 11400000, guid: d34c3ea90920a964a8f61d7fa2dce555, type: 2}
   grantTags:
     owneds:
     - {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
@@ -49,18 +50,27 @@ MonoBehaviour:
   _turnTag: {fileID: 11400000, guid: 6d15f3d07c563074d9dd397fd12a0276, type: 2}
   _projectile: {fileID: 11400000, guid: dba7d1f184ecf4047945c95ea80d1211, type: 2}
   _spawnPoint: {fileID: 11400000, guid: 505aaab0b6f505d4a93e337f8b0451b4, type: 2}
-  _applyGameplayEffectsOnHitToOther_01:
-  - {fileID: 11400000, guid: 876e0b27cb16e6944a2050733c4cdeb2, type: 2}
-  - {fileID: 11400000, guid: a50c9729054243c46982a72afb790902, type: 2}
-  - {fileID: 11400000, guid: 366d6c72fc732b046ba4acf6e3112811, type: 2}
-  _applyGameplayEffectsOnHitToOther_02:
-  - {fileID: 11400000, guid: a50c9729054243c46982a72afb790902, type: 2}
-  - {fileID: 11400000, guid: 366d6c72fc732b046ba4acf6e3112811, type: 2}
-  - {fileID: 11400000, guid: 0b14cd75ccf5b0f408879b0c528bbc04, type: 2}
-  _applyGameplayEffectsOnHitToOther_03:
-  - {fileID: 11400000, guid: a50c9729054243c46982a72afb790902, type: 2}
-  - {fileID: 11400000, guid: 366d6c72fc732b046ba4acf6e3112811, type: 2}
-  - {fileID: 11400000, guid: 1ba83ee322f2aa24bb4dff12b3444fa2, type: 2}
+  _applyProjectileGameplayEffects: []
+  _explosionPool: {fileID: 11400000, guid: 60feac932cf40fd46aac96089c9b4588, type: 2}
+  _applyExplosionGameplayEffects:
+  - _applyTakeDamageEffect: {fileID: 11400000, guid: 876e0b27cb16e6944a2050733c4cdeb2,
+      type: 2}
+    _applyRadialKnockbackEffect: {fileID: 11400000, guid: a50c9729054243c46982a72afb790902,
+      type: 2}
+    _applyGameplayEffectsOnHitToOther:
+    - {fileID: 11400000, guid: 366d6c72fc732b046ba4acf6e3112811, type: 2}
+  - _applyTakeDamageEffect: {fileID: 11400000, guid: 0b14cd75ccf5b0f408879b0c528bbc04,
+      type: 2}
+    _applyRadialKnockbackEffect: {fileID: 11400000, guid: a50c9729054243c46982a72afb790902,
+      type: 2}
+    _applyGameplayEffectsOnHitToOther:
+    - {fileID: 11400000, guid: 366d6c72fc732b046ba4acf6e3112811, type: 2}
+  - _applyTakeDamageEffect: {fileID: 11400000, guid: 1ba83ee322f2aa24bb4dff12b3444fa2,
+      type: 2}
+    _applyRadialKnockbackEffect: {fileID: 11400000, guid: a50c9729054243c46982a72afb790902,
+      type: 2}
+    _applyGameplayEffectsOnHitToOther:
+    - {fileID: 11400000, guid: 366d6c72fc732b046ba4acf6e3112811, type: 2}
   _coolTimeEffect: {fileID: 11400000, guid: 3d22f554f51a0ad4790dffe136767f28, type: 2}
   _spawnedCue:
     Cue: {fileID: 11400000, guid: 3938793d18494b8498b45326eb58de7d, type: 2}

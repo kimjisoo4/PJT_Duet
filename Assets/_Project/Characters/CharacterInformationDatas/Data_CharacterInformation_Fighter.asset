@@ -13,5 +13,11 @@ MonoBehaviour:
   m_Name: Data_CharacterInformation_Fighter
   m_EditorClassIdentifier: 
   UseDebug: 0
+  _id: Data_CharacterInformation_Fighter
+  _actor: {fileID: 8594359607491703852, guid: 2aaa5a42ecb43ac44825cca0059d79ed, type: 3}
   _name: Fighter
+  _description: 
   _icon: {fileID: 21300000, guid: e0d2a6a44640aef4dbc66c659e0248d9, type: 3}
+  _appearSkills: []
+  _passiveSkills: []
+  _activeSkills: []

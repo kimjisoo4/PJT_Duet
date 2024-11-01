@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33984771859170038}
   - component: {fileID: 23523962092609064}
   - component: {fileID: 2845992335094047380}
+  - component: {fileID: 1686929097875086333}
   m_Layer: 3
   m_Name: SM_Buildings_Door_01P
   m_TagString: Untagged
@@ -105,3 +106,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 2.1, z: 0.1}
   m_Center: {x: 0.5, y: 1.05, z: 0.05}
+--- !u!208 &1686929097875086333
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1024562954466752}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 1.0500001, z: 0.05}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.5, y: 1.0500001, z: 0.05}
+  m_TimeToStationary: 0.5

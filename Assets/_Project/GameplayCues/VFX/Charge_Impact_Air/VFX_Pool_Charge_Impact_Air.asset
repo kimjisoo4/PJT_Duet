@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: VFX_Pool_Charge_Impact_Air
   m_EditorClassIdentifier: 
   UseDebug: 0
-  pooled: {fileID: 4223526886483673794, guid: d233eb3fa3b4ec0418fc1ccaca942244, type: 3}
-  startSize: 5
+  _pooled: {fileID: 4223526886483673794, guid: d233eb3fa3b4ec0418fc1ccaca942244, type: 3}
+  _startSize: 5

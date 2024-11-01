@@ -1,9 +1,10 @@
 ﻿#if SCOR_ENABLE_VISUALSCRIPTING
-using Unity.VisualScripting;
 using System;
+using Unity.VisualScripting;
 
 namespace StudioScor.Utilities.VisualScripting
 {
+
 
     [UnitTitle("Cast")]
     [UnitCategory("Nulls\\StudioScor")]
@@ -54,7 +55,7 @@ namespace StudioScor.Utilities.VisualScripting
         {
             var obj = flow.GetValue(Target).ConvertTo(CastType);
 
-            if(obj is null)
+            if (obj is null)
             {
                 return IsNull;
             }
@@ -64,7 +65,5 @@ namespace StudioScor.Utilities.VisualScripting
             }
         }
     }
-
-
 }
 #endif

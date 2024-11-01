@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace StudioScor.PlayerSystem.BehaviorTree
 {
-
     public class ControllerMoveToTarget : PlayerSystemAction
     {
         [Header(" [ Controller Move To Target ] ")]

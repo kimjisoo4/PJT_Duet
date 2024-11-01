@@ -10,7 +10,7 @@ namespace PF.PJT.Duet
     {
         [Header(" [ Player Damage Event System ] ")]
         [SerializeField] private PlayerManager _playerManager;
-        [SerializeField] private GameplayTag _onHitTriggerTag;
+        [SerializeField] private GameplayTagSO _onHitTriggerTag;
         [SerializeField] private PlayerDamageEventModifier[] _modifiers;
 
         private IPlayerController _playerController;
@@ -85,7 +85,7 @@ namespace PF.PJT.Duet
             }
         }
 
-        private void _mainCharacterTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag, object data = null)
+        private void _mainCharacterTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag, object data = null)
         {
             if (!_playerController.CurrentCharacter.gameObject != gameplayTagSystem.gameObject)
                 return;
@@ -95,7 +95,7 @@ namespace PF.PJT.Duet
 
             OnHitPlayerCharacter((DamageInfoData)data);
         }
-        private void _subCharacterTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag, object data = null)
+        private void _subCharacterTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag, object data = null)
         {
             if (!_playerController.CurrentCharacter.gameObject != gameplayTagSystem.gameObject)
                 return;

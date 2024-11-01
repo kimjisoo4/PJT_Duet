@@ -13,5 +13,11 @@ MonoBehaviour:
   m_Name: Data_CharacterInformation_Knight
   m_EditorClassIdentifier: 
   UseDebug: 0
+  _id: Data_CharacterInformation_Knight
+  _actor: {fileID: 5244778159239284206, guid: 65d18a74094f930449cb0a344017b3c9, type: 3}
   _name: Knight
+  _description: 
   _icon: {fileID: 21300000, guid: d24bc4239349b2c4aabbf696a175b294, type: 3}
+  _appearSkills: []
+  _passiveSkills: []
+  _activeSkills: []

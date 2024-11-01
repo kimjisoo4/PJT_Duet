@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Variable_LayerMask_BlockAll
   m_EditorClassIdentifier: 
   UseDebug: 0
-  _Name: 
-  _Description: 
+  _name: 
+  _description: 
   initialValue:
     serializedVersion: 2
-    m_Bits: 200
+    m_Bits: 201
   runtimeValue:
     serializedVersion: 2
-    m_Bits: 200
+    m_Bits: 201

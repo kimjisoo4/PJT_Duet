@@ -31,6 +31,7 @@ namespace PF.PJT.Duet.Controller.Enemy
         private SharedVector3 _originPosKey;
         private ISightSensor _sightSensor;
         private ICharacter _character;
+        private IRelationshipSystem _relationshipSystem;
         private IControllerSystem _controllerSystem;
         private IDamageableSystem _damageableSytstemInPawn;
         public IControllerSystem ControllerSystem => _controllerSystem;
@@ -76,7 +77,7 @@ namespace PF.PJT.Duet.Controller.Enemy
 
         private void FixedUpdate()
         {
-            if(_controllerSystem.IsPossess)
+            if(_controllerSystem.IsPossessed)
             {
                 float deltaTime = Time.fixedDeltaTime;
 
@@ -106,6 +107,8 @@ namespace PF.PJT.Duet.Controller.Enemy
 
                 _damageableSytstemInPawn = _character.gameObject.GetComponent<IDamageableSystem>();
                 _damageableSytstemInPawn.OnAfterDamage += DamageableSystem_OnAfterDamage;
+
+                _relationshipSystem = _character.gameObject.GetRelationshipSystem();
 
                 _behaviorTree.ExternalBehavior = _externalBehavior;
                 _behaviorTree.EnableBehavior();
@@ -195,7 +198,7 @@ namespace PF.PJT.Duet.Controller.Enemy
 
         private void DamageableSystem_OnAfterDamage(IDamageableSystem damageable, DamageInfoData damageInfo)
         {
-            if (!_controllerSystem.IsPossess)
+            if (!_controllerSystem.IsPossessed)
             {
                 Log($"Un Possessed");
                 return;
@@ -232,7 +235,7 @@ namespace PF.PJT.Duet.Controller.Enemy
 
         private void _playerManager_OnChangedPlayerPawn(PlayerManager playerManager, IPawnSystem currentPawn, IPawnSystem prevPawn = null)
         {
-            if (!_controllerSystem.IsPossess)
+            if (!_controllerSystem.IsPossessed)
                 return;
 
             if (!_behaviorTree.isActiveAndEnabled)
@@ -261,7 +264,7 @@ namespace PF.PJT.Duet.Controller.Enemy
 
         private void _sightSensor_OnFoundSight(ISightSensor sightSensor, ISightTarget sight)
         {
-            if (!_controllerSystem.IsPossess)
+            if (!_controllerSystem.IsPossessed)
                 return;
 
             if (!_behaviorTree.isActiveAndEnabled)
@@ -273,11 +276,11 @@ namespace PF.PJT.Duet.Controller.Enemy
             if (_targetKey.Value)
                 return;
 
-            if(sight.gameObject.TryGetPawn(out IPawnSystem pawn))
+            if(sight.gameObject.TryGetPawn(out IPawnSystem pawn) && pawn.gameObject.TryGetReleationshipSystem(out IRelationshipSystem relationSystem))
             {
-                var affiliation = pawn.Controller.CheckAffiliation(_controllerSystem);
+                var relationship = _relationshipSystem.CheckRelationship(relationSystem);
 
-                if (affiliation == EAffiliation.Hostile)
+                if (relationship == ERelationship.Hostile)
                 {
                     SetTargetKey(pawn.transform);
                 }

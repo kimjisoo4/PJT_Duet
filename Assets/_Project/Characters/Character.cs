@@ -11,8 +11,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static PF.PJT.Duet.Pawn.ICharacter;
 namespace PF.PJT.Duet.Pawn
 {
+    public interface IAddForceable
+    {
+        public delegate void AddForceEventHandler(IAddForceable addForceable, Vector3 force);
+
+        public void AddForce(Vector3 force);
+
+        public event AddForceEventHandler OnAddForce;
+    }
+
     public interface IKnockbackable
     {
         public delegate void TakeKnockbackEventHandler(IKnockbackable knockbackable, Vector3 direction, float distance, float duration);
@@ -24,6 +34,7 @@ namespace PF.PJT.Duet.Pawn
     public interface ICharacter
     {
         public delegate void CharacterStateEventHandler(ICharacter character);
+        public delegate void CharacterColliderHitEventHandler(ICharacter character, ControllerColliderHit hit);
 
         public CharacterInformationData CharacterInformationData { get; }
         public GameObject gameObject { get; }
@@ -42,41 +53,47 @@ namespace PF.PJT.Duet.Pawn
         public bool CanLeave();
         public bool CanAppear();
         public void Leave();
-        public void Appear();
+        public void Appear(bool useAppearSkill);
 
         public void Teleport(Vector3 position, Quaternion rotation);
         public void SetInputAttack(bool pressed);
         public void SetInputSkill(bool pressed);
         public void SetInputDash(bool pressed);
+        public void SetInputJump(bool pressed);
 
         public event CharacterStateEventHandler OnSpawned;
         public event CharacterStateEventHandler OnDead;
+
+        public event CharacterColliderHitEventHandler OnCharacterColliderHit;
     }
 
-    public class Character : BaseMonoBehaviour, ICharacter, IKnockbackable
+    public class Character : BaseMonoBehaviour, ICharacter, IKnockbackable, IAddForceable
     {
         [Header(" [ Character ] ")]
         [SerializeField] private CharacterInformationData _characterInformationData;
         [SerializeField] private GameObject _model;
+        [SerializeField] private bool _autoSpawn = true;
 
         [SerializeField] private Ability _attackAbility;
         [SerializeField] private Ability _skillAbility;
         [SerializeField] private Ability _dashAbility;
+        [SerializeField] private Ability _jumpAbility;
 
         [Header(" Inputs ")]
-        [SerializeField] private GameplayTag _inputAttackTag;
-        [SerializeField] private GameplayTag _inputSkillTag;
-        [SerializeField] private GameplayTag _inputDashTag;
+        [SerializeField] private GameplayTagSO _inputAttackTag;
+        [SerializeField] private GameplayTagSO _inputSkillTag;
+        [SerializeField] private GameplayTagSO _inputDashTag;
+        [SerializeField] private GameplayTagSO _inputJumpTag;
 
         [Header(" Change Character ")]
         [SerializeField] private Ability _appearAbility;
         [SerializeField] private Ability _leaveAbility;
 
         [Header(" Gameplay Tag Trigger ")]
-        [SerializeField] private GameplayTag _resetTriggerTag;
+        [SerializeField] private GameplayTagSO _resetTriggerTag;
 
         [Header(" Enemy AI ")]
-        [SerializeField] private SimplePoolContainer[] _enemyControllers;
+        [SerializeField] private PoolContainer[] _enemyControllers;
 
         [Header(" GameEvents ")]
         [SerializeField] private CharacterGameEvent _onSpawend;
@@ -125,11 +142,13 @@ namespace PF.PJT.Duet.Pawn
         }
 
         public event IKnockbackable.TakeKnockbackEventHandler OnTakeKnockback;
-        public event ICharacter.CharacterStateEventHandler OnSpawned;
-        public event ICharacter.CharacterStateEventHandler OnDead;
+        public event CharacterStateEventHandler OnSpawned;
+        public event CharacterStateEventHandler OnDead;
+        public event CharacterColliderHitEventHandler OnCharacterColliderHit;
+
+        public event IAddForceable.AddForceEventHandler OnAddForce;
 
         private AbilityInputBuffer _inputBuffer = new();
-
         private void Awake()
         {
             InitCharacter();
@@ -138,7 +157,8 @@ namespace PF.PJT.Duet.Pawn
         }
         private void Start()
         {
-            OnSpawn();
+            if(_autoSpawn)
+                OnSpawn();
         }
 
         private void Update()
@@ -192,6 +212,7 @@ namespace PF.PJT.Duet.Pawn
             _abilitySystem.TryGrantAbility(_attackAbility, 0);
             _abilitySystem.TryGrantAbility(_skillAbility, 0);
             _abilitySystem.TryGrantAbility(_dashAbility, 0);
+            _abilitySystem.TryGrantAbility(_jumpAbility, 0);
             _abilitySystem.TryGrantAbility(_appearAbility, 0);
             _abilitySystem.TryGrantAbility(_leaveAbility, 0);
         }
@@ -216,7 +237,7 @@ namespace PF.PJT.Duet.Pawn
 
                     if (controllerActor.TryGetControllerSystem(out IControllerSystem controllerSystem))
                     {
-                        controllerSystem.OnPossess(_pawnSystem);
+                        controllerSystem.Possess(_pawnSystem);
                     }
                 }
             }
@@ -251,14 +272,15 @@ namespace PF.PJT.Duet.Pawn
             _abilitySystem.TryActivateAbility(_leaveAbility);
         }
 
-        public void Appear()
+        public void Appear(bool useAppearSkill)
         {
             Log("Appear");
 
             if(_leaveAbility)
                 _abilitySystem.CancelAbility(_leaveAbility);
 
-            _abilitySystem.TryActivateAbility(_appearAbility);
+            if(useAppearSkill)
+                _abilitySystem.TryActivateAbility(_appearAbility);
         }
 
         public void SetInputAttack(bool pressed)
@@ -269,7 +291,7 @@ namespace PF.PJT.Duet.Pawn
 
                 if (_attackAbility)
                 {
-                    if (!_abilitySystem.TryActivateAbility(_attackAbility).isActivate)
+                    if (!_abilitySystem.TryActivateAbility(_attackAbility))
                     {
                         _inputBuffer.SetBuffer(_attackAbility);
                     }
@@ -301,7 +323,7 @@ namespace PF.PJT.Duet.Pawn
 
                 if(_skillAbility)
                 {
-                    if (!_abilitySystem.TryActivateAbility(_skillAbility).isActivate)
+                    if (!_abilitySystem.TryActivateAbility(_skillAbility))
                     {
                         _inputBuffer.SetBuffer(_skillAbility);
                     }
@@ -333,7 +355,7 @@ namespace PF.PJT.Duet.Pawn
 
                 if (_dashAbility)
                 {
-                    if (!_abilitySystem.TryActivateAbility(_dashAbility).isActivate)
+                    if (!_abilitySystem.TryActivateAbility(_dashAbility))
                     {
                         _inputBuffer.SetBuffer(_dashAbility);
                     }
@@ -358,15 +380,62 @@ namespace PF.PJT.Duet.Pawn
             }
         }
 
+        public void SetInputJump(bool pressed)
+        {
+            if (pressed)
+            {
+                _gameplayTagSystem.AddOwnedTag(_inputJumpTag);
+
+                if (_jumpAbility)
+                {
+                    if (!_abilitySystem.TryActivateAbility(_jumpAbility))
+                    {
+                        _inputBuffer.SetBuffer(_jumpAbility);
+                    }
+
+                }
+            }
+            else
+            {
+                _gameplayTagSystem.RemoveOwnedTag(_inputJumpTag);
+
+                if (_jumpAbility)
+                {
+                    if (_abilitySystem.IsPlayingAbility(_jumpAbility))
+                    {
+                        _abilitySystem.ReleasedAbility(_jumpAbility);
+                    }
+                    else
+                    {
+                        _inputBuffer.ReleaseBuffer(_jumpAbility);
+                    }
+                }
+            }
+        }
+
         public void TakeKnockback(Vector3 direction, float distance, float duration)
         {
+            Log($"{nameof(TakeKnockback)}");
+
             OnTakeKnockback?.Invoke(this, direction, distance, duration);
+        }
+        public void AddForce(Vector3 force)
+        {
+            Log($"{nameof(AddForce)}");
+
+            OnAddForce?.Invoke(this, force);
         }
 
         public void Teleport(Vector3 position, Quaternion rotation)
         {
             _movementSystem.Teleport(position, true);
             _rotationSystem.SetRotation(rotation, true);
+        }
+
+
+        private void OnControllerColliderHit(ControllerColliderHit hit)
+        {
+            Invoke_OnCharacterColliderHit(hit);
         }
 
         private void Invoke_OnSpawend()
@@ -386,6 +455,12 @@ namespace PF.PJT.Duet.Pawn
                 _onDead.Invoke(this);
 
             OnDead?.Invoke(this);
+        }
+        private void Invoke_OnCharacterColliderHit(ControllerColliderHit hit)
+        {
+            Log($"{nameof(Invoke_OnCharacterColliderHit)}");
+
+            OnCharacterColliderHit?.Invoke(this, hit);
         }
     }
 }

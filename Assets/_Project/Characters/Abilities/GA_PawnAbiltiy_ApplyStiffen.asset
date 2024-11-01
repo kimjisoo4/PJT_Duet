@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 963434449d9b3f24cb712322040e6ee9, type: 3}
   m_Name: GA_PawnAbiltiy_ApplyStiffen
   m_EditorClassIdentifier: 
-  UseDebug: 0
+  UseDebug: 1
   _id: GA_PawnAbiltiy_ApplyStiffen
   abilityTag: {fileID: 11400000, guid: fb22d332c8f7def438e75a7383360ce7, type: 2}
   attributeTags: []
