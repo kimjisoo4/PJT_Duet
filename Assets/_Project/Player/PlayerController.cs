@@ -32,6 +32,7 @@ namespace PF.PJT.Duet.Controller
 
     }
 
+
     public class PlayerController : BaseMonoBehaviour, IPlayerController
     {
         [Header(" [ Player Controller ] ")]
@@ -123,6 +124,18 @@ namespace PF.PJT.Duet.Controller
 
         private void Update()
         {
+            if (_playerInput.inputIsActive != _playerInput.currentActionMap.enabled)
+            {
+                if(_playerInput.inputIsActive)
+                {
+                    _playerInput.currentActionMap.Enable();
+                }
+                else
+                {
+                    _playerInput.currentActionMap.Disable();
+                }
+            }
+
             float deltaTime = Time.deltaTime;
 
             UpdateController(deltaTime);
@@ -275,7 +288,10 @@ namespace PF.PJT.Duet.Controller
         #region Input 
         private void SetupInput()
         {
+            Log("Setup Input");
+
             var actionMap = _playerInput.currentActionMap;
+            actionMap.actionTriggered += ActionMap_actionTriggered;
 
             _moveInputAction = actionMap.FindAction(_moveActionReference.action.name);
             _moveInputAction.performed += _moveInputAction_performed;
@@ -284,7 +300,6 @@ namespace PF.PJT.Duet.Controller
             _lookInputAction = actionMap.FindAction(_lookActionReference.action.name);
             _lookInputAction.performed += _lookInputAction_performed;
             _lookInputAction.canceled += _lookInputAction_canceled;
-
 
             _changeInputAction = actionMap.FindAction(_changeActionReference.action.name);
             _changeInputAction.started += ChangeAction_started;
@@ -306,10 +321,23 @@ namespace PF.PJT.Duet.Controller
             _jumpInputAction.canceled += _jumpInputAction_canceled;
         }
 
-       
+        private void ActionMap_actionTriggered(InputAction.CallbackContext obj)
+        {
+            _playerInput.currentActionMap.actionTriggered -= ActionMap_actionTriggered;
+
+            if(!_playerInput.inputIsActive)
+            {
+                _playerInput.currentActionMap.Disable();
+            }
+        }
 
         private void ResetInput()
         {
+            if(_playerInput && _playerInput.currentActionMap is not null)
+            {
+                _playerInput.currentActionMap.actionTriggered -= ActionMap_actionTriggered;
+            }
+
             if (_moveInputAction is not null)
             {
                 _moveInputAction.performed -= _moveInputAction_performed;

@@ -142,16 +142,12 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             if(_projectileFX is not null)
             {
-                //_projectileFX.OnEndedCue += _projectileFX_OnEndedCue;
-
                 _projectileFX.Detach();
                 _projectileFX.Stop();
                 _projectileFX = null;
             }
             if(_charingFX is not null)
             {
-                //_charingFX.OnEndedCue += _charingFX_OnEndedCue;
-
                 _charingFX.Detach();
                 _charingFX.Stop();
                 _charingFX = null;

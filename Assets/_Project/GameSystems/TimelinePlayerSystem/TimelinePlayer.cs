@@ -9,6 +9,7 @@ namespace PF.PJT.Duet
     {
         public delegate void TimelineStateHandler(ITimelinePlayer timelinePlayer);
 
+        public GameObject gameObject { get; }
         public bool IsPlaying { get; }
         public PlayableDirector PlayableDirector { get; }
         public void Play();

@@ -16,11 +16,18 @@ namespace PF.PJT.Duet
         [Space(5f)]
         [SerializeField] private PlayerManager _playerManager;
         [Space(5f)]
-        [SerializeField] private GameEvent _onStageReword;
         [SerializeField] private GameObjectListVariable _activeUIVariable;
 
         [Header(" Reword Datas ")]
         [SerializeField] private List<ItemSO> _stageRewordDatas;
+
+        [Header(" Events ")]
+        [Header(" Listen ")]
+        [SerializeField] private GameEvent _onRequestRewordSystem;
+        [Header(" Post ")]
+        [SerializeField] private GameEvent _onStartedRewordSystem;
+        [SerializeField] private GameEvent _onFinishedRewordSystem;
+
 
         private readonly List<ItemSO> _selectedRewords = new();
 
@@ -28,7 +35,7 @@ namespace PF.PJT.Duet
         {
             _stageRewordActor.SetActive(false);
 
-            _onStageReword.OnTriggerEvent += _onStageReword_OnTriggerEvent;
+            _onRequestRewordSystem.OnTriggerEvent += _onStageReword_OnTriggerEvent;
 
             foreach (var rewordDisplay in _rewordSelects)
             {
@@ -45,9 +52,9 @@ namespace PF.PJT.Duet
         }
         private void OnDestroy()
         {
-            if (_onStageReword)
+            if (_onRequestRewordSystem)
             {
-                _onStageReword.OnTriggerEvent -= _onStageReword_OnTriggerEvent;
+                _onRequestRewordSystem.OnTriggerEvent -= _onStageReword_OnTriggerEvent;
             }
 
             if(_rewordSelects is not null && _rewordSelects.Length > 0)
@@ -95,6 +102,8 @@ namespace PF.PJT.Duet
             _activeUIVariable.Add(gameObject);
 
             EventSystem.current.SetSelectedGameObject(_rewordSelects.ElementAt(Mathf.FloorToInt(_rewordSelects.Length * 0.5f)).gameObject);
+
+            Invoke_OnStartedRewordSystem();
         }
 
         [ContextMenu(nameof(EndStageReword), false, 10000000)]
@@ -105,6 +114,8 @@ namespace PF.PJT.Duet
 
             _stageRewordActor.SetActive(false);
             _activeUIVariable.Remove(gameObject);
+
+            Invoke_OnFinishedRewordSystem();
         }
 
         private void OnSubmitReword(ItemSO submitItem)
@@ -147,6 +158,21 @@ namespace PF.PJT.Duet
                 return;
 
             OnSubmitReword(reword.ItemData);
+        }
+
+        private void Invoke_OnStartedRewordSystem()
+        {
+            if (_onStartedRewordSystem)
+            {
+                _onStartedRewordSystem.Invoke();
+            }
+        }
+        private void Invoke_OnFinishedRewordSystem()
+        {
+            if (_onFinishedRewordSystem)
+            {
+                _onFinishedRewordSystem.Invoke();
+            }
         }
     }
 }

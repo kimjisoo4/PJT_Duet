@@ -440,6 +440,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 Log($"{nameof(OnHit)} -{(isProjectile ? "Projectile" : "Explosion")}");
 
                 int chargeLevel = 0;
+                int collisionCount = hitCount;
+
 
                 if(spawnedActor.gameObject.TryGetComponent(out IChargeable chargeable))
                 {
@@ -455,9 +457,21 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                     var hitActor = actor.gameObject;
 
-                    if (!hitActor.TryGetReleationshipSystem(out IRelationshipSystem hitRelationshipSystem)
-                        || _relationshipSystem.CheckRelationship(hitRelationshipSystem) != ERelationship.Hostile)
+                    if (!hitActor.TryGetReleationshipSystem(out IRelationshipSystem hitRelationshipSystem))
                         continue;
+
+                    var relationship = _relationshipSystem.CheckRelationship(hitRelationshipSystem);
+
+                    switch (relationship)
+                    {
+                        case ERelationship.Hostile:
+                            break;
+                        case ERelationship.Friendly:
+                            collisionCount--;
+                            continue;
+                        default:
+                            continue;
+                    }
 
                     if (!hitActor.TryGetGameplayEffectSystem(out IGameplayEffectSystem hitGameplayEffectSystem))
                         continue;
@@ -512,8 +526,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                         }
                     }
                 }
-            
-                if(isProjectile)
+
+                if (isProjectile && collisionCount > 0)
                 {
                     OnSpawnExplosion(spawnedActor.transform.position, spawnedActor.transform.rotation, chargeLevel);
                     spawnedActor.Inactivate();

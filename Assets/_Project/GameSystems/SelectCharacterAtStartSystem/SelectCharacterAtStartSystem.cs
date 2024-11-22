@@ -22,6 +22,8 @@ namespace PF.PJT.Duet
         [SerializeField] private SelectCharacterComponent[] _selectCharacters;
 
         private IPlayerController _playerController;
+        private int _remainInactiveCount;
+
         private void Awake()
         {
             foreach (var selectCharacter in _selectCharacters)
@@ -42,6 +44,7 @@ namespace PF.PJT.Duet
                         continue;
 
                     selectCharacter.OnSubmited -= SelectCharacter_OnSubmited;
+                    selectCharacter.OnFinishedInactivate -= SelectCharacterAtStartSystem_OnFinishedInactivate;
                 }
             }
 
@@ -100,18 +103,22 @@ namespace PF.PJT.Duet
 
             for (int i = 0; i < _selectCharacters.Length; i++)
             {
+                var selectCharacter = _selectCharacters[i];
                 var character = randCharacter.ElementAtOrDefault(i);
-                
-                if(character)
+
+                if (character)
                 {
                     var characterData = new CharacterData(randCharacter[i]);
 
-                    _selectCharacters[i].SetCharacterData(characterData);
+                    selectCharacter.SetCharacterData(characterData);
                 }
                 else
                 {
-                    _selectCharacters[i].SetCharacterData(null);
+                    selectCharacter.SetCharacterData(null);
                 }
+
+                selectCharacter.Activate();
+                selectCharacter.OnFinishedInactivate += SelectCharacterAtStartSystem_OnFinishedInactivate;
             }
 
             _activeUIInputVariable.Add(gameObject);
@@ -121,15 +128,30 @@ namespace PF.PJT.Duet
 
             _selectCharacterUIActor.SetActive(true);
         }
+
+        private void SelectCharacterAtStartSystem_OnFinishedInactivate(SelectCharacterComponent selectCharacterUI)
+        {
+            _remainInactiveCount--;
+
+            if (_remainInactiveCount <= 0)
+            {
+                _selectCharacterUIActor.SetActive(false);
+                _activeUIInputVariable.Remove(gameObject);
+                _inActiveStatusUIVariable.Remove(gameObject);
+            }
+        }
+
         public void EndSelectCharacter()
         {
             Log($"{nameof(EndSelectCharacter)}");
 
-            _activeUIInputVariable.Remove(gameObject);
-            _inActiveStatusUIVariable.Remove(gameObject);
-
-            _selectCharacterUIActor.SetActive(false);
+            for (int i = 0; i < _selectCharacters.Length; i++)
+            {
+                _remainInactiveCount++;
+                _selectCharacters[i].Inactivate();
+            }
         }
+
         private void AddCharacter(CharacterData characterData)
         {
             // create character

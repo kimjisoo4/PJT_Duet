@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _id: Team_Playeable
-  _friendlys: []
+  _friendlys:
+  - {fileID: 11400000}
   _hostiles:
   - {fileID: 11400000, guid: 4735e46be9ed8e24391d588152cc90e0, type: 2}

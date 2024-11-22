@@ -1,9 +1,7 @@
 using StudioScor.Utilities;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.UI;
 
 namespace PF.PJT.Duet
 {
@@ -11,15 +9,12 @@ namespace PF.PJT.Duet
     {
         [Header(" [ Input Control System ] ")]
         [SerializeField] private GameObjectListVariable _activeUIVariable;
-        [SerializeField] private string _inGameActionMap = "Player";
-        [SerializeField] private string _uiActionMap = "UI";
-
         private bool _isPlaying = false;
-        private InputActionMap _inGameMap;
-        private InputActionMap _uiMap;
 
         private void Awake()
         {
+            var playerinput = PlayerInput.all.ElementAtOrDefault(0);
+
             _activeUIVariable.OnAdded += _activeUIVariable_OnAdded;
             _activeUIVariable.OnRemoved += _activeUIVariable_OnRemoved;
         }
@@ -39,27 +34,37 @@ namespace PF.PJT.Duet
                 OnUIInputControl();
             else
                 EndUIInputControl();
+
         }
 
         private void OnUIInputControl()
         {
+            Log(nameof(OnUIInputControl));
+
             _isPlaying = true;
 
             var playerinput = PlayerInput.all.ElementAtOrDefault(0);
 
             if (playerinput)
-                playerinput.SwitchCurrentActionMap(_uiActionMap);
-
+            {
+                playerinput.DeactivateInput();
+            }
+            
             SetCursorState(true);
         }
+
         private void EndUIInputControl()
         {
+            Log(nameof(EndUIInputControl));
+
             _isPlaying = false;
 
             var playerinput = PlayerInput.all.ElementAtOrDefault(0);
 
             if (playerinput)
-                playerinput.SwitchCurrentActionMap(_inGameActionMap);
+            {
+                playerinput.ActivateInput();
+            }
 
             SetCursorState(false);
         }
