@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59d076cc24d0e654b85ba6848d0f5a5e, type: 3}
+  m_Name: GA_PawnAbiltiy_ApplyGroggy
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _id: GA_PawnAbiltiy_ApplyGroggy
+  abilityTag: {fileID: 11400000, guid: b85a419678cd8d948826f04013deeacf, type: 2}
+  attributeTags: []
+  conditionTags:
+    requireds:
+    - {fileID: 11400000, guid: 2881baa0104907349b61679ce50a8574, type: 2}
+    obstacleds:
+    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+  grantTags:
+    owneds: []
+    blocks:
+    - {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
+    - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
+    - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
+  cancelAbilityTags:
+  - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
+  _triggerTag: {fileID: 11400000, guid: 2881baa0104907349b61679ce50a8574, type: 2}
+  _blockStiffenTag: {fileID: 11400000, guid: fb22d332c8f7def438e75a7383360ce7, type: 2}
+  _animationName: Groggy
+  _blendInTime: 0.2
+  _animationOffset: 0

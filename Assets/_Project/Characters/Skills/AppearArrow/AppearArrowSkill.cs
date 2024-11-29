@@ -60,7 +60,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             return new Spec(this, abilitySystem, level);
         }
 
-        public class Spec : GASAbilitySpec, ISkillState, IAreaAbility
+        public class Spec : GASAbilitySpec, ISkillState, IAreaAbility, IUpdateableAbilitySpec
         {
             protected new readonly AppearArrowSkill _ability;
 
@@ -115,6 +115,14 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _animationEvents.OnCanceled += _animationEvents_OnCanceled;
                 _animationEvents.OnStartedBlendOut += _animationEvents_OnStartedBlendOut;
                 _animationEvents.OnNotify += _animationEvents_OnNotify;
+
+                _ability._arrowRainPool.Initialization();
+
+                _ability._onAbilityCue.Initialization();
+                _ability._onImpactCue.Initialization();
+                _ability._onAreaPointCue.Initialization();
+                _ability._onHitToOtherCue.Initialization();
+                _ability._onSuccessedPlayerHit.Initialization();
             }
             protected override void OnGrantAbility()
             {
@@ -178,6 +186,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 base.ExitAbility();
 
+                EndTrace();
+
                 if (_impactCue is not null)
                 {
                     _impactCue.Stop();
@@ -191,6 +201,23 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                         _coolTimeEffectSpec = spec as CoolTimeEffect.Spec;
                         _coolTimeEffectSpec.OnEndedEffect += _coolTimeEffectSpec_OnEndedEffect;
                     }
+                }
+            }
+
+            public void UpdateAbility(float deltaTime)
+            {
+                return;
+            }
+
+            public void FixedUpdateAbility(float deltaTime)
+            {
+                if (!IsPlaying)
+                    return;
+
+                if(_overlapSphere.IsPlaying)
+                {
+                    UpdateTrace();
+                    EndTrace();
                 }
             }
 
@@ -244,8 +271,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _addForceable.AddForce(transform.forward * -_ability._addForcePower);
 
                 OnTrace();
-                UpdateTrace();
-                EndTrace();
+                
             }
             public void EnterArea(ISpawnedActorByAbility spawnedActor, GameObject enterActor)
             {
@@ -390,6 +416,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                         break;
                 }
             }
+
+            
         }
     }
 }

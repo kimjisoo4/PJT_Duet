@@ -11,7 +11,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
     public class EnchantFireAttackReword : RewordAbility
     {
         [Header(" [ Enchant Fire Attack Skill ] ")]
-        [SerializeField] private GameplayTagSO _onAttackHitTag;
+        [SerializeField] private GameplayTag _onAttackHitTag;
 
         [Header(" Gameplay Effect ")]
         [SerializeField] private TakeDamageEffect _takeDamageEffect;
@@ -94,7 +94,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 }
             }
 
-            private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag, object data = null)
+            private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag, object data = null)
             {
                 if (!IsPlaying)
                     return;

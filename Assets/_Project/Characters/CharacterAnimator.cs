@@ -12,7 +12,8 @@ namespace PF.PJT.Duet.Pawn
         [SerializeField] private float _dampTime = 0.1f;
 
         [Header(" Gameplay Tag ")]
-        [SerializeField] private GameplayTagSO _stiffenTag;
+        [SerializeField] private GameplayTag _stiffenTag;
+        [SerializeField] private GameplayTag _groggyTag;
 
         private IActor _actor;  
         private IMovementSystem _movementSystem;
@@ -25,7 +26,9 @@ namespace PF.PJT.Duet.Pawn
         private readonly int ANIM_MOVE_SPEED = Animator.StringToHash("moveSpeed");
         private readonly int ANIM_SPEED_X = Animator.StringToHash("speedX");
         private readonly int ANIM_SPEED_Z = Animator.StringToHash("speedZ");
+
         private readonly int ANIM_IS_STIFFEN = Animator.StringToHash("isStiffen");
+        private readonly int ANIM_IS_GROGGY = Animator.StringToHash("isGroggy");
 
         private void Awake()
         {
@@ -42,8 +45,6 @@ namespace PF.PJT.Duet.Pawn
             _gameplayTagSystem.OnGrantedOwnedTag += _gameplayTagSystem_OnGrantedOwnedTag;
             _gameplayTagSystem.OnRemovedOwnedTag += _gameplayTagSystem_OnRemovedOwnedTag;
         }
-
-        
 
         private void OnDestroy()
         {
@@ -63,18 +64,48 @@ namespace PF.PJT.Duet.Pawn
             }
         }
 
-        private void _gameplayTagSystem_OnGrantedOwnedTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
+        private void OnEnable()
+        {
+            _animator.SetBool(ANIM_IS_MOVING, _movementSystem.IsMoving);
+            _animator.SetBool(ANIM_IS_STIFFEN, _gameplayTagSystem.ContainOwnedTag(_stiffenTag));
+            _animator.SetBool(ANIM_IS_GROGGY, _gameplayTagSystem.ContainOwnedTag(_groggyTag));
+        }
+
+        private void LateUpdate()
+        {
+            float deltaTime = Time.deltaTime;
+
+            float horizontalSpeed = _movementSystem.PrevSpeed;
+
+            Vector3 velocity = _movementSystem.PrevVelocityXZ;
+            Vector3 localVelocity = transform.InverseTransformDirection(velocity);
+
+            _animator.SetFloat(ANIM_SPEED_X, localVelocity.x, _dampTime, deltaTime);
+            _animator.SetFloat(ANIM_SPEED_Z, localVelocity.z, _dampTime, deltaTime);
+            _animator.SetFloat(ANIM_MOVE_SPEED, horizontalSpeed, _dampTime, deltaTime);
+        }
+
+
+        private void _gameplayTagSystem_OnGrantedOwnedTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
         {
             if (_stiffenTag == gameplayTag)
             {
                 _animator.SetBool(ANIM_IS_STIFFEN, true);
             }
+            else if (_groggyTag == gameplayTag)
+            {
+                _animator.SetBool(ANIM_IS_GROGGY, true);
+            }
         }
-        private void _gameplayTagSystem_OnRemovedOwnedTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
+        private void _gameplayTagSystem_OnRemovedOwnedTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
         {
             if(_stiffenTag == gameplayTag)
             {
                 _animator.SetBool(ANIM_IS_STIFFEN, false);
+            }
+            else if (_groggyTag == gameplayTag)
+            {
+                _animator.SetBool(ANIM_IS_GROGGY, false);
             }
         }
 
@@ -94,27 +125,6 @@ namespace PF.PJT.Duet.Pawn
         private void _movementSystem_OnLanded(IMovementSystem movementSystem)
         {
             _animator.SetBool(ANIM_IS_FALLING, false);
-        }
-
-
-        private void OnEnable()
-        {
-            _animator.SetBool(ANIM_IS_MOVING, _movementSystem.IsMoving);
-            _animator.SetBool(ANIM_IS_STIFFEN, _gameplayTagSystem.ContainOwnedTag(_stiffenTag));
-        }
-
-        private void LateUpdate()
-        {
-            float deltaTime = Time.deltaTime;
-
-            float horizontalSpeed = _movementSystem.PrevSpeed;
-
-            Vector3 velocity = _movementSystem.PrevVelocityXZ;
-            Vector3 localVelocity = transform.InverseTransformDirection(velocity);
-
-            _animator.SetFloat(ANIM_SPEED_X, localVelocity.x, _dampTime, deltaTime);
-            _animator.SetFloat(ANIM_SPEED_Z, localVelocity.z, _dampTime, deltaTime);
-            _animator.SetFloat(ANIM_MOVE_SPEED, horizontalSpeed, _dampTime, deltaTime);
         }
     }
 }

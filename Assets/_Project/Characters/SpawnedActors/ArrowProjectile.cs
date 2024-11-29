@@ -68,7 +68,7 @@ namespace PF.PJT.Duet
             transform.localScale = Vector3.one;
         }
 
-        public void Activate(GameObject newOwner, IAbilitySpec abilitySpec, IEnumerable<IGameplayTag> ownedTags = null)
+        public void Activate(GameObject newOwner, IAbilitySpec abilitySpec, IEnumerable<GameplayTag> ownedTags = null)
         {
             _owner = newOwner;
             _abilitySpec = abilitySpec;

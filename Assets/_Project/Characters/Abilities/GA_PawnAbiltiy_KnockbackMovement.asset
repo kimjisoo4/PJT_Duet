@@ -20,6 +20,7 @@ MonoBehaviour:
     requireds: []
     obstacleds:
     - {fileID: 11400000, guid: 27d736be509dae14d8fdcf133bc7a0c2, type: 2}
+    - {fileID: 11400000, guid: ad6c3d6668571ff4cbdcefdb4e2be194, type: 2}
   grantTags:
     owneds:
     - {fileID: 11400000, guid: faa548f5b42584245accfcfd09cb700a, type: 2}

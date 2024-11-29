@@ -69,7 +69,7 @@ namespace PF.PJT.Duet.Pawn.Effect
         [SerializeField] private bool _isAdditionalDamage = false;
 
         [Header(" Gameplay Tag Trigger Event ")]
-        [SerializeField] private GameplayTagSO _onAttackHitTag;
+        [SerializeField] private GameplayTag _onAttackHitTag;
 
         private static IObjectPool<Spec> _pool = null;
         public StatTag BaseStat => _baseStat;

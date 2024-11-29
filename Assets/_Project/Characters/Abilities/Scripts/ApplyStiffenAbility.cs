@@ -9,7 +9,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
     public class ApplyStiffenAbility : GASAbility
     {
         [Header(" [ Apply Stiffen Ability ] ")]
-        [SerializeField] private GameplayTagSO _triggerTag;
+        [SerializeField] private GameplayTag _triggerTag;
         [SerializeField][Range(0f, 1f)] private float _animationOffset = 0.2f;
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
@@ -54,12 +54,12 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
             }
 
 
-            private void GameplayTagSystem_OnAddedOwnedTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
+            private void GameplayTagSystem_OnAddedOwnedTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
             {
                 if(_ability._triggerTag == gameplayTag)
                     TryActiveAbility();
             }
-            private void GameplayTagSystem_OnRemovedOwnedTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag)
+            private void GameplayTagSystem_OnRemovedOwnedTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
             {
                 if (_ability._triggerTag == gameplayTag)
                     TryFinishAbility();

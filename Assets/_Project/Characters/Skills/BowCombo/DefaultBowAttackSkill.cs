@@ -20,7 +20,7 @@ namespace PF.PJT.Duet
         [SerializeField] private float _fadeInTime = 0.2f;
 
         [Header(" Rotation ")]
-        [SerializeField] private GameplayTagSO _turnTag;
+        [SerializeField] private GameplayTag _turnTag;
 
         [Header(" Projectile ")]
         [SerializeField] private PoolContainer _projectilePool;
@@ -41,7 +41,7 @@ namespace PF.PJT.Duet
         [SerializeField] private FGameplayCue _onSuccessedPlayerHit = FGameplayCue.Default;
 
         [Header(" Combo ")]
-        [SerializeField] private GameplayTagSO _comboTag;
+        [SerializeField] private GameplayTag _comboTag;
 
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
@@ -80,6 +80,12 @@ namespace PF.PJT.Duet
                 _animationEvents.OnNotify += _animationEvents_OnNotify;
                 _animationEvents.OnEnterNotifyState += _animationEvents_OnEnterNotifyState;
                 _animationEvents.OnExitNotifyState += _animationEvents_OnExitNotifyState;
+
+                _ability._projectilePool.Initialization();
+
+                _ability._onAttackCue.Initialization();
+                _ability._onHitToOtherCue.Initialization();
+                _ability._onSuccessedPlayerHit.Initialization();
             }
 
 

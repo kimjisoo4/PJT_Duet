@@ -99,6 +99,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _animationEvents.OnNotify += _animationEvents_OnNotify;
                 _animationEvents.OnEnterNotifyState += _animationEvents_OnEnterNotifyState;
                 _animationEvents.OnExitNotifyState += _animationEvents_OnExitNotifyState;
+
+                _ability._onAbilityCue.Initialization();
+                _ability._onImpactCue.Initialization();
+                _ability._onHitToOtherCue.Initialization();
+                _ability._onSuccessedPlayerHit.Initialization();
             }
 
             protected override void OnGrantAbility()

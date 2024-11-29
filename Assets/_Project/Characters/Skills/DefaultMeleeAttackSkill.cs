@@ -21,7 +21,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField][Range(0f, 1f)] private float _fadeInTime = 0.2f;
 
         [Header(" Turn ")]
-        [SerializeField] private GameplayTagSO _turnTag;
+        [SerializeField] private GameplayTag _turnTag;
 
         [Header(" Attack Trace ")]
         [SerializeField] private BodyTag _tracePoint;
@@ -43,7 +43,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private FGameplayCue _onSuccessedPlayerHit = FGameplayCue.Default;
 
         [Header(" Combo ")]
-        [SerializeField] private GameplayTagSO _comboTag;
+        [SerializeField] private GameplayTag _comboTag;
 
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {

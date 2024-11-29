@@ -1,8 +1,9 @@
-﻿using BehaviorDesigner.Runtime;
-using PF.PJT.Duet.Pawn;
+﻿using PF.PJT.Duet.Pawn;
 using StudioScor.BodySystem;
+using StudioScor.GameplayTagSystem;
 using StudioScor.PlayerSystem;
 using StudioScor.Utilities;
+using Unity.Behavior;
 using UnityEngine;
 
 namespace PF.PJT.Duet.Controller.Enemy
@@ -16,32 +17,44 @@ namespace PF.PJT.Duet.Controller.Enemy
     {
         [Header(" [ Enemy Controller ] ")]
         [SerializeField] private PlayerManager _playerManager;
-        [SerializeField] private BehaviorTree _behaviorTree;
-        [SerializeField] private ExternalBehavior _externalBehavior;
+        [SerializeField] private PooledObject _pooledObject;
+        [SerializeField] private BehaviorGraphAgent _behaviorAgent;
+
+        [Header(" Gameplay Tags ")]
+        [SerializeField] private GameplayTag _stiffenTag;
+        [SerializeField] private GameplayTag _groggyTag;
 
         [Header(" Follow Target  ")]
         [SerializeField] private BodyTag _headTag;
 
-        private const string SELF_KEY = "Self";
+        private const string PAWN_KEY = "Pawn";
         private const string TARGET_KEY = "Target";
-        private const string ORIGIN_POSITION_KEY = "OriginPos";
+        private const string ORIGIN_POSITION_KEY = "StartPosition";
+        private const string STIFFEN_KEY = "Stiffen";
+        private const string GROGGY_KEY = "Groggy";
 
-        private SharedTransform _selfKey;
-        private SharedTransform _targetKey;
-        private SharedVector3 _originPosKey;
+        private BlackboardVariable<GameObject> _targetVariable;
+        private BlackboardVariable<bool> _stiffenVariable;
+        private BlackboardVariable<bool> _groggyVariable;
+
         private ISightSensor _sightSensor;
         private ICharacter _character;
         private IRelationshipSystem _relationshipSystem;
         private IControllerSystem _controllerSystem;
         private IDamageableSystem _damageableSytstemInPawn;
+        private IGameplayTagSystem _gameplayTagSystemInPawn;
         public IControllerSystem ControllerSystem => _controllerSystem;
 
         private void OnValidate()
         {
 #if UNITY_EDITOR
-            if(!_behaviorTree)
+            if(!_pooledObject)
             {
-                _behaviorTree = gameObject.GetComponent<BehaviorTree>();
+                _pooledObject = gameObject.GetComponent<PooledObject>();
+            }
+            if(!_behaviorAgent)
+            {
+                _behaviorAgent = gameObject.GetComponent<BehaviorGraphAgent>();
             }
 #endif
         }
@@ -74,7 +87,6 @@ namespace PF.PJT.Duet.Controller.Enemy
                 _sightSensor.OnFoundSight -= _sightSensor_OnFoundSight;
             }
         }
-
         private void FixedUpdate()
         {
             if(_controllerSystem.IsPossessed)
@@ -92,8 +104,11 @@ namespace PF.PJT.Duet.Controller.Enemy
                 _damageableSytstemInPawn.OnAfterDamage -= DamageableSystem_OnAfterDamage;
                 _damageableSytstemInPawn = null;
 
-                _behaviorTree.ExternalBehavior = null;
-                _behaviorTree.DisableBehavior(false);
+                _gameplayTagSystemInPawn.OnGrantedOwnedTag -= _gameplayTagSystemInPawn_OnGrantedOwnedTag;
+                _gameplayTagSystemInPawn.OnRemovedOwnedTag -= _gameplayTagSystemInPawn_OnRemovedOwnedTag;
+                _gameplayTagSystemInPawn = null;
+
+                _behaviorAgent.End();
 
                 _sightSensor.RemoveIgnoreTransform(_character.transform);
             }
@@ -110,8 +125,7 @@ namespace PF.PJT.Duet.Controller.Enemy
 
                 _relationshipSystem = _character.gameObject.GetRelationshipSystem();
 
-                _behaviorTree.ExternalBehavior = _externalBehavior;
-                _behaviorTree.EnableBehavior();
+                _behaviorAgent.Restart();
 
                 _sightSensor.AddIgnoreTransform(_character.transform);
                 if (_character.gameObject.TryGetBodySystem(out IBodySystem bodySystem))
@@ -126,6 +140,12 @@ namespace PF.PJT.Duet.Controller.Enemy
                     }
                 }
 
+                if(_character.gameObject.TryGetGameplayTagSystem(out _gameplayTagSystemInPawn))
+                {
+                    _gameplayTagSystemInPawn.OnGrantedOwnedTag += _gameplayTagSystemInPawn_OnGrantedOwnedTag;
+                    _gameplayTagSystemInPawn.OnRemovedOwnedTag += _gameplayTagSystemInPawn_OnRemovedOwnedTag;
+                }
+
                 SetupBlackboard();
 
                 _sightSensor.OnSight();
@@ -133,24 +153,59 @@ namespace PF.PJT.Duet.Controller.Enemy
             else
             {
                 _sightSensor.EndSight();
-                _behaviorTree.DisableBehavior(false);
+                _behaviorAgent.End();
 
-                gameObject.SetActive(false);
+                _pooledObject.Release();
+            }
+        }
+
+
+
+        private void _gameplayTagSystemInPawn_OnRemovedOwnedTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
+        {
+            if (!_behaviorAgent.Graph.IsRunning)
+                return;
+
+            if (_stiffenTag == gameplayTag)
+            {
+                _stiffenVariable.Value = false;
+            }
+            else if (_groggyTag == gameplayTag)
+            {
+                _groggyVariable.Value = false;
+            }
+        }
+
+        private void _gameplayTagSystemInPawn_OnGrantedOwnedTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag)
+        {
+            if (!_behaviorAgent.Graph.IsRunning)
+                return;
+
+            if (_stiffenTag == gameplayTag)
+            {
+                _stiffenVariable.Value = true;
+            }
+            else if (_groggyTag == gameplayTag)
+            {
+                _groggyVariable.Value = true;
             }
         }
 
         public void SetTargetKey(Transform target)
         {
-            if (!_behaviorTree.isActiveAndEnabled)
+            if (!_behaviorAgent.Graph.IsRunning)
+            {
+                Log($"Behavior Graph Is Disable");
                 return;
+            }
 
-            if(target.TryGetActor(out IActor actor))
+            if (target.TryGetActor(out IActor actor))
             {
                 target = actor.transform;
             }
 
             _controllerSystem.SetLookTarget(target);
-            _targetKey.SetValue(target);
+            _targetVariable.Value = target.gameObject;
 
             if (target)
                 _sightSensor.EndSight();
@@ -160,40 +215,16 @@ namespace PF.PJT.Duet.Controller.Enemy
 
         private void SetupBlackboard()
         {
-            _selfKey = (SharedTransform)_behaviorTree.GetVariable(SELF_KEY);
+            _behaviorAgent.SetVariableValue<Vector3>(ORIGIN_POSITION_KEY, _controllerSystem.Pawn.transform.position);
+            _behaviorAgent.SetVariableValue<GameObject>(PAWN_KEY, _controllerSystem.Pawn.gameObject);
 
-            if (_selfKey is null)
-            {
-                _selfKey = new SharedTransform();
+            _behaviorAgent.BlackboardReference.GetVariable(TARGET_KEY, out _targetVariable);
+            _behaviorAgent.BlackboardReference.GetVariable(STIFFEN_KEY, out _stiffenVariable);
+            _behaviorAgent.BlackboardReference.GetVariable(GROGGY_KEY, out _groggyVariable);
 
-                _behaviorTree.SetVariable(SELF_KEY, _selfKey);
-            }
-
-            _selfKey.SetValue(_controllerSystem.Pawn.transform);
-
-
-
-            _targetKey = (SharedTransform)_behaviorTree.GetVariable(TARGET_KEY);
-
-            if (_targetKey is null)
-            {
-                _targetKey = new SharedTransform();
-
-                _behaviorTree.SetVariable(TARGET_KEY, _targetKey);
-            }
-
-
-
-            _originPosKey = (SharedVector3)_behaviorTree.GetVariable(ORIGIN_POSITION_KEY);
-
-            if (_originPosKey is null)
-            {
-                _originPosKey = new SharedVector3();
-
-                _behaviorTree.SetVariable(ORIGIN_POSITION_KEY, _originPosKey);
-            }
-
-            _originPosKey.SetValue(_controllerSystem.Pawn.transform.position);
+            _targetVariable.Value = null;
+            _stiffenVariable.Value = false;
+            _groggyVariable.Value = false;
         }
 
         private void DamageableSystem_OnAfterDamage(IDamageableSystem damageable, DamageInfoData damageInfo)
@@ -204,14 +235,9 @@ namespace PF.PJT.Duet.Controller.Enemy
                 return;
             }
 
-            if (!_behaviorTree.isActiveAndEnabled)
-            {
-                Log($"Behavior Tree Is Disable");
-                return;
-            }
-
-            if (_targetKey is null || _targetKey.Value)
-            {
+            if (!_behaviorAgent.Graph.IsRunning)
+            { 
+                Log($"Behavior Graph Is Disable");
                 return;
             }
 
@@ -220,7 +246,8 @@ namespace PF.PJT.Duet.Controller.Enemy
 
             if(instigator.TryGetPawn(out IPawnSystem pawn))
             {
-                SetTargetKey(pawn.transform);
+                if(pawn.IsPlayer)
+                    SetTargetKey(pawn.transform);
             }
             else if (damageCauser.TryGetActor(out IActor causerActor))
             {
@@ -230,7 +257,6 @@ namespace PF.PJT.Duet.Controller.Enemy
             {
                 SetTargetKey(damageCauser.transform);
             }
-            
         }
 
         private void _playerManager_OnChangedPlayerPawn(PlayerManager playerManager, IPawnSystem currentPawn, IPawnSystem prevPawn = null)
@@ -238,23 +264,29 @@ namespace PF.PJT.Duet.Controller.Enemy
             if (!_controllerSystem.IsPossessed)
                 return;
 
-            if (!_behaviorTree.isActiveAndEnabled)
+            if (!_behaviorAgent.Graph.IsRunning)
+            {
+                Log($"Behavior Graph Is Disable");
                 return;
+            }
 
-            if (_targetKey is null)
+            var target = _targetVariable.Value;
+
+            if(!target)
+            {
+                Log($" Prev Target Is Null");
                 return;
+            }
 
-            var target = _targetKey.Value;
-
-            if(prevPawn is null)
+            if (prevPawn is null)
             {
                 Log($" Prev Pawn Is Null");
                 return;
             }
 
-            if (target != prevPawn.transform)
+            if (target != prevPawn.gameObject)
             {
-                Log($"Target Not Equal [ Target - {target} :: Prev Pawn - {prevPawn.transform}]");
+                Log($"Target Not Equal [ Target - {target} :: Prev Pawn - {prevPawn.gameObject}]");
 
                 return;
             }
@@ -267,13 +299,13 @@ namespace PF.PJT.Duet.Controller.Enemy
             if (!_controllerSystem.IsPossessed)
                 return;
 
-            if (!_behaviorTree.isActiveAndEnabled)
+            if (!_behaviorAgent.Graph.IsRunning)
+            {
+                Log($"Behavior Graph Is Disable");
                 return;
+            }
 
-            if (_targetKey is null)
-                return;
-
-            if (_targetKey.Value)
+            if (_targetVariable.Value)
                 return;
 
             if(sight.gameObject.TryGetPawn(out IPawnSystem pawn) && pawn.gameObject.TryGetReleationshipSystem(out IRelationshipSystem relationSystem))

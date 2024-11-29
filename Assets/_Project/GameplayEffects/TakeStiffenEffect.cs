@@ -4,6 +4,7 @@ using UnityEngine.Pool;
 
 namespace PF.PJT.Duet.Pawn.Effect
 {
+
     [CreateAssetMenu(menuName = "Project/Duet/GameplayEffect/new Take Stiffen Effect", fileName = "GE_TakeStiffen")]
     public class TakeStiffenEffect : GASGameplayEffect
     {

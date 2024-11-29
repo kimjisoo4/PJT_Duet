@@ -16,6 +16,14 @@ namespace PF.PJT.Duet
         private int _remainSpawnedCount;
 
 
+        private void Awake()
+        {
+            foreach (var pool in _spawnEnemyPools)
+            {
+                pool.Initialization();
+            }
+        }
+
         protected override void EnterState()
         {
             base.EnterState();

@@ -1,4 +1,5 @@
 ﻿using PF.PJT.Duet.Pawn;
+using StudioScor.AbilitySystem;
 using UnityEngine;
 
 namespace PF.PJT.Duet
@@ -11,7 +12,10 @@ namespace PF.PJT.Duet
         [SerializeField] private GameObject _cinematicViewActor;
         [SerializeField] private GameObject _cinemachineCameraActor;
 
+
         private ICharacter _character;
+        private IAbilitySystem _abilitySystem;
+
 
         private const string TRACK_CHARACTER_ANIMATION = "CharacterAnimationTrack";
 
@@ -20,6 +24,7 @@ namespace PF.PJT.Duet
             base.Awake();
 
             _character = _orkWorriorActor.GetComponent<ICharacter>();
+            _abilitySystem = _character.gameObject.GetAbilitySystem();
 
             _orkWorriorActor.SetActive(false);
             _orkWorriorControllerActor.SetActive(false);

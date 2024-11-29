@@ -94,6 +94,7 @@ MonoBehaviour:
   _skillAbility: {fileID: 11400000, guid: 696493dc85b42214d9c8f1ae0fb7e237, type: 2}
   _dashAbility: {fileID: 11400000, guid: 4ea00ee30e228e94d949280a09e57a35, type: 2}
   _jumpAbility: {fileID: 0}
+  _subAbilities: []
   _inputAttackTag: {fileID: 11400000, guid: 241b0b1e98a4c3842b150d4a38a69637, type: 2}
   _inputSkillTag: {fileID: 11400000, guid: 69f31f611cfa4244b95dd20d471f0983, type: 2}
   _inputDashTag: {fileID: 11400000, guid: cb5ec0c08662bab4893e7bd59235ccfc, type: 2}
@@ -102,7 +103,7 @@ MonoBehaviour:
   _leaveAbility: {fileID: 11400000, guid: d4820fd723c264d49ad72727c39239d6, type: 2}
   _resetTriggerTag: {fileID: 11400000, guid: 903d481e2b5b3c74f9461acce4289fd3, type: 2}
   _enemyControllers: []
-  _onSpawend: {fileID: 0}
+  _onSpawned: {fileID: 0}
   _onDead: {fileID: 0}
 --- !u!114 &5849666587521794672
 MonoBehaviour:
@@ -169,6 +170,9 @@ MonoBehaviour:
   - AbilityName: 'GA_PawnAbiltiy_Attribute_HP [ Level : 0 ]'
     Ability: {fileID: 11400000, guid: 40d69220c044d614b8155187fc3cb265, type: 2}
     Level: 0
+  - AbilityName: 'GA_PawnAbiltiy_Attribute_Shield [ Level : 0 ]'
+    Ability: {fileID: 11400000, guid: 7137cb3969f66324b91e158d08b71f5f, type: 2}
+    Level: 0
   - AbilityName: 'GA_PawnAbiltiy_UpdateMovementInput [ Level : 0 ]'
     Ability: {fileID: 11400000, guid: f3c7dc150bed5c745b2d5096f923e608, type: 2}
     Level: 0
@@ -184,8 +188,14 @@ MonoBehaviour:
   - AbilityName: 'GA_PawnAbiltiy_ApplyStiffen [ Level : 0 ]'
     Ability: {fileID: 11400000, guid: 4ba866fc95bc97745988e35c6393a1f1, type: 2}
     Level: 0
+  - AbilityName: 'GA_PawnAbiltiy_ApplyGroggy [ Level : 0 ]'
+    Ability: {fileID: 11400000, guid: f6959986b4743c34ab4277d04f257606, type: 2}
+    Level: 0
   - AbilityName: 'GA_PawnAbiltiy_ApplyDamage [ Level : 0 ]'
     Ability: {fileID: 11400000, guid: 83e844fb52050e043aa07aac51bb448a, type: 2}
+    Level: 0
+  - AbilityName: 'GA_PawnAbiltiy_ApplyDamageToShield [ Level : 0 ]'
+    Ability: {fileID: 11400000, guid: 7906a55a317ceef4b80b413651a1ec2a, type: 2}
     Level: 0
   - AbilityName: 'GA_PawnAbiltiy_KnockbackMovement [ Level : 0 ]'
     Ability: {fileID: 11400000, guid: df3448d035916c6459b680d3ff731c1e, type: 2}

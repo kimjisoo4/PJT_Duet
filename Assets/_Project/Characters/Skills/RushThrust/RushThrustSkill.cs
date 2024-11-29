@@ -26,7 +26,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField][Range(0f, 1f)] private float _moveEndTime = 0.8f;
 
         [Header(" Turn ")]
-        [SerializeField] private GameplayTagSO _turnTag;
+        [SerializeField] private GameplayTag _turnTag;
 
         [Header(" Trace ")]
         [SerializeField] private BodyTag _tracePoint;
@@ -101,6 +101,10 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _animationEvents.OnStartedBlendOut += _animationEvents_OnStartedBlendOut;
                 _animationEvents.OnEnterNotifyState += _animationEvents_OnEnterNotifyState;
                 _animationEvents.OnExitNotifyState += _animationEvents_OnExitNotifyState;
+
+                _ability._onAttackCue.Initialization();
+                _ability._onHitToOtherCue.Initialization();
+                _ability._onSuccessedPlayerHit.Initialization();
             }
 
            

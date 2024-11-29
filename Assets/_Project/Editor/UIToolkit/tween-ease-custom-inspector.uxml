@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:EnumField label="Enum" value="Unset" type="DG.Tweening.Ease, DOTween" name="EnumField_Ease" binding-path="_ease" />
+    <uie:CurveField value="{0,0,1,1,0,0,Auto,Auto,False,None};{1,1,1,1,0,0,Auto,Auto,False,None}+(ClampForever,ClampForever)" name="CurveField_Curve" binding-path="_curve" label="AnimationCurve" />
+</ui:UXML>

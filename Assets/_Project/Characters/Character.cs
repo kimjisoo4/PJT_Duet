@@ -7,7 +7,6 @@ using StudioScor.RotationSystem;
 using StudioScor.StatSystem;
 using StudioScor.StatusSystem;
 using StudioScor.Utilities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -78,25 +77,27 @@ namespace PF.PJT.Duet.Pawn
         [SerializeField] private Ability _skillAbility;
         [SerializeField] private Ability _dashAbility;
         [SerializeField] private Ability _jumpAbility;
+        [SerializeField] private Ability[] _subAbilities;
+
 
         [Header(" Inputs ")]
-        [SerializeField] private GameplayTagSO _inputAttackTag;
-        [SerializeField] private GameplayTagSO _inputSkillTag;
-        [SerializeField] private GameplayTagSO _inputDashTag;
-        [SerializeField] private GameplayTagSO _inputJumpTag;
+        [SerializeField] private GameplayTag _inputAttackTag;
+        [SerializeField] private GameplayTag _inputSkillTag;
+        [SerializeField] private GameplayTag _inputDashTag;
+        [SerializeField] private GameplayTag _inputJumpTag;
 
         [Header(" Change Character ")]
         [SerializeField] private Ability _appearAbility;
         [SerializeField] private Ability _leaveAbility;
 
         [Header(" Gameplay Tag Trigger ")]
-        [SerializeField] private GameplayTagSO _resetTriggerTag;
+        [SerializeField] private GameplayTag _resetTriggerTag;
 
         [Header(" Enemy AI ")]
         [SerializeField] private PoolContainer[] _enemyControllers;
 
         [Header(" GameEvents ")]
-        [SerializeField] private CharacterGameEvent _onSpawend;
+        [SerializeField] private CharacterGameEvent _onSpawned;
         [SerializeField] private CharacterGameEvent _onDead;
 
         private IAbilitySystem _abilitySystem;
@@ -184,6 +185,7 @@ namespace PF.PJT.Duet.Pawn
 
             _abilitySystem.FixedTick(deltaTime * _dilationSystem.Speed);
         }
+
         private void LateUpdate()
         {
             float deltaTime = Time.deltaTime;
@@ -205,6 +207,11 @@ namespace PF.PJT.Duet.Pawn
             _statusSystem = gameObject.GetStatusSystem();
 
             _inputBuffer.SetAbilitySystem(_abilitySystem);
+
+            foreach (var controller in _enemyControllers)
+            {
+                controller.Initialization();
+            }
         }
 
         private void GrantDefaultSkill()
@@ -215,6 +222,11 @@ namespace PF.PJT.Duet.Pawn
             _abilitySystem.TryGrantAbility(_jumpAbility, 0);
             _abilitySystem.TryGrantAbility(_appearAbility, 0);
             _abilitySystem.TryGrantAbility(_leaveAbility, 0);
+
+            foreach (var ability in _subAbilities)
+            {
+                _abilitySystem.TryGrantAbility(ability, 0);
+            }
         }
         public void ResetCharacter()
         {
@@ -442,8 +454,8 @@ namespace PF.PJT.Duet.Pawn
         {
             Log($"{nameof(OnSpawned)}");
 
-            if (_onSpawend)
-                _onSpawend.Invoke(this);
+            if (_onSpawned)
+                _onSpawned.Invoke(this);
 
             OnSpawned?.Invoke(this);
         }

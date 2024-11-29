@@ -23,13 +23,13 @@ namespace PF.PJT.Duet
         [Header(" Projectile Arrow ")]
         [SerializeField] private PoolContainer _arrowPoolContainer;
         [SerializeField] private BodyTag _arrowSpawnPointTag;
-        [SerializeField] private GameplayTagSO _arrowTag;
+        [SerializeField] private GameplayTag _arrowTag;
 
         [Header(" Explosive Arrow ")]
         [SerializeField] private PoolContainer _explosivePoolContainer;
 
         [Header(" Gameplay Tags ")]
-        [SerializeField] private GameplayTagSO _turnTag;
+        [SerializeField] private GameplayTag _turnTag;
 
         [Header(" Gameplay Effects ")]
         [SerializeField] private CoolTimeEffect _coolTimeEffect;
@@ -94,6 +94,13 @@ namespace PF.PJT.Duet
                 _animationEvents.OnNotify += _animationEvents_OnNotify;
                 _animationEvents.OnEnterNotifyState += _animationEvents_OnEnterNotifyState;
                 _animationEvents.OnExitNotifyState += _animationEvents_OnExitNotifyState;
+
+                _ability._arrowPoolContainer.Initialization();
+                _ability._explosivePoolContainer.Initialization();
+
+                _ability._onShootCue.Initialization();
+                _ability._onHitCue.Initialization();
+                _ability._onExplosiveCue.Initialization();
             }
 
             public override bool CanActiveAbility()

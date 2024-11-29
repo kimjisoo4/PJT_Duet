@@ -113,6 +113,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _animationEvents.OnCanceled += _animationPlayer_OnCanceled;
                 _animationEvents.OnFailed += _animationPlayer_OnFailed;
                 _animationEvents.OnNotify += _animationPlayer_OnNotify;
+
+                _ability._onWimdmillCue.Initialization();
+                _ability._onAttackCue.Initialization();
+                _ability._onHitToOtherCue.Initialization();
+                _ability._onSuccessedPlayerHit.Initialization();
             }
 
 

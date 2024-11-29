@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3706140616482055956}
   m_Layer: 0
-  m_Name: Door_R
+  m_Name: Door_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3616514878787657812}
   m_Layer: 0
-  m_Name: Door_L
+  m_Name: Door_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -342,16 +342,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8979700793585062258, guid: 8b55b6c4e19f2af4e831f0d7d137e332,
         type: 3}
-      propertyPath: _onClosedDoor.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 4362970285725860614}
-    - target: {fileID: 8979700793585062258, guid: 8b55b6c4e19f2af4e831f0d7d137e332,
-        type: 3}
-      propertyPath: _onOpenedDoor.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 4362970285725860614}
-    - target: {fileID: 8979700793585062258, guid: 8b55b6c4e19f2af4e831f0d7d137e332,
-        type: 3}
       propertyPath: _onClosedDoor.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
@@ -417,39 +407,7 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 129429363396417422}
-    - targetCorrespondingSourceObject: {fileID: 6417458001761042803, guid: 8b55b6c4e19f2af4e831f0d7d137e332,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4362970285725860614}
   m_SourcePrefab: {fileID: 100100000, guid: 8b55b6c4e19f2af4e831f0d7d137e332, type: 3}
---- !u!1 &2450553144436823224 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6417458001761042803, guid: 8b55b6c4e19f2af4e831f0d7d137e332,
-    type: 3}
-  m_PrefabInstance: {fileID: 8866876371501782475}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &4362970285725860614
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2450553144436823224}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1e1e6b5ad8948f5458afff775cd6ed47, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 1
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5438680681983283067 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3492376958326512304, guid: 8b55b6c4e19f2af4e831f0d7d137e332,
@@ -489,9 +447,64 @@ MonoBehaviour:
   _onFinishedCloseDoor:
     m_PersistentCalls:
       m_Calls: []
-  _animator: {fileID: 4362970285725860614}
-  _openAnim: Open
-  _closeAnim: Close
+  _leftDoor: {fileID: 3706140616482055956}
+  _rightDoor: {fileID: 3616514878787657812}
+  _openDuration: 1
+  _openAngle: {x: 0, y: 150, z: 0}
+  _openEase:
+    _ease: 30
+    _curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  _closeDuration: 1
+  _closeAngle: {x: 0, y: 0, z: 0}
+  _closeEase:
+    _ease: 30
+    _curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
 --- !u!4 &6781021652697009034 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2672462314201407041, guid: 8b55b6c4e19f2af4e831f0d7d137e332,

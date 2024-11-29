@@ -77,7 +77,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             _timer.UpdateTimer(deltaTime);
         }
 
-        public void Activate(GameObject newOwner, IAbilitySpec spawnAbility, IEnumerable<IGameplayTag> ownedTags = null)
+        public void Activate(GameObject newOwner, IAbilitySpec spawnAbility, IEnumerable<GameplayTag> ownedTags = null)
         {
             _owner = newOwner;
             _abilitySpec = spawnAbility;

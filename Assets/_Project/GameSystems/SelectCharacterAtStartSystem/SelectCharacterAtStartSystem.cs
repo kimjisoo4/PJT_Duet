@@ -29,6 +29,8 @@ namespace PF.PJT.Duet
             foreach (var selectCharacter in _selectCharacters)
             {
                 selectCharacter.OnSubmited += SelectCharacter_OnSubmited;
+                selectCharacter.OnFinishedInactivate += SelectCharacterAtStartSystem_OnFinishedInactivate;
+                selectCharacter.Init();
             }
 
             _selectCharacterUIActor.SetActive(false);
@@ -118,7 +120,6 @@ namespace PF.PJT.Duet
                 }
 
                 selectCharacter.Activate();
-                selectCharacter.OnFinishedInactivate += SelectCharacterAtStartSystem_OnFinishedInactivate;
             }
 
             _activeUIInputVariable.Add(gameObject);

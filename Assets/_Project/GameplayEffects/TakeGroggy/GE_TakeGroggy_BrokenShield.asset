@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 776e5fb699d4dca41995901a29755c6f, type: 3}
+  m_Name: GE_TakeGroggy_BrokenShield
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _effectType: 1
+  _duration: 5
+  _unscaledTime: 0
+  _effectTag: {fileID: 11400000, guid: 627b1c7401fe0cf459ae668e700dc6e8, type: 2}
+  _attributeTags: []
+  _conditionTags:
+    requireds: []
+    obstacleds:
+    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+  _grantTags:
+    owneds:
+    - {fileID: 11400000, guid: 2881baa0104907349b61679ce50a8574, type: 2}
+    blocks: []
+  _cancelEffectTags: []

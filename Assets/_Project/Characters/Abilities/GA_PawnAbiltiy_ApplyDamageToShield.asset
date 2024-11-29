@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 389db5d9aa1e7b64cab832df14945a41, type: 3}
+  m_Name: GA_PawnAbiltiy_ApplyDamageToShield
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _id: GA_PawnAbiltiy_ApplyDamageToShield
+  abilityTag: {fileID: 11400000, guid: fcd993ed5198a7e489a0a2eef0c4e873, type: 2}
+  attributeTags: []
+  conditionTags:
+    requireds: []
+    obstacleds:
+    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+    - {fileID: 11400000, guid: 27d736be509dae14d8fdcf133bc7a0c2, type: 2}
+    - {fileID: 11400000, guid: 5f28e214a00f9fb499e2305b4fd23ca3, type: 2}
+  grantTags:
+    owneds:
+    - {fileID: 11400000, guid: ad6c3d6668571ff4cbdcefdb4e2be194, type: 2}
+    blocks: []
+  cancelAbilityTags: []
+  _shieldStatus: {fileID: 11400000, guid: e0dfd0412922d04469cbac753e50f33b, type: 2}
+  _brokenShieldCue:
+    Cue: {fileID: 11400000, guid: 2726f21bdf064d648ae3ddf0ffac721a, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    Volume: 1
+  _brokenShieldPoint: {fileID: 11400000, guid: ca42550498d3f3d4a90452c1994408c4, type: 2}
+  _gameplayEffects:
+  - {fileID: 11400000, guid: 8bb8dcb73afd918469c9b20b500ff4bf, type: 2}

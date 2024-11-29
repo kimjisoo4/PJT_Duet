@@ -11,7 +11,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
     public class FootstepEffectAbility : GASAbility
     {
         [Header(" [ Footstep Effect Ability ] ")]
-        [SerializeField] private GameplayTagSO _footstepTriggerTag;
+        [SerializeField] private GameplayTag _footstepTriggerTag;
         [SerializeField] private FGameplayCue _footstepCue;
 
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
@@ -43,7 +43,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                 GameplayTagSystem.OnTriggeredTag -= GameplayTagSystem_OnTriggeredTag;
             }
 
-            private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag, object data = null)
+            private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag, object data = null)
             {
                 if (!IsPlaying)
                     return;

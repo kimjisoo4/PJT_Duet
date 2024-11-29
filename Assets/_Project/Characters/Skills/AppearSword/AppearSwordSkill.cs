@@ -283,6 +283,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _stateMachine.SetDefaultState(EState.JumpMovement, _jumpMovementState);
                 _stateMachine.AddState(EState.Attack, _attackState);
 
+
+                _ability._onAbilityCue.Initialization();
+                _ability._onImpactCue.Initialization();
+                _ability._onHitToOtherCue.Initialization();
+                _ability._onSuccessedPlayerHit.Initialization();
             }
 
             public override bool CanActiveAbility()

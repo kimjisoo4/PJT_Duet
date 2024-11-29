@@ -9,7 +9,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
     public class TriggerShaderFloatPropertyAbility : GASAbility
     {
         [Header(" [ Trigger Shader Float Property  Ability ] ")]
-        [SerializeField] private GameplayTagSO _onTriggerTag;
+        [SerializeField] private GameplayTag _onTriggerTag;
         [SerializeField] private string _propertyName = "_Alpha";
         [SerializeField] private float _fadeInTime = 0.5f;
         [SerializeField] private float _fadeOutTime = 0.5f;
@@ -161,7 +161,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                     material.SetFloat(_propertyID, value);
                 }
             }
-            private void GameplayTagSystem_OnTriggeredTag(StudioScor.GameplayTagSystem.IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag, object data = null)
+            private void GameplayTagSystem_OnTriggeredTag(StudioScor.GameplayTagSystem.IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag, object data = null)
             {
                 if (_ability._onTriggerTag != gameplayTag)
                     return;

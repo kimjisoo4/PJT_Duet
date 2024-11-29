@@ -16,7 +16,9 @@ MonoBehaviour:
   _id: Data_CharacterInformation_Archer
   _actor: {fileID: 7813761650890610640, guid: 6030078326f66d049a1fffea31728042, type: 3}
   _name: Archer
-  _description: 
+  _description: Archer is a ranged class that uses a bow. They can attack with explosive
+    arrows and, through tagging, retreat backward while attacking to slow enemies
+    within the area.
   _icon: {fileID: 21300000, guid: 86795f1239461ac4fac4797662180c5c, type: 3}
   _appearSkills: []
   _passiveSkills: []

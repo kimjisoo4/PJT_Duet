@@ -12,9 +12,8 @@ namespace PF.PJT.Duet
         [SerializeField] private RoomState[] _roomStates;
 
         [Header(" Events ")]
-        [SerializeField] private bool _useUnityEvent = false;
-        [SerializeField] private UnityEvent _onStartedRoom;
-        [SerializeField] private UnityEvent _onFinishedRoom;
+        [SerializeField] private ToggleableUnityEvent _onStartedRoom;
+        [SerializeField] private ToggleableUnityEvent _onFinishedRoom;
 
         private void Start()
         {
@@ -96,13 +95,11 @@ namespace PF.PJT.Duet
 
         private void Inovke_OnStartedRoom()
         {
-            if (_useUnityEvent)
-                _onStartedRoom?.Invoke();
+            _onStartedRoom.Invoke();
         }
         private void Invoke_OnFInishedRoom()
         {
-            if (_useUnityEvent)
-                _onFinishedRoom?.Invoke();
+            _onFinishedRoom.Invoke();
         }
     }
 }

@@ -52,7 +52,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private bool _shotAnimFixedTransition = false;
 
         [Header(" Turn ")]
-        [SerializeField] private GameplayTagSO _turnTag;
+        [SerializeField] private GameplayTag _turnTag;
 
         [Header(" Projectile ")]
         [SerializeField] private PoolContainer _projectile;
@@ -355,6 +355,15 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _stateMachine.AddState(EState.Charge, _chargeState);
                 _stateMachine.AddState(EState.Shoot, _shootState);
 
+                _ability._projectile.Initialization();
+                _ability._explosionPool.Initialization();
+
+                _ability._spawnedCue.Initialization();
+
+                foreach (var shotCue in _ability._shotCues)
+                {
+                    shotCue.Initialization();
+                }
             }
             public override bool CanActiveAbility()
             {

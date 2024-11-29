@@ -12,9 +12,10 @@ namespace PF.PJT.Duet
         private object _data;
         public object Data => _data;
 
+        [ContextMenu(nameof(GetChildComponents), false, 1000000)]
         private void GetChildComponents()
         {
-            var updaters = GetComponents<DataUpdater>();
+            var updaters = GetComponentsInChildren<DataUpdater>(true);
 
             foreach (var updater in updaters)
             {

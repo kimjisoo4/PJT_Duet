@@ -3,18 +3,17 @@ using StudioScor.GameplayTagSystem;
 using StudioScor.StatusSystem;
 using StudioScor.Utilities;
 using UnityEngine;
-using UnityEngine.Pool;
 
 namespace PF.PJT.Duet.Pawn.PawnAbility
 {
-   
+
     [CreateAssetMenu(menuName = "Project/Duet/PawnAbility/Effect/new Apply Damage Ability", fileName = "GA_PawnAbiltiy_ApplyDamage")]
     public class ApplyDamageAbility : GASAbility
     {
         [Header(" Apply Damage Ability ")]
         [SerializeField] private StatusTag _hpTag;
         [SerializeField] private DamageResultEvent _damageResultEvent;
-        [SerializeField] private GameplayTagSO _onHitTriggerTag;
+        [SerializeField] private GameplayTag _onHitTriggerTag;
 
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
@@ -49,9 +48,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                 {
                     _damageableSystem.OnTakePointDamage -= _damageableSystem_OnTakePointDamage;
                 }
-                
             }
-
             private void _damageableSystem_OnTakePointDamage(IDamageableSystem damageable, DamageInfoData damageInfo)
             {
                 if (!IsPlaying)

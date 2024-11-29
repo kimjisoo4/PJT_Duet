@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b57819235a35c4e96fd521feae32a9, type: 3}
   m_Name: GA_PawnAbiltiy_FallDownKnockback
   m_EditorClassIdentifier: 
-  UseDebug: 1
+  UseDebug: 0
   _id: GA_PawnAbiltiy_FallDownKnockback
   abilityTag: {fileID: 11400000, guid: 8548a26b5b1991948b95554fdee986a0, type: 2}
   attributeTags: []

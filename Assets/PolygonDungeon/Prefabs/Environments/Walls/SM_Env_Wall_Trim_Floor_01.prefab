@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3339858}
   - component: {fileID: 2352226}
   - component: {fileID: 65160946206927962}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SM_Env_Wall_Trim_Floor_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

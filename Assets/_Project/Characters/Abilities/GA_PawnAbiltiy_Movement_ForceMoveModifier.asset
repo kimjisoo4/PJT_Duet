@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e11dde4a73802304fb0f08f3fc645b7b, type: 3}
   m_Name: GA_PawnAbiltiy_Movement_ForceMoveModifier
   m_EditorClassIdentifier: 
-  UseDebug: 1
+  UseDebug: 0
   _id: GA_PawnAbiltiy_Movement_ForceMoveModifier
   abilityTag: {fileID: 11400000, guid: 6a5e44a46db68d94fbf814755629c499, type: 2}
   attributeTags: []

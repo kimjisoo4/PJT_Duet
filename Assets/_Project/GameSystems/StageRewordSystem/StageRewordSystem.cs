@@ -11,8 +11,8 @@ namespace PF.PJT.Duet
     {
         [Header(" [ Stage Reword System ] ")]
         [SerializeField] private GameObject _stageRewordActor;
-        [SerializeField] private RewordDataComponent[] _rewordSelects;
-        [SerializeField] private RewordDataComponent _rewordInformation;
+        [SerializeField] private SelectRewordComponent[] _rewordSelects;
+        [SerializeField] private RewordInformationDisplay _rewordInformation;
         [Space(5f)]
         [SerializeField] private PlayerManager _playerManager;
         [Space(5f)]
@@ -28,8 +28,8 @@ namespace PF.PJT.Duet
         [SerializeField] private GameEvent _onStartedRewordSystem;
         [SerializeField] private GameEvent _onFinishedRewordSystem;
 
-
         private readonly List<ItemSO> _selectedRewords = new();
+        private int _remainWaitFinishedCount;
 
         private void Awake()
         {
@@ -37,19 +37,23 @@ namespace PF.PJT.Duet
 
             _onRequestRewordSystem.OnTriggerEvent += _onStageReword_OnTriggerEvent;
 
-            foreach (var rewordDisplay in _rewordSelects)
+            foreach (var selectReword in _rewordSelects)
             {
-                if(rewordDisplay.TryGetComponent(out ISubmitEventListener submitEventListener))
-                {
-                    submitEventListener.OnSubmited += SubmitEventListener_OnSubmited;
-                }
-                if(rewordDisplay.TryGetComponent(out ISelectEventListener selectEventListener))
-                {
-                    selectEventListener.OnSelected += SelectEventListener_OnSelected;
-                }
-                
+                selectReword.OnSelected += SelectReword_OnSelected;
+                selectReword.OnSubmited += SelectReword_OnSubmited;
+                selectReword.OnFinishedActivate += SelectReword_OnFinishedActivate;
+                selectReword.OnFinishedInactivate += SelectReword_OnFinishedInactivate;
+
+                selectReword.Init();
             }
+
+            _rewordInformation.OnFInishedActivate += _rewordInformation_OnFInishedActivate;
+            _rewordInformation.OnFInishedInactivate += _rewordInformation_OnFInishedInactivate;
+            _rewordInformation.Init();
         }
+
+        
+
         private void OnDestroy()
         {
             if (_onRequestRewordSystem)
@@ -59,22 +63,25 @@ namespace PF.PJT.Duet
 
             if(_rewordSelects is not null && _rewordSelects.Length > 0)
             {
-                foreach (var rewordDisplay in _rewordSelects)
+                foreach (var selectReword in _rewordSelects)
                 {
-                    if (!rewordDisplay)
+                    if (!selectReword)
                         continue;
 
-                    if (rewordDisplay.TryGetComponent(out ISubmitEventListener submitEventListener))
-                    {
-                        submitEventListener.OnSubmited -= SubmitEventListener_OnSubmited;
-                    }
-                    if (rewordDisplay.TryGetComponent(out ISelectEventListener selectEventListener))
-                    {
-                        selectEventListener.OnSelected -= SelectEventListener_OnSelected;
-                    }
+                    selectReword.OnSelected -= SelectReword_OnSelected;
+                    selectReword.OnSubmited -= SelectReword_OnSubmited;
+                    selectReword.OnFinishedActivate -= SelectReword_OnFinishedActivate;
+                    selectReword.OnFinishedInactivate -= SelectReword_OnFinishedInactivate;
                 }
             }
+
+            if(_rewordInformation)
+            {
+                _rewordInformation.OnFInishedActivate -= _rewordInformation_OnFInishedActivate;
+                _rewordInformation.OnFInishedInactivate -= _rewordInformation_OnFInishedInactivate;
+            }
         }
+
 
         [ContextMenu(nameof(OnStageReword), false, 10000000)]
         private void OnStageReword()
@@ -83,9 +90,12 @@ namespace PF.PJT.Duet
                 return;
 
             _selectedRewords.Clear();
+
+            _remainWaitFinishedCount = 0;
+
             for (int i = 0; i < _rewordSelects.Length; i++)
             {
-                var rewordDisplay = _rewordSelects[i];
+                var rewordSelect = _rewordSelects[i];
                 int targetIndex = Random.Range(0, _stageRewordDatas.Count);
                 var rewordData = _stageRewordDatas.ElementAtOrDefault(targetIndex);
 
@@ -95,27 +105,24 @@ namespace PF.PJT.Duet
                     _selectedRewords.Add(rewordData);
                 }
 
-                rewordDisplay.SetData(rewordData);
+                _remainWaitFinishedCount++;
+                rewordSelect.SetData(rewordData);
+                rewordSelect.Activate();
             }
 
             _stageRewordActor.SetActive(true);
             _activeUIVariable.Add(gameObject);
 
-            EventSystem.current.SetSelectedGameObject(_rewordSelects.ElementAt(Mathf.FloorToInt(_rewordSelects.Length * 0.5f)).gameObject);
-
             Invoke_OnStartedRewordSystem();
         }
+
 
         [ContextMenu(nameof(EndStageReword), false, 10000000)]
         private void EndStageReword()
         {
-            _stageRewordDatas.AddRange(_selectedRewords);
-            _selectedRewords.Clear();
+            _remainWaitFinishedCount = 0;
 
-            _stageRewordActor.SetActive(false);
-            _activeUIVariable.Remove(gameObject);
-
-            Invoke_OnFinishedRewordSystem();
+            _rewordInformation.Inactivate();
         }
 
         private void OnSubmitReword(ItemSO submitItem)
@@ -141,23 +148,64 @@ namespace PF.PJT.Duet
             OnStageReword();
         }
 
-        private void SelectEventListener_OnSelected(ISelectEventListener selectEventListener, UnityEngine.EventSystems.BaseEventData obj)
-        {
-            var reword = _rewordSelects.FirstOrDefault(x => x.gameObject == selectEventListener.gameObject);
 
-            if (!reword || !reword.ItemData)
+        private void SelectReword_OnSubmited(SelectRewordComponent selectRewordComponent)
+        {
+            if (!selectRewordComponent || !selectRewordComponent.ItemData)
                 return;
 
-            OnSelectReword(reword.ItemData);
+            OnSubmitReword(selectRewordComponent.ItemData);
         }
-        private void SubmitEventListener_OnSubmited(ISubmitEventListener submitEventListener, UnityEngine.EventSystems.BaseEventData obj)
-        {
-            var reword = _rewordSelects.FirstOrDefault(x => x.gameObject == submitEventListener.gameObject);
 
-            if (!reword || !reword.ItemData)
+        private void SelectReword_OnSelected(SelectRewordComponent selectRewordComponent)
+        {
+            if (!selectRewordComponent || !selectRewordComponent.ItemData)
                 return;
 
-            OnSubmitReword(reword.ItemData);
+            OnSelectReword(selectRewordComponent.ItemData);
+        }
+
+        private void SelectReword_OnFinishedActivate(SelectRewordComponent selectRewordComponent)
+        {
+            _remainWaitFinishedCount--;
+
+            if (_remainWaitFinishedCount <= 0)
+            {
+                _rewordInformation.Activate();
+            }
+        }
+
+        private void SelectReword_OnFinishedInactivate(SelectRewordComponent selectRewordComponent)
+        {
+            _remainWaitFinishedCount--;
+
+            if(_remainWaitFinishedCount <= 0)
+            {
+                _stageRewordDatas.AddRange(_selectedRewords);
+                _selectedRewords.Clear();
+
+                _stageRewordActor.SetActive(false);
+                _activeUIVariable.Remove(gameObject);
+
+                Invoke_OnFinishedRewordSystem();
+            }
+        }
+
+        private void _rewordInformation_OnFInishedActivate(RewordInformationDisplay rewordInformationDisplay)
+        {
+            if (!_rewordSelects.FirstOrDefault((x) => x.gameObject == EventSystem.current.currentSelectedGameObject))
+            {
+                EventSystem.current.SetSelectedGameObject(_rewordSelects.ElementAt(Mathf.FloorToInt(_rewordSelects.Length * 0.5f)).gameObject);
+            }
+        }
+
+        private void _rewordInformation_OnFInishedInactivate(RewordInformationDisplay rewordInformationDisplay)
+        {
+            foreach (var selectReword in _rewordSelects)
+            {
+                _remainWaitFinishedCount++;
+                selectReword.Inactivate();
+            }
         }
 
         private void Invoke_OnStartedRewordSystem()

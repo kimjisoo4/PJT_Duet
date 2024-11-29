@@ -15,12 +15,12 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
         [SerializeField][Range(0f, 1f)] private float _defaultRateValue = 1f;
 
         [Header(" Reset Status ")]
-        [SerializeField] private GameplayTagSO _resetTriggerTag;
+        [SerializeField] private GameplayTag _resetTriggerTag;
 
         [Header(" State Tag ")]
-        [SerializeField] private GameplayTagSO _fulledTag;
-        [SerializeField] private GameplayTagSO _consumedTag;
-        [SerializeField] private GameplayTagSO _emptiedTag;
+        [SerializeField] private GameplayTag _fulledTag;
+        [SerializeField] private GameplayTag _consumedTag;
+        [SerializeField] private GameplayTag _emptiedTag;
 
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
@@ -126,7 +126,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                         break;
                 }
             }
-            private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, IGameplayTag gameplayTag, object data = null)
+            private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag, object data = null)
             {
                 if (_ability._resetTriggerTag != gameplayTag)
                     return;
