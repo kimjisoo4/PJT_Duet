@@ -33,7 +33,7 @@ MonoBehaviour:
   cancelAbilityTags: []
   _icon: {fileID: 21300000, guid: a1b24ee49f7b3204caa5aa8c1bda288a, type: 3}
   _name: 
-  _skillType: 3
+  _skillType: 5
   _description: 
   _animationName: AppearPunch
   _fadeInTime: 0

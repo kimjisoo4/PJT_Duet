@@ -25,18 +25,12 @@ namespace PF.PJT.Duet
         {
             if (actor.TryGetComponent(out IPlayerController playerController))
             {
-                var newCharacter = Instantiate(_characterData.Actor);
+                var newCharacter = _characterData.Pool.Get();
+                newCharacter.transform.SetParent(null);
 
                 var character = newCharacter.GetComponent<ICharacter>();
 
-                var currentCharacter = playerController.CurrentCharacter;
-
                 playerController.AddCharacter(character);
-/*
-                playerController.SetCurrentCharacter(character, false);
-
-                playerController.RemoveCharacter(currentCharacter);
-*/
             }
         }
     }

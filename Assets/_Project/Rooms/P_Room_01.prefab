@@ -49,22 +49,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _stateMachine:
-    defaultState: {fileID: 0}
+    _defaultState: {fileID: 0}
+    _currentState: {fileID: 0}
   _roomStates: []
-  _doorActors:
-  - {fileID: 0}
-  - {fileID: 0}
-  _triggerActor: {fileID: 0}
-  _spawnEnemyPools:
-  - {fileID: 11400000, guid: 1926d896cf7d74f46a3c485158eba4f4, type: 2}
-  _spawnPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _spawnCount: 5
-  _rewordEvent: {fileID: 11400000, guid: d51b1fa71fafb81419ef3eab62379a0e, type: 2}
+  _onStartedRoom:
+    _useUnityEvent: 1
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: 689731b8e80ac87489640d92ea0d9a5b, type: 2}
+          m_TargetAssemblyTypeName: StudioScor.Utilities.GameEvent, StudioScor.Utilities
+          m_MethodName: Invoke
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  _onFinishedRoom:
+    _useUnityEvent: 1
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: cd43166fac0b9e842b8b20540d79cb8a, type: 2}
+          m_TargetAssemblyTypeName: StudioScor.Utilities.GameEvent, StudioScor.Utilities
+          m_MethodName: Invoke
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &5269727426373187369
 GameObject:
   m_ObjectHideFlags: 0

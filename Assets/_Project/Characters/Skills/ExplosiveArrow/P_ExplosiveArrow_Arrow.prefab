@@ -208,7 +208,7 @@ MonoBehaviour:
   _targetSpeed: 30
   _accelerationSpeed: 20
   _decelerationSpeed: 20
-  _traceRadius: 0.2
+  _traceRadius: 0.4
   _traceLayer: {fileID: 11400000, guid: f3a409a5ae9453c4f9258b6f9cb6a74c, type: 2}
   _trail: {fileID: 6298309644702345912}
   _lifeTime: 1
@@ -314,7 +314,7 @@ MonoBehaviour:
   _trailSphereCast:
     <UseDebug>k__BackingField: 0
     _owner: {fileID: 7322741812561779718}
-    _traceRadius: 0.2
+    _traceRadius: 0.4
     _traceLayer:
       serializedVersion: 2
       m_Bits: 0

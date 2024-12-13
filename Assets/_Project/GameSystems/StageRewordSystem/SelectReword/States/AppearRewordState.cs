@@ -31,14 +31,12 @@ namespace PF.PJT.Duet
         {
             base.EnterState();
 
+            _popUI.transform.localPosition = _popStartPosition;
+            _flipUI.transform.localScale = _flipStartScale;
+
             if (_sequence is null)
             {
                 _sequence = DOTween.Sequence().SetLink(gameObject).SetAutoKill(false);
-                _sequence.AppendCallback(() =>
-                {
-                    _popUI.transform.localPosition = _popStartPosition;
-                    _flipUI.transform.localScale = _flipStartScale;
-                });
                 _sequence.AppendInterval(_popDelay);
                 _sequence.Append(_popUI.DOLocalMove(_popEndPosition, _popDuration).SetTweenEase(_popEase));
 

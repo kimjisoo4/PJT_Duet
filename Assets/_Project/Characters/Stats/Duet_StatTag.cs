@@ -1,6 +1,7 @@
 ﻿using StudioScor.StatSystem;
 using StudioScor.Utilities;
 using UnityEngine;
+using UnityEngine.Localization;
 
 namespace PF.PJT.Duet
 {
@@ -8,8 +9,17 @@ namespace PF.PJT.Duet
     public class Duet_StatTag : StatTag, IDisplayName
     {
         [Header(" [ Duet Stat Tag ] ")]
+        [SerializeField] private LocalizedString _name;
         [SerializeField] private bool _useColor = false;
         [SerializeField][SCondition(nameof(_useColor))] private Color _color = Color.white;
-        string IDisplayName.Name => _useColor ? $"<b><color=#{ColorUtility.ToHtmlStringRGBA(_color)}> {Name} </color></b>" : $"<b>{Name}</b>";
+        string IDisplayName.Name
+        {
+            get
+            {
+                string statName = _name.GetLocalizedString();
+
+                return _useColor ? $"<b><color=#{ColorUtility.ToHtmlStringRGBA(_color)}>{statName}</color></b>" : $"<b>{statName}</b>";
+            }
+        }
     }
 }

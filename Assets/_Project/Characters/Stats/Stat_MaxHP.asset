@@ -12,7 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d30e06634dd286f47b155838796857b9, type: 3}
   m_Name: Stat_MaxHP
   m_EditorClassIdentifier: 
-  _name: Max Hp
-  _description: 
+  _id: Stat_MaxHP
+  _name:
+    m_TableReference:
+      m_TableCollectionName: GUID:e8133fe6c795f2b46a4d165c2d84b114
+    m_TableEntryReference:
+      m_KeyId: 3174734431129600
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _useColor: 0
   _color: {r: 1, g: 1, b: 1, a: 1}
+  references:
+    version: 2
+    RefIds: []

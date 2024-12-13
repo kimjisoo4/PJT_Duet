@@ -3,6 +3,7 @@ using StudioScor.GameplayTagSystem;
 using StudioScor.StatSystem;
 using StudioScor.StatusSystem;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 namespace PF.PJT.Duet.Pawn.PawnAbility
 {
@@ -13,9 +14,6 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
         [SerializeField] private StatTag _statTag;
         [SerializeField] private StatusTag _statusTag;
         [SerializeField][Range(0f, 1f)] private float _defaultRateValue = 1f;
-
-        [Header(" Reset Status ")]
-        [SerializeField] private GameplayTag _resetTriggerTag;
 
         [Header(" State Tag ")]
         [SerializeField] private GameplayTag _fulledTag;
@@ -30,6 +28,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
         public class Spec : GASAbilitySpec
         {
             protected new readonly AttributeAbility _ability;
+            private readonly ICharacter _character;
             private readonly IStatSystem _statSystem;
             private readonly IStatusSystem _statusSystem;
             private readonly Stat _stat;
@@ -39,6 +38,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
             {
                 _ability = ability as AttributeAbility;
 
+                _character = gameObject.GetComponent<ICharacter>();
                 _statSystem = gameObject.GetStatSystem();
                 _statusSystem = gameObject.GetStatusSystem();
 
@@ -50,22 +50,25 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
             {
                 base.OnGrantAbility();
 
-                AddOwnedTag(_status.CurrentState); 
+                AddOwnedTag(_status.CurrentState);
 
-                GameplayTagSystem.OnTriggeredTag += GameplayTagSystem_OnTriggeredTag;
+                _character.OnReseted += _character_OnReseted;
+
                 _status.OnChangedState += _status_OnChangedState;
                 _stat.OnChangedValue += _stat_OnChangedValue;
 
                 ForceActiveAbility();
             }
 
+
+
             protected override void OnRemoveAbility()
             {
                 base.OnRemoveAbility();
 
-                if(GameplayTagSystem is not null)
+                if(_character is not null)
                 {
-                    GameplayTagSystem.OnTriggeredTag -= GameplayTagSystem_OnTriggeredTag;
+                    _character.OnReseted -= _character_OnReseted;
                 }
 
                 if (_status is not null)
@@ -126,13 +129,10 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                         break;
                 }
             }
-            private void GameplayTagSystem_OnTriggeredTag(IGameplayTagSystem gameplayTagSystem, GameplayTag gameplayTag, object data = null)
+
+            private void _character_OnReseted(ICharacter character)
             {
-                if (_ability._resetTriggerTag != gameplayTag)
-                    return;
-
                 _status.SetValue(_stat.Value, _ability._defaultRateValue, true);
-
             }
 
             private void _stat_OnChangedValue(Stat stat, float currentValue, float prevValue)

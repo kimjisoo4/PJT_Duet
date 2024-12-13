@@ -14,12 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _id: Data_CharacterInformation_Knight
-  _actor: {fileID: 5244778159239284206, guid: 65d18a74094f930449cb0a344017b3c9, type: 3}
-  _name: Knight
-  _description: Knight is a melee class that wields a sword. They can charge forward
-    to pierce and attack enemies, and through tagging, perform a jumping attack that
-    slams the ground.
+  _pool: {fileID: 11400000, guid: 5ecb8e34139defe4f836325b06f24e3e, type: 2}
+  _name:
+    m_TableReference:
+      m_TableCollectionName: GUID:e8133fe6c795f2b46a4d165c2d84b114
+    m_TableEntryReference:
+      m_KeyId: 2862245306830848
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _description:
+    m_TableReference:
+      m_TableCollectionName: GUID:e8133fe6c795f2b46a4d165c2d84b114
+    m_TableEntryReference:
+      m_KeyId: 2862602577645568
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _icon: {fileID: 21300000, guid: d24bc4239349b2c4aabbf696a175b294, type: 3}
-  _appearSkills: []
-  _passiveSkills: []
-  _activeSkills: []
+  _activeSkills:
+  - {fileID: 11400000, guid: 358f4e3565ec4034499ddde921eed94d, type: 2}
+  _appearSkills:
+  - {fileID: 11400000, guid: b3ef8b9943ae14e41afa47cd8d81a284, type: 2}
+  _defaultSkills: []
+  references:
+    version: 2
+    RefIds: []

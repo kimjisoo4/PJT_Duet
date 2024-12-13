@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 
 namespace StudioScor.Utilities
 {
@@ -46,6 +47,10 @@ namespace StudioScor.Utilities
                 return default;
 
             return colliection.ElementAt(UnityEngine.Random.Range(0, colliection.Count()));
+        }
+        public static T[] RandomElements<T>(this IEnumerable<T> array, int count)
+        {
+            return array.ToArray().RandomElements(count);
         }
         public static T[] RandomElements<T>(this T[] array, int count)
         {

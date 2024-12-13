@@ -33,7 +33,7 @@ MonoBehaviour:
   cancelAbilityTags: []
   _icon: {fileID: 0}
   _name: Battle Cry
-  _skillType: 2
+  _skillType: 0
   _description: 
   _animationName: Hammer_BattleCry
   _blendInTime: 0.2

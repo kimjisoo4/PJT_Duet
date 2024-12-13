@@ -26,6 +26,8 @@ GameObject:
   - component: {fileID: 6046190132648609203}
   - component: {fileID: 8617892478365922569}
   - component: {fileID: 528085018313457959}
+  - component: {fileID: 974160074547047054}
+  - component: {fileID: 7648432178115730635}
   m_Layer: 6
   m_Name: P_Character
   m_TagString: Untagged
@@ -88,23 +90,93 @@ MonoBehaviour:
   UseDebug: 0
   _characterInformationData: {fileID: 11400000, guid: 78cc0381708ed794ca56d0bce1b2c839,
     type: 2}
+  _pooledObject: {fileID: 974160074547047054}
   _model: {fileID: 0}
   _autoSpawn: 1
-  _attackAbility: {fileID: 11400000, guid: d97d523f6a92c6642a1f3b28baab8003, type: 2}
-  _skillAbility: {fileID: 11400000, guid: 696493dc85b42214d9c8f1ae0fb7e237, type: 2}
-  _dashAbility: {fileID: 11400000, guid: 4ea00ee30e228e94d949280a09e57a35, type: 2}
-  _jumpAbility: {fileID: 0}
-  _subAbilities: []
   _inputAttackTag: {fileID: 11400000, guid: 241b0b1e98a4c3842b150d4a38a69637, type: 2}
   _inputSkillTag: {fileID: 11400000, guid: 69f31f611cfa4244b95dd20d471f0983, type: 2}
   _inputDashTag: {fileID: 11400000, guid: cb5ec0c08662bab4893e7bd59235ccfc, type: 2}
   _inputJumpTag: {fileID: 11400000, guid: 39f5ccf29f316944dbd43a2c7fd637a4, type: 2}
+  _attackAbility: {fileID: 11400000, guid: d97d523f6a92c6642a1f3b28baab8003, type: 2}
+  _dashAbility: {fileID: 11400000, guid: 4ea00ee30e228e94d949280a09e57a35, type: 2}
+  _jumpAbility: {fileID: 0}
+  _skillAbility: {fileID: 11400000, guid: 696493dc85b42214d9c8f1ae0fb7e237, type: 2}
+  _defaultAbilities: []
   _appearAbility: {fileID: 11400000, guid: 2da42ed5d99683342a380c6ede06f26c, type: 2}
   _leaveAbility: {fileID: 11400000, guid: d4820fd723c264d49ad72727c39239d6, type: 2}
-  _resetTriggerTag: {fileID: 11400000, guid: 903d481e2b5b3c74f9461acce4289fd3, type: 2}
   _enemyControllers: []
-  _onSpawned: {fileID: 0}
-  _onDead: {fileID: 0}
+  _onReseted:
+    _useUnityEvent: 1
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: 6645c706156fd5745be5b9ecf7b91f7c, type: 2}
+          m_TargetAssemblyTypeName: StudioScor.Utilities.GenericGameEvent`1[[UnityEngine.GameObject,
+            UnityEngine
+          m_MethodName: Invoke
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 6419800303973250403}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  _onSpawned:
+    _useUnityEvent: 1
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: 14ba934431c6b3c42898d47d70c513ab, type: 2}
+          m_TargetAssemblyTypeName: StudioScor.Utilities.GenericGameEvent`1[[UnityEngine.GameObject,
+            UnityEngine
+          m_MethodName: Invoke
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 6419800303973250403}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  _onDespawned:
+    _useUnityEvent: 1
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: c045d8b211a7f9a459959b1b15ab76d1, type: 2}
+          m_TargetAssemblyTypeName: StudioScor.Utilities.GenericGameEvent`1[[UnityEngine.GameObject,
+            UnityEngine
+          m_MethodName: Invoke
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 6419800303973250403}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  _onDead:
+    _useUnityEvent: 1
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: 011ff6cc49ca8ab44b380cbb326f9770, type: 2}
+          m_TargetAssemblyTypeName: StudioScor.Utilities.GenericGameEvent`1[[UnityEngine.GameObject,
+            UnityEngine
+          m_MethodName: Invoke
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 6419800303973250403}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &5849666587521794672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,3 +478,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _team: {fileID: 11400000, guid: cda9dcf1e88a13746a76d75b247455aa, type: 2}
+--- !u!114 &974160074547047054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6419800303973250403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35730cd99405cd74180e27123e3e76a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _poolContainer: {fileID: 0}
+  _useUnityEvent: 0
+  _unityEvents:
+    _onCreated:
+      m_PersistentCalls:
+        m_Calls: []
+    _onActivated:
+      m_PersistentCalls:
+        m_Calls: []
+    _onReleased:
+      m_PersistentCalls:
+        m_Calls: []
+--- !u!195 &7648432178115730635
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6419800303973250403}
+  m_Enabled: 0
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 5
+  m_Acceleration: 0
+  avoidancePriority: 50
+  m_AngularSpeed: 0
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

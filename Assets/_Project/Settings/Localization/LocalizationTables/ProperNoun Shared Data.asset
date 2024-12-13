@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: ProperNoun Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: ProperNoun
+  m_TableCollectionNameGuidString: e8133fe6c795f2b46a4d165c2d84b114
+  m_Entries:
+  - m_Id: 10221572096
+    m_Key: dev_kimjisoo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1036840390656
+    m_Key: player
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2862156807016448
+    m_Key: character_archer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2862245306830848
+    m_Key: character_knight
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2862247391399936
+    m_Key: character_fighter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2862505638891520
+    m_Key: character_archer_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2862602577645568
+    m_Key: character_knight_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2862606407045120
+    m_Key: character_fighter_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2863012503752704
+    m_Key: character_lizard_warrior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2863060520144896
+    m_Key: character_lizard_warrior_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2863293215936512
+    m_Key: character_ork_warrior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2863350531100672
+    m_Key: character_ork_warrior_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3174467627257856
+    m_Key: stat_attack_point
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3174623034609664
+    m_Key: stat_drag
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3174689531105280
+    m_Key: stat_gravity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3174691452096512
+    m_Key: stat_mass
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3174734431129600
+    m_Key: stat_max_hp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3174735945273344
+    m_Key: stat_max_shield
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3174737346170880
+    m_Key: stat_move_speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3176360294354944
+    m_Key: damagetype_normal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3176362567667712
+    m_Key: damagetype_fire
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 9107513274832257183
+  references:
+    version: 2
+    RefIds:
+    - rid: 9107513274832257183
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1733218577392

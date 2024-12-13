@@ -68,8 +68,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 46ab6d5c6b6d12147b6014f7c67aa6b8, type: 2}
+  m_sharedMaterial: {fileID: 9122284248838796878, guid: 46ab6d5c6b6d12147b6014f7c67aa6b8,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -93,7 +94,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 35.8
+  m_fontSize: 34.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -304,12 +305,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  useUnityEvent: 0
-  unityEvents:
-    OnEnteredState:
+  _onEnteredState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
-    OnExitedState:
+  _onExitedState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
   _rewordInformationDisplay: {fileID: 3142717364219606011}
@@ -363,12 +366,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  useUnityEvent: 0
-  unityEvents:
-    OnEnteredState:
+  _onEnteredState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
-    OnExitedState:
+  _onExitedState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
   _rewordInformationDisplay: {fileID: 3142717364219606011}
@@ -453,12 +458,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  useUnityEvent: 0
-  unityEvents:
-    OnEnteredState:
+  _onEnteredState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
-    OnExitedState:
+  _onExitedState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
   _rewordInformationDisplay: {fileID: 3142717364219606011}
@@ -562,8 +569,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Descrioption
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 46ab6d5c6b6d12147b6014f7c67aa6b8, type: 2}
+  m_sharedMaterial: {fileID: 9122284248838796878, guid: 46ab6d5c6b6d12147b6014f7c67aa6b8,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -694,12 +702,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  useUnityEvent: 0
-  unityEvents:
-    OnEnteredState:
+  _onEnteredState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
-    OnExitedState:
+  _onExitedState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
   _rewordInformationDisplay: {fileID: 3142717364219606011}
@@ -758,7 +768,8 @@ MonoBehaviour:
   UseDebug: 0
   _dataComponent: {fileID: 6487363216695682666}
   _stateMachine:
-    defaultState: {fileID: 8484608507774602803}
+    _defaultState: {fileID: 8484608507774602803}
+    _currentState: {fileID: 0}
   _activeTransitionState: {fileID: 4725240764179292006}
   _activeState: {fileID: 5105134602971191492}
   _inactiveTransitionState: {fileID: 4621103006059576110}

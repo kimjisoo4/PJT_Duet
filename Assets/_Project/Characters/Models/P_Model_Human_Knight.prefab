@@ -3651,6 +3651,11 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.00000009872016
       objectReference: {fileID: 0}
+    - target: {fileID: 616642413962791590, guid: 2d0e59dc287d12544ac1349a38ee5579,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1742163300093920466, guid: 2d0e59dc287d12544ac1349a38ee5579,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3705,6 +3710,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: P_Weapon_Sowrd_Broadsword
+      objectReference: {fileID: 0}
+    - target: {fileID: 1742163300094254756, guid: 2d0e59dc287d12544ac1349a38ee5579,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9215511714811070909, guid: 2d0e59dc287d12544ac1349a38ee5579,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

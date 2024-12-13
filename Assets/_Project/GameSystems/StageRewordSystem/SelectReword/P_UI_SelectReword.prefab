@@ -158,8 +158,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Enchant Fire
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 46ab6d5c6b6d12147b6014f7c67aa6b8, type: 2}
+  m_sharedMaterial: {fileID: 9122284248838796878, guid: 46ab6d5c6b6d12147b6014f7c67aa6b8,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -183,7 +184,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 29.4
+  m_fontSize: 30.15
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -290,12 +291,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  useUnityEvent: 0
-  unityEvents:
-    OnEnteredState:
+  _onEnteredState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
-    OnExitedState:
+  _onExitedState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
   _selectReword: {fileID: 4480303066329529572}
@@ -386,12 +389,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  useUnityEvent: 0
-  unityEvents:
-    OnEnteredState:
+  _onEnteredState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
-    OnExitedState:
+  _onExitedState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
   _selectReword: {fileID: 4480303066329529572}
@@ -597,12 +602,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  useUnityEvent: 0
-  unityEvents:
-    OnEnteredState:
+  _onEnteredState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
-    OnExitedState:
+  _onExitedState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
   _selectReword: {fileID: 4480303066329529572}
@@ -687,12 +694,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  useUnityEvent: 0
-  unityEvents:
-    OnEnteredState:
+  _onEnteredState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
-    OnExitedState:
+  _onExitedState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
   _selectReword: {fileID: 4480303066329529572}
@@ -848,7 +857,8 @@ MonoBehaviour:
   _uiEventActor: {fileID: 8345073884905245923}
   _dataContainer: {fileID: 8494016729528290456}
   _stateMachine:
-    defaultState: {fileID: 7760920642139586407}
+    _defaultState: {fileID: 7760920642139586407}
+    _currentState: {fileID: 0}
   _activeTransitionState: {fileID: 4648196714273257915}
   _activeState: {fileID: 1587009675495380965}
   _inactiveTransitionState: {fileID: 6941347195327622534}

@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Abilities Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Abilities
+  m_TableCollectionNameGuidString: 39d53074c4eb2284ca78960132cb5414
+  m_Entries:
+  - m_Id: 16857305088
+    m_Key: overflowing_power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 209073868800
+    m_Key: overflowing_power_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 210923556864
+    m_Key: encahnt_fire
+    m_Metadata:
+      m_Items: []
+  - m_Id: 514146570240
+    m_Key: 'encahnt_fire_description
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 751774863360
+    m_Key: blessing_of_the_wind
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855072182272
+    m_Key: blessing_of_the_wind_description
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 4654923487982911854
+  references:
+    version: 2
+    RefIds:
+    - rid: 4654923487982911854
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1733974731969

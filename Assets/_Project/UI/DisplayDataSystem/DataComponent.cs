@@ -4,7 +4,15 @@ using UnityEngine;
 
 namespace PF.PJT.Duet
 {
-    public class DataComponent : BaseMonoBehaviour
+    public interface IDataComponent
+    {
+        public GameObject gameObject { get; }
+        public Transform transform { get; }
+        public object Data { get; }
+        public void UpdateData(object data);
+    }
+
+    public class DataComponent : BaseMonoBehaviour, IDataComponent
     {
         [Header(" [ Data Component ] ")]
         [SerializeField] private List<DataUpdater> _updaters;

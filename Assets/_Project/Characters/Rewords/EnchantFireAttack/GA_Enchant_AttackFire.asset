@@ -25,8 +25,24 @@ MonoBehaviour:
     blocks: []
   cancelAbilityTags: []
   _icon: {fileID: 0}
-  _name: Encahnt Fire
-  _description: When an attack hits, it deals an additional {1}% of the {0} as {2}
+  _name:
+    m_TableReference:
+      m_TableCollectionName: GUID:39d53074c4eb2284ca78960132cb5414
+    m_TableEntryReference:
+      m_KeyId: 210923556864
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _description:
+    m_TableReference:
+      m_TableCollectionName: GUID:39d53074c4eb2284ca78960132cb5414
+    m_TableEntryReference:
+      m_KeyId: 514146570240
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _onAttackHitTag: {fileID: 11400000, guid: 9063c96f2eaa0b04aa9fd0ede7483ce0, type: 2}
   _takeDamageEffect: {fileID: 11400000, guid: 8f2d48f187e2f0a41b28acc2d2311d11, type: 2}
   _onHitCue:
@@ -35,3 +51,6 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 0.5, y: 0.5, z: 0.5}
     Volume: 0.5
+  references:
+    version: 2
+    RefIds: []

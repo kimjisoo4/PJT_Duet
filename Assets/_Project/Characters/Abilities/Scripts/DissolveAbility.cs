@@ -104,7 +104,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
 
                 if (_timer.IsFinished)
                 {
-                    gameObject.SetActive(false);
+                    _character.OnDispawn();
                 }
 
             }

@@ -9,6 +9,10 @@ namespace PF.PJT.Duet
 {
     public class StageRewordSystem : BaseMonoBehaviour
     {
+        public delegate void StageRewordEventHandler(StageRewordSystem stageRewordSystem);
+        public delegate void SelectRewordEventHandler(StageRewordSystem stageRewordSystem, ItemSO selectItem);
+
+
         [Header(" [ Stage Reword System ] ")]
         [SerializeField] private GameObject _stageRewordActor;
         [SerializeField] private SelectRewordComponent[] _rewordSelects;
@@ -29,31 +33,17 @@ namespace PF.PJT.Duet
         [SerializeField] private GameEvent _onFinishedRewordSystem;
 
         private readonly List<ItemSO> _selectedRewords = new();
+        private bool _wasInit;
         private int _remainWaitFinishedCount;
+
+        public event StageRewordEventHandler OnActivated;
+        public event StageRewordEventHandler OnInactivated;
+        public event SelectRewordEventHandler OnSelectedReword;
 
         private void Awake()
         {
-            _stageRewordActor.SetActive(false);
-
-            _onRequestRewordSystem.OnTriggerEvent += _onStageReword_OnTriggerEvent;
-
-            foreach (var selectReword in _rewordSelects)
-            {
-                selectReword.OnSelected += SelectReword_OnSelected;
-                selectReword.OnSubmited += SelectReword_OnSubmited;
-                selectReword.OnFinishedActivate += SelectReword_OnFinishedActivate;
-                selectReword.OnFinishedInactivate += SelectReword_OnFinishedInactivate;
-
-                selectReword.Init();
-            }
-
-            _rewordInformation.OnFInishedActivate += _rewordInformation_OnFInishedActivate;
-            _rewordInformation.OnFInishedInactivate += _rewordInformation_OnFInishedInactivate;
-            _rewordInformation.Init();
+            Init();
         }
-
-        
-
         private void OnDestroy()
         {
             if (_onRequestRewordSystem)
@@ -82,9 +72,34 @@ namespace PF.PJT.Duet
             }
         }
 
+        public void Init()
+        {
+            if (_wasInit)
+                return;
 
-        [ContextMenu(nameof(OnStageReword), false, 10000000)]
-        private void OnStageReword()
+            _wasInit = true;
+
+            _onRequestRewordSystem.OnTriggerEvent += _onStageReword_OnTriggerEvent;
+
+            foreach (var selectReword in _rewordSelects)
+            {
+                selectReword.OnSelected += SelectReword_OnSelected;
+                selectReword.OnSubmited += SelectReword_OnSubmited;
+                selectReword.OnFinishedActivate += SelectReword_OnFinishedActivate;
+                selectReword.OnFinishedInactivate += SelectReword_OnFinishedInactivate;
+
+                selectReword.Init();
+            }
+
+            _rewordInformation.OnFInishedActivate += _rewordInformation_OnFInishedActivate;
+            _rewordInformation.OnFInishedInactivate += _rewordInformation_OnFInishedInactivate;
+            _rewordInformation.Init();
+
+            _stageRewordActor.SetActive(false);
+        }
+
+        [ContextMenu(nameof(Activate), false, 10000000)]
+        public void Activate()
         {
             if (_stageRewordDatas.Count == 0)
                 return;
@@ -117,8 +132,8 @@ namespace PF.PJT.Duet
         }
 
 
-        [ContextMenu(nameof(EndStageReword), false, 10000000)]
-        private void EndStageReword()
+        [ContextMenu(nameof(Inactivate), false, 10000000)]
+        public void Inactivate()
         {
             _remainWaitFinishedCount = 0;
 
@@ -133,7 +148,7 @@ namespace PF.PJT.Duet
                 {
                     _selectedRewords.Remove(submitItem);
 
-                    EndStageReword();
+                    Invoke_OnSelectedReword(submitItem);
                 }
             }
         }
@@ -143,18 +158,21 @@ namespace PF.PJT.Duet
             _rewordInformation.SetData(selectItem);
         }
 
-        private void _onStageReword_OnTriggerEvent()
-        {
-            OnStageReword();
-        }
-
-
         private void SelectReword_OnSubmited(SelectRewordComponent selectRewordComponent)
         {
+            if (_remainWaitFinishedCount != 0)
+                return;
+
             if (!selectRewordComponent || !selectRewordComponent.ItemData)
                 return;
 
             OnSubmitReword(selectRewordComponent.ItemData);
+        }
+
+
+        private void _onStageReword_OnTriggerEvent()
+        {
+            Activate();
         }
 
         private void SelectReword_OnSelected(SelectRewordComponent selectRewordComponent)
@@ -204,23 +222,40 @@ namespace PF.PJT.Duet
             foreach (var selectReword in _rewordSelects)
             {
                 _remainWaitFinishedCount++;
+
                 selectReword.Inactivate();
             }
         }
 
+        private void Invoke_OnSelectedReword(ItemSO selectedItem)
+        {
+            Log($"{nameof(OnSelectedReword)} - {selectedItem}");
+
+            OnSelectedReword?.Invoke(this, selectedItem);
+        }
+
         private void Invoke_OnStartedRewordSystem()
         {
+            Log(nameof(OnActivated));
+
             if (_onStartedRewordSystem)
             {
                 _onStartedRewordSystem.Invoke();
             }
+
+            OnActivated?.Invoke(this);
         }
+
         private void Invoke_OnFinishedRewordSystem()
         {
+            Log(nameof(OnInactivated));
+
             if (_onFinishedRewordSystem)
             {
                 _onFinishedRewordSystem.Invoke();
             }
+
+            OnInactivated?.Invoke(this);
         }
     }
 }

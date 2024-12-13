@@ -25,7 +25,7 @@ namespace StudioScor.AbilitySystem
         }
         #endregion
 
-        public static bool HasAbility(this IAbilitySystem abilitySystem, Ability ability)
+        public static bool HasAbility(this IAbilitySystem abilitySystem, IAbility ability)
         {
             return abilitySystem.Abilities.ContainsKey(ability);
         }
@@ -43,7 +43,7 @@ namespace StudioScor.AbilitySystem
         }
 
         #region Get Ability Spec
-        public static IAbilitySpec GetAbilitySpec(this IAbilitySystem abilitySystem, Ability ability)
+        public static IAbilitySpec GetAbilitySpec(this IAbilitySystem abilitySystem, IAbility ability)
         {
             return abilitySystem.Abilities[ability];
         }
@@ -60,7 +60,7 @@ namespace StudioScor.AbilitySystem
             return null;
         }
 
-        public static bool TryGetAbilitySpec(this IAbilitySystem abilitySystem, Ability abilitym, out IAbilitySpec spec)
+        public static bool TryGetAbilitySpec(this IAbilitySystem abilitySystem, IAbility abilitym, out IAbilitySpec spec)
         {
             return abilitySystem.Abilities.TryGetValue(abilitym, out spec);
         }

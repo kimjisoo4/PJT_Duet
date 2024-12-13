@@ -36,7 +36,7 @@ MonoBehaviour:
   cancelAbilityTags: []
   _icon: {fileID: 21300000, guid: 69093eb85851a134282c3101604941f1, type: 3}
   _name: 
-  _skillType: 2
+  _skillType: 4
   _description: 
   _rushAnimationName: RushThrust
   _fadeInTime: 0.2

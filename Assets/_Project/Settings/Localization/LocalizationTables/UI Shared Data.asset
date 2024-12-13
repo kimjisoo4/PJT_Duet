@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: UI Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: UI
+  m_TableCollectionNameGuidString: 0b5097ec649055a4db8796c6aa4e9887
+  m_Entries:
+  - m_Id: 61035909120
+    m_Key: gameover_all_you_characters_are_dead
+    m_Metadata:
+      m_Items: []
+  - m_Id: 152568205312
+    m_Key: gameover_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1218651230208
+    m_Key: stageclear_title
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 4654923494065963914
+  references:
+    version: 2
+    RefIds:
+    - rid: 4654923494065963914
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1734006622932

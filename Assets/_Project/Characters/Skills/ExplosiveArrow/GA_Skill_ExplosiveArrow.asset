@@ -35,7 +35,7 @@ MonoBehaviour:
   cancelAbilityTags: []
   _icon: {fileID: 21300000, guid: 17c665723783e4543b1550ec735b0572, type: 3}
   _name: Explosive Arrow
-  _skillType: 2
+  _skillType: 4
   _description: 
   _animationName: ExplosiveArrow
   _fadeInTime: 0.2

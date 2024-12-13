@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Abilities_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 39d53074c4eb2284ca78960132cb5414, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 16857305088
+    m_Localized: Overflowing Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 209073868800
+    m_Localized: You have a lot of energy all over your body. It increases your {0}
+      by {1}%.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 210923556864
+    m_Localized: Encahnt Fire
+    m_Metadata:
+      m_Items: []
+  - m_Id: 514146570240
+    m_Localized: When an attack hits, it deals an additional {1}% of the {0} as {2}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 751774863360
+    m_Localized: Blessing of the wind
+    m_Metadata:
+      m_Items: []
+  - m_Id: 855072182272
+    m_Localized: Your body will become a little lighter. It will increase your travel
+      {0} by {1}%.
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

@@ -1,5 +1,4 @@
-﻿using PF.PJT.Duet.Pawn;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace PF.PJT.Duet

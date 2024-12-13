@@ -1,8 +1,9 @@
-﻿using StudioScor.AbilitySystem;
+﻿using PF.PJT.Duet.Pawn.PawnSkill;
+using StudioScor.AbilitySystem;
 using StudioScor.Utilities;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.Localization;
 
 namespace PF.PJT.Duet.Pawn
 {
@@ -11,23 +12,25 @@ namespace PF.PJT.Duet.Pawn
     {
         [Header(" [ Character Information Data ] ")]
         [SerializeField] private string _id;
-        [SerializeField] private GameObject _actor;
-        [SerializeField] private string _name;
-        [SerializeField][TextArea]private string _description;
+        [SerializeField] private PoolContainer _pool;
+        [SerializeField] private LocalizedString _name;
+        [SerializeField] private LocalizedString _description;
         [SerializeField] private Sprite _icon;
-        [SerializeField] private Ability[] _appearSkills;
-        [SerializeField] private Ability[] _passiveSkills;
-        [SerializeField] private Ability[] _activeSkills;
+
+        [Header(" Skills ")]
+        [SerializeField] private CharacterSkill[] _activeSkills;
+        [SerializeField] private CharacterSkill[] _appearSkills;
+        [SerializeField] private CharacterSkill[] _defaultSkills;
 
 
         public string ID => _id;
-        public string Name => _name;
-        public string Description => _description;
+        public string Name => _name.GetLocalizedString();
+        public string Description => _description.GetLocalizedString();
         public Sprite Icon => _icon;
-        public GameObject Actor => _actor;
+        public PoolContainer Pool => _pool;
         public IReadOnlyCollection<Ability> AppearSkills => _appearSkills;
-        public IReadOnlyCollection<Ability> PassiveSkills => _passiveSkills;
         public IReadOnlyCollection<Ability> ActiveSkills => _activeSkills;
+        public IReadOnlyCollection<Ability> DefaultSkills => _defaultSkills;
 
 
         [ContextMenu(nameof(NameToID))]

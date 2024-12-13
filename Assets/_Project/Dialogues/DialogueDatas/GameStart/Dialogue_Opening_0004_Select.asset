@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3893df08973f61043ad337edb385cb8e, type: 3}
+  m_Name: Dialogue_Opening_0004_Select
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  _dialogueText:
+    m_TableReference:
+      m_TableCollectionName: GUID:d54ef40192185f346814204ad5ec6609
+    m_TableEntryReference:
+      m_KeyId: 1933608095744
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _nextDialogue: {fileID: 0}
+  _talkerName:
+    m_TableReference:
+      m_TableCollectionName: GUID:e8133fe6c795f2b46a4d165c2d84b114
+    m_TableEntryReference:
+      m_KeyId: 10221572096
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _dialogues:
+  - {fileID: 11400000, guid: 2cb168b25f202f0489ebaf334ebae12f, type: 2}
+  - {fileID: 11400000, guid: 3484be423a036694595ed5117d0a9e94, type: 2}
+  references:
+    version: 2
+    RefIds: []

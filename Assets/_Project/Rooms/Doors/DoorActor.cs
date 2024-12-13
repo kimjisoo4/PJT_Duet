@@ -1,40 +1,52 @@
 ﻿using StudioScor.Utilities;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace PF.PJT.Duet
 {
-    public class DoorActor : BaseMonoBehaviour, IDoor
+    [AddComponentMenu("Duet/Door/Door Actor")]
+    public class DoorActor : BaseMonoBehaviour, IDoorActor
     {
         [Header(" [ Door Actor ] ")]
         [SerializeField] private bool _isStartedOpen = true;
 
-        [Header(" Events ")]
-        [SerializeField] private bool _useUnityEvent;
-        
         [Header(" Open ")]
-        [SerializeField] private UnityEvent _onFailedOpenDoor;
-        [SerializeField] private UnityEvent _onStartedOpenDoor;
-        [SerializeField] private UnityEvent _onFinishedOpenDoor;
-        
+        [SerializeField] private ToggleableUnityEvent _onFailedOpenDoor;
+        [SerializeField] private ToggleableUnityEvent _onStartedOpenDoor;
+        [SerializeField] private ToggleableUnityEvent _onFinishedOpenDoor;
+
         [Header(" Close ")]
-        [SerializeField] private UnityEvent _onFailedCloseDoor;
-        [SerializeField] private UnityEvent _onStartedCloseDoor;
-        [SerializeField] private UnityEvent _onFinishedCloseDoor;
+        [SerializeField] private ToggleableUnityEvent _onFailedCloseDoor;
+        [SerializeField] private ToggleableUnityEvent _onStartedCloseDoor;
+        [SerializeField] private ToggleableUnityEvent _onFinishedCloseDoor;
+
+
+        private bool _wasInit = false;
 
         private bool _isOpened;
         public bool IsOpened => _isOpened;
 
-        public event IDoor.ChangeDoorStateEvent OnFailedOpenDoor;
-        public event IDoor.ChangeDoorStateEvent OnStartedOpenDoor;
-        public event IDoor.ChangeDoorStateEvent OnFinishedOpenDoor;
-        public event IDoor.ChangeDoorStateEvent OnStartedCloseDoor;
-        public event IDoor.ChangeDoorStateEvent OnFinishedCloseDoor;
-        public event IDoor.ChangeDoorStateEvent OnFailedCloseDoor;
+        public event IDoorActor.ChangeDoorStateEvent OnFailedOpenDoor;
+        public event IDoorActor.ChangeDoorStateEvent OnStartedOpenDoor;
+        public event IDoorActor.ChangeDoorStateEvent OnFinishedOpenDoor;
+        public event IDoorActor.ChangeDoorStateEvent OnStartedCloseDoor;
+        public event IDoorActor.ChangeDoorStateEvent OnFinishedCloseDoor;
+        public event IDoorActor.ChangeDoorStateEvent OnFailedCloseDoor;
 
         private void Awake()
         {
-            if(_isStartedOpen)
+            Init();
+        }
+
+        public void Init()
+        {
+            if (_wasInit)
+                return;
+
+            _wasInit = true;
+
+            OnInit();
+
+            if (_isStartedOpen)
             {
                 ForceOpen();
             }
@@ -43,6 +55,14 @@ namespace PF.PJT.Duet
                 ForceClose();
             }
         }
+
+        protected virtual void OnInit()
+        {
+
+        }
+
+        
+
         public bool TryOpen()
         {
             if (!CanOpen())
@@ -142,12 +162,13 @@ namespace PF.PJT.Duet
         {
         }
 
+
+
         private void Invoke_OnStartedOpenDoor()
         {
             Log(nameof(OnStartedOpenDoor));
 
-            if (_useUnityEvent)
-                _onStartedOpenDoor?.Invoke();
+            _onStartedOpenDoor.Invoke();
 
             OnStartedOpenDoor?.Invoke(this);
         }
@@ -155,8 +176,7 @@ namespace PF.PJT.Duet
         {
             Log(nameof(OnFinishedOpenDoor));
 
-            if (_useUnityEvent)
-                _onFinishedOpenDoor?.Invoke();
+            _onFinishedOpenDoor.Invoke();
 
             OnFinishedOpenDoor?.Invoke(this);
         }
@@ -164,8 +184,7 @@ namespace PF.PJT.Duet
         {
             Log(nameof(OnFailedOpenDoor));
 
-            if (_useUnityEvent)
-                _onFailedOpenDoor?.Invoke();
+            _onFailedOpenDoor.Invoke();
 
             OnFailedOpenDoor?.Invoke(this);
         }
@@ -173,8 +192,7 @@ namespace PF.PJT.Duet
         {
             Log(nameof(OnStartedCloseDoor));
 
-            if (_useUnityEvent)
-                _onStartedCloseDoor?.Invoke();
+            _onStartedCloseDoor.Invoke();
 
             OnStartedCloseDoor?.Invoke(this);
         }
@@ -182,8 +200,7 @@ namespace PF.PJT.Duet
         {
             Log(nameof(OnFinishedCloseDoor));
 
-            if (_useUnityEvent)
-                _onFinishedCloseDoor?.Invoke();
+            _onFinishedCloseDoor.Invoke();
 
             OnFinishedCloseDoor?.Invoke(this);
         }
@@ -191,11 +208,9 @@ namespace PF.PJT.Duet
         {
             Log(nameof(OnFailedCloseDoor));
 
-            if (_useUnityEvent)
-                _onFailedCloseDoor?.Invoke();
+            _onFailedCloseDoor.Invoke();
 
             OnFailedCloseDoor?.Invoke(this);
         }
     }
-
 }

@@ -8,18 +8,18 @@ namespace PF.PJT.Duet
         [Header(" [ Close Doors State ] ")]
         [SerializeField] private GameObject[] _doorActors;
 
-        private IDoor[] _doors;
+        private IDoorActor[] _doors;
         private int _remainClosedCount;
 
         private void Awake()
         {
-            _doors = new IDoor[_doorActors.Length];
+            _doors = new IDoorActor[_doorActors.Length];
 
             for (int i = 0; i < _doorActors.Length; i++)
             {
                 var doorActor = _doorActors[i];
 
-                _doors[i] = doorActor.GetComponent<IDoor>();
+                _doors[i] = doorActor.GetComponent<IDoorActor>();
             }
         }
 
@@ -41,14 +41,14 @@ namespace PF.PJT.Duet
             }
         }
 
-        private void Door_OnStaredCloseDoor(IDoor door)
+        private void Door_OnStaredCloseDoor(IDoorActor door)
         {
             door.OnStartedCloseDoor -= Door_OnStaredCloseDoor;
 
             _remainClosedCount++;
         }
 
-        private void Door_OnFinishedCloseDoor(IDoor door)
+        private void Door_OnFinishedCloseDoor(IDoorActor door)
         {
             door.OnFinishedCloseDoor -= Door_OnFinishedCloseDoor;
 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fc77a008d36de248a56e8ac7689f7f1, type: 3}
   m_Name: Cue_OnWindmill_Burst
   m_EditorClassIdentifier: 
-  UseDebug: 1
+  UseDebug: 0
   _cueFXs:
   - Cue: {fileID: 11400000, guid: 2908d366b3aa9e84199b9a4911f99684, type: 2}
     Position: {x: 0, y: 0, z: 0}

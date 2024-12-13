@@ -1,0 +1,237 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Dialogues Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Dialogues
+  m_TableCollectionNameGuidString: d54ef40192185f346814204ad5ec6609
+  m_Entries:
+  - m_Id: 8225427456
+    m_Key: game_opening_0001
+    m_Metadata:
+      m_Items: []
+  - m_Id: 156594737152
+    m_Key: game_opening_0002
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1818461868032
+    m_Key: game_opening_0003
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1933608095744
+    m_Key: game_opening_0004_select
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4813295587328
+    m_Key: game_opening_0010
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2004890292224
+    m_Key: game_opening_0011
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4816009302016
+    m_Key: game_opening_0020
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2008312844288
+    m_Key: game_opening_0021
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96213135314944
+    m_Key: dev_dialogue_0001
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96320157175808
+    m_Key: dev_dialogue_0002
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96411819495424
+    m_Key: dev_dialogue_0003
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2532538409422848
+    m_Key: dev_dialogue_0004
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803008
+    m_Key: dev_dialogue_0005
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803009
+    m_Key: dev_dialogue_0006
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803010
+    m_Key: dev_dialogue_0007
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803011
+    m_Key: dev_dialogue_0008
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803012
+    m_Key: dev_dialogue_0101
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803013
+    m_Key: dev_dialogue_0102
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803014
+    m_Key: dev_dialogue_0103
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803015
+    m_Key: dev_dialogue_0201
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803016
+    m_Key: dev_dialogue_0202
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803017
+    m_Key: dev_dialogue_0203
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803018
+    m_Key: dev_dialogue_0204
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803019
+    m_Key: dev_dialogue_0301
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803020
+    m_Key: dev_dialogue_0302
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803021
+    m_Key: dev_dialogue_0303
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803022
+    m_Key: dev_dialogue_0304
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803023
+    m_Key: dev_dialogue_0305
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803024
+    m_Key: dev_dialogue_0306
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803025
+    m_Key: dev_dialogue_0307
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2534840725803026
+    m_Key: dev_dialogue_0308
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533270491136
+    m_Key: dev_createcharacter_0001
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533308239872
+    m_Key: dev_createcharacter_0002
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533308239873
+    m_Key: dev_createcharacter_0003
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533308239874
+    m_Key: dev_createcharacter_0101
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533308239875
+    m_Key: dev_createcharacter_0102
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533308239876
+    m_Key: dev_createcharacter_0103
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533308239877
+    m_Key: dev_createcharacter_0104
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533308239878
+    m_Key: dev_createcharacter_0105
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533308239879
+    m_Key: dev_createcharacter_0106
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533308239880
+    m_Key: dev_createcharacter_0201
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533308239881
+    m_Key: dev_createcharacter_0202
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533308239882
+    m_Key: dev_createcharacter_0203
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533308239883
+    m_Key: dev_createcharacter_0204
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533308239884
+    m_Key: dev_createcharacter_0205
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533308239885
+    m_Key: dev_createcharacter_0301
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533308239886
+    m_Key: dev_createcharacter_0302
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533312434176
+    m_Key: dev_createcharacter_0401
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533312434177
+    m_Key: dev_createcharacter_0402
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2914533312434178
+    m_Key: dev_createcharacter_0403
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3387696739651584
+    m_Key: dev_createcharacter_0404
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3387696773206016
+    m_Key: dev_temporary
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 4654923285656765239
+  references:
+    version: 2
+    RefIds:
+    - rid: 4654923285656765239
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1733205626574

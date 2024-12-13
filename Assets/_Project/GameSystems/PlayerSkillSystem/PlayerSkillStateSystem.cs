@@ -8,6 +8,7 @@ using StudioScor.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 namespace PF.PJT.Duet
 {
@@ -64,17 +65,21 @@ namespace PF.PJT.Duet
                 _playerController = null;
             }
 
-
-            foreach (var abilitySystem in _abilitySystems.Values)
+            if(!_abilitySystems.IsNullOrEmpty())
             {
-                if (abilitySystem is not null)
+                for (int i = 0; i < _abilitySystems.Keys.Count; i++)
                 {
-                    abilitySystem.OnGrantedAbility -= _abilitySystem_OnGrantedAbility;
-                    abilitySystem.OnRemovedAbility -= _abilitySystem_OnRemovedAbility;
+                    var character = _abilitySystems.Keys.ElementAtOrDefault(i);
+
+                    if(character is not null)
+                    {
+                        character.OnChangedSkillSlot -= Character_OnChangedSkillSlot;
+                    }
                 }
+
+                _abilitySystems.Clear();
             }
 
-            _abilitySystems.Clear();
 
             if (_inActiveVariable)
             {
@@ -104,196 +109,175 @@ namespace PF.PJT.Duet
             _playerSkillStateUIActor.SetActive(false);
         }
 
-        private void _playerManager_OnChangedPlayerController(PlayerManager playerManager, IControllerSystem currentController, IControllerSystem prevController = null)
-        {
-            SetPlayerController();
-        }
+
 
         private void SetPlayerController()
         {
+            Log(nameof(SetPlayerController));
+
             _playerController = _playerManager.PlayerController.gameObject.GetComponent<IPlayerController>();
 
-            if (_playerController.CurrentCharacter is not null)
+            if (!_playerController.Characters.IsNullOrEmpty())
             {
-                _abilitySystems.Add(_playerController.CurrentCharacter, _playerController.CurrentCharacter.gameObject.GetAbilitySystem());
-            }
+                for(int i = 0; i <  _playerController.Characters.Count; i++)
+                {
+                    var character = _playerController.Characters[i];
 
-            if (_playerController.NextCharacter is not null)
-            {
-                _abilitySystems.Add(_playerController.NextCharacter, _playerController.NextCharacter.gameObject.GetAbilitySystem());
+                    _abilitySystems.Add(character, character.gameObject.GetAbilitySystem());
+                    character.OnChangedSkillSlot += Character_OnChangedSkillSlot;
+                }
             }
-
-            foreach (var abilitySystem in _abilitySystems.Values)
-            {
-                abilitySystem.OnGrantedAbility += _abilitySystem_OnGrantedAbility;
-                abilitySystem.OnRemovedAbility += _abilitySystem_OnRemovedAbility;
-            }
-
-            UpdateCurrentCharacter();
 
             _playerController.OnAddedCharacter += _playerController_OnAddedCharacter;
             _playerController.OnRemovedCharacter += _playerController_OnRemovedCharacter;
             _playerController.OnChangedCurrentCharacter += _playerController_OnChangedCurrentCharacter;
+
+            UpdateUI();
         }
 
-        private void _playerController_OnAddedCharacter(IPlayerController controller, ICharacter character)
-        {
-            var abilitySystem = character.gameObject.GetAbilitySystem();
-
-            _abilitySystems.Add(character, abilitySystem);
-
-            abilitySystem.OnGrantedAbility += _abilitySystem_OnGrantedAbility;
-            abilitySystem.OnRemovedAbility += _abilitySystem_OnRemovedAbility;
-
-            UpdateCurrentCharacter();
-        }
-        private void _playerController_OnRemovedCharacter(IPlayerController controller, ICharacter character)
-        {
-            if(_abilitySystems.TryGetValue(character, out IAbilitySystem abilitySystem))
-            {
-                _abilitySystems.Remove(character);
-
-                abilitySystem.OnGrantedAbility -= _abilitySystem_OnGrantedAbility;
-                abilitySystem.OnRemovedAbility -= _abilitySystem_OnRemovedAbility;
-            }
-
-            UpdateCurrentCharacter();
-        }
-
-        private void _playerController_OnChangedCurrentCharacter(IPlayerController controller, ICharacter currentCharacter, ICharacter prevCharacter)
-        {
-            UpdateCurrentCharacter();
-        }
 
         public void ClearSlots()
         {
+            Log(nameof(ClearSlots));
+
             _attackSlot.SetSkill(null, null);
             _skillSlot.SetSkill(null, null);
             _tagCharacterAppearSlot.SetSkill(null, null);
             _tagCharacterSlot.SetCharacter(null);
         }
 
-        private void UpdateCurrentCharacter()
+        private void UpdateUI()
         {
+            Log(nameof(UpdateUI));
+
             ClearSlots();
 
             UpdateSlotUIs();
         }
-
         private void UpdateSlotUIs()
         {
+            Log(nameof(UpdateSlotUIs));
+
             if(_playerController.CurrentCharacter is not null)
             {
-                if (_abilitySystems.TryGetValue(_playerController.CurrentCharacter, out IAbilitySystem currentAbilitySystem))
-                {
-                    for (int i = 0; i < currentAbilitySystem.Abilities.Count(); i++)
-                    {
-                        var ability = currentAbilitySystem.Abilities.ElementAt(i);
+                var character = _playerController.CurrentCharacter;
+                var slotSkills = character.SlotSkills;
+                var abilitySystem = _abilitySystems[character];
 
-                        SetSlot(ability.Key, ability.Value);
-                    }
+                for(int i = 0; i < slotSkills.Count; i++)
+                {
+                    var slotSkill = slotSkills.ElementAt(i);
+
+                    UpdateCurrentCharacterSlot(abilitySystem, slotSkill.Key, slotSkill.Value);
                 }
             }
-            
 
-            var tagCharacter = _playerController.NextCharacter;
-
-            _tagCharacterSlot.SetCharacter(tagCharacter);
-            
-
-            if (tagCharacter is not null)
+            if(_playerController.NextCharacter is not null)
             {
-                _tagCharacterStatusAmount.SetTarget(tagCharacter.gameObject);
+                var character = _playerController.NextCharacter;
+                var slotSkills = character.SlotSkills;
+                var abilitySystem = _abilitySystems[character];
 
-                if (_abilitySystems.TryGetValue(_playerController.NextCharacter, out IAbilitySystem tagAbilitySystem))
+                _tagCharacterSlot.SetCharacter(character);
+
+                for (int i = 0; i < slotSkills.Count; i++)
                 {
-                    for (int i = 0; i < tagAbilitySystem.Abilities.Count(); i++)
-                    {
-                        var ability = tagAbilitySystem.Abilities.ElementAt(i);
+                    var slotSkill = slotSkills.ElementAt(i);
 
-                        if (ability.Key is ISkill skill && skill.SkillType == ESkillType.Appear)
-                        {
-                            var skillState = ability.Value as ISkillState;
-
-                            _tagCharacterAppearSlot.SetSkill(skill, skillState);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                _tagCharacterAppearSlot.SetSkill(null, null);
-            }
-        }
-
-
-        private void SetSlot(IAbility ability, IAbilitySpec spec)
-        {
-            if (ability is ISkill skill)
-            {
-                var skillState = spec as ISkillState;
-
-                switch (skill.SkillType)
-                {
-                    case ESkillType.None:
-                        break;
-                    case ESkillType.Attack:
-                        _attackSlot.SetSkill(skill, skillState);
-                        break;
-                    case ESkillType.Skill:
-                        _skillSlot.SetSkill(skill, skillState);
-                        break;
-                    case ESkillType.Appear:
-                        break;
-                    default:
-                        break;
+                    UpdateNextCharacterSlot(abilitySystem, slotSkill.Key, slotSkill.Value);
                 }
             }
         }
 
-        private void _abilitySystem_OnRemovedAbility(IAbilitySystem abilitySystem, IAbilitySpec abilitySpec)
+        private void UpdateCurrentCharacterSlot(IAbilitySystem abilitySystem, ESkillSlot skillSlot, Ability skill)
         {
-            if (_playerController is null || _playerController.CurrentCharacter is null || _abilitySystems is null)
-                return;
-
-            if (!_abilitySystems.TryGetValue(_playerController.CurrentCharacter, out IAbilitySystem currentAbilitySystem))
-                return;
-
-            if (abilitySystem != currentAbilitySystem)
-                return;
-
-            if (abilitySpec.Ability is not ISkill skill)
-                return;
-
-            switch (skill.SkillType)
+            Log($"{nameof(UpdateCurrentCharacterSlot)} - Character : {abilitySystem.gameObject} || Skill Slot : {skillSlot} || Skill : {skill}");
+            switch (skillSlot)
             {
-                case ESkillType.None:
+                case ESkillSlot.None:
                     break;
-                case ESkillType.Attack:
-                    _attackSlot.SetSkill(null, null);
+                case ESkillSlot.Attack:
+                    _attackSlot.SetSkill(skill, abilitySystem.GetAbilitySpec(skill));
                     break;
-                case ESkillType.Skill:
-                    _skillSlot.SetSkill(null, null);
+                case ESkillSlot.Dash:
                     break;
-                case ESkillType.Appear:
+                case ESkillSlot.Jump:
+                    break;
+                case ESkillSlot.Appear:
+                    break;
+                case ESkillSlot.Leave:
+                    break;
+                case ESkillSlot.Skill_01:
+                    _skillSlot.SetSkill(skill, abilitySystem.GetAbilitySpec(skill));
                     break;
                 default:
                     break;
             }
         }
 
-        private void _abilitySystem_OnGrantedAbility(IAbilitySystem abilitySystem, IAbilitySpec abilitySpec)
+        private void UpdateNextCharacterSlot(IAbilitySystem abilitySystem, ESkillSlot skillSlot, Ability skill)
         {
-            if (_abilitySystems is null)
-                return;
+            Log($"{nameof(UpdateNextCharacterSlot)} - Character : {abilitySystem.gameObject} || Skill Slot : {skillSlot} || Skill : {skill}");
 
-            if (!_abilitySystems.TryGetValue(_playerController.CurrentCharacter, out IAbilitySystem currentAbilitySystem))
-                return;
+            switch (skillSlot)
+            {
+                case ESkillSlot.None:
+                    break;
+                case ESkillSlot.Attack:
+                    break;
+                case ESkillSlot.Dash:
+                    break;
+                case ESkillSlot.Jump:
+                    break;
+                case ESkillSlot.Appear:
+                    _tagCharacterAppearSlot.SetSkill(skill, abilitySystem.GetAbilitySpec(skill));
+                    break;
+                case ESkillSlot.Leave:
+                    break;
+                case ESkillSlot.Skill_01:
+                    break;
+                default:
+                    break;
+            }
+        }
 
-            if (abilitySystem != currentAbilitySystem)
-                return;
+        private void _playerManager_OnChangedPlayerController(PlayerManager playerManager, IControllerSystem currentController, IControllerSystem prevController = null)
+        {
+            SetPlayerController();
+        }
+        private void _playerController_OnAddedCharacter(IPlayerController controller, ICharacter character)
+        {
+            var abilitySystem = character.gameObject.GetAbilitySystem();
 
-            SetSlot(abilitySpec.Ability, abilitySpec);
+            _abilitySystems.Add(character, abilitySystem);
+
+            UpdateUI();
+        }
+        private void _playerController_OnRemovedCharacter(IPlayerController controller, ICharacter character)
+        {
+            _abilitySystems.Remove(character);
+
+            UpdateUI();
+        }
+
+        private void _playerController_OnChangedCurrentCharacter(IPlayerController controller, ICharacter currentCharacter, ICharacter prevCharacter)
+        {
+            UpdateUI();
+        }
+
+        private void Character_OnChangedSkillSlot(ICharacter character, ESkillSlot skillSlot)
+        {
+            var abilitySystem = _abilitySystems[character];
+            var slotSkill = character.SlotSkills.GetValueOrDefault(skillSlot);
+
+            if (character == _playerController.CurrentCharacter)
+            {
+                UpdateCurrentCharacterSlot(abilitySystem, skillSlot, slotSkill);
+            }
+            else if (character == _playerController.NextCharacter)
+            {
+                UpdateNextCharacterSlot(abilitySystem, skillSlot, slotSkill);
+            }
         }
     }
 }

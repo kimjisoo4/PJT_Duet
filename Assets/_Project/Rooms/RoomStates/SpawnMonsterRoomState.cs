@@ -1,4 +1,5 @@
-﻿using PF.PJT.Duet.Pawn;
+﻿using PF.PJT.Duet.CreateCharacterSystem;
+using PF.PJT.Duet.Pawn;
 using StudioScor.Utilities;
 using System.Linq;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace PF.PJT.Duet
     public class SpawnMonsterRoomState : RoomState
     {
         [Header(" [ Spawn Monster State ] ")]
-        [SerializeField] private PoolContainer[] _spawnEnemyPools;
+        [SerializeField] private CharacterInformationData[] _spawnEnemies;
         [SerializeField] private Transform[] _spawnPoints;
         [SerializeField] private int _spawnCount = 5;
 
@@ -18,9 +19,9 @@ namespace PF.PJT.Duet
 
         private void Awake()
         {
-            foreach (var pool in _spawnEnemyPools)
+            foreach (var spawnEnemy in _spawnEnemies)
             {
-                pool.Initialization();
+                spawnEnemy.Pool.Initialization();
             }
         }
 
@@ -43,20 +44,16 @@ namespace PF.PJT.Duet
                     break;
                 }
 
-                var spawnEnemyPool = _spawnEnemyPools[Random.Range(0, _spawnEnemyPools.Length)];
-                var enemy = spawnEnemyPool.Get();
+                _remainSpawnedCount++;
 
+                var enemyData = new CharacterData(_spawnEnemies[Random.Range(0, _spawnEnemies.Length)]);
+                var character = enemyData.CreateCharacter();
 
-                if (enemy.TryGetComponent(out ICharacter character))
-                {
-                    _remainSpawnedCount++;
+                character.Teleport(spawnPoint.position, spawnPoint.rotation);
 
-                    character.Teleport(spawnPoint.position, spawnPoint.rotation);
-                    character.ResetCharacter();
-                    character.OnSpawn();
+                character.OnSpawn();
 
-                    character.OnDead += Character_OnDead;
-                }
+                character.OnDead += Character_OnDead;
             }
         }
         public void OnClearedEnemys()

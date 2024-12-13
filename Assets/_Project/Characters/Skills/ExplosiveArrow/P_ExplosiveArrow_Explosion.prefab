@@ -51,7 +51,7 @@ MonoBehaviour:
   UseDebug: 0
   _pooledObject: {fileID: 7115417442108496530}
   _traceRadius: 3
-  _traceAngle: 45
+  _traceAngle: 180
   _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
   _explosionCue:
     Cue: {fileID: 11400000, guid: d7a7e2282730ee54b9e08b08d9dd3018, type: 2}

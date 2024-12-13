@@ -25,14 +25,11 @@ namespace PF.PJT.Duet
         {
             base.EnterState();
 
+            _pushUI.transform.localPosition = _pushStartPosition;
+
             if (_sequence is null)
             {
                 _sequence = DOTween.Sequence().SetLink(gameObject).SetAutoKill(false);
-                _sequence.AppendCallback(() =>
-                {
-                    _pushUI.transform.localPosition = _pushStartPosition;
-                });
-
                 _sequence.AppendInterval(_pushDelay);
                 _sequence.Append(_pushUI.DOLocalMove(_pushEndPosition, _pushDuration).SetTweenEase(_pushEase));
 

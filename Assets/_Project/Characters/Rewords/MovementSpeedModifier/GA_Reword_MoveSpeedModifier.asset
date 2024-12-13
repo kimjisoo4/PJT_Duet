@@ -24,10 +24,28 @@ MonoBehaviour:
     blocks: []
   cancelAbilityTags: []
   _icon: {fileID: 0}
-  _name: Blessing of the wind
-  _description: Your body will become a little lighter. It will increase your travel
-    {0} by {1}%.
+  _name:
+    m_TableReference:
+      m_TableCollectionName: GUID:39d53074c4eb2284ca78960132cb5414
+    m_TableEntryReference:
+      m_KeyId: 751774863360
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _description:
+    m_TableReference:
+      m_TableCollectionName: GUID:39d53074c4eb2284ca78960132cb5414
+    m_TableEntryReference:
+      m_KeyId: 855072182272
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statTag: {fileID: 11400000, guid: 99b0d60dd64574d46adad3e32e9e38ef, type: 2}
   _modifierType: 200
   _value: 0.1
   _order: 0
+  references:
+    version: 2
+    RefIds: []

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fd7fe5c28e3784478a9c05450420a7f, type: 3}
+  m_Name: SimplePool_Character_Archer
+  m_EditorClassIdentifier: 
+  UseDebug: 0
+  simplePoolObject: {fileID: 4099210122345842749, guid: 6030078326f66d049a1fffea31728042,
+    type: 3}
+  container: {fileID: 0}
+  startSize: 2
+  capacity: 3
+  maxSize: 10

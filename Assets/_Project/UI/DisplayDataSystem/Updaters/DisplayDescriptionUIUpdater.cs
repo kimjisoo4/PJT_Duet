@@ -1,9 +1,9 @@
-﻿using PF.PJT.Duet.Pawn;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 namespace PF.PJT.Duet
 {
+
     public class DisplayDescriptionUIUpdater : DataUpdater
     {
         [Header(" [ Display Description UI Updater ] ")]

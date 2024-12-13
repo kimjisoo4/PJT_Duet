@@ -24,10 +24,28 @@ MonoBehaviour:
     blocks: []
   cancelAbilityTags: []
   _icon: {fileID: 0}
-  _name: Overflowing Power
-  _description: You have a lot of energy all over your body. It increases your {0}
-    by {1}%.
+  _name:
+    m_TableReference:
+      m_TableCollectionName: GUID:39d53074c4eb2284ca78960132cb5414
+    m_TableEntryReference:
+      m_KeyId: 16857305088
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _description:
+    m_TableReference:
+      m_TableCollectionName: GUID:39d53074c4eb2284ca78960132cb5414
+    m_TableEntryReference:
+      m_KeyId: 209073868800
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statTag: {fileID: 11400000, guid: ec71c03f010d2164cadd48f171f12fd0, type: 2}
   _modifierType: 200
   _value: 0.1
   _order: 0
+  references:
+    version: 2
+    RefIds: []

@@ -20,7 +20,10 @@
         "GUID:fad5baa783a1f354786a8adf9da61674",
         "GUID:fd038cb290df8694eb5923edad409283",
         "GUID:73907d139b13f8a43b7e3e95c329d30a",
-        "GUID:20ee76f6d94ae4b0595f3ceb1c5359a7"
+        "GUID:20ee76f6d94ae4b0595f3ceb1c5359a7",
+        "GUID:b7f16b7c6a467cf4c9c16af106ead630",
+        "GUID:41dea1cd89972e84db7a544aac9610b5",
+        "GUID:eec0964c48f6f4e40bc3ec2257ccf8c5"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -29,6 +32,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.localization",
+            "expression": "1.5.3",
+            "define": "SCOR_ENABLE_LOCALIZATION"
+        }
+    ],
     "noEngineReferences": false
 }

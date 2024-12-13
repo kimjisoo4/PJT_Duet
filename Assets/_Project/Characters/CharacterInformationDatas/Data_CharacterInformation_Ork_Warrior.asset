@@ -14,10 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _id: Data_CharacterInformation_Ork_Warrior
-  _actor: {fileID: 6585499797873475288, guid: ff53cc10f1cd1334eb8e2640bb5bd6f8, type: 3}
-  _name: Ork Warrior
-  _description: 
+  _pool: {fileID: 11400000, guid: 60c1428a9cf6ea544bc11220e9888506, type: 2}
+  _name:
+    m_TableReference:
+      m_TableCollectionName: GUID:e8133fe6c795f2b46a4d165c2d84b114
+    m_TableEntryReference:
+      m_KeyId: 2863293215936512
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _description:
+    m_TableReference:
+      m_TableCollectionName: GUID:e8133fe6c795f2b46a4d165c2d84b114
+    m_TableEntryReference:
+      m_KeyId: 2863350531100672
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _icon: {fileID: 21300000, guid: d24bc4239349b2c4aabbf696a175b294, type: 3}
+  _activeSkills:
+  - {fileID: 11400000, guid: 6b59291d269a102439b44fe76cb29a9d, type: 2}
   _appearSkills: []
-  _passiveSkills: []
-  _activeSkills: []
+  _defaultSkills:
+  - {fileID: 11400000, guid: 11a8544dd55831c4b85f418a4b486573, type: 2}
+  references:
+    version: 2
+    RefIds: []

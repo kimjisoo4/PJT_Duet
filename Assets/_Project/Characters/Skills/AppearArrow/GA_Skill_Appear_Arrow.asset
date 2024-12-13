@@ -35,7 +35,7 @@ MonoBehaviour:
   cancelAbilityTags: []
   _icon: {fileID: 21300000, guid: e88f8e5e11321ac4eb0e2be1c1a72f28, type: 3}
   _name: 
-  _skillType: 3
+  _skillType: 5
   _description: 
   _animationName: AppearArrow
   _fadeInTime: 0

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6170865713464518456}
-  - component: {fileID: 8979700793585062258}
+  - component: {fileID: 6488285690432944959}
   m_Layer: 0
   m_Name: P_Door
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 2672462314201407041}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8979700793585062258
+--- !u!114 &6488285690432944959
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,12 +42,47 @@ MonoBehaviour:
   m_GameObject: {fileID: 3492376958326512304}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 811647a66524fe541a441fe1c09b2f17, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a298b023940783449271296615cd135, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  _door: {fileID: 6417458001761042803}
   _isStartedOpen: 1
+  _onFailedOpenDoor:
+    _useUnityEvent: 0
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  _onStartedOpenDoor:
+    _useUnityEvent: 0
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  _onFinishedOpenDoor:
+    _useUnityEvent: 0
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  _onFailedCloseDoor:
+    _useUnityEvent: 0
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  _onStartedCloseDoor:
+    _useUnityEvent: 0
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  _onFinishedCloseDoor:
+    _useUnityEvent: 0
+    _unityEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  _stateMachine:
+    defaultState: {fileID: 0}
+  _openTransitionState: {fileID: 0}
+  _openState: {fileID: 0}
+  _closeTransitionState: {fileID: 0}
+  _closeState: {fileID: 0}
 --- !u!1 &6417458001761042803
 GameObject:
   m_ObjectHideFlags: 0

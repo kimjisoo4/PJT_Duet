@@ -121,6 +121,9 @@ namespace PF.PJT.Duet
             if (!_itemData)
                 return;
 
+            if (_stateMachine.CurrentState != _activeState)
+                return;
+
             OnSubmited?.Invoke(this);
         }
     }

@@ -3075,6 +3075,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_Weapon_Blade
       objectReference: {fileID: 0}
+    - target: {fileID: 5130088777555371597, guid: 1cd86a5707fae684795be01920a06cb5,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8996789415938441672, guid: 1cd86a5707fae684795be01920a06cb5,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

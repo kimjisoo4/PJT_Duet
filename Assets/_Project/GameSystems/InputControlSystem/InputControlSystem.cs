@@ -9,15 +9,15 @@ namespace PF.PJT.Duet
     {
         [Header(" [ Input Control System ] ")]
         [SerializeField] private GameObjectListVariable _activeUIVariable;
-        private bool _isPlaying = false;
+        [SerializeField][Readonly] private EBoolean _state = EBoolean.None;
 
-        private void Awake()
-        {
-            var playerinput = PlayerInput.all.ElementAtOrDefault(0);
+        public bool UseUIInput => _state == EBoolean.True;
+        public bool UseGameInput => _state == EBoolean.False;
 
-            _activeUIVariable.OnAdded += _activeUIVariable_OnAdded;
-            _activeUIVariable.OnRemoved += _activeUIVariable_OnRemoved;
-        }
+#if UNITY_EDITOR
+        [SerializeField][Readonly]private bool _cursorVisible;
+        [SerializeField][Readonly]private CursorLockMode _cursorLockMode;
+#endif
 
         private void OnDestroy()
         {
@@ -30,18 +30,28 @@ namespace PF.PJT.Duet
 
         private void Start()
         {
+            UpdateUIControl();
+
+            _activeUIVariable.OnAdded += _activeUIVariable_OnAdded;
+            _activeUIVariable.OnRemoved += _activeUIVariable_OnRemoved;
+        }
+
+        private void UpdateUIControl()
+        {
             if (_activeUIVariable.Values.Count > 0)
                 OnUIInputControl();
             else
                 EndUIInputControl();
-
         }
 
         private void OnUIInputControl()
         {
-            Log(nameof(OnUIInputControl));
+            if (UseUIInput)
+                return;
 
-            _isPlaying = true;
+            _state = EBoolean.True;
+
+            Log(nameof(OnUIInputControl));
 
             var playerinput = PlayerInput.all.ElementAtOrDefault(0);
 
@@ -55,9 +65,12 @@ namespace PF.PJT.Duet
 
         private void EndUIInputControl()
         {
-            Log(nameof(EndUIInputControl));
+            if (UseGameInput)
+                return;
 
-            _isPlaying = false;
+            _state = EBoolean.False;
+
+            Log(nameof(EndUIInputControl));
 
             var playerinput = PlayerInput.all.ElementAtOrDefault(0);
 
@@ -73,29 +86,39 @@ namespace PF.PJT.Duet
         {
             if(visible)
             {
-                Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
             }
             else
             {
-                Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
+
+#if UNITY_EDITOR
+            _cursorVisible = Cursor.visible;
+            _cursorLockMode = Cursor.lockState;
+#endif
+
         }
 
         private void OnApplicationFocus(bool focus)
         {
             if (focus)
             {
-                if(_isPlaying)
+                switch (_state)
                 {
-                    SetCursorState(true);
+                    case EBoolean.None:
+                        break;
+                    case EBoolean.True:
+                        SetCursorState(true);
+                        break;
+                    case EBoolean.False:
+                        SetCursorState(false);
+                        break;
+                    default:
+                        break;
                 }
-                else
-                {
-                    SetCursorState(false);
-                }
-                
             }
             else
             {
@@ -105,23 +128,11 @@ namespace PF.PJT.Duet
 
         private void _activeUIVariable_OnAdded(ListVariableObject<GameObject> variable, GameObject value)
         {
-            if (_isPlaying)
-                return;
-
-            OnUIInputControl();
+            UpdateUIControl();
         }
         private void _activeUIVariable_OnRemoved(ListVariableObject<GameObject> variable, GameObject value)
         {
-            if (!_isPlaying)
-                return;
-
-            if (variable.Values.Count > 0)
-                return;
-
-            EndUIInputControl();
+            UpdateUIControl();
         }
-
-
-        
     }
 }

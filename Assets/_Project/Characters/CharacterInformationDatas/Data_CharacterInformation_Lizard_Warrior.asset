@@ -14,10 +14,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _id: Data_CharacterInformation_Lizard_Warrior
-  _actor: {fileID: 2319350652745536190, guid: 0cd221490e31f2c458e67483e1c67235, type: 3}
-  _name: Lizard Warrior
-  _description: 
+  _pool: {fileID: 11400000, guid: 1926d896cf7d74f46a3c485158eba4f4, type: 2}
+  _name:
+    m_TableReference:
+      m_TableCollectionName: GUID:e8133fe6c795f2b46a4d165c2d84b114
+    m_TableEntryReference:
+      m_KeyId: 2863012503752704
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _description:
+    m_TableReference:
+      m_TableCollectionName: GUID:e8133fe6c795f2b46a4d165c2d84b114
+    m_TableEntryReference:
+      m_KeyId: 2863060520144896
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _icon: {fileID: 21300000, guid: d24bc4239349b2c4aabbf696a175b294, type: 3}
-  _appearSkills: []
-  _passiveSkills: []
   _activeSkills: []
+  _appearSkills: []
+  _defaultSkills: []
+  references:
+    version: 2
+    RefIds: []
