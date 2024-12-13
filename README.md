@@ -76,7 +76,10 @@
 > &nbsp;  Boss 몬스터에 Super Armor Shield 추가.    
 > &nbsp;  몬스터에 Groggy 상태를 추가하여 특정 상태에 행동하지 않도록 수정.      
 > &nbsp;  행동 트리를 Unity Behavior 로 변경.      
-
+#### 12월 02일 ~ 12월 13일
+> &nbsp;  일부 기능 상태 머신 형태로 조정.      
+> &nbsp;  Devlog 를 표현하기 위한 Dialogue System 제작.      
+> &nbsp;  Localization 적용 및 일부 이벤트에 DevLog 가 출력되도록 수정.      
  
  # 🔎 모듈
 
