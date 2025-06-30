@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SimplePool_EnemyController_Lizard
   m_EditorClassIdentifier: 
   UseDebug: 0
-  simplePoolObject: {fileID: 4401700725868516680, guid: a1f271e8679e6cd4b8349bd9550c21e6,
+  _pooledObject: {fileID: 4401700725868516680, guid: a1f271e8679e6cd4b8349bd9550c21e6,
     type: 3}
-  container: {fileID: 0}
-  startSize: 10
-  capacity: 10
-  maxSize: 20
+  _container: {fileID: 0}
+  _startSize: 5
+  _capacity: 10
+  _maxSize: 20

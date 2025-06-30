@@ -1,0 +1,14 @@
+:root {
+}
+
+.__disabled {
+    opacity: 0;
+    transition-duration: 3s;
+    transition-timing-function: ease-in-out;
+}
+
+.__enabled {
+    opacity: 1;
+    transition-duration: 3s;
+    transition-timing-function: ease-in-out;
+}

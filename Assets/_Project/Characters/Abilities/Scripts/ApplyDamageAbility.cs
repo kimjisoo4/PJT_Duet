@@ -15,6 +15,9 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
         [SerializeField] private DamageResultEvent _damageResultEvent;
         [SerializeField] private GameplayTag _onHitTriggerTag;
 
+        [Header(" Guard ")]
+        [SerializeField] private GameplayTag _guardStateTag;
+
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
             return new Spec(this, abilitySystem, level);
@@ -55,6 +58,11 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                     return;
 
                 float damage = damageInfo.Damage;
+
+                if (GameplayTagSystem.ContainOwnedTag(_ability._guardStateTag))
+                {
+                    damage = 0f;
+                }
 
                 _hpStatus.SubtractCurrentValue(damage);
 

@@ -41,7 +41,7 @@ namespace PF.PJT.Duet.GameFlowSystem
             base.EnterState();
 
             _playerController.OnAddedCharacter += _playerController_OnAddedCharacter;
-            _createCharacterSystem.OnInactivated += _createCharacterSystem_OnInactivated;
+            _createCharacterSystem.OnDeactivated += _createCharacterSystem_OnDeactivated;
 
             _createCharacterSystem.Init();
             _createCharacterSystem.Activate();
@@ -58,23 +58,23 @@ namespace PF.PJT.Duet.GameFlowSystem
 
             if(_createCharacterSystem)
             {
-                _createCharacterSystem.OnInactivated -= _createCharacterSystem_OnInactivated;
+                _createCharacterSystem.OnDeactivated -= _createCharacterSystem_OnDeactivated;
             }
 
-            _createCharacterSystem.Inactivate();
+            _createCharacterSystem.Deactivate();
         }
 
         private void _playerController_OnAddedCharacter(IPlayerController controller, Pawn.ICharacter character)
         {
             if (_playerController.Characters.Count >= _maxCharacterCount)
             {
-                _createCharacterSystem.Inactivate();
+                _createCharacterSystem.Deactivate();
             }
         }
 
-        private void _createCharacterSystem_OnInactivated(CreatePlayerCharacterController createPlayerCharacterSystem)
+        private void _createCharacterSystem_OnDeactivated(CreatePlayerCharacterController createPlayerCharacterSystem)
         {
-            TryNextState();
+            ComplateState();
         }
     }
 }

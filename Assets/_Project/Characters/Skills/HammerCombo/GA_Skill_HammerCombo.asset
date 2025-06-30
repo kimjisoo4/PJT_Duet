@@ -23,7 +23,6 @@ MonoBehaviour:
     obstacleds:
     - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
     - {fileID: 11400000, guid: 08e9c4a810fff2044a1f26bae2fbd9c8, type: 2}
-    - {fileID: 11400000, guid: d34c3ea90920a964a8f61d7fa2dce555, type: 2}
   grantTags:
     owneds:
     - {fileID: 11400000, guid: a37abe0ec7c2eaf41aed4e316cc0f45f, type: 2}

@@ -1,0 +1,39 @@
+:root {
+}
+
+.pressanykey-label {
+    transition-duration: 1s;
+    transition-timing-function: ease-in-out;
+}
+
+.pressanykey__press > .pressanykey-label {
+    scale: 2 0;
+    transition-timing-function: ease-out;
+    transition-duration: 0.25s;
+}
+
+.pressanykey__fadeout > .pressanykey-label {
+    opacity: 0;
+    transition-duration: 1s;
+    transition-timing-function: ease-in-out;
+}
+
+.pressanykey__fadein > .pressanykey-label {
+    transition-duration: 0.5s;
+    opacity: 0;
+}
+
+.pressanykey {
+}
+
+.pressanykey__press {
+}
+
+.pressanykey__fadein {
+}
+
+.pressanykey {
+}
+
+.pressanykey__fadeout {
+}

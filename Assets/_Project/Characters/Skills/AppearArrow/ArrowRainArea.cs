@@ -96,7 +96,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             _triggerArea.gameObject.SetActive(true);
         }
 
-        public void Inactivate()
+        public void Deactivate()
         {
             _gameplayTagSystem.ClearAllGameplayTags();
 
@@ -136,7 +136,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         }
         private void _timer_OnEndedTimer(ITimer timer)
         {
-            Inactivate();
+            Deactivate();
         }
         private void _areaLoopCue_OnEndedCue(Cue cue)
         {

@@ -50,6 +50,12 @@ PrefabInstance:
       propertyPath: managedReferences[3757595896681595143].GUID.m_Value1
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -350156445195377028, guid: 78708e74ea6e3a8478b0f90f95338a96,
+        type: 3}
+      propertyPath: _poolContainer
+      value: 
+      objectReference: {fileID: 11400000, guid: 2113ee4507060664e8d3e353915d444b,
+        type: 2}
     - target: {fileID: 1008602029604108534, guid: 78708e74ea6e3a8478b0f90f95338a96,
         type: 3}
       propertyPath: m_Name

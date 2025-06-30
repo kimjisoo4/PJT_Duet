@@ -159,16 +159,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  _poolContainer: {fileID: 0}
-  _useUnityEvent: 0
-  _unityEvents:
-    _onCreated:
+  _poolContainer: {fileID: 11400000, guid: 60feac932cf40fd46aac96089c9b4588, type: 2}
+  _onCreated:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
-    _onActivated:
+  _onActivated:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
-    _onReleased:
+  _onReleased:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
 --- !u!114 &-8931332544135520097

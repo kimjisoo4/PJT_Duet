@@ -4,7 +4,6 @@
     {
         None,
         Attack,
-        Jump,
         Dash,
         Skill,
         Appear,

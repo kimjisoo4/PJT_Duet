@@ -882,7 +882,7 @@ Animator:
   m_GameObject: {fileID: 8497223780413371598}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 32562d1256a1b3b4ca9be3d6ce7adf64, type: 3}
-  m_Controller: {fileID: 22100000, guid: 2b4c9d119d91db8478b18312f845b087, type: 2}
+  m_Controller: {fileID: 9100000, guid: 0f6be0fd4ca038c45b36ba0d3989175d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -908,7 +908,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _animator: {fileID: 8412305600148544024}
-  _defaultState: Idle
+  _defaultState: Empty
+  _layer: 2
 --- !u!114 &3828451954665235802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -926,6 +927,7 @@ MonoBehaviour:
   _dampTime: 0.1
   _stiffenTag: {fileID: 11400000, guid: 08e9c4a810fff2044a1f26bae2fbd9c8, type: 2}
   _groggyTag: {fileID: 11400000, guid: 2881baa0104907349b61679ce50a8574, type: 2}
+  _guardTag: {fileID: 11400000, guid: 81b84526aacbdd44288166b92e9ca5ff, type: 2}
 --- !u!114 &7886334749642239807
 MonoBehaviour:
   m_ObjectHideFlags: 0

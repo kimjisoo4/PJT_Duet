@@ -13,9 +13,14 @@ namespace PF.PJT.Duet.CreateCharacterSystem
         [SerializeField] private CreateCharacterDisplay _createCharacterDisplay;
         public CreateCharacterDisplay CreateCharacterDisplay => _createCharacterDisplay;
 
-        protected virtual void OnValidate()
+        protected override void OnValidate()
         {
 #if UNITY_EDITOR
+            if (SUtility.IsPlayingOrWillChangePlaymode)
+                return;
+
+            base.OnValidate();
+
             if (!_createCharacterDisplay)
             {
                 _createCharacterDisplay = GetComponentInParent<CreateCharacterDisplay>();

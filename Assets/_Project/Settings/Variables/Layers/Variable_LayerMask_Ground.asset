@@ -2,22 +2,24 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 32
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae206d1dbf632ed4c80d438cb564e0ca, type: 3}
+  m_Script: {fileID: 11500000, guid: d4254668b07b4164aae480faf01f92d4, type: 3}
   m_Name: Variable_LayerMask_Ground
   m_EditorClassIdentifier: 
   UseDebug: 0
-  _name: 
+  _id: 7c98386c86578e040af305a8d0f3b621
   _description: 
   _initialValue:
     serializedVersion: 2
     m_Bits: 8
   _runtimeValue:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
+  _saveMode: 0
+  _resetType: 0

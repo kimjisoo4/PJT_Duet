@@ -4,7 +4,6 @@ using UnityEngine.Playables;
 
 namespace PF.PJT.Duet
 {
-
     public interface ITimelinePlayer
     {
         public delegate void TimelineStateHandler(ITimelinePlayer timelinePlayer);
@@ -26,7 +25,6 @@ namespace PF.PJT.Duet
         [SerializeField] private PlayableDirector _playableDirector;
 
         private bool _isPlaying = false;
-
         public PlayableDirector PlayableDirector => _playableDirector;
         public bool IsPlaying => _isPlaying;
 
@@ -34,19 +32,28 @@ namespace PF.PJT.Duet
         public event ITimelinePlayer.TimelineStateHandler OnAfterPlayed;
         public event ITimelinePlayer.TimelineStateHandler OnStopped;
 
-        protected virtual void Awake()
+        protected virtual void OnValidate()
         {
-            _playableDirector.stopped += _playableDirector_stopped;
+#if UNITY_EDITOR
+            if(!_playableDirector)
+            {
+                _playableDirector = gameObject.GetComponentInParentOrChildren<PlayableDirector>();
+            }
+#endif
         }
-
+        protected virtual void Awake() { }
         protected virtual void OnDestroy()
         {
             _isPlaying = false;
 
             if (_playableDirector)
             {
-                _playableDirector.stopped -= _playableDirector_stopped;
+                _playableDirector.stopped -= PlayableDirector_stopped;
             }
+
+            OnBeforePlayed = null;
+            OnAfterPlayed = null;
+            OnStopped = null;
         }
         
 
@@ -56,14 +63,15 @@ namespace PF.PJT.Duet
                 return;
 
             _isPlaying = true;
+            _playableDirector.stopped += PlayableDirector_stopped;
 
             OnBeforePlay();
-            Invoke_OnBeforePlayed();
+            RaiseOnBeforePlayed();
 
             _playableDirector.Play();
 
             OnAfterPlay();
-            Invoke_OnAfterPlayed();
+            RaiseOnAfterPlayed();
         }
 
         public void Stop()
@@ -71,18 +79,20 @@ namespace PF.PJT.Duet
             if (!_isPlaying)
                 return;
 
+
+            _playableDirector.stopped -= PlayableDirector_stopped;
             _isPlaying = false;
 
             _playableDirector.Stop();
 
             OnStop();
-            Invoke_OnStopped();
+            RaiseOnStopped();
         }
         protected virtual void OnBeforePlay() { }
         protected virtual void OnAfterPlay() { }
         protected virtual void OnStop() { }
 
-        private void _playableDirector_stopped(PlayableDirector playableDirector)
+        private void PlayableDirector_stopped(PlayableDirector playableDirector)
         {
             if (!_isPlaying)
                 return;
@@ -90,19 +100,19 @@ namespace PF.PJT.Duet
             Stop();
         }
 
-        protected void Invoke_OnBeforePlayed()
+        protected void RaiseOnBeforePlayed()
         {
             Log($"{nameof(OnBeforePlayed)}");
 
             OnBeforePlayed?.Invoke(this);
         }
-        protected void Invoke_OnAfterPlayed()
+        protected void RaiseOnAfterPlayed()
         {
             Log($"{nameof(OnAfterPlayed)}");
 
             OnAfterPlayed?.Invoke(this);
         }
-        protected void Invoke_OnStopped()
+        protected void RaiseOnStopped()
         {
             Log($"{nameof(OnStopped)}");
 

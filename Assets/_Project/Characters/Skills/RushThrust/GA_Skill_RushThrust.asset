@@ -26,7 +26,6 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d34c3ea90920a964a8f61d7fa2dce555, type: 2}
   grantTags:
     owneds:
-    - {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
     - {fileID: 11400000, guid: 4b76024f94481d042ac2ed541d7ff898, type: 2}
     - {fileID: 11400000, guid: a37abe0ec7c2eaf41aed4e316cc0f45f, type: 2}
     blocks:
@@ -36,14 +35,54 @@ MonoBehaviour:
   cancelAbilityTags: []
   _icon: {fileID: 21300000, guid: 69093eb85851a134282c3101604941f1, type: 3}
   _name: 
-  _skillType: 4
+  _skillType: 3
   _description: 
   _rushAnimationName: RushThrust
   _fadeInTime: 0.2
   _moveDistance: 8
-  _moveStartTime: 0.35
-  _moveEndTime: 0.65
-  _turnTag: {fileID: 11400000, guid: 6d15f3d07c563074d9dd397fd12a0276, type: 2}
+  _moveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -0.018005371
+      outSlope: 0
+      tangentMode: 65
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.35
+      value: 0
+      inSlope: -0
+      outSlope: 5.1334167
+      tangentMode: 5
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.0862404
+    - serializedVersion: 3
+      time: 0.7403487
+      value: 1
+      inSlope: -0.11212123
+      outSlope: 0
+      tangentMode: 65
+      weightedMode: 0
+      inWeight: 0.14624088
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _turnSpeed: 720
   _tracePoint: {fileID: 11400000, guid: fd15a44b8089f3d4eb7a7e059924865f, type: 2}
   _traceRadius: 1.5
   _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}

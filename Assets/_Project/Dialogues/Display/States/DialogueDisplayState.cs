@@ -14,8 +14,11 @@ namespace PF.PJT.Duet.DialogueSystem
 
         public DuetDialogueDisplay DialogueDisplay => _dialogueDisplay;
 
-        protected virtual void OnValidate()
+
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
+
 #if UNITY_EDITOR
             if (!_dialogueDisplay)
             {

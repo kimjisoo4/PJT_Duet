@@ -31,7 +31,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 297959378800559898}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -61,7 +61,7 @@ Animator:
   m_GameObject: {fileID: 297959378800559898}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: c9a34c70f1c0d00409f41fcfbb2a6871, type: 3}
-  m_Controller: {fileID: 22100000, guid: 93545922a40c7d543b2744d8cc9581fb, type: 2}
+  m_Controller: {fileID: 9100000, guid: b2a9b32f5d143f449808a8e8a0d29d6f, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -87,7 +87,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _animator: {fileID: 297959378793069510}
-  _defaultState: Idle
+  _defaultState: Empty
+  _layer: 2
 --- !u!114 &3259718415931068092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,9 +103,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _animator: {fileID: 297959378793069510}
-  _dampTime: 0.1
+  _dampTime: 0.2
   _stiffenTag: {fileID: 11400000, guid: 08e9c4a810fff2044a1f26bae2fbd9c8, type: 2}
   _groggyTag: {fileID: 11400000, guid: 2881baa0104907349b61679ce50a8574, type: 2}
+  _guardTag: {fileID: 11400000, guid: 81b84526aacbdd44288166b92e9ca5ff, type: 2}
 --- !u!114 &9026842159216387328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,14 +152,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  _useUnityEvent: 0
+  _useUnityEvent: 1
   _unityEvents:
     _onFootR:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 6355636670871797386}
+          m_TargetAssemblyTypeName: PF.PJT.Duet.Pawn.FootstepEventComponent, PF.PJT.Duet
+          m_MethodName: Footstep
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 11400000, guid: b528a909f1f35664aa204d32fc13cb75,
+              type: 2}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     _onFootL:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 6355636670871797386}
+          m_TargetAssemblyTypeName: PF.PJT.Duet.Pawn.FootstepEventComponent, PF.PJT.Duet
+          m_MethodName: Footstep
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 11400000, guid: 1bb013298a14c504397731511af9a38a,
+              type: 2}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     _onHit:
       m_PersistentCalls:
         m_Calls: []
@@ -181,7 +209,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseDebug: 0
   _owner: {fileID: 0}
-  _footstepTriggerTag: {fileID: 0}
+  _footstepTriggerTag: {fileID: 11400000, guid: bad29a5b0d22bbf46bd3e9b421185428,
+    type: 2}
   _footstepInterval: 0.2
   _footstepSpeed: 1
   _footstepHeight: 0.2

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8cbdf08e1ec8f34c9580b08dc5c293a, type: 3}
   m_Name: GA_Skill_HammerWindmill
   m_EditorClassIdentifier: 
-  UseDebug: 0
+  UseDebug: 1
   _id: GA_Skill_HammerWindmill
   abilityTag: {fileID: 11400000, guid: 9e0a51adadf0af747b71711722ce2c73, type: 2}
   attributeTags:
@@ -35,7 +35,7 @@ MonoBehaviour:
   cancelAbilityTags: []
   _icon: {fileID: 21300000, guid: e6064dfad4327e5458520762ed261893, type: 3}
   _name: 
-  _skillType: 4
+  _skillType: 3
   _description: 
   _startAnimationName: HammerWindmill_Start
   _fadeInTime: 0.2

@@ -20,7 +20,7 @@ namespace PF.PJT.Duet
         private bool _wasInit = false;
 
         public event RewordInformationStateEvent OnFInishedActivate;
-        public event RewordInformationStateEvent OnFInishedInactivate;
+        public event RewordInformationStateEvent OnFInishedDeactivate;
 
         private void OnValidate()
         {
@@ -49,7 +49,7 @@ namespace PF.PJT.Duet
         {
             _stateMachine.TrySetState(_activeTransitionState);
         }
-        public void Inactivate()
+        public void Deactivate()
         {
             _stateMachine.TrySetState(_inactiveTransitionState);
         }
@@ -72,7 +72,7 @@ namespace PF.PJT.Duet
             else if (finishedState == _inactiveTransitionState)
             {
                 _stateMachine.ForceSetState(_inactiveState);
-                OnFInishedInactivate?.Invoke(this);
+                OnFInishedDeactivate?.Invoke(this);
             }
         }
     }

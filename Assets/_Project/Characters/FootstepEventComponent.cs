@@ -110,7 +110,6 @@ namespace PF.PJT.Duet.Pawn
             _lastFootstepTime = time + _footstepInterval;
 
             Vector3 position = bodypart.transform.position;
-            position.y = _movementSystem.GroundPoint.y;
 
             var footstepData = OnFootstepData.CreateFootstepData(position, _movementSystem.GroundNormal);
 

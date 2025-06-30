@@ -51,7 +51,7 @@ namespace PF.PJT.Duet.DialogueSystem
 
             foreach (var selectButton in _dialogueSelectButtons)
             {
-                selectButton.Inactivate();
+                selectButton.Deactivate();
             }
         }
 

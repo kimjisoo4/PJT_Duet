@@ -7,7 +7,7 @@ namespace PF.PJT.Duet
 {
     public class BossBattleRoomState : RoomState
     {
-        [Header(" [ Boss Battle State ] ")]
+        [Header(" [ Boss Battle Room State ] ")]
         [SerializeField] private PlayerManager _playerManager;
         [SerializeField] private GameObject _bossCharacterActor;
         [SerializeField] private GameObject _bossControllerActor;
@@ -32,8 +32,11 @@ namespace PF.PJT.Duet
             _bossControllerActor.SetActive(false);
         }
 
-        private void OnDestroy()
+
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
+
             if (_character is not null)
             {
                 _character.OnSpawned -= _character_OnSpawned;

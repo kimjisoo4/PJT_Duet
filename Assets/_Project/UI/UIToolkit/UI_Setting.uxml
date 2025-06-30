@@ -1,0 +1,61 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/UIToolkit/DefaultStyle.uss?fileID=7433441132597879392&amp;guid=703c40d5b0c62d64987633d45bff374a&amp;type=3#DefaultStyle" />
+    <Style src="project://database/Assets/_Project/UI/UIToolkit/ToggleStyle.uss?fileID=7433441132597879392&amp;guid=f9c0303ace25aa3468b0affbc0d57b7a&amp;type=3#ToggleStyle" />
+    <Style src="project://database/Assets/_Project/UI/UIToolkit/DropdownStyle.uss?fileID=7433441132597879392&amp;guid=3138c65dafbe46743b5653975a76ebbc&amp;type=3#DropdownStyle" />
+    <Style src="project://database/Assets/_Project/UI/UIToolkit/SliderStyle.uss?fileID=7433441132597879392&amp;guid=c6b6293eb723a194c815475e23a10c67&amp;type=3#SliderStyle" />
+    <Style src="project://database/Assets/_Project/UI/UIToolkit/TextStyle.uss?fileID=7433441132597879392&amp;guid=03e7b3832c833f34f974d6ce46e5a17a&amp;type=3#TextStyle" />
+    <Style src="project://database/Assets/_Project/UI/UIToolkit/SettingStyle.uss?fileID=7433441132597879392&amp;guid=ef8121abf18ccf74d8c55d46adf46fb5&amp;type=3#SettingStyle" />
+    <ui:VisualElement name="Root" class="root background">
+        <ui:VisualElement name="Setting" class="setting">
+            <ui:Label text="Gameplay" name="Label_Gameplay" class="text-menu-category text-title setting-category-label" />
+            <ui:VisualElement name="Gameplay_Container" style="flex-grow: 0; margin-right: 50px; margin-left: 50px; padding-bottom: 0; margin-bottom: 50px;">
+                <ui:Toggle name="Toggle_ViewDevLog" class="toggle text-description" style="display: none;">
+                    <Bindings>
+                        <UnityEngine.Localization.LocalizedString property="label" table="GUID:0b5097ec649055a4db8796c6aa4e9887" entry="Id(63023249684303872)" />
+                    </Bindings>
+                </ui:Toggle>
+                <ui:DropdownField name="Dropdown_Language" class="dropdown text-description">
+                    <Bindings>
+                        <UnityEngine.Localization.LocalizedString property="label" table="GUID:0b5097ec649055a4db8796c6aa4e9887" entry="Id(63023080247005184)" />
+                    </Bindings>
+                </ui:DropdownField>
+            </ui:VisualElement>
+            <ui:Label text="Sound" name="Label_Sound" class="text-menu-category text-title setting-category-label" />
+            <ui:VisualElement name="Sound_Container" style="flex-grow: 0; margin-top: 0; margin-right: 50px; margin-bottom: 50px; margin-left: 50px;">
+                <ui:Slider value="42" high-value="1" name="Slider_Master_Volume" class="slider text-description">
+                    <Bindings>
+                        <UnityEngine.Localization.LocalizedString property="label" table="GUID:0b5097ec649055a4db8796c6aa4e9887" entry="Id(63010127825211392)" />
+                    </Bindings>
+                </ui:Slider>
+                <ui:Slider label="BGM Volume" value="1" high-value="1" name="Slider_BGM_Volume" class="slider text-description">
+                    <Bindings>
+                        <UnityEngine.Localization.LocalizedString property="label" table="GUID:0b5097ec649055a4db8796c6aa4e9887" entry="Id(63010219760160768)" />
+                    </Bindings>
+                </ui:Slider>
+                <ui:Slider label="BGM Volume" value="1" high-value="1" name="Slider_SFX_Volume" class="slider text-description">
+                    <Bindings>
+                        <UnityEngine.Localization.LocalizedString property="label" table="GUID:0b5097ec649055a4db8796c6aa4e9887" entry="Id(63010237640478720)" />
+                    </Bindings>
+                </ui:Slider>
+            </ui:VisualElement>
+            <ui:VisualElement name="Spacer" style="flex-grow: 1;" />
+            <ui:VisualElement name="ButtonContainer" style="flex-grow: 0; flex-direction: row; align-items: center; align-self: center; width: 100%; height: 15%; justify-content: space-around; -unity-font-definition: url(&quot;project://database/Assets/_Project/Fonts/Level/FontAsset/NEXON%20Lv1%20Gothic%20Low%20OTF%20SDF.asset?fileID=11400000&amp;guid=4554588e5f3f9834e82bfe6903670743&amp;type=2#NEXON Lv1 Gothic Low OTF SDF&quot;); font-size: 60px; color: rgb(255, 255, 255); align-content: center;">
+                <ui:Button text="초기화" name="Button_Reset" class="button-text" style="width: 300px;">
+                    <Bindings>
+                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:0b5097ec649055a4db8796c6aa4e9887" entry="Id(65169466421809152)" />
+                    </Bindings>
+                </ui:Button>
+                <ui:Button text="적용" name="Button_Apply" class="button-text" style="width: 300px;">
+                    <Bindings>
+                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:0b5097ec649055a4db8796c6aa4e9887" entry="Id(65169411220574208)" />
+                    </Bindings>
+                </ui:Button>
+                <ui:Button text="나가기" name="Button_Exit" class="button-text" style="width: 300px;">
+                    <Bindings>
+                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:0b5097ec649055a4db8796c6aa4e9887" entry="Id(65169510675910656)" />
+                    </Bindings>
+                </ui:Button>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

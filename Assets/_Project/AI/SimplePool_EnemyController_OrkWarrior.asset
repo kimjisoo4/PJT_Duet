@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SimplePool_EnemyController_OrkWarrior
   m_EditorClassIdentifier: 
   UseDebug: 0
-  simplePoolObject: {fileID: 2859119577571998050, guid: 3789f79377a455345ad3fd119a608eed,
+  _pooledObject: {fileID: 2859119577571998050, guid: 3789f79377a455345ad3fd119a608eed,
     type: 3}
-  container: {fileID: 0}
-  startSize: 1
-  capacity: 2
-  maxSize: 5
+  _container: {fileID: 0}
+  _startSize: 5
+  _capacity: 10
+  _maxSize: 20

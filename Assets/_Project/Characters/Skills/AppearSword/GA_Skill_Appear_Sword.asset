@@ -23,8 +23,8 @@ MonoBehaviour:
     obstacleds: []
   grantTags:
     owneds:
-    - {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
     - {fileID: 11400000, guid: ad6c3d6668571ff4cbdcefdb4e2be194, type: 2}
+    - {fileID: 11400000, guid: a40dd7e3e3d12514894ca380fde04a21, type: 2}
     blocks:
     - {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
     - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
@@ -33,52 +33,34 @@ MonoBehaviour:
   cancelAbilityTags: []
   _icon: {fileID: 21300000, guid: 8ba2524c70c28eb4490b7b636cb9f1ca, type: 3}
   _name: 
-  _skillType: 5
+  _skillType: 4
   _description: 
-  _airAnimation: AppearSword_Air
-  _airAnimFadeTime: 0
-  _attackAnimation: AppearSword_Slash
-  _attackAnimFadeTime: 0.1
-  _moveDistance: 5
+  _animationName: AppearSword
+  _fadeTime: 0
+  _moveDistance: 7
   _moveCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _jumpHeight: 3
-  _jumpMoveCurve:
-    serializedVersion: 2
-    m_Curve:
     - serializedVersion: 3
-      time: 0
+      time: 0.15
       value: 0
-      inSlope: 3.2201974
-      outSlope: 3.2201974
-      tangentMode: 0
+      inSlope: -0
+      outSlope: 6.1347218
+      tangentMode: 5
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.17062636
+      outWeight: 0.048385426
     - serializedVersion: 3
-      time: 0.5
+      time: 0.6
       value: 1
       inSlope: 0
       outSlope: 0
@@ -88,13 +70,13 @@ MonoBehaviour:
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 0
-      inSlope: -3.921934
-      outSlope: -3.921934
+      value: 1
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.06911445
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -135,6 +117,3 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0}
     Scale: {x: 0, y: 0, z: 0}
     Volume: 1
-  _testLayer:
-    serializedVersion: 2
-    m_Bits: 8

@@ -59,7 +59,7 @@ namespace PF.PJT.Duet.DialogueSystem
             _stateMachine.TrySetState(_transitionActiveState);
 
         }
-        public override void Inactivate()
+        public override void Deactivate()
         {
             if (!_isPlaying)
                 return;
@@ -115,7 +115,7 @@ namespace PF.PJT.Duet.DialogueSystem
             {
                 _stateMachine.TrySetState(_inactiveState);
 
-                Invoke_OnInactivated();
+                Invoke_OnDeactivated();
             }
         }
     }

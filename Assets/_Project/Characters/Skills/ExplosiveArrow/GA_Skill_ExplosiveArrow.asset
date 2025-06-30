@@ -35,10 +35,15 @@ MonoBehaviour:
   cancelAbilityTags: []
   _icon: {fileID: 21300000, guid: 17c665723783e4543b1550ec735b0572, type: 3}
   _name: Explosive Arrow
-  _skillType: 4
+  _skillType: 3
   _description: 
   _animationName: ExplosiveArrow
   _fadeInTime: 0.2
+  _findTargetRadius: 20
+  _findTargetAngle: 15
+  _findTargetCount: 20
+  _findTargetLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
+  _obstacleLayer: {fileID: 11400000, guid: 4caa30b281eb5e745a43230cd502bd12, type: 2}
   _arrowPoolContainer: {fileID: 11400000, guid: f2532a703bd343a4dbe206ef980ebbec,
     type: 2}
   _arrowSpawnPointTag: {fileID: 11400000, guid: 50f6b7cb7f6e4fe41a8a29bd6ce1295e,
@@ -46,7 +51,7 @@ MonoBehaviour:
   _arrowTag: {fileID: 11400000, guid: 17b1ddc07953e704e94c049426dc96e0, type: 2}
   _explosivePoolContainer: {fileID: 11400000, guid: 325698a684cd38f47ade105360d87f62,
     type: 2}
-  _turnTag: {fileID: 11400000, guid: 6d15f3d07c563074d9dd397fd12a0276, type: 2}
+  _turnSpeed: 720
   _coolTimeEffect: {fileID: 11400000, guid: 546d4454fcc0d8043929c0a0e7c41c0d, type: 2}
   _arrowTakeDamageEffect: {fileID: 11400000, guid: 230b32b505610ae46859996d47af0086,
     type: 2}

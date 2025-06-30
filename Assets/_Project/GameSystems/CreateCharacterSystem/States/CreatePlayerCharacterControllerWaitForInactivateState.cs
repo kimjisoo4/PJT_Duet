@@ -2,14 +2,14 @@
 
 namespace PF.PJT.Duet.CreateCharacterSystem
 {
-    [AddComponentMenu("Duet/CreateCharacter/Controller/State/Create Player Character Controller Wait For Inactivate State")]
-    public class CreatePlayerCharacterControllerWaitForInactivateState : CreatePlayerCharacterControllerState
+    [AddComponentMenu("Duet/CreateCharacter/Controller/State/Create Player Character Controller Wait For Deactivate State")]
+    public class CreatePlayerCharacterControllerWaitForDeactivateState : CreatePlayerCharacterControllerState
     {
         protected override void EnterState()
         {
             base.EnterState();
 
-            CreateCharacterDisplay.Inactivate();
+            CreateCharacterDisplay.Deactivate();
         }
     }
 }

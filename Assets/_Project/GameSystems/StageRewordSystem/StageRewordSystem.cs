@@ -20,7 +20,9 @@ namespace PF.PJT.Duet
         [Space(5f)]
         [SerializeField] private PlayerManager _playerManager;
         [Space(5f)]
-        [SerializeField] private GameObjectListVariable _activeUIVariable;
+        [Header(" Block Input ")]
+        [SerializeField] private InputBlocker _inputBlocker;
+        [SerializeField] private EBlockInputState _blockInput = EBlockInputState.Game;
 
         [Header(" Reword Datas ")]
         [SerializeField] private List<ItemSO> _stageRewordDatas;
@@ -37,8 +39,17 @@ namespace PF.PJT.Duet
         private int _remainWaitFinishedCount;
 
         public event StageRewordEventHandler OnActivated;
-        public event StageRewordEventHandler OnInactivated;
+        public event StageRewordEventHandler OnDeactivated;
         public event SelectRewordEventHandler OnSelectedReword;
+        private void OnValidate()
+        {
+#if UNITY_EDITOR
+            if (!_inputBlocker)
+            {
+                _inputBlocker = SUtility.FindAssetByType<InputBlocker>();
+            }
+#endif
+        }
 
         private void Awake()
         {
@@ -61,15 +72,17 @@ namespace PF.PJT.Duet
                     selectReword.OnSelected -= SelectReword_OnSelected;
                     selectReword.OnSubmited -= SelectReword_OnSubmited;
                     selectReword.OnFinishedActivate -= SelectReword_OnFinishedActivate;
-                    selectReword.OnFinishedInactivate -= SelectReword_OnFinishedInactivate;
+                    selectReword.OnFinishedDeactivate -= SelectReword_OnFinishedDeactivate;
                 }
             }
 
             if(_rewordInformation)
             {
                 _rewordInformation.OnFInishedActivate -= _rewordInformation_OnFInishedActivate;
-                _rewordInformation.OnFInishedInactivate -= _rewordInformation_OnFInishedInactivate;
+                _rewordInformation.OnFInishedDeactivate -= _rewordInformation_OnFInishedDeactivate;
             }
+
+            _inputBlocker.UnblockInput(this);
         }
 
         public void Init()
@@ -86,13 +99,13 @@ namespace PF.PJT.Duet
                 selectReword.OnSelected += SelectReword_OnSelected;
                 selectReword.OnSubmited += SelectReword_OnSubmited;
                 selectReword.OnFinishedActivate += SelectReword_OnFinishedActivate;
-                selectReword.OnFinishedInactivate += SelectReword_OnFinishedInactivate;
+                selectReword.OnFinishedDeactivate += SelectReword_OnFinishedDeactivate;
 
                 selectReword.Init();
             }
 
             _rewordInformation.OnFInishedActivate += _rewordInformation_OnFInishedActivate;
-            _rewordInformation.OnFInishedInactivate += _rewordInformation_OnFInishedInactivate;
+            _rewordInformation.OnFInishedDeactivate += _rewordInformation_OnFInishedDeactivate;
             _rewordInformation.Init();
 
             _stageRewordActor.SetActive(false);
@@ -126,18 +139,18 @@ namespace PF.PJT.Duet
             }
 
             _stageRewordActor.SetActive(true);
-            _activeUIVariable.Add(gameObject);
+            _inputBlocker.BlockInput(this, _blockInput);
 
             Invoke_OnStartedRewordSystem();
         }
 
 
-        [ContextMenu(nameof(Inactivate), false, 10000000)]
-        public void Inactivate()
+        [ContextMenu(nameof(Deactivate), false, 10000000)]
+        public void Deactivate()
         {
             _remainWaitFinishedCount = 0;
 
-            _rewordInformation.Inactivate();
+            _rewordInformation.Deactivate();
         }
 
         private void OnSubmitReword(ItemSO submitItem)
@@ -193,7 +206,7 @@ namespace PF.PJT.Duet
             }
         }
 
-        private void SelectReword_OnFinishedInactivate(SelectRewordComponent selectRewordComponent)
+        private void SelectReword_OnFinishedDeactivate(SelectRewordComponent selectRewordComponent)
         {
             _remainWaitFinishedCount--;
 
@@ -203,7 +216,7 @@ namespace PF.PJT.Duet
                 _selectedRewords.Clear();
 
                 _stageRewordActor.SetActive(false);
-                _activeUIVariable.Remove(gameObject);
+                _inputBlocker.UnblockInput(this);
 
                 Invoke_OnFinishedRewordSystem();
             }
@@ -217,13 +230,13 @@ namespace PF.PJT.Duet
             }
         }
 
-        private void _rewordInformation_OnFInishedInactivate(RewordInformationDisplay rewordInformationDisplay)
+        private void _rewordInformation_OnFInishedDeactivate(RewordInformationDisplay rewordInformationDisplay)
         {
             foreach (var selectReword in _rewordSelects)
             {
                 _remainWaitFinishedCount++;
 
-                selectReword.Inactivate();
+                selectReword.Deactivate();
             }
         }
 
@@ -248,14 +261,14 @@ namespace PF.PJT.Duet
 
         private void Invoke_OnFinishedRewordSystem()
         {
-            Log(nameof(OnInactivated));
+            Log(nameof(OnDeactivated));
 
             if (_onFinishedRewordSystem)
             {
                 _onFinishedRewordSystem.Invoke();
             }
 
-            OnInactivated?.Invoke(this);
+            OnDeactivated?.Invoke(this);
         }
     }
 }

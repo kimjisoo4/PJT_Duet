@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SimplePool_AirBlast_Explosion
   m_EditorClassIdentifier: 
   UseDebug: 0
-  simplePoolObject: {fileID: -7321390917376299596, guid: 8502a29cb70a2d4498154f360d6207c1,
+  _pooledObject: {fileID: -7321390917376299596, guid: 8502a29cb70a2d4498154f360d6207c1,
     type: 3}
-  container: {fileID: 0}
-  startSize: 5
-  capacity: 10
-  maxSize: 20
+  _container: {fileID: 0}
+  _startSize: 5
+  _capacity: 10
+  _maxSize: 20

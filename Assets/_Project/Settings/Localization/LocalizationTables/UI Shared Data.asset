@@ -16,15 +16,123 @@ MonoBehaviour:
   m_TableCollectionNameGuidString: 0b5097ec649055a4db8796c6aa4e9887
   m_Entries:
   - m_Id: 61035909120
-    m_Key: gameover_all_you_characters_are_dead
+    m_Key: stage_gameover_description
     m_Metadata:
       m_Items: []
   - m_Id: 152568205312
-    m_Key: gameover_title
+    m_Key: state_gameover_title
     m_Metadata:
       m_Items: []
   - m_Id: 1218651230208
-    m_Key: stageclear_title
+    m_Key: stage_stageclear_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63009919846453248
+    m_Key: mainmenu_menu_start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63010020522332160
+    m_Key: mainmenu_menu_setting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63010064206008320
+    m_Key: mainmenu_menu_exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63010127825211392
+    m_Key: mainmenu_setting_master_volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63010219760160768
+    m_Key: mainmenu_setting_bmg_volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63010237640478720
+    m_Key: mainmenu_setting_sfx_volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63022280883965952
+    m_Key: mainmenu_title_pressanykey
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63023080247005184
+    m_Key: mainmenu_setting_language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63023249684303872
+    m_Key: mainmenu_setting_viewdevlog
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65169276113653760
+    m_Key: mainmenu_setting_check_yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65169366224080896
+    m_Key: mainmenu_setting_check_no
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65169411220574208
+    m_Key: mainmenu_setting_apply
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65169466421809152
+    m_Key: mainmenu_setting_reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65169510675910656
+    m_Key: mainmenu_setting_exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65169572952936448
+    m_Key: mainmenu_setting_check_exit_descroption
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65200842718187520
+    m_Key: mainmenu_menu_check_exit_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65201306188779520
+    m_Key: mainmenu_menu_check_yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65201409096028160
+    m_Key: mainmenu_menu_check_no
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65808787986321408
+    m_Key: stage_menu_continued
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65808860212236288
+    m_Key: stage_menu_setting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65808919934930944
+    m_Key: stage_menu_exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65809139578048512
+    m_Key: stage_menu_exit_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65809296549875712
+    m_Key: stage_menu_exit_yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65809336701947904
+    m_Key: stage_menu_exit_no
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66131200884215808
+    m_Key: stage_gameover_restart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66131288926851072
+    m_Key: stage_gameover_exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 66139942367399936
+    m_Key: stage_stageclear_description
     m_Metadata:
       m_Items: []
   m_Metadata:

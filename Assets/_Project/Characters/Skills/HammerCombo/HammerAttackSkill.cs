@@ -4,8 +4,11 @@ using StudioScor.BodySystem;
 using StudioScor.GameplayCueSystem;
 using StudioScor.GameplayEffectSystem;
 using StudioScor.GameplayTagSystem;
+using StudioScor.MovementSystem;
 using StudioScor.PlayerSystem;
+using StudioScor.RotationSystem;
 using StudioScor.Utilities;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace PF.PJT.Duet.Pawn.PawnSkill
@@ -19,11 +22,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField][Range(0f, 1f)] private float _fadeInTime = 0.2f;
 
         [Header(" Turn ")]
-        [SerializeField] private GameplayTag _turnTag;
+        [SerializeField][SUnit(SUtility.UNIT_DEGREE_PER_SEC)] private float _turnSpeed = 360f;
 
         [Header(" Attack Trace ")]
         [SerializeField] private BodyTag _tracePoint;
-        [SerializeField] private Variable_LayerMask _traceLayer;
+        [SerializeField] private SOLayerMaskVariable _traceLayer;
         [SerializeField] private float _traceRadius = 1f;
 
         [Header(" Gameplay Effects ")]
@@ -54,15 +57,21 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             private readonly AnimationPlayer _animationPlayer;
             private readonly IPawnSystem _pawnSystem;
+            private readonly IRotationSystem _rotationSystem;
+            private readonly IMovementSystem _movementSystem;
             private readonly IRelationshipSystem _relationshipSystem;
             private readonly IBodySystem _bodySystem;
             private readonly IGameplayEffectSystem _gameplayEffectSystem;
 
             private readonly int _animationHash;
-            private readonly AnimationPlayer.Events _animationEvents;
+            private readonly AnimationPlayer.Events _animationEvents = new();
+            private readonly ReachValueToTime _movementValue = new();
             private bool _wasStartedAnimation = false;
 
             private readonly TrailSphereCast _sphereCast = new();
+
+            private bool _canTurn;
+            private bool _canCombo;
 
             private Cue _onAttackCue;
             private bool _wasPlayAttackCue;
@@ -73,12 +82,13 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 _animationPlayer = gameObject.GetComponentInChildren<AnimationPlayer>(true);
                 _pawnSystem = gameObject.GetPawnSystem();
+                _rotationSystem = gameObject.GetRotationSystem();
+                _movementSystem = gameObject.GetMovementSystem();
                 _relationshipSystem = gameObject.GetRelationshipSystem();
                 _bodySystem = gameObject.GetBodySystem();
                 _gameplayEffectSystem = gameObject.GetGameplayEffectSystem();
 
                 _animationHash = Animator.StringToHash(_ability._animationName);
-                _animationEvents = new();
                 _animationEvents.OnStarted += _animationEvents_OnStarted;
                 _animationEvents.OnCanceled += _animationEvents_OnCanceled;
                 _animationEvents.OnFailed += _animationEvents_OnFailed;
@@ -117,6 +127,10 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 base.ExitAbility();
 
+                EndTrace();
+                EndCombo();
+                EndTurn();
+
                 _animationPlayer.TryStopAnimation(_animationHash);
             }
             public override void CancelAbilityFromSource(object source)
@@ -152,6 +166,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                             OnAttackCue();
                         }
                     }
+
+                    UpdateTurning(deltaTime);
                 }
                 return;
             }
@@ -182,27 +198,74 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 _onAttackCue = null;
             }
+            private bool CheckAffilation(Transform target)
+            {
+                if (!target)
+                    return false;
 
+                if (!target.TryGetReleationshipSystem(out IRelationshipSystem targetRelationship))
+                    return false;
+
+                if (!_pawnSystem.IsPossessed)
+                    return false;
+
+                if (_relationshipSystem.CheckRelationship(targetRelationship) != ERelationship.Hostile)
+                    return false;
+
+                return true;
+            }
+
+            // Combo
             private void OnCombo()
             {
-                if(_ability._comboTag)
+                if (_canCombo)
+                    return;
+
+                _canCombo = true;
+
+                if (_ability._comboTag)
                     GameplayTagSystem.AddOwnedTag(_ability._comboTag);
             }
             private void EndCombo()
             {
-                if(_ability._comboTag)
+                if (!_canCombo)
+                    return;
+
+                _canCombo = false;
+
+                if (_ability._comboTag)
                     GameplayTagSystem.RemoveOwnedTag(_ability._comboTag);
             }
+
+            // Turning
             private void OnTurn()
             {
-                if(_ability._turnTag)
-                    GameplayTagSystem.AddOwnedTag(_ability._turnTag);
+                if (_canTurn)
+                    return;
+
+                _canTurn = true;
             }
             private void EndTurn()
             {
-                if (_ability._turnTag)
-                    GameplayTagSystem.RemoveOwnedTag(_ability._turnTag);
+                if (!_canTurn)
+                    return;
+
+                _canTurn = false;
             }
+            private void UpdateTurning(float deltaTime)
+            {
+                if (!_canTurn)
+                    return;
+
+                Vector3 direction = _pawnSystem.LookDirection;
+
+                Quaternion newRotation = Quaternion.LookRotation(direction, transform.up);
+                float yaw = Mathf.MoveTowardsAngle(transform.eulerAngles.y, newRotation.eulerAngles.y, _ability._turnSpeed * deltaTime);
+
+                _rotationSystem.SetRotation(Quaternion.Euler(0, yaw, 0), false);
+            }
+
+            // Attack
             private void OnTrace()
             {
                 if (_sphereCast.IsPlaying)
@@ -224,23 +287,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private void EndTrace()
             {
                 _sphereCast.EndTrace();
-            }
-
-            private bool CheckAffilation(Transform target)
-            {
-                if (!target)
-                    return false;
-
-                if (!target.TryGetReleationshipSystem(out IRelationshipSystem targetRelationship))
-                    return false;
-
-                if (!_pawnSystem.IsPossessed)
-                    return false;
-
-                if (_relationshipSystem.CheckRelationship(targetRelationship) != ERelationship.Hostile)
-                    return false;
-
-                return true;
             }
 
             private void UpdateTrace()
@@ -331,10 +377,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 }
             }
 
-
-
-            
-
             private void _animationEvents_OnEnterNotifyState(string eventName)
             {
                 switch (eventName)
@@ -401,8 +443,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 CancelAbility();
             }
-
-
         }
     }
 }

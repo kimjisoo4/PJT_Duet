@@ -1,0 +1,45 @@
+:root {
+}
+
+.dropdown {
+    transition-duration: 0.25s;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.dropdown:focus {
+    scale: 1.01 1.01;
+    transition-duration: 0.25s;
+    background-color: rgb(0, 160, 255);
+    transition-timing-function: ease-out-back;
+}
+
+.dropdown:focus .unity-popup-field__label {
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+}
+
+.dropdown .unity-popup-field__label {
+    flex-grow: 1;
+    width: 50%;
+}
+
+.dropdown .unity-popup-field__input {
+    height: auto;
+    width: 50%;
+    flex-grow: 1;
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.dropdown .unity-base-popup-field__text {
+    -unity-text-align: upper-left;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    font-size: 50px;
+}

@@ -8,6 +8,13 @@ namespace PF.PJT.Duet
         [Header(" [ Play Timeline State ] ")]
         [SerializeField] private GameObject _timelinePlayerActor;
 
+        [Header(" Input ")]
+        [SerializeField] private InputBlocker _inputBlocker;
+        [SerializeField] private EBlockInputState _blockInput = EBlockInputState.UI | EBlockInputState.Game;
+
+        [Header(" HUD ")]
+        [SerializeField] private HUDVisibilityController _hudVisibility;
+
         private ITimelinePlayer _timelinePlayer;
 
         protected override void OnValidate()
@@ -22,6 +29,12 @@ namespace PF.PJT.Duet
                     _timelinePlayerActor = timelinePlayer.gameObject;
                 }
             }
+
+            if (!_inputBlocker)
+                _inputBlocker = SUtility.FindAssetByType<InputBlocker>();
+
+            if (!_hudVisibility)
+                _hudVisibility = SUtility.FindAssetByType<HUDVisibilityController>();
 #endif
         }
 
@@ -34,6 +47,9 @@ namespace PF.PJT.Duet
         {
             base.EnterState();
 
+            _inputBlocker.BlockInput(this, _blockInput);
+            _hudVisibility.RequestHide(this);
+
             _timelinePlayer.OnStopped += _timelinePlayer_OnStopped;
             _timelinePlayer.Play();
         }
@@ -41,6 +57,9 @@ namespace PF.PJT.Duet
         protected override void ExitState()
         {
             base.ExitState();
+
+            _inputBlocker.UnblockInput(this);
+            _hudVisibility.RequestShow(this);
 
             _timelinePlayer.Stop();
         }

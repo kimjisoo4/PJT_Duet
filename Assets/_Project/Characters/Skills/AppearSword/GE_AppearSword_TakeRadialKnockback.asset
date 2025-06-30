@@ -21,7 +21,6 @@ MonoBehaviour:
   _conditionTags:
     requireds: []
     obstacleds:
-    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
     - {fileID: 11400000, guid: 27d736be509dae14d8fdcf133bc7a0c2, type: 2}
   _grantTags:
     owneds: []

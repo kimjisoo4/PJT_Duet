@@ -98,6 +98,8 @@ namespace PF.PJT.Duet
         {
             return IsOpened;
         }
+
+        [ContextMenu(nameof(ForceOpen), false, 1000000)]
         public void ForceOpen()
         {
             _isOpened = true;
@@ -106,6 +108,8 @@ namespace PF.PJT.Duet
 
             OnOpen();
         }
+
+        [ContextMenu(nameof(ForceClose), false, 1000000)]
         public void ForceClose()
         {
             _isOpened = false;

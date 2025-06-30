@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4b7f63703b44c4297e028e4657cfbd, type: 3}
+  m_Name: GA_PawnAbiltiy_SetRotationInLookTarget
+  m_EditorClassIdentifier: 
+  UseDebug: 1
+  _id: GA_PawnAbiltiy_SetRotationInLookTarget
+  abilityTag: {fileID: 11400000, guid: eefcaab4b63e1ee46a8f39827f89fcc4, type: 2}
+  attributeTags: []
+  conditionTags:
+    requireds:
+    - {fileID: 11400000, guid: eefcaab4b63e1ee46a8f39827f89fcc4, type: 2}
+    obstacleds: []
+  grantTags:
+    owneds: []
+    blocks:
+    - {fileID: 11400000, guid: 6d15f3d07c563074d9dd397fd12a0276, type: 2}
+    - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
+  cancelAbilityTags: []

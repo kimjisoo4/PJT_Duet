@@ -19,8 +19,8 @@ namespace PF.PJT.Duet
                 AddToVariable();
             }
 
-            _fadeSystem.OnStartedFadeOut += _fadeSystem_OnStartedFadeOut;
-            _fadeSystem.OnFinishedFadeIn += _fadeSystem_OnFinishedFadeIn;
+            _fadeSystem.OnFadeOutStarted += _fadeSystem_OnStartedFadeOut;
+            _fadeSystem.OnFadeInFinished += _fadeSystem_OnFinishedFadeIn;
         }
         private void OnDestroy()
         {
@@ -28,7 +28,7 @@ namespace PF.PJT.Duet
 
             if (_fadeSystem)
             {
-                _fadeSystem.OnFinishedFadeIn -= _fadeSystem_OnFinishedFadeIn;
+                _fadeSystem.OnFadeInFinished -= _fadeSystem_OnFinishedFadeIn;
             }
         }
         private void AddToVariable()

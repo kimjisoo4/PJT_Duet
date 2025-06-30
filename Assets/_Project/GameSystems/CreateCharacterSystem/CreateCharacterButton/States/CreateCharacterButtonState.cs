@@ -10,10 +10,15 @@ namespace PF.PJT.Duet.CreateCharacterSystem
         [SerializeField] private CreateCharacterButton _createCharacterButtonComponent;
         protected CreateCharacterButton CreateCharacterButton => _createCharacterButtonComponent;
 
-        protected virtual void OnValidate()
+        protected override void OnValidate()
         {
 #if UNITY_EDITOR
-            if(!_createCharacterButtonComponent)
+            if (SUtility.IsPlayingOrWillChangePlaymode)
+                return;
+
+            base.OnValidate();
+
+            if (!_createCharacterButtonComponent)
             {
                 _createCharacterButtonComponent = GetComponentInParent<CreateCharacterButton>();
             }

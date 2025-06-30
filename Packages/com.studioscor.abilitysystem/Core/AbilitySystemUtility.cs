@@ -45,7 +45,10 @@ namespace StudioScor.AbilitySystem
         #region Get Ability Spec
         public static IAbilitySpec GetAbilitySpec(this IAbilitySystem abilitySystem, IAbility ability)
         {
-            return abilitySystem.Abilities[ability];
+            if(abilitySystem.Abilities.ContainsKey(ability))
+                return abilitySystem.Abilities[ability];
+            
+            return null;
         }
         public static IAbilitySpec GetAbilitySpec(this IAbilitySystem abilitySystem, Type type)
         {
@@ -60,9 +63,15 @@ namespace StudioScor.AbilitySystem
             return null;
         }
 
-        public static bool TryGetAbilitySpec(this IAbilitySystem abilitySystem, IAbility abilitym, out IAbilitySpec spec)
+        public static bool TryGetAbilitySpec(this IAbilitySystem abilitySystem, IAbility ability, out IAbilitySpec spec)
         {
-            return abilitySystem.Abilities.TryGetValue(abilitym, out spec);
+            if(ability is null)
+            {
+                spec = null;
+                return false;
+            }
+
+            return abilitySystem.Abilities.TryGetValue(ability, out spec);
         }
 
         public static bool TryGetAbilitySpec(this IAbilitySystem abilitySystem, Type type, out IAbilitySpec abilitySpec)

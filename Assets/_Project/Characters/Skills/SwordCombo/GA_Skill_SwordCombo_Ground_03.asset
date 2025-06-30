@@ -33,9 +33,17 @@ MonoBehaviour:
   _name: 
   _skillType: 0
   _description: 
+  _chaseAnimationName: SwordCombo_Chase
+  _chaseFadeInTime: 0.05
+  _findDistance: 5
+  _findAngle: 45
+  _findTargetCount: 20
+  _chaseDistance: 1
+  _chaseSpeed: 10
+  _chaseTurnSpeed: 1440
   _animationName: SwordCombo_03
   _fadeInTime: 0.2
-  _turnTag: {fileID: 11400000, guid: 6d15f3d07c563074d9dd397fd12a0276, type: 2}
+  _attackTurnSpeed: 900
   _tracePoint: {fileID: 11400000, guid: fd15a44b8089f3d4eb7a7e059924865f, type: 2}
   _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
   _traceRadius: 1.2

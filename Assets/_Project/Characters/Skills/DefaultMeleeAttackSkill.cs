@@ -4,28 +4,48 @@ using StudioScor.BodySystem;
 using StudioScor.GameplayCueSystem;
 using StudioScor.GameplayEffectSystem;
 using StudioScor.GameplayTagSystem;
+using StudioScor.MovementSystem;
 using StudioScor.PlayerSystem;
+using StudioScor.RotationSystem;
 using StudioScor.Utilities;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace PF.PJT.Duet.Pawn.PawnSkill
 {
-
     [CreateAssetMenu(menuName = "Project/Duet/PawnSkill/new Default Melee Attack Skill", fileName = "GA_Skill_", order = -999999)]
     public class DefaultMeleeAttackSkill : CharacterSkill
     {
         [Header(" [ Default Melee Attack Skill ] ")]
+        [Header(" Chase ")]
+        [Header(" Chase Animation ")]
+        [SerializeField] private string _chaseAnimationName = "Attack01_Chase";
+        [SerializeField][Range(0f, 1f)] private float _chaseFadeInTime = 0.2f;
+
+        [Header(" Find Attack Target ")]
+        [SerializeField][SUnit(SUtility.UNIT_METER)] private float _findDistance = 10f;
+        [SerializeField][SUnit(SUtility.UNIT_DEGREE)] private float _findAngle = 90f;
+        [SerializeField] private int _findTargetCount = 20;
+
+        [Header(" Chase Attack Target ")]
+        [SerializeField][SUnit(SUtility.UNIT_METER)] private float _chaseDistance = 3f;
+        [SerializeField][SUnit(SUtility.UNIT_METER_PER_SEC)] private float _chaseSpeed = 10f;
+
+        [Header(" Turning Target ")]
+        [SerializeField][SUnit(SUtility.UNIT_DEGREE_PER_SEC)] private float _chaseTurnSpeed = 720f;
+
+        [Header(" Attack ")]
         [Header(" Animation ")]
         [SerializeField] private string _animationName = "Attack01";
         [SerializeField][Range(0f, 1f)] private float _fadeInTime = 0.2f;
 
-        [Header(" Turn ")]
-        [SerializeField] private GameplayTag _turnTag;
+        [Header(" Turning ")]
+        [SerializeField][SUnit(SUtility.UNIT_DEGREE_PER_SEC)] private float _attackTurnSpeed = 720f;
 
         [Header(" Attack Trace ")]
         [SerializeField] private BodyTag _tracePoint;
-        [SerializeField] private Variable_LayerMask _traceLayer;
+        [SerializeField] private SOLayerMaskVariable _traceLayer;
         [SerializeField] private float _traceRadius = 1f;
 
         [Header(" Gameplay Effects ")]
@@ -54,19 +74,45 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             protected new readonly DefaultMeleeAttackSkill _ability;
 
             private readonly int _animationID;
+            private readonly int _chaseAnimationID;
             private readonly AnimationPlayer _animationPlayer;
             private readonly IPawnSystem _pawnSystem;
             private readonly IRelationshipSystem _relationshipSystem;
             private readonly IBodySystem _bodySystem;
             private readonly IGameplayEffectSystem _gameplayEffectSystem;
+            private readonly IMovementSystem _movementSystem;
+            private readonly IRotationSystem _rotationSystem;
             private readonly IDilationSystem _dilationSystem;
 
             private readonly AnimationPlayer.Events _animationEvents;
             private readonly TrailSphereCast _trailSphereCast = new();
+
+            private Camera _camera;
+            private Camera Camera
+            {
+                get
+                {
+                    if (!_camera)
+                        _camera = Camera.main;
+
+                    return _camera;
+                }
+            }
+
+            private bool _isChasing;
+            private bool _canTurn;
+
             private bool _wasStartedAnimation;
 
             private bool _wasPlayAttackCue;
             private Cue _onAttackCue;
+
+            private Collider[] _findColliders;
+            private readonly List<Collider> _tempColliders = new();
+            private GameObject _attackTarget;
+
+            private Collider _selfCollider;
+            private Collider _attackTargetCollider;
 
             public Spec(Ability ability, IAbilitySystem abilitySystem, int level) : base(ability, abilitySystem, level)
             {
@@ -74,14 +120,18 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 
                 _animationPlayer = gameObject.GetComponentInChildren<AnimationPlayer>(true);
                 _pawnSystem = gameObject.GetPawnSystem();
-                _relationshipSystem = gameObject.GetRelationshipSystem();
+                _movementSystem = gameObject.GetMovementSystem();
+                _rotationSystem = gameObject.GetRotationSystem();
                 _bodySystem = gameObject.GetBodySystem();
                 _gameplayEffectSystem = gameObject.GetGameplayEffectSystem();
+                _relationshipSystem = gameObject.GetRelationshipSystem();
                 _dilationSystem = gameObject.GetDilationSystem();
+                _selfCollider = gameObject.GetComponent<Collider>();
 
-                _dilationSystem.OnChangedDilation += _dilationSystem_OnChangedDilation;
+                _dilationSystem.OnChangedDilation += DilationSystem_OnChangedDilation;
 
                 _animationID = Animator.StringToHash(_ability._animationName);
+                _chaseAnimationID = Animator.StringToHash(_ability._chaseAnimationName);
                 _animationEvents = new();
 
                 _animationEvents.OnStarted += _animationEvents_OnStarted;
@@ -94,7 +144,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             
 
-            private void _dilationSystem_OnChangedDilation(IDilationSystem dilation, float currentDilation, float prevDilation)
+            private void DilationSystem_OnChangedDilation(IDilationSystem dilation, float currentDilation, float prevDilation)
             {
                 if (_onAttackCue is null)
                     return;
@@ -120,16 +170,42 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 base.EnterAbility();
 
-                _wasStartedAnimation = false;
+                if(_pawnSystem.IsPlayer)
+                {
+                    _attackTarget = null;
 
-                _animationPlayer.Play(_animationID, _ability._fadeInTime);
-                _animationPlayer.AnimationEvents = _animationEvents;
+                    FindAttackTarget();
 
-                _wasPlayAttackCue = !_ability._onAttackCue.Cue;
+                    if (_attackTarget)
+                    {
+                        Vector3 startPosition = _selfCollider.ClosestPointOnBounds(_attackTarget.transform.position);
+                        Vector3 targetPosition = _attackTargetCollider.ClosestPoint(transform.position);
+
+                        if (Vector3.Distance(startPosition, targetPosition) > _ability._chaseDistance)
+                        {
+                            OnChase();
+                        }
+                        else
+                        {
+                            PlayAttackAnimation();
+                        }
+                    }
+                    else
+                    {
+                        PlayAttackAnimation();
+                    }
+                }
+                else
+                {
+                    PlayAttackAnimation();
+                }
             }
             protected override void ExitAbility()
             {
                 base.ExitAbility();
+
+                EndTurn();
+                EndChase();
 
                 _animationPlayer.TryStopAnimation(_animationID);
 
@@ -153,20 +229,25 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 if(IsPlaying)
                 {
-                    if (!_wasPlayAttackCue)
+                    UpdateChase(deltaTime);
+                    UpdateRotation(deltaTime);
+
+                    if(!_isChasing)
                     {
-                        float normalizedTime = _animationPlayer.NormalizedTime;
-
-                        if(normalizedTime >= _ability._attackCueTime)
+                        if (!_wasPlayAttackCue)
                         {
-                            _wasPlayAttackCue = true;
+                            float normalizedTime = _animationPlayer.NormalizedTime;
 
-                            OnAttackCue();
+                            if (normalizedTime >= _ability._attackCueTime)
+                            {
+                                _wasPlayAttackCue = true;
+
+                                OnAttackCue();
+                            }
                         }
                     }
                 }
             }
-
             public void FixedUpdateAbility(float deltaTime)
             {
                 if(IsPlaying)
@@ -174,6 +255,135 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     UpdateTrace();
                 }
             }
+
+            private void PlayChaseAnimation()
+            {
+                _animationPlayer.Play(_chaseAnimationID, _ability._chaseFadeInTime);
+            }
+
+            private void PlayAttackAnimation()
+            {
+                _wasStartedAnimation = false;
+
+                _animationPlayer.Play(_animationID, _ability._fadeInTime);
+                _animationPlayer.AnimationEvents = _animationEvents;
+
+                _wasPlayAttackCue = !_ability._onAttackCue.Cue;
+            }
+            private void FindAttackTarget()
+            {
+                Log(nameof(FindAttackTarget));
+
+                if(_findColliders is null || _findColliders.Length != _ability._findTargetCount)
+                {
+                    _findColliders = new Collider[_ability._findTargetCount];
+                }
+
+                var hitCount = SUtility.Physics.DrawOverlapSphereNoneAlloc(transform.position, 
+                                                                           _ability._findDistance, 
+                                                                           _findColliders, 
+                                                                           _ability._traceLayer.Value, 
+                                                                           QueryTriggerInteraction.UseGlobal, 
+                                                                           UseDebug);
+
+                if(hitCount > 0)
+                {
+                    _tempColliders.Clear();
+
+                    Vector3 origin = Camera ? Camera.transform.position : transform.position;
+                    Vector3 forward = _pawnSystem.LookDirection;
+
+                    for (int i = 0; i < hitCount; i++)
+                    {
+                        var findTarget = _findColliders[i];
+
+                        if (findTarget == null)
+                            continue;
+
+                        Vector3 direction = origin.Direction(findTarget.transform);
+                        float angle = Vector3.SignedAngle(forward, direction, transform.up);
+
+                        Log($"{nameof(FindAttackTarget)} - {findTarget.gameObject} is {angle}{SUtility.UNIT_DEGREE}");
+
+                        if (angle.InRangeAngle(_ability._findAngle))
+                        {
+                            Log($"{nameof(FindAttackTarget)} - is in angle target : {findTarget.gameObject}");
+
+                            _tempColliders.Add(findTarget);
+                        }
+                    }
+
+                    if(_tempColliders.Count > 0)
+                    {
+                        SUtility.Sort.SortDistanceToPointByBoundsCenter(transform, _tempColliders);
+
+                        for(int i = 0; i < _tempColliders.Count; i++)
+                        {
+                            var target = _tempColliders[i];
+
+                            if (!target.TryGetActor(out IActor actor))
+                                continue;
+
+                            if (actor.transform == transform)
+                                continue;
+
+                            if (!CheckAffilation(actor.transform))
+                                continue;
+
+                            Log($"Attack Target - {actor.gameObject.name}");
+                            _attackTarget = actor.gameObject;
+                            _attackTargetCollider = actor.gameObject.GetComponent<Collider>();
+
+                            break;
+                        }
+                    }
+                }
+            }
+
+
+
+            // Chase
+
+
+            private void OnChase()
+            {
+                if (_isChasing)
+                    return;
+
+                _isChasing = true;
+
+                PlayChaseAnimation();
+            }
+            private void UpdateChase(float deltaTime)
+            {
+                if (!_isChasing)
+                    return;
+
+                Vector3 direction = transform.HorizontalDirection(_attackTarget.transform);
+                Vector3 velocity = direction * (_ability._chaseSpeed * deltaTime);
+
+                _movementSystem.MovePosition(velocity);
+
+                Vector3 startPosition = _selfCollider.ClosestPoint(_attackTarget.transform.position);
+                Vector3 targetPosition = _attackTargetCollider.ClosestPoint(transform.position);
+
+                float distance = Vector3.Distance(startPosition, targetPosition);
+
+                if(distance < _ability._chaseDistance)
+                {
+                    EndChase();
+                }
+            }
+            private void EndChase()
+            {
+                if (!_isChasing)
+                    return;
+
+                _isChasing = false;
+
+                PlayAttackAnimation();
+            }
+
 
             private void OnCombo()
             {
@@ -186,16 +396,47 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     GameplayTagSystem.RemoveOwnedTag(_ability._comboTag);
             }
 
+
+            // Rotation 
+
             private void OnTurn()
             {
-                if (_ability._turnTag)
-                    GameplayTagSystem.AddOwnedTag(_ability._turnTag);
+                if (_canTurn)
+                    return;
+
+                _canTurn = true;
+            }
+            private void UpdateRotation(float deltaTime)
+            {
+                if (!_canTurn && !_isChasing)
+                    return;
+
+                Vector3 lookDirection;
+
+                if(_attackTarget)
+                {
+                    lookDirection = transform.Direction(_attackTarget.transform);
+                }
+                else
+                {
+                    lookDirection = _pawnSystem.LookDirection;
+                }
+
+                float speed = _isChasing ? _ability._chaseTurnSpeed : _ability._attackTurnSpeed;
+                Quaternion lookRotation = Quaternion.LookRotation(lookDirection, transform.up);
+                float yaw = Mathf.MoveTowardsAngle(transform.eulerAngles.y, lookRotation.eulerAngles.y, deltaTime * speed);
+
+                _rotationSystem.SetRotation(Quaternion.Euler(0, yaw, 0));
             }
             private void EndTurn()
             {
-                if (_ability._turnTag)
-                    GameplayTagSystem.RemoveOwnedTag(_ability._turnTag);
+                if (!_canTurn)
+                    return;
+
+                _canTurn = false;
             }
+
+            // Attack 
             private void OnTrace()
             {
                 if (_trailSphereCast.IsPlaying)

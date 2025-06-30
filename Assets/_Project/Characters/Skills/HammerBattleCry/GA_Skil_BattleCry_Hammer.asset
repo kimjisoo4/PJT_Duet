@@ -15,29 +15,28 @@ MonoBehaviour:
   UseDebug: 0
   _id: GA_Skill_Hammer_BattleCry
   abilityTag: {fileID: 11400000, guid: 44d20c8da3eecd144b01604c2327f8f1, type: 2}
-  attributeTags:
-  - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
-  - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
+  attributeTags: []
   conditionTags:
     requireds: []
     obstacleds:
     - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
-    - {fileID: 11400000, guid: d34c3ea90920a964a8f61d7fa2dce555, type: 2}
   grantTags:
     owneds:
+    - {fileID: 11400000, guid: a37abe0ec7c2eaf41aed4e316cc0f45f, type: 2}
     - {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
     - {fileID: 11400000, guid: ad6c3d6668571ff4cbdcefdb4e2be194, type: 2}
     blocks:
+    - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
     - {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
     - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
   cancelAbilityTags: []
   _icon: {fileID: 0}
   _name: Battle Cry
-  _skillType: 0
+  _skillType: 3
   _description: 
   _animationName: Hammer_BattleCry
   _blendInTime: 0.2
   _shieldStatus: {fileID: 11400000, guid: e0dfd0412922d04469cbac753e50f33b, type: 2}
   _triggerRestoreShield: {fileID: 11400000, guid: 9d36e193e1945cc4fa7a49cbb0b6e745,
     type: 2}
-  _coolTimeEffect: {fileID: 11400000, guid: edf110a9759c6774098798c62c911675, type: 2}
+  _coolTimeEffect: {fileID: 0}

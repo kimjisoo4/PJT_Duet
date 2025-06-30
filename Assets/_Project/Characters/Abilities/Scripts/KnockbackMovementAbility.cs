@@ -2,6 +2,8 @@
 using StudioScor.AbilitySystem;
 using StudioScor.Utilities;
 using StudioScor.MovementSystem;
+using StudioScor.GameplayTagSystem;
+using StudioScor.GameplayCueSystem;
 
 namespace PF.PJT.Duet.Pawn.PawnAbility
 {
@@ -10,6 +12,13 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
     {
         [Header(" [ Knockback Movement Ability ] ")]
         [SerializeField] private AnimationCurve _knockbackCurve = AnimationCurve.Linear(0, 0, 1, 1);
+
+        [Header(" Gameplay Cue ")]
+        [SerializeField] private FGameplayCue _dustCue;
+
+        [Header(" Guard ")]
+        [SerializeField] private GameplayTag _guardStateTag;
+        [SerializeField] private float _guardKnockbackStrength = 0.5f;
 
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
@@ -29,6 +38,8 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
             private float _distance;
             private float _duration;
 
+            private Cue _dustCue;
+
             public Spec(Ability ability, IAbilitySystem abilitySystem, int level) : base(ability, abilitySystem, level)
             {
                 _ability = ability as KnockbackMovementAbility;
@@ -41,30 +52,28 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
             {
                 base.OnGrantAbility();
 
-                _knockbackable.OnTakeKnockback += _knockbackable_OnTakeKnockback;
+                _knockbackable.OnTakeKnockback += Knockbackable_OnTakeKnockback;
             }
             protected override void OnRemoveAbility()
             {
                 base.OnRemoveAbility();
 
-                _knockbackable.OnTakeKnockback -= _knockbackable_OnTakeKnockback;
+                _knockbackable.OnTakeKnockback -= Knockbackable_OnTakeKnockback;
             }
             protected override void EnterAbility()
             {
                 base.EnterAbility();
 
-                _timer.OnTimer(_duration);
-                _reachValueToTime.OnMovement(_distance, _ability._knockbackCurve);
+                OnKnockback();
+
+                _dustCue = _ability._dustCue.PlayAttached(transform);
             }
+
             protected override void OnReTriggerAbility()
             {
                 base.OnReTriggerAbility();
 
-                _timer.CancelTimer();
-                _reachValueToTime.EndMovement();
-
-                _timer.OnTimer(_duration);
-                _reachValueToTime.OnMovement(_distance, _ability._knockbackCurve);
+                OnKnockback();
             }
             protected override void ExitAbility()
             {
@@ -72,7 +81,35 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
 
                 _timer.FinishTimer();
                 _reachValueToTime.EndMovement();
+
+                if (_dustCue is not null)
+                {
+                    _dustCue.Detach();
+                    _dustCue.Stop();
+
+                    _dustCue = null;
+                }
             }
+
+            private void OnKnockback()
+            {
+                Log(nameof(OnKnockback));
+
+                _timer.CancelTimer();
+                _reachValueToTime.EndMovement();
+
+                if (GameplayTagSystem.ContainOwnedTag(_ability._guardStateTag))
+                {
+                    _timer.OnTimer(_duration * _ability._guardKnockbackStrength);
+                    _reachValueToTime.OnMovement(_distance * _ability._guardKnockbackStrength, _ability._knockbackCurve);
+                }
+                else
+                {
+                    _timer.OnTimer(_duration);
+                    _reachValueToTime.OnMovement(_distance, _ability._knockbackCurve);
+                }
+            }
+
             public void UpdateAbility(float deltaTime)
             {
                 if(IsPlaying)
@@ -94,7 +131,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                 return;
             }
 
-            private void _knockbackable_OnTakeKnockback(IKnockbackable knockbackable, Vector3 direction, float distance, float duration)
+            private void Knockbackable_OnTakeKnockback(IKnockbackable knockbackable, Vector3 direction, float distance, float duration)
             {
                 _direction = direction;
                 _distance = distance;

@@ -12,20 +12,14 @@ namespace PF.PJT.Duet
         [SerializeField] private GameObject _statusUIActor;
         [SerializeField] private StatusUIToSimpleAmount[] _statusBars;
 
-        [Header(" Events ")]
-        [SerializeField] private GameObjectListVariable _inActoveVariable;
+        private bool _isActivate;
+        public bool IsActivate => _isActivate;
 
         private GameObject _character;
 
         private void Awake()
         {
             UpdateVisible();
-
-            if (_inActoveVariable)
-            {
-                _inActoveVariable.OnAdded += _inActoveVariable_OnAdded;
-                _inActoveVariable.OnRemoved += _inActoveVariable_OnRemoved;
-            }
         }
         private void Start()
         {
@@ -34,20 +28,14 @@ namespace PF.PJT.Duet
                 SetCharacter(_playerManager.PlayerPawn.gameObject);
             }
 
-            _playerManager.OnChangedPlayerPawn += _playerManager_OnChangedPlayerPawn;
+            _playerManager.OnChangedPlayerPawn += PlayerManager_OnChangedPlayerPawn;
         }
 
         private void OnDestroy()
         {
             if(_playerManager)
             {
-                _playerManager.OnChangedPlayerPawn -= _playerManager_OnChangedPlayerPawn;
-            }
-
-            if(_inActoveVariable)
-            {
-                _inActoveVariable.OnAdded -= _inActoveVariable_OnAdded;
-                _inActoveVariable.OnRemoved -= _inActoveVariable_OnRemoved;
+                _playerManager.OnChangedPlayerPawn -= PlayerManager_OnChangedPlayerPawn;
             }
         }
 
@@ -61,36 +49,40 @@ namespace PF.PJT.Duet
 
                 bar.SetTarget(_character);
             }
+        }
+
+        public void Activate()
+        {
+            if (_isActivate)
+                return;
+
+            _isActivate = true;
 
             UpdateVisible();
         }
+        public void Deactivate()
+        {
+            if (!_isActivate)
+                return;
 
+            _isActivate = false;
+
+            UpdateVisible();
+        }
         private void UpdateVisible()
         {
-            if (_statusUIActor.activeSelf)
+            if (_character)
             {
-                if (_inActoveVariable.Values.Count != 0 || !_character)
-                {
-                    _statusUIActor.SetActive(false);
-                }
+                _statusUIActor.SetActive(true);
             }
             else
             {
-                if (_inActoveVariable.Values.Count == 0 && _character)
-                    _statusUIActor.SetActive(true);
+                _statusUIActor.SetActive(false);
             }
         }
 
-        private void _inActoveVariable_OnAdded(ListVariableObject<GameObject> variable, GameObject value)
-        {
-            UpdateVisible();
-        }
-        private void _inActoveVariable_OnRemoved(ListVariableObject<GameObject> variable, GameObject value)
-        {
-            UpdateVisible();
-        }
 
-        private void _playerManager_OnChangedPlayerPawn(PlayerManager playerManager, IPawnSystem currentPawn, IPawnSystem prevPawn = null)
+        private void PlayerManager_OnChangedPlayerPawn(PlayerManager playerManager, IPawnSystem currentPawn, IPawnSystem prevPawn = null)
         {
             var target = currentPawn is null ? null : currentPawn.gameObject;
 

@@ -5,6 +5,7 @@ using StudioScor.PlayerSystem;
 
 namespace PF.PJT.Duet.Pawn.PawnAbility
 {
+
     [CreateAssetMenu(menuName = "Project/Duet/PawnAbility/Rotation/new Set Rotation In Look Direction Ability", fileName = "GA_PawnAbiltiy_SetRotationInLookDirection")]
     public class SetRotationInLookDirectionAbility : GASAbility
     {
@@ -50,7 +51,6 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                     _rotationSystem.SetLookDirection(_pawnSystem.LookDirection);
                 }
             }
-
         }
     }
 }

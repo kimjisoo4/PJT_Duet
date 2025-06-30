@@ -5600,6 +5600,7 @@
     },
     "isMainTexture": false,
     "useTilingAndOffset": true,
+    "useTexelSize": true,
     "m_Modifiable": true,
     "m_DefaultType": 1
 }
@@ -7041,6 +7042,7 @@
     },
     "isMainTexture": false,
     "useTilingAndOffset": true,
+    "useTexelSize": true,
     "m_Modifiable": true,
     "m_DefaultType": 0
 }
@@ -7303,8 +7305,8 @@
     "m_ObjectId": "cca37ed5ebcc4986a546780b04b041fa",
     "m_Title": "Hit",
     "m_Position": {
-        "x": -2678.0,
-        "y": -553.0
+        "x": -2678.000244140625,
+        "y": -553.0000610351563
     }
 }
 
@@ -7489,6 +7491,7 @@
     },
     "isMainTexture": true,
     "useTilingAndOffset": true,
+    "useTexelSize": true,
     "m_Modifiable": true,
     "m_DefaultType": 0
 }

@@ -112,16 +112,29 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 base.EnterAbility();
 
-                _moveDirection = _pawnSystem.MoveDirection;
-
-                if (_moveDirection.SafeEquals(Vector3.zero))
+                if(_pawnSystem.IsPlayer)
                 {
-                    _moveDirection = -transform.forward;
-                    _moveDirection.y = 0;
-                    _moveDirection.Normalize();
+                    _moveDirection = _pawnSystem.MoveDirection;
+
+                    if (_moveDirection.SafeEquals(Vector3.zero))
+                    {
+                        _moveDirection = -transform.forward;
+                        _moveDirection.y = 0;
+                        _moveDirection.Normalize();
+                    }
+                }
+                else
+                {
+                    if (_moveDirection.SafeEquals(Vector3.zero))
+                    {
+                        _moveDirection = -transform.forward;
+                        _moveDirection.y = 0;
+                        _moveDirection.Normalize();
+                    }
                 }
 
-                Log($"Move Direction - {_moveDirection}");
+
+                    Log($"Move Direction - {_moveDirection}");
 
                 float angle = Vector3.SignedAngle(_pawnSystem.transform.forward, _moveDirection, Vector3.up);
 
@@ -214,6 +227,13 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 Vector3 movePosition = _moveValueToTime.DeltaDistance * _moveDirection;
 
                 _movementSystem.MovePosition(movePosition);
+            }
+
+            public void SetDirection(Vector3 direction)
+            {
+                _moveDirection = direction;
+                _moveDirection.y = 0;
+                _moveDirection.Normalize();
             }
 
             private void _animationPlayer_OnCanceled()

@@ -3,8 +3,9 @@ using StudioScor.AbilitySystem;
 using StudioScor.BodySystem;
 using StudioScor.GameplayCueSystem;
 using StudioScor.GameplayEffectSystem;
-using StudioScor.GameplayTagSystem;
+using StudioScor.MovementSystem;
 using StudioScor.PlayerSystem;
+using StudioScor.RotationSystem;
 using StudioScor.Utilities;
 using System;
 using UnityEngine;
@@ -22,16 +23,15 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
         [Header(" Movement ")]
         [SerializeField] private float _moveDistance = 5f;
-        [SerializeField][Range(0f, 1f)] private float _moveStartTime = 0.2f;
-        [SerializeField][Range(0f, 1f)] private float _moveEndTime = 0.8f;
+        [SerializeField] private AnimationCurve _moveCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
         [Header(" Turn ")]
-        [SerializeField] private GameplayTag _turnTag;
+        [SerializeField][SUnit(SUtility.UNIT_DEGREE_PER_SEC)] private float _turnSpeed = 720f;
 
         [Header(" Trace ")]
         [SerializeField] private BodyTag _tracePoint;
         [SerializeField] private float _traceRadius = 1f;
-        [SerializeField] private Variable_LayerMask _traceLayer;
+        [SerializeField] private SOLayerMaskVariable _traceLayer;
 
         [Header(" Gameplay Effects ")]
         [SerializeField] private CoolTimeEffect _coolTimeEffect;
@@ -59,6 +59,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             private readonly AnimationPlayer _animationPlayer;
             private readonly IPawnSystem _pawnSystem;
+            private readonly IMovementSystem _movementSystem;
+            private readonly IRotationSystem _rotationSystem;
             private readonly IRelationshipSystem _relationshipSystem;
             private readonly IBodySystem _bodySystem;
             private readonly IDilationSystem _dilationSystem;
@@ -70,11 +72,12 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private readonly AnimationPlayer.Events _animationEvents = new();
             private bool _wasStartedAnimation;
 
-            private readonly MatchTargetWeightMask _matchTargetWeight = new MatchTargetWeightMask(new Vector3(1, 0, 1), 0);
             private Vector3 _moveDirection;
+            private bool _canTurn;
 
             private bool _wasPlayAttackCue;
             private Cue _onAttackCue;
+
 
             private CoolTimeEffect.Spec _coolTimeSpec;
             public float CoolTime => _ability._coolTimeEffect ? _ability._coolTimeEffect.Duration : 0f;
@@ -87,6 +90,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 _animationPlayer = gameObject.GetComponentInChildren<AnimationPlayer>(true);
                 _pawnSystem = gameObject.GetPawnSystem();
+                _movementSystem = gameObject.GetMovementSystem();
+                _rotationSystem = gameObject.GetRotationSystem();
                 _relationshipSystem = gameObject.GetRelationshipSystem();
                 _bodySystem = gameObject.GetBodySystem();
                 _gameplayEffectSystem = gameObject.GetGameplayEffectSystem();
@@ -106,9 +111,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _ability._onHitToOtherCue.Initialization();
                 _ability._onSuccessedPlayerHit.Initialization();
             }
-
-           
-
             private void _dilationSystem_OnChangedDilation(IDilationSystem dilation, float currentDilation, float prevDilation)
             {
                 if (_onAttackCue is null)
@@ -145,6 +147,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _animationPlayer.AnimationEvents = _animationEvents;
 
                 _wasPlayAttackCue = !_ability._onAttackCue.Cue;
+
+                _moveDirection = transform.HorizontalDirection(_pawnSystem.LookPosition);
+                _movementReachValue.OnMovement(_ability._moveDistance, _ability._moveCurve);
 
                 if (_ability._coolTimeEffect)
                 {
@@ -189,8 +194,9 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                         float normalizedTime = _animationPlayer.NormalizedTime;
 
                         UpdateMovement(normalizedTime);
+                        UpdateRotation(deltaTime);
 
-                        if(!_wasPlayAttackCue && normalizedTime >= _ability._attackCueTime)
+                        if (!_wasPlayAttackCue && normalizedTime >= _ability._attackCueTime)
                         {
                             _wasPlayAttackCue = true;
 
@@ -206,31 +212,13 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             }
             private void UpdateMovement(float normalizedTime)
             {
-                if (normalizedTime < _ability._moveStartTime || normalizedTime > _ability._moveEndTime)
-                    return;
+                _movementReachValue.UpdateMovement(normalizedTime);
 
-                if(!_movementReachValue.IsPlaying)
-                {
-                    _moveDirection = transform.HorizontalForward();
-                    _movementReachValue.OnMovement(_ability._moveDistance);
-                }
+                var movePosition = _moveDirection * _movementReachValue.DeltaDistance;
 
-                float moveTime = Mathf.InverseLerp(_ability._moveStartTime, _ability._moveEndTime, normalizedTime);
-
-                _movementReachValue.UpdateMovement(moveTime);
-
-                var movePosition = _moveDirection * _movementReachValue.RemainDistance;
-
-                if (_animationPlayer.Animator.isMatchingTarget)
-                    _animationPlayer.Animator.InterruptMatchTarget(false);
-
-                _animationPlayer.Animator.MatchTarget(transform.position + movePosition,
-                                                      Quaternion.identity,
-                                                      AvatarTarget.Root,
-                                                      _matchTargetWeight,
-                                                      _ability._moveStartTime,
-                                                      _ability._moveEndTime);
+                _movementSystem.MovePosition(movePosition);
             }
+
             private void OnAttackCue()
             {
                 if (!IsPlaying)
@@ -248,16 +236,35 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 _onAttackCue = null;
             }
 
+            // Turning 
             private void OnTurn()
             {
-                if (_ability._turnTag)
-                    GameplayTagSystem.AddOwnedTag(_ability._turnTag);
+                if (_canTurn)
+                    return;
+
+                _canTurn = true;
+
             }
             private void EndTurn()
             {
-                if (_ability._turnTag)
-                    GameplayTagSystem.RemoveOwnedTag(_ability._turnTag);
+                if (!_canTurn)
+                    return;
+
+                _canTurn = false;
             }
+
+            private void UpdateRotation(float deltaTime)
+            {
+                if (!_canTurn)
+                    return;
+
+                Quaternion turnDirection = Quaternion.LookRotation(_moveDirection, transform.up);
+                float yaw = Mathf.MoveTowardsAngle(transform.eulerAngles.y, turnDirection.eulerAngles.y, _ability._turnSpeed * deltaTime);
+
+                _rotationSystem.SetRotation(Quaternion.Euler(0, yaw, 0), false);
+            }
+
+            // Attack
             private void OnTrace()
             {
                 var bodypart = _bodySystem.GetBodyPart(_ability._tracePoint);

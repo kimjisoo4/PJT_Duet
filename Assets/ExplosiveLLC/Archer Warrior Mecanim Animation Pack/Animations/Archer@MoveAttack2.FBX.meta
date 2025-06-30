@@ -523,8 +523,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
       might lower retargeting quality:\nNote: Activate translation DOF on avatar
@@ -567,7 +565,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.47745898
+      - time: 0.5033039
         functionName: AnimNotify
         data: Shoot
         objectReferenceParameter: {instanceID: 0}
@@ -577,13 +575,6 @@ ModelImporter:
       - time: 0.6598361
         functionName: Land
         data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.44745764
-        functionName: AnimNotify
-        data: Impact
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
@@ -705,7 +696,7 @@ ModelImporter:
       takeName: Take 001
       internalID: 1450943584562137664
       firstFrame: 0
-      lastFrame: 20
+      lastFrame: 38
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -715,7 +706,7 @@ ModelImporter:
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 1
-      loopBlendPositionY: 0
+      loopBlendPositionY: 1
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
@@ -725,16 +716,16 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.91104543
+      - time: 0.48180225
         functionName: AnimNotify
-        data: Impact
+        data: Shoot
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.9410468
+      - time: 0.49752656
         functionName: AnimNotify
-        data: Shoot
+        data: Impact
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0

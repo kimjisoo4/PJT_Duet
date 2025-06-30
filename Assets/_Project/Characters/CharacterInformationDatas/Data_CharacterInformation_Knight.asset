@@ -34,10 +34,8 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   _icon: {fileID: 21300000, guid: d24bc4239349b2c4aabbf696a175b294, type: 3}
-  _activeSkills:
-  - {fileID: 11400000, guid: 358f4e3565ec4034499ddde921eed94d, type: 2}
-  _appearSkills:
-  - {fileID: 11400000, guid: b3ef8b9943ae14e41afa47cd8d81a284, type: 2}
+  _activeSkills: []
+  _appearSkills: []
   _defaultSkills: []
   references:
     version: 2

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SimplePool_Character_Ork_Warrior
   m_EditorClassIdentifier: 
   UseDebug: 0
-  simplePoolObject: {fileID: 1150452127963554101, guid: ff53cc10f1cd1334eb8e2640bb5bd6f8,
+  _pooledObject: {fileID: 1150452127963554101, guid: ff53cc10f1cd1334eb8e2640bb5bd6f8,
     type: 3}
-  container: {fileID: 0}
-  startSize: 5
-  capacity: 10
-  maxSize: 20
+  _container: {fileID: 0}
+  _startSize: 5
+  _capacity: 10
+  _maxSize: 20

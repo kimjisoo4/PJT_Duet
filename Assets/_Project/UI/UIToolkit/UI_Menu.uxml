@@ -1,0 +1,20 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/UIToolkit/DefaultStyle.uss?fileID=7433441132597879392&amp;guid=703c40d5b0c62d64987633d45bff374a&amp;type=3#DefaultStyle" />
+    <ui:VisualElement name="Root" class="root" style="flex-grow: 1; -unity-font-definition: url(&quot;project://database/Assets/_Project/Fonts/Level/FontAsset/NEXON%20Lv1%20Gothic%20Low%20OTF%20SDF.asset?fileID=11400000&amp;guid=4554588e5f3f9834e82bfe6903670743&amp;type=2#NEXON Lv1 Gothic Low OTF SDF&quot;); font-size: 60px; color: rgb(255, 255, 255); -unity-text-align: middle-center; justify-content: flex-end; margin-bottom: 100px; margin-top: 100px; align-items: center;">
+        <ui:Button text="GameStart" name="Button_GameStart" class="button-text" style="width: 300px;">
+            <Bindings>
+                <UnityEngine.Localization.LocalizedString property="text" table="GUID:0b5097ec649055a4db8796c6aa4e9887" entry="Id(63009919846453248)" />
+            </Bindings>
+        </ui:Button>
+        <ui:Button text="Setting" name="Button_Setting" class="button-text" style="width: 300px;">
+            <Bindings>
+                <UnityEngine.Localization.LocalizedString property="text" table="GUID:0b5097ec649055a4db8796c6aa4e9887" entry="Id(63010020522332160)" />
+            </Bindings>
+        </ui:Button>
+        <ui:Button text="Exit" name="Button_Exit" class="button-text" style="width: 300px;">
+            <Bindings>
+                <UnityEngine.Localization.LocalizedString property="text" table="GUID:0b5097ec649055a4db8796c6aa4e9887" entry="Id(63010064206008320)" />
+            </Bindings>
+        </ui:Button>
+    </ui:VisualElement>
+</ui:UXML>

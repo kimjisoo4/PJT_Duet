@@ -1,7 +1,5 @@
 ﻿using StudioScor.Utilities;
 using StudioScor.Utilities.DialogueSystem;
-using System;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -27,9 +25,12 @@ namespace PF.PJT.Duet.DialogueSystem
         [SerializeField] private DialogueControllerState _waitForSelectButtonState;
         [SerializeField] private DialogueControllerState _waitForHideDisplayState;
 
+        [Header(" Block Input ")]
+        [SerializeField] private InputBlocker _inputBlocker;
+        [SerializeField] private EBlockInputState _blockInput = EBlockInputState.Game;
+
         [Header(" Variables ")]
         [SerializeField] private GameObjectListVariable _inActiveStatusVariable;
-        [SerializeField] private GameObjectListVariable _activeUIInputVariable;
 
         [Header(" Events ")]
         [Header(" Post ")]
@@ -38,8 +39,8 @@ namespace PF.PJT.Duet.DialogueSystem
 
         public event DialogueControllerEventHandler OnStartedActivate;
         public event DialogueControllerEventHandler OnFinishedActivate;
-        public event DialogueControllerEventHandler OnStartedInactivate;
-        public event DialogueControllerEventHandler OnFinishedInactivate;
+        public event DialogueControllerEventHandler OnStartedDeactivate;
+        public event DialogueControllerEventHandler OnDeactivateFinished;
 
         private IDialogue _dialogue;
         private IDialogueSystem _dialogueSystem;
@@ -52,6 +53,15 @@ namespace PF.PJT.Duet.DialogueSystem
 
         private bool _wasInit = false;
 
+        private void OnValidate()
+        {
+#if UNITY_EDITOR
+            if(!_inputBlocker)
+            {
+                _inputBlocker = SUtility.FindAssetByType<InputBlocker>();
+            }
+#endif
+        }
         private void Awake()
         {
             Init();
@@ -68,7 +78,7 @@ namespace PF.PJT.Duet.DialogueSystem
             if(_dialogueDisplay is not null)
             {
                 _dialogueDisplay.OnFinishedBlendIn -= _dialogueDisplay_OnFinishedBlendIn;
-                _dialogueDisplay.OnInactivated -= _dialogueDisplay_OnInactivated;
+                _dialogueDisplay.OnDeactivated -= _dialogueDisplay_OnDeactivated;
                 _dialogueDisplay.OnStartedWriting -= _dialogueDisplay_OnStartedWriting;
                 _dialogueDisplay.OnEndedWriting -= _dialogueDisplay_OnEndedWriting;
             }
@@ -86,6 +96,8 @@ namespace PF.PJT.Duet.DialogueSystem
             {
                 _submitEventListener.OnSubmited -= _submitEventListener_OnSubmited;
             }
+
+            _inputBlocker.UnblockInput(this);
         }
 
         public void Init()
@@ -104,10 +116,10 @@ namespace PF.PJT.Duet.DialogueSystem
             _dialogueSystem.OnFinishedDialogue += _dialogueSystem_OnFinishedDialogue;
 
             _dialogueDisplay.Init();
-            _dialogueDisplay.Inactivate();
+            _dialogueDisplay.Deactivate();
 
             _dialogueDisplay.OnFinishedBlendIn += _dialogueDisplay_OnFinishedBlendIn;
-            _dialogueDisplay.OnInactivated += _dialogueDisplay_OnInactivated;
+            _dialogueDisplay.OnDeactivated += _dialogueDisplay_OnDeactivated;
             _dialogueDisplay.OnStartedWriting += _dialogueDisplay_OnStartedWriting;
             _dialogueDisplay.OnEndedWriting += _dialogueDisplay_OnEndedWriting;
 
@@ -117,7 +129,7 @@ namespace PF.PJT.Duet.DialogueSystem
             {
                 selectButton.OnSubmited += SelectButton_OnSubmited;
                 selectButton.Init();
-                selectButton.Inactivate();
+                selectButton.Deactivate();
             }
 
 
@@ -132,7 +144,7 @@ namespace PF.PJT.Duet.DialogueSystem
                 _dialogue = dialogue;
 
                 _inActiveStatusVariable.Add(gameObject);
-                _activeUIInputVariable.Add(gameObject);
+                _inputBlocker.BlockInput(this, _blockInput);
 
                 _stateMachine.ForceSetState(_waitForShowDisplayState);
 
@@ -140,13 +152,13 @@ namespace PF.PJT.Duet.DialogueSystem
             }
         }
 
-        public void Inactivate()
+        public void Deactivate()
         {
-            _dialogueDisplay.Inactivate();
+            _dialogueDisplay.Deactivate();
 
             _stateMachine.TrySetState(_waitForHideDisplayState);
 
-            Invoke_OnStartedInactivate();
+            Invoke_OnStartedDeactivate();
         }
 
         private void _dialogueDisplay_OnFinishedBlendIn(IDialogueDisplay dialogueDisplay)
@@ -156,14 +168,14 @@ namespace PF.PJT.Duet.DialogueSystem
             DialogueSystem.PlayDialogue(_dialogue);
 
         }
-        private void _dialogueDisplay_OnInactivated(IDialogueDisplay dialogueDisplay)
+        private void _dialogueDisplay_OnDeactivated(IDialogueDisplay dialogueDisplay)
         {
             _inActiveStatusVariable.Remove(gameObject);
-            _activeUIInputVariable.Remove(gameObject);
+            _inputBlocker.UnblockInput(this);
 
             _stateMachine.TrySetState(_inactiveState);
 
-            Invoke_OnFinishedInactivate();
+            Invoke_OnFinishedDeactivate();
         }
 
         private void _dialogueDisplay_OnStartedWriting(IDialogueDisplay dialogueDisplay)
@@ -196,7 +208,7 @@ namespace PF.PJT.Duet.DialogueSystem
                 eventDialogue.OnFinish();
             }
 
-            Inactivate();
+            Deactivate();
         }
 
         private void _submitEventListener_OnSubmited(ISubmitEventListener submitEventListener, BaseEventData eventData)
@@ -224,17 +236,17 @@ namespace PF.PJT.Duet.DialogueSystem
 
             OnFinishedActivate?.Invoke(this);
         }
-        private void Invoke_OnStartedInactivate()
+        private void Invoke_OnStartedDeactivate()
         {
-            Log(nameof(OnStartedInactivate));
+            Log(nameof(OnStartedDeactivate));
 
-            OnStartedInactivate?.Invoke(this);
+            OnStartedDeactivate?.Invoke(this);
         }
-        private void Invoke_OnFinishedInactivate()
+        private void Invoke_OnFinishedDeactivate()
         {
-            Log(nameof(OnFinishedInactivate));
+            Log(nameof(OnDeactivateFinished));
 
-            OnFinishedInactivate?.Invoke(this);
+            OnDeactivateFinished?.Invoke(this);
         }
     }
 }

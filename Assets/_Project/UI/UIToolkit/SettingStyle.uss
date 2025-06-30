@@ -1,0 +1,15 @@
+:root {
+}
+
+.setting {
+    width: 100%;
+    height: 100%;
+    padding-top: 50px;
+    padding-right: 50px;
+    padding-bottom: 50px;
+    padding-left: 50px;
+}
+
+.setting-category-label {
+    font-size: 45px;
+}

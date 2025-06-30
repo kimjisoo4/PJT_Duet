@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72ba133722f101b4187995f37a6b5533, type: 3}
   m_Name: GA_PawnAbiltiy_KnockbackMovement
   m_EditorClassIdentifier: 
-  UseDebug: 0
+  UseDebug: 1
   _id: GA_PawnAbiltiy_KnockbackMovement
   abilityTag: {fileID: 11400000, guid: fa9038ae30a790e4cb42b8e67229281b, type: 2}
   attributeTags: []
@@ -21,6 +21,7 @@ MonoBehaviour:
     obstacleds:
     - {fileID: 11400000, guid: 27d736be509dae14d8fdcf133bc7a0c2, type: 2}
     - {fileID: 11400000, guid: ad6c3d6668571ff4cbdcefdb4e2be194, type: 2}
+    - {fileID: 11400000, guid: 9e5e2f39f15e89241bb0d7340ae7b801, type: 2}
   grantTags:
     owneds:
     - {fileID: 11400000, guid: faa548f5b42584245accfcfd09cb700a, type: 2}
@@ -50,3 +51,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _dustCue:
+    Cue: {fileID: 11400000, guid: bf7d1de361b18bf489e4041ca3a61e02, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    Volume: 1
+  _guardStateTag: {fileID: 11400000, guid: 81b84526aacbdd44288166b92e9ca5ff, type: 2}
+  _guardKnockbackStrength: 0.5

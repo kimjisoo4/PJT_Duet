@@ -12,10 +12,25 @@ namespace PF.PJT.Duet
         [SerializeField] private Transform _closeRightDoor;
         [SerializeField] private float _closeDelay = 0f;
         [SerializeField] private float _closeDuration = 1f;
-        [SerializeField] private Vector3 _closeAngle = new Vector3(0, 0, 0);
+        [SerializeField] private Vector3 _closeAngleL = new Vector3(0, 0, 0);
+        [SerializeField] private Vector3 _closeAngleR = new Vector3(0, 180, 0);
         [SerializeField] private TweenEase _closeEase;
 
         private Sequence _closeSequence;
+
+        private void Awake()
+        {
+            _closeSequence = DOTween.Sequence().SetAutoKill(false).SetLink(gameObject);
+
+            _closeSequence.AppendInterval(_closeDelay);
+            _closeSequence.Append(_closeLeftDoor.DOLocalRotate(_closeAngleL, _closeDuration, RotateMode.Fast)).SetTweenEase(_closeEase);
+            _closeSequence.Join(_closeRightDoor.DOLocalRotate(_closeAngleR, _closeDuration, RotateMode.Fast)).SetTweenEase(_closeEase);
+            _closeSequence.OnComplete(() =>
+            {
+                DoorActor.FInishedState(this);
+            });
+            _closeSequence.Pause();
+        }
 
         protected override void EnterState()
         {
@@ -26,8 +41,8 @@ namespace PF.PJT.Duet
                 _closeSequence = DOTween.Sequence().SetAutoKill(false).SetLink(gameObject);
 
                 _closeSequence.AppendInterval(_closeDelay);
-                _closeSequence.Append(_closeLeftDoor.DOLocalRotate(_closeAngle, _closeDuration)).SetTweenEase(_closeEase);
-                _closeSequence.Join(_closeRightDoor.DOLocalRotate(-_closeAngle, _closeDuration)).SetTweenEase(_closeEase);
+                _closeSequence.Append(_closeLeftDoor.DOLocalRotate(_closeAngleL, _closeDuration, RotateMode.Fast)).SetTweenEase(_closeEase);
+                _closeSequence.Join(_closeRightDoor.DOLocalRotate(_closeAngleR, _closeDuration, RotateMode.Fast)).SetTweenEase(_closeEase);
                 _closeSequence.OnComplete(() =>
                 {
                     DoorActor.FInishedState(this);

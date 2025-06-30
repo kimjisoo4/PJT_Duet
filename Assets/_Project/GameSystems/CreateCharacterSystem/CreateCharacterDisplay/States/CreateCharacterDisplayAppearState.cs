@@ -10,7 +10,7 @@ namespace PF.PJT.Duet.CreateCharacterSystem
         [SerializeField] private GameObject _uiActor;
         [SerializeField] private CreateCharacterButton[] _createCharacterButtons;
 
-        private int _remainActivateButtonCount = 0;
+        private int _remaDeactivateButtonCount = 0;
 
         private void Awake()
         {
@@ -19,8 +19,11 @@ namespace PF.PJT.Duet.CreateCharacterSystem
                 createCharacterButton.OnFInishedBlendIn += CreateCharacterButton_OnFInishedBlendIn;
             }    
         }
-        private void OnDestroy()
+
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
+
             if (!_createCharacterButtons.IsNullOrEmpty())
             {
                 foreach (var createCharacterButton in _createCharacterButtons)
@@ -43,7 +46,7 @@ namespace PF.PJT.Duet.CreateCharacterSystem
 
         private void OnActivateButtons()
         {
-            _remainActivateButtonCount = _createCharacterButtons.Length;
+            _remaDeactivateButtonCount = _createCharacterButtons.Length;
 
             foreach (var createCharacterButton in _createCharacterButtons)
             {
@@ -53,9 +56,9 @@ namespace PF.PJT.Duet.CreateCharacterSystem
 
         private void CreateCharacterButton_OnFInishedBlendIn(CreateCharacterButton selectCharacterUI)
         {
-            _remainActivateButtonCount--;
+            _remaDeactivateButtonCount--;
 
-            if(_remainActivateButtonCount <= 0)
+            if(_remaDeactivateButtonCount <= 0)
             {
                 CreateCharacterDisplay.FinishedState(this);
             }

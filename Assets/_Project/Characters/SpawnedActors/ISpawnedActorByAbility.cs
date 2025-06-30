@@ -24,7 +24,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         public IGameplayTagSystem GameplayTagSystem { get; }
 
         public void Activate(GameObject newOwner, IAbilitySpec spawnAbility, IEnumerable<GameplayTag> ownedTags = null);
-        public void Inactivate();
+        public void Deactivate();
         public void Play();
     }
 }

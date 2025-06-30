@@ -8,13 +8,13 @@ namespace PF.PJT.Duet.CreateCharacterSystem
 
         public void Init();
         public void Activate();
-        public void Inactivate();
+        public void Deactivate();
         public void SetCharacterDatas(IEnumerable<CharacterData> chracterDatas);
 
 
         public event CreateCharacterDisplayEventHandler OnActivated;
         public event CreateCharacterDisplayEventHandler OnFinishedBlendIn;
         public event CreateCharacterDisplayEventHandler OnStartedBlendOut;
-        public event CreateCharacterDisplayEventHandler OnInactivated;
+        public event CreateCharacterDisplayEventHandler OnDeactivated;
     }
 }

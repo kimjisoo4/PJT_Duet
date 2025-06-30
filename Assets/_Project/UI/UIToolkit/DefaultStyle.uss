@@ -1,0 +1,101 @@
+:root {
+}
+
+.button-text {
+    transition-duration: 0.25s;
+    background-color: rgba(255, 255, 255, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    -unity-font-style: bold;
+    font-size: 40px;
+}
+
+.button-text:focus {
+    transition-duration: 0.25s;
+    transition-timing-function: ease-out-back;
+    scale: 1.1 1.1;
+    -unity-font-style: bold;
+    background-color: rgb(0, 160, 255);
+}
+
+.button-text:active {
+    transition-duration: 0.1s;
+    transition-timing-function: ease-out-back;
+    background-color: rgb(146, 237, 255);
+    -unity-font-style: bold;
+    scale: 1.2 1.2;
+}
+
+.button-text {
+    transition-duration: 0.25s;
+    background-color: rgba(255, 255, 255, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    -unity-font-style: bold;
+    font-size: 40px;
+}
+
+.text-title {
+    font-size: 40px;
+}
+
+.root {
+    -unity-font-definition: url("project://database/Assets/_Project/Fonts/Level/FontAsset/NEXON%20Lv1%20Gothic%20Low%20OTF%20SDF.asset?fileID=11400000&guid=4554588e5f3f9834e82bfe6903670743&type=2#NEXON Lv1 Gothic Low OTF SDF");
+    color: rgb(255, 255, 255);
+    flex-grow: 1;
+    align-content: center;
+    justify-content: center;
+    align-self: stretch;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+}
+
+.text-description {
+    font-size: 40px;
+}
+
+.root__deactivate {
+    opacity: 0;
+    transition-duration: 0s;
+}
+
+.root__fadein {
+    opacity: 1;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+    transition-property: opacity;
+}
+
+.root__fadeout {
+    opacity: 0;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+    transition-property: opacity;
+}
+
+.background {
+    background-color: rgba(0, 0, 0, 0.85);
+}

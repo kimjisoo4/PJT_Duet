@@ -5,6 +5,8 @@ using StudioScor.BodySystem;
 using StudioScor.GameplayCueSystem;
 using StudioScor.GameplayEffectSystem;
 using StudioScor.GameplayTagSystem;
+using StudioScor.PlayerSystem;
+using StudioScor.RotationSystem;
 using StudioScor.Utilities;
 using UnityEngine;
 
@@ -19,8 +21,15 @@ namespace PF.PJT.Duet
         [SerializeField] private string _animationName = "BowAttack_01";
         [SerializeField] private float _fadeInTime = 0.2f;
 
+        [Header(" Find Target ")]
+        [SerializeField][SUnit(SUtility.UNIT_METER)] private float _findTargetRadius = 10f;
+        [SerializeField][SUnit(SUtility.UNIT_DEGREE)] private float _findTargetAngle = 45f;
+        [SerializeField] private int _findTargetCount = 20;
+        [SerializeField] private SOLayerMaskVariable _findTargetLayer;
+        [SerializeField] private SOLayerMaskVariable _obstacleLayer;
+
         [Header(" Rotation ")]
-        [SerializeField] private GameplayTag _turnTag;
+        [SerializeField][SUnit(SUtility.UNIT_DEGREE_PER_SEC)] private float _turnSpeed = 720f;
 
         [Header(" Projectile ")]
         [SerializeField] private PoolContainer _projectilePool;
@@ -52,6 +61,8 @@ namespace PF.PJT.Duet
         {
             protected new readonly DefaultBowAttackSkill _ability;
             private readonly AnimationPlayer _animationPlayer;
+            private readonly IPawnSystem _pawnSystem;
+            private readonly IRotationSystem _rotationSystem;
             private readonly IBodySystem _bodySystem;
             private readonly IRelationshipSystem _relationshipSystem;
 
@@ -59,6 +70,7 @@ namespace PF.PJT.Duet
             private readonly int _animationID;
             private bool _wasStartedAnimation = false;
 
+            private bool _canTurn;
             private bool _wasPlayAttackCue;
             private ISpawnedActorByAbility _spawnedActorByAbility;
 
@@ -66,9 +78,11 @@ namespace PF.PJT.Duet
             {
                 _ability = ability as DefaultBowAttackSkill;
 
-                _animationPlayer = gameObject.GetComponentInChildren<AnimationPlayer>();
+                _pawnSystem = gameObject.GetPawnSystem();
+                _rotationSystem = gameObject.GetRotationSystem();
                 _bodySystem = gameObject.GetBodySystem();
                 _relationshipSystem = gameObject.GetRelationshipSystem();
+                _animationPlayer = gameObject.GetComponentInChildren<AnimationPlayer>();
 
                 _animationID = Animator.StringToHash(_ability._animationName);
 
@@ -106,7 +120,7 @@ namespace PF.PJT.Duet
 
                 if(_spawnedActorByAbility is not null)
                 {
-                    _spawnedActorByAbility.Inactivate();
+                    _spawnedActorByAbility.Deactivate();
                     _spawnedActorByAbility = null;
                 }
             }
@@ -114,7 +128,8 @@ namespace PF.PJT.Duet
             {
                 if(IsPlaying)
                 {
-                    
+                    UpdateTurning(deltaTime);
+
                     if (!_wasPlayAttackCue)
                     {
                         float normalizedTime = _animationPlayer.NormalizedTime;
@@ -150,21 +165,115 @@ namespace PF.PJT.Duet
             {
                 if(_spawnedActorByAbility is not null)
                 {
-                    _spawnedActorByAbility.transform.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
+                    Vector3 direction;
+
+                    if (_pawnSystem.IsPlayer)
+                    {
+                        var target = FindTarget(_spawnedActorByAbility.transform.position);
+
+                        if (target)
+                        {
+                            direction = _spawnedActorByAbility.transform.Direction(target.bounds.center);
+                        }
+                        else
+                        {
+                            direction = transform.forward;
+                        }
+                    }
+                    else
+                    {
+                        direction = transform.forward;
+                    }
+
+
+                    _spawnedActorByAbility.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
                     _spawnedActorByAbility.Play();
 
                     _spawnedActorByAbility = null;
                 }
             }
+
+            private Collider[] _findColliders;
+
+            // Find Target 
+            private Collider FindTarget(Vector3 origin)
+            {
+                Log(nameof(FindTarget));
+
+                if(_findColliders is null || _findColliders.Length != _ability._findTargetCount)
+                {
+                    _findColliders = new Collider[_ability._findTargetCount];
+                }
+
+                Vector3 lookDirection = _pawnSystem.LookDirection;
+
+                var hitCount = SUtility.Physics.DrawOverlapSphereNoneAlloc(origin, _ability._findTargetRadius, _findColliders, _ability._findTargetLayer.Value, QueryTriggerInteraction.UseGlobal, UseDebug);
+                Collider target = null;
+                float bestAngle = _ability._findTargetAngle;
+
+                for (int i = 0; i < hitCount; i++)
+                {
+                    var col = _findColliders[i];
+
+                    if (!col.TryGetActor(out IActor actor))
+                        continue;
+
+                    if (actor.transform == transform)
+                        continue;
+
+                    if (actor.transform.TryGetReleationshipSystem(out IRelationshipSystem relationship) 
+                        && _relationshipSystem.CheckRelationship(relationship) != ERelationship.Hostile)
+                        continue;
+
+                    Vector3 targetDirection = origin.Direction(col.transform.position);
+                    float angle = Vector3.Angle(lookDirection, targetDirection);
+
+                    if (angle.InRangeAngle(bestAngle))
+                    {
+                        Vector3 targetCenter = col.bounds.center;
+                        Vector3 direction = origin.Direction(targetCenter, false);
+                        float distance = direction.magnitude;
+
+                        if (Physics.Raycast(origin, targetCenter, distance, _ability._obstacleLayer.Value))
+                            break;
+
+                        bestAngle = angle;
+                        target = col;
+                    }
+                }
+
+
+                Log($"{nameof(FindTarget)} - Result : {target}");
+
+                return target;
+            }
+
+
+
+            // Turning
             private void OnTurn()
             {
-                if (_ability._turnTag)
-                    GameplayTagSystem.AddOwnedTag(_ability._turnTag);
+                if (_canTurn)
+                    return;
+
+                _canTurn = true;
             }
             private void EndTurn()
             {
-                if (_ability._turnTag)
-                    GameplayTagSystem.RemoveOwnedTag(_ability._turnTag);
+                if (!_canTurn)
+                    return;
+
+                _canTurn = false;
+            }
+            private void UpdateTurning(float deltaTime)
+            {
+                if (!_canTurn)
+                    return;
+
+                Quaternion lookRotation = Quaternion.LookRotation(_pawnSystem.LookDirection, transform.up);
+                float yaw = Mathf.MoveTowardsAngle(transform.eulerAngles.y, lookRotation.eulerAngles.y, _ability._turnSpeed * deltaTime);
+
+                _rotationSystem.SetRotation(Quaternion.Euler(0, yaw, 0), false);
             }
             private void OnCombo()
             {
@@ -215,7 +324,7 @@ namespace PF.PJT.Duet
                     }
                 }
 
-                spawnedActor.Inactivate();
+                spawnedActor.Deactivate();
             }
 
             private void _animationEvents_OnStarted()

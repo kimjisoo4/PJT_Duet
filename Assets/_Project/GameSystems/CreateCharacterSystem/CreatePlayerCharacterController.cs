@@ -26,15 +26,19 @@ namespace PF.PJT.Duet.CreateCharacterSystem
         [SerializeField] private CreatePlayerCharacterControllerState _inactiveState;
         [SerializeField] private CreatePlayerCharacterControllerState _waitForActivateState;
         [SerializeField] private CreatePlayerCharacterControllerState _waitForSelectState;
-        [SerializeField] private CreatePlayerCharacterControllerState _waitForInactivateState;
+        [SerializeField] private CreatePlayerCharacterControllerState _waitForDeactivateState;
 
-        [Header(" Variables ")]
-        [SerializeField] private GameObjectListVariable _activeUIInputVariable;
-        [SerializeField] private GameObjectListVariable _inActiveStatusUIVariable;
+        [Header(" Input ")]
+        [SerializeField] private InputBlocker _inputBlocker;
+        [SerializeField] private EBlockInputState _blockInput = EBlockInputState.Game;
+
+        [Header(" HUD ")]
+        [SerializeField] private HUDVisibilityController _hudVisibility;
+        [SerializeField] private bool _hideHUD = true;
 
         [Header(" Evetns ")]
         [SerializeField] private ToggleableUnityEvent _onActivated;
-        [SerializeField] private ToggleableUnityEvent _onInactivated;
+        [SerializeField] private ToggleableUnityEvent _onDeactivated;
         [SerializeField] private ToggleableUnityEvent _onCreatedCharacter;
 
         private IPlayerController _playerController;
@@ -48,7 +52,7 @@ namespace PF.PJT.Duet.CreateCharacterSystem
         public IReadOnlyCollection<CreateCharacterButton> CreateCharacterButtons => _createCharacterButtons;
 
         public event CreatePlayerCharacterEventHandler OnActivated;
-        public event CreatePlayerCharacterEventHandler OnInactivated;
+        public event CreatePlayerCharacterEventHandler OnDeactivated;
         public event CreatePlayerCharacterEventHandler OnCreatedCharacter;
 
         private void OnValidate()
@@ -62,6 +66,16 @@ namespace PF.PJT.Duet.CreateCharacterSystem
             if(!_createCharacterDisplayActor)
             {
                 _createCharacterDisplayActor = gameObject.GetGameObjectByTypeInParentOrChildren<ICreateCharacterDisplay>();
+            }
+
+            if(!_inputBlocker)
+            {
+                _inputBlocker = SUtility.FindAssetByType<InputBlocker>();
+            }
+
+            if(!_hudVisibility)
+            {
+                _hudVisibility = SUtility.FindAssetByType<HUDVisibilityController>();
             }
 #endif
         }
@@ -90,25 +104,16 @@ namespace PF.PJT.Duet.CreateCharacterSystem
 
             if(_createCharacterDisplay is not null)
             {
-                _createCharacterDisplay.OnFinishedBlendIn -= _createCharacterDisplay_OnFinishedBlendIn;
-                _createCharacterDisplay.OnInactivated -= _createCharacterDisplay_OnInactivated;
+                _createCharacterDisplay.OnFinishedBlendIn -= CreateCharacterDisplay_OnFinishedBlendIn;
+                _createCharacterDisplay.OnDeactivated -= CreateCharacterDisplay_OnDeactivated;
 
                 _createCharacterDisplay = null;
             }
 
+            _inputBlocker.UnblockInput(this);
 
-            if(_isPlaying)
-            {
-                if (_activeUIInputVariable)
-                {
-                    _activeUIInputVariable.Remove(gameObject);
-                }
-
-                if (_inActiveStatusUIVariable)
-                {
-                    _inActiveStatusUIVariable.Remove(gameObject);
-                }
-            }
+            if (_hideHUD)
+                _hudVisibility.RequestShow(this);
         }
 
         public void Init()
@@ -128,10 +133,10 @@ namespace PF.PJT.Duet.CreateCharacterSystem
 
             _createCharacterSystem.Init();
 
-            _createCharacterDisplay.OnFinishedBlendIn += _createCharacterDisplay_OnFinishedBlendIn;
-            _createCharacterDisplay.OnInactivated += _createCharacterDisplay_OnInactivated;
+            _createCharacterDisplay.OnFinishedBlendIn += CreateCharacterDisplay_OnFinishedBlendIn;
+            _createCharacterDisplay.OnDeactivated += CreateCharacterDisplay_OnDeactivated;
             _createCharacterDisplay.Init();
-            _createCharacterDisplay.Inactivate();
+            _createCharacterDisplay.Deactivate();
 
             foreach (var createCharacterButton in _createCharacterButtons)
             {
@@ -149,8 +154,9 @@ namespace PF.PJT.Duet.CreateCharacterSystem
 
             _isPlaying = true;
 
-            _activeUIInputVariable.Add(gameObject);
-            _inActiveStatusUIVariable.Add(gameObject);
+            _inputBlocker.BlockInput(this, _blockInput);
+            if (_hideHUD)
+                _hudVisibility.RequestHide(this);
 
             _createCharacterSystem.CreateCharacterDatas(_createCharacterButtons.Length);
             _createCharacterDisplay.SetCharacterDatas(_createCharacterSystem.CharacterDatas);
@@ -160,11 +166,11 @@ namespace PF.PJT.Duet.CreateCharacterSystem
             Invoke_OnActivated();
         }
 
-        public void Inactivate()
+        public void Deactivate()
         {
-            Log($"{nameof(Inactivate)}");
+            Log($"{nameof(Deactivate)}");
 
-            _stateMachine.TrySetState(_waitForInactivateState);
+            _stateMachine.TrySetState(_waitForDeactivateState);
 
             _createCharacterSystem.ClearCharacterDatas();
         }
@@ -184,16 +190,17 @@ namespace PF.PJT.Duet.CreateCharacterSystem
         {
             _stateMachine.TrySetState(_waitForSelectState);
         }
-        private void OnInactivatedDisplay()
+        private void OnDeactivatedDisplay()
         {
             _stateMachine.TrySetState(_inactiveState);
 
-            _activeUIInputVariable.Remove(gameObject);
-            _inActiveStatusUIVariable.Remove(gameObject);
+            _inputBlocker.UnblockInput(this);
+            if(_hideHUD)
+                _hudVisibility.RequestShow(this);
 
             _isPlaying = false;
 
-            Invoke_OnInactivated();
+            Invoke_OnDeactivated();
         }
 
         private void UpdatePlayerController()
@@ -214,13 +221,13 @@ namespace PF.PJT.Duet.CreateCharacterSystem
         }
 
 
-        private void _createCharacterDisplay_OnFinishedBlendIn(ICreateCharacterDisplay createCharacterDisplay)
+        private void CreateCharacterDisplay_OnFinishedBlendIn(ICreateCharacterDisplay createCharacterDisplay)
         {
             OnFinishedBlendInDisplay();
         }
-        private void _createCharacterDisplay_OnInactivated(ICreateCharacterDisplay createCharacterDisplay)
+        private void CreateCharacterDisplay_OnDeactivated(ICreateCharacterDisplay createCharacterDisplay)
         {
-            OnInactivatedDisplay();
+            OnDeactivatedDisplay();
         }
 
         private void _playerManager_OnChangedPlayerController(PlayerManager playerManager, IControllerSystem currentController, IControllerSystem prevController = null)
@@ -241,12 +248,12 @@ namespace PF.PJT.Duet.CreateCharacterSystem
             _onActivated.Invoke();
             OnActivated?.Invoke(this);
         }
-        private void Invoke_OnInactivated()
+        private void Invoke_OnDeactivated()
         {
-            Log(nameof(OnInactivated));
+            Log(nameof(OnDeactivated));
 
-            _onInactivated.Invoke();
-            OnInactivated?.Invoke(this);
+            _onDeactivated.Invoke();
+            OnDeactivated?.Invoke(this);
         }
 
         private void Invoke_OnCreatedCharacter()

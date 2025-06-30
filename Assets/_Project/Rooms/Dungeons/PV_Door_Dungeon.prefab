@@ -113,12 +113,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  useUnityEvent: 0
-  unityEvents:
-    OnEnteredState:
+  _onEnteredState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
-    OnExitedState:
+  _onExitedState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
   _doorActor: {fileID: 2379726210325966580}
@@ -167,12 +169,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  useUnityEvent: 0
-  unityEvents:
-    OnEnteredState:
+  _onEnteredState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
-    OnExitedState:
+  _onExitedState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
   _doorActor: {fileID: 2379726210325966580}
@@ -253,12 +257,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  useUnityEvent: 0
-  unityEvents:
-    OnEnteredState:
+  _onEnteredState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
-    OnExitedState:
+  _onExitedState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
   _doorActor: {fileID: 2379726210325966580}
@@ -266,7 +272,8 @@ MonoBehaviour:
   _closeRightDoor: {fileID: 3616514878787657812}
   _closeDelay: 0
   _closeDuration: 1
-  _closeAngle: {x: 0, y: 0, z: 0}
+  _closeAngleL: {x: 0, y: 0, z: 0}
+  _closeAngleR: {x: 0, y: 0, z: 0}
   _closeEase:
     _ease: 30
     _curve:
@@ -338,12 +345,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  useUnityEvent: 0
-  unityEvents:
-    OnEnteredState:
+  _onEnteredState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
-    OnExitedState:
+  _onExitedState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
   _doorActor: {fileID: 2379726210325966580}
@@ -392,12 +401,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseDebug: 0
-  useUnityEvent: 0
-  unityEvents:
-    OnEnteredState:
+  _onEnteredState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
-    OnExitedState:
+  _onExitedState:
+    _useUnityEvent: 0
+    _unityEvent:
       m_PersistentCalls:
         m_Calls: []
   _doorActor: {fileID: 2379726210325966580}
@@ -405,7 +416,8 @@ MonoBehaviour:
   _openRightDoor: {fileID: 3616514878787657812}
   _openDelay: 0
   _openDuration: 1
-  _openAngle: {x: 0, y: 150, z: 0}
+  _openAngleL: {x: 0, y: 135, z: 0}
+  _openAngleR: {x: 0, y: -135, z: 0}
   _openEase:
     _ease: 30
     _curve:
@@ -515,7 +527,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.87200004, y: 2.306, z: 0.39200002}
+  m_Extents: {x: 0.87200004, y: 2.306, z: 0.2}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
@@ -598,7 +610,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.84900004, y: 2.306, z: 0.39200002}
+  m_Extents: {x: 0.84900004, y: 2.306, z: 0.2}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
@@ -701,6 +713,11 @@ PrefabInstance:
     - target: {fileID: 6488285690432944959, guid: 8b55b6c4e19f2af4e831f0d7d137e332,
         type: 3}
       propertyPath: _stateMachine.defaultState
+      value: 
+      objectReference: {fileID: 2376043477664284688}
+    - target: {fileID: 6488285690432944959, guid: 8b55b6c4e19f2af4e831f0d7d137e332,
+        type: 3}
+      propertyPath: _stateMachine._defaultState
       value: 
       objectReference: {fileID: 2376043477664284688}
     - target: {fileID: 7363731910393926890, guid: 8b55b6c4e19f2af4e831f0d7d137e332,

@@ -65,6 +65,9 @@ namespace PF.PJT.Duet
 
         private void _onTakeDamage_OnTriggerGenericEvent(FDamageResult damageResult)
         {
+            if (damageResult.Damage <= 0f)
+                return;
+
             if (!_floatingDamageDic.TryGetValue(damageResult.DamageType, out FloatingTextContainer flatingText))
             {
                 flatingText = _defaultFloatingDamage;

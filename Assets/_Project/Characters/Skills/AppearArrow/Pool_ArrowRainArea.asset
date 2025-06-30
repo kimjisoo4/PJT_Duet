@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Pool_ArrowRainArea
   m_EditorClassIdentifier: 
   UseDebug: 0
-  simplePoolObject: {fileID: 7591397275409248652, guid: e22794f3d8a925b49952dc82cce015ad,
+  _pooledObject: {fileID: 7591397275409248652, guid: e22794f3d8a925b49952dc82cce015ad,
     type: 3}
-  container: {fileID: 0}
-  startSize: 5
-  capacity: 10
-  maxSize: 20
+  _container: {fileID: 0}
+  _startSize: 5
+  _capacity: 10
+  _maxSize: 20

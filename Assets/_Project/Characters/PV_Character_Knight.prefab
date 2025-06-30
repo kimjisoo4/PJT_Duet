@@ -71,9 +71,32 @@ PrefabInstance:
       objectReference: {fileID: 4400127323478148429}
     - target: {fileID: 4193450265519391899, guid: d8fea1572d399c84fb957bd8db6e8c57,
         type: 3}
+      propertyPath: _dashSkill
+      value: 
+      objectReference: {fileID: 11400000, guid: 4ea00ee30e228e94d949280a09e57a35,
+        type: 2}
+    - target: {fileID: 4193450265519391899, guid: d8fea1572d399c84fb957bd8db6e8c57,
+        type: 3}
+      propertyPath: _mainSkill
+      value: 
+      objectReference: {fileID: 11400000, guid: 358f4e3565ec4034499ddde921eed94d,
+        type: 2}
+    - target: {fileID: 4193450265519391899, guid: d8fea1572d399c84fb957bd8db6e8c57,
+        type: 3}
+      propertyPath: _attackSkill
+      value: 
+      objectReference: {fileID: 11400000, guid: 58c88a14950fc6848b1e27e84a2d4f06,
+        type: 2}
+    - target: {fileID: 4193450265519391899, guid: d8fea1572d399c84fb957bd8db6e8c57,
+        type: 3}
+      propertyPath: _dashAbility
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4193450265519391899, guid: d8fea1572d399c84fb957bd8db6e8c57,
+        type: 3}
       propertyPath: _jumpAbility
       value: 
-      objectReference: {fileID: 11400000, guid: 8c28e6d363ebed54ca4496109f363b03,
+      objectReference: {fileID: 11400000, guid: 4ea00ee30e228e94d949280a09e57a35,
         type: 2}
     - target: {fileID: 4193450265519391899, guid: d8fea1572d399c84fb957bd8db6e8c57,
         type: 3}
@@ -98,6 +121,17 @@ PrefabInstance:
       propertyPath: _characterInformationData
       value: 
       objectReference: {fileID: 11400000, guid: eb56832aefdfab941be3d538ca66d3de,
+        type: 2}
+    - target: {fileID: 4193450265519391899, guid: d8fea1572d399c84fb957bd8db6e8c57,
+        type: 3}
+      propertyPath: _defaultSkills.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4193450265519391899, guid: d8fea1572d399c84fb957bd8db6e8c57,
+        type: 3}
+      propertyPath: '_defaultSkills.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 358f4e3565ec4034499ddde921eed94d,
         type: 2}
     - target: {fileID: 5340446263873489304, guid: d8fea1572d399c84fb957bd8db6e8c57,
         type: 3}

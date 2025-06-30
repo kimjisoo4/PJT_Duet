@@ -17,10 +17,15 @@ namespace PF.PJT.Duet.DialogueSystem
         public IDialogueSystem DialogueSystem => _dialogueController.DialogueSystem;
         public IDialogueDisplay DialogueDisplay => _dialogueController.DialogueDisplay;
 
-        protected virtual void OnValidate()
+        protected override void OnValidate()
         {
 #if UNITY_EDITOR
-            if(!_dialogueController)
+            if (SUtility.IsPlayingOrWillChangePlaymode)
+                return;
+
+            base.OnValidate();
+
+            if (!_dialogueController)
             {
                 _dialogueController = GetComponentInParent<DialogueController>();
             }

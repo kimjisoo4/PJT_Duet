@@ -181,7 +181,7 @@ PrefabInstance:
     - target: {fileID: 8495073982491373774, guid: eea53b1093e6bc1499509a9da30542e8,
         type: 3}
       propertyPath: m_Name
-      value: PV_FloatingText_Damage_Fire Variant
+      value: PV_FloatingText_Damage_Fire
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

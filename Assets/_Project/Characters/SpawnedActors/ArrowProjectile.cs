@@ -22,7 +22,7 @@ namespace PF.PJT.Duet
 
         [Header(" Trace ")]
         [SerializeField][Min(0f)] private float _traceRadius = 1f;
-        [SerializeField] private Variable_LayerMask _traceLayer;
+        [SerializeField] private SOLayerMaskVariable _traceLayer;
 
         [Header(" VFX ")]
         [SerializeField] private TrailRenderer _trail;
@@ -81,7 +81,7 @@ namespace PF.PJT.Duet
             _wasFinished = false;
         }
 
-        public void Inactivate()
+        public void Deactivate()
         {
             _isPlaying = false;
             _wasFinished = true;
@@ -116,7 +116,7 @@ namespace PF.PJT.Duet
             if (!_isPlaying)
                 return;
 
-            Inactivate();
+            Deactivate();
         }
 
         public void OnProjectile()

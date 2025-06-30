@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Events;
 
 namespace StudioScor.Utilities
 {
@@ -23,8 +22,26 @@ namespace StudioScor.Utilities
             enabled = false;
 #endif
         }
+
+        protected virtual void OnValidate()
+        {
+#if UNITY_EDITOR
+            if (SUtility.IsPlayingOrWillChangePlaymode)
+                return;
+
+            enabled = false;
+#endif
+        }
         #endregion
 
+        protected virtual void OnDestroy()
+        {
+            _onEnteredState.Dispose();
+            _onExitedState.Dispose();
+
+            OnEnteredState = null;
+            OnExitedState = null;
+        }
 
         public virtual bool CanEnterState()
         {

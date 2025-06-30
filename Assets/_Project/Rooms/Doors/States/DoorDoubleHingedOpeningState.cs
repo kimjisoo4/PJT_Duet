@@ -12,10 +12,25 @@ namespace PF.PJT.Duet
         [SerializeField] private Transform _openRightDoor;
         [SerializeField] private float _openDelay = 0f;
         [SerializeField] private float _openDuration = 1f;
-        [SerializeField] private Vector3 _openAngle = new Vector3(0, 150, 0);
+        [SerializeField] private Vector3 _openAngleL = new Vector3(0, 90, 0);
+        [SerializeField] private Vector3 _openAngleR = new Vector3(0, -90, 0);
         [SerializeField] private TweenEase _openEase;
 
         private Sequence _openSequence;
+
+        private void Awake()
+        {
+            _openSequence = DOTween.Sequence().SetAutoKill(false).SetLink(gameObject);
+
+            _openSequence.AppendInterval(_openDelay);
+            _openSequence.Append(_openLeftDoor.DOLocalRotate(_openAngleL, _openDuration, RotateMode.Fast)).SetTweenEase(_openEase);
+            _openSequence.Join(_openRightDoor.DOLocalRotate(_openAngleR, _openDuration, RotateMode.Fast)).SetTweenEase(_openEase);
+            _openSequence.OnComplete(() =>
+            {
+                DoorActor.FInishedState(this);
+            });
+            _openSequence.Pause();
+        }
 
         protected override void EnterState()
         {
@@ -26,8 +41,8 @@ namespace PF.PJT.Duet
                 _openSequence = DOTween.Sequence().SetAutoKill(false).SetLink(gameObject);
 
                 _openSequence.AppendInterval(_openDelay);
-                _openSequence.Append(_openLeftDoor.DOLocalRotate(_openAngle, _openDuration)).SetTweenEase(_openEase);
-                _openSequence.Join(_openRightDoor.DOLocalRotate(-_openAngle, _openDuration)).SetTweenEase(_openEase);
+                _openSequence.Append(_openLeftDoor.DOLocalRotate(_openAngleL, _openDuration, RotateMode.Fast)).SetTweenEase(_openEase);
+                _openSequence.Join(_openRightDoor.DOLocalRotate(_openAngleR, _openDuration, RotateMode.Fast)).SetTweenEase(_openEase);
                 _openSequence.OnComplete(() =>
                 {
                     DoorActor.FInishedState(this);

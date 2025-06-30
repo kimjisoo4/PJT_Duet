@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b58623e76427b1f488c41febc04f8105, type: 3}
   m_Name: GA_Skill_BowCombo_Ground_01
   m_EditorClassIdentifier: 
-  UseDebug: 0
+  UseDebug: 1
   _id: GA_Skill_BowCombo_Ground_01
   abilityTag: {fileID: 0}
   attributeTags: []
@@ -32,7 +32,12 @@ MonoBehaviour:
   _description: 
   _animationName: BowAttack_01
   _fadeInTime: 0.2
-  _turnTag: {fileID: 11400000, guid: 6d15f3d07c563074d9dd397fd12a0276, type: 2}
+  _findTargetRadius: 20
+  _findTargetAngle: 15
+  _findTargetCount: 20
+  _findTargetLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
+  _obstacleLayer: {fileID: 11400000, guid: 4caa30b281eb5e745a43230cd502bd12, type: 2}
+  _turnSpeed: 720
   _projectilePool: {fileID: 11400000, guid: 648d965cc698a0d4baf74a13e7667090, type: 2}
   _projectileSpawnPoint: {fileID: 11400000, guid: 50f6b7cb7f6e4fe41a8a29bd6ce1295e,
     type: 2}

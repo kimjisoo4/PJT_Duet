@@ -17,9 +17,14 @@ namespace PF.PJT.Duet.CreateCharacterSystem
         public ICreateCharacterDisplay CreateCharacterDisplay => _createPlayerCharacterController.CreateCharacterDisplay;
         public IReadOnlyCollection<CreateCharacterButton> CreateCharacterButtons => _createPlayerCharacterController.CreateCharacterButtons;
 
-        protected virtual void OnValidate()
+        protected override void OnValidate()
         {
 #if UNITY_EDITOR
+            if (SUtility.IsPlayingOrWillChangePlaymode)
+                return;
+
+            base.OnValidate();
+
             if (!_createPlayerCharacterController)
             {
                 _createPlayerCharacterController = GetComponentInParent<CreatePlayerCharacterController>();

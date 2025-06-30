@@ -1,0 +1,32 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/UIToolkit/DefaultStyle.uss?fileID=7433441132597879392&amp;guid=703c40d5b0c62d64987633d45bff374a&amp;type=3#DefaultStyle" />
+    <Style src="project://database/Assets/_Project/UI/UIToolkit/StageClearStyle.uss?fileID=7433441132597879392&amp;guid=d2ae6ed2b87205b409d71d157229c39f&amp;type=3#StageClearStyle" />
+    <ui:VisualElement name="Root" class="root" style="background-color: rgba(0, 0, 0, 0.8);">
+        <ui:VisualElement name="StageClear" class="stageclear stageclear__inactive" style="width: 100%; height: 100%; align-self: center; justify-content: center;">
+            <ui:VisualElement name="LabelContainer" class="stageclear-label-container">
+                <ui:Label text="Duet" name="Label_Stage" enabled="true" class="stageclear-label-title">
+                    <Bindings>
+                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:0b5097ec649055a4db8796c6aa4e9887" entry="Id(1218651230208)" />
+                    </Bindings>
+                </ui:Label>
+                <ui:Label text="Duet" name="Label_Description" enabled="true" class="text-description stageclear-label-description">
+                    <Bindings>
+                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:0b5097ec649055a4db8796c6aa4e9887" entry="Id(66139942367399936)" />
+                    </Bindings>
+                </ui:Label>
+            </ui:VisualElement>
+            <ui:VisualElement name="ButtonContainer" class="stageclear-button-container">
+                <ui:Button text="Restart" name="Button_Restart" class="button-text stageclear-button-restart">
+                    <Bindings>
+                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:0b5097ec649055a4db8796c6aa4e9887" entry="Id(66131200884215808)" />
+                    </Bindings>
+                </ui:Button>
+                <ui:Button text="Exit" name="Button_Exit" class="button-text stageclear-button-exit">
+                    <Bindings>
+                        <UnityEngine.Localization.LocalizedString property="text" table="GUID:0b5097ec649055a4db8796c6aa4e9887" entry="Id(66131288926851072)" />
+                    </Bindings>
+                </ui:Button>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -42,6 +42,8 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
             {
                 base.EnterAbility();
 
+                _character.OnDie();
+
                 _animationPlayer.Play(ANIM_DEAD_ID);
                 _animationPlayer.AnimationEvents = _animationEvents;
             }
@@ -62,7 +64,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
             {
                 Log(nameof(EndAnimation));
 
-                _character.OnDie();
+                _character.EndDie();
 
                 foreach (var ability in _ability._grantAbilities)
                 {

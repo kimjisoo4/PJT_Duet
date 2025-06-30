@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d672f331105ac1c4cb22b15db25364f9, type: 3}
+  m_Name: GA_Skill_JustGuard
+  m_EditorClassIdentifier: 
+  UseDebug: 1
+  _id: GA_Skill_JustGuard
+  abilityTag: {fileID: 0}
+  attributeTags: []
+  conditionTags:
+    requireds: []
+    obstacleds:
+    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+  grantTags:
+    owneds:
+    - {fileID: 11400000, guid: 161d4c1fe7adb9e49914e68f24206f23, type: 2}
+    blocks:
+    - {fileID: 11400000, guid: d22e32c37a2db0940a1a0c08145fb779, type: 2}
+    - {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
+    - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
+    - {fileID: 11400000, guid: d2dc3cec091ae4a49b811d817552aa42, type: 2}
+    - {fileID: 11400000, guid: 2ec728a8400d61a4da454d4c66f9d97a, type: 2}
+    - {fileID: 11400000, guid: 99005c8d5fca529409cafeb3e9f60c0d, type: 2}
+  cancelAbilityTags: []
+  _icon: {fileID: 0}
+  _name: Just Guard
+  _skillType: 0
+  _description: 
+  _animationName: JustGuard
+  _fadeTime: 0
+  _offsetTime: 0.4
+  _slowWorldSpeed: 0.2
+  _slowDuration: 0.5
+  _takeDamage: {fileID: 11400000, guid: 962929b3ed8dead4f8045dc2ffae3648, type: 2}
+  _takeKnockback: {fileID: 11400000, guid: 568a85de39a785045b78ec8f9d104a11, type: 2}
+  _takeStiffen: {fileID: 11400000, guid: bb3899d5b9c9f23409b3ad2b94af5854, type: 2}
+  _applyGameplayEffectsOnHitToOther: []
+  _applyGameplayEffectsOnSuccessedHit: []
+  _tracePoint: {fileID: 11400000, guid: ca42550498d3f3d4a90452c1994408c4, type: 2}
+  _traceLayer: {fileID: 11400000, guid: 9765c90a846088b48a49ae8606e130fc, type: 2}
+  _traceRadius: 2.5
+  _attackCueTime: 0.2
+  _onAttackCue:
+    Cue: {fileID: 11400000, guid: d2943b127b9034d42af56e122e977332, type: 2}
+    Position: {x: 0, y: 1.25, z: 0.8}
+    Rotation: {x: 0, y: -15, z: 0}
+    Scale: {x: 1, y: 1, z: 1.75}
+    Volume: 1
+  _onHitToOtherCue:
+    Cue: {fileID: 11400000, guid: 6c85673d7edaa62439a2920702e6d37b, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    Volume: 1
+  _onSuccessedPlayerHit:
+    Cue: {fileID: 11400000, guid: 0f6d4545bf2eabd4eb232183e15595c9, type: 2}
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    Scale: {x: 1, y: 1, z: 1}
+    Volume: 1

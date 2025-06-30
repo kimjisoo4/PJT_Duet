@@ -1,0 +1,13 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/UIToolkit/DefaultStyle.uss?fileID=7433441132597879392&amp;guid=703c40d5b0c62d64987633d45bff374a&amp;type=3#DefaultStyle" />
+    <Style src="project://database/Assets/_Project/UI/UIToolkit/PressAnyKeyStyle.uss?fileID=7433441132597879392&amp;guid=5a16e499d0928c842ba9088b08416730&amp;type=3#PressAnyKeyStyle" />
+    <ui:VisualElement name="Root" class="root" style="flex-grow: 1; align-items: flex-start;">
+        <ui:VisualElement name="PressAnyKey" enabled="true" focusable="true" class="pressanykey" style="width: 100%; height: 100%; position: absolute; flex-direction: column-reverse;">
+            <ui:Label name="Label_PressAnyKey" text="Press Any Key" class="pressanykey-label" style="font-size: 60px; -unity-text-align: middle-center; flex-grow: 0; flex-shrink: 1; height: 40%; width: 100%;">
+                <Bindings>
+                    <UnityEngine.Localization.LocalizedString property="text" table="GUID:0b5097ec649055a4db8796c6aa4e9887" entry="Id(63022280883965952)" />
+                </Bindings>
+            </ui:Label>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

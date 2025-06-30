@@ -16,7 +16,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [Header(" Trace ")]
         [SerializeField] private float _traceRadius = 2f;
         [SerializeField][Range(0f, 180f)] private float _traceAngle = 30f;
-        [SerializeField] private Variable_LayerMask _traceLayer;
+        [SerializeField] private SOLayerMaskVariable _traceLayer;
 
         [Header(" Gameplay Cue ")]
         [SerializeField] private FGameplayCue _explosionCue;
@@ -104,7 +104,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             _gameplayTagSystem.AddOwnedTags(ownedTags);
         }
-        public void Inactivate()
+        public void Deactivate()
         {
             _isPlaying = false;
 
@@ -135,7 +135,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             if (!_isPlaying)
                 return;
 
-            Inactivate();
+            Deactivate();
         }
 
         public void OnExplosion()

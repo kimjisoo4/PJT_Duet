@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
 
-using System.Diagnostics;
-using UnityEngine.SceneManagement;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -43,6 +40,7 @@ namespace StudioScor.Utilities
             EditorApplication.playModeStateChanged += EditorApplication_playModeStateChanged;
 #endif
         }
+
         protected virtual void OnDisable()
         {
 #if UNITY_EDITOR

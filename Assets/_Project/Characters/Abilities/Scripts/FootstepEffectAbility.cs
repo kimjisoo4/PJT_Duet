@@ -59,7 +59,7 @@ namespace PF.PJT.Duet.Pawn.PawnAbility
                     Log(" Play Footstep Cue ");
 
                     Vector3 position = footstepData.Position;
-                    Vector3 rotation = Quaternion.LookRotation(footstepData.Normal, Vector3.up).eulerAngles;
+                    Vector3 rotation = transform.eulerAngles;
                     Vector3 scale = _ability._footstepCue.Scale;
                     float volume = _ability._footstepCue.Volume;
 

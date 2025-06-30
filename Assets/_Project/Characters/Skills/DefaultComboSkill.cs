@@ -9,7 +9,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
     [CreateAssetMenu(menuName = "Project/Duet/PawnSkill/new Default Combo Skill", fileName = "GA_Skill_", order = -1000000)]
     public class DefaultComboSkill : CharacterSkill
     {
-        [Header(" [ Punch Combo Skill ] ")]
+        [Header(" [ Default Combo Skill ] ")]
         [Header(" Actions ")]
         [SerializeField] private Ability[] _groundActions;
 

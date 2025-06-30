@@ -13,12 +13,19 @@ namespace PF.PJT.Duet
 
         public RewordInformationDisplay RewordInformationDisplay => _rewordInformationDisplay;
 
-        protected virtual void OnValidate()
+        protected override void OnValidate()
         {
+#if UNITY_EDITOR
+            base.OnValidate();
+
+            if (SUtility.IsPlayingOrWillChangePlaymode)
+                return;
+
             if(!_rewordInformationDisplay)
             {
                 _rewordInformationDisplay = GetComponentInParent<RewordInformationDisplay>();
             }
+#endif
         }
     }
 }

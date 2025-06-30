@@ -2,8 +2,8 @@
 
 namespace PF.PJT.Duet.DialogueSystem
 {
-    [AddComponentMenu("Duet/DialougeSystem/States/Dialogue Controller Wait For Inactivate State")]
-    public class DialogueControllerWaitForInactivateState : DialogueControllerState
+    [AddComponentMenu("Duet/DialougeSystem/States/Dialogue Controller Wait For Deactivate State")]
+    public class DialogueControllerWaitForDeactivateState : DialogueControllerState
     {
         [Header(" [ Active State ] ")]
         [SerializeField] private GameObject _uiActor;
@@ -12,7 +12,7 @@ namespace PF.PJT.Duet.DialogueSystem
         {
             base.EnterState();
 
-            DialogueDisplay.Inactivate();
+            DialogueDisplay.Deactivate();
 
             if (!_uiActor.activeSelf)
                 _uiActor.SetActive(true);

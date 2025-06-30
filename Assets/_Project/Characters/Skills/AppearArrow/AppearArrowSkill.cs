@@ -20,7 +20,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField][Range(0f, 1f)] private float _fadeInTime = 0f;
 
         [Header(" Movement ")]
-        [SerializeField] private float _addForcePower = 10f;
+        [SerializeField] [SUnit(SUtility.UNIT_METER)] private float _moveDistance = 10f;
+        [SerializeField] private AnimationCurve _moveCurve = AnimationCurve.Linear(0, 0, 1, 1);
 
         [Header(" Arrow Rain ")]
         [SerializeField] private PoolContainer _arrowRainPool;
@@ -29,12 +30,12 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [Header(" Spawn ")]
         [SerializeField][Min(0f)] private float _spawnTraceRadius = 1f;
         [SerializeField] private float _spawnLimitDistance = 100f;
-        [SerializeField] private Variable_LayerMask _spawnTraceLayer;
-        [SerializeField] private Variable_LayerMask _groundTraceLayer;
+        [SerializeField] private SOLayerMaskVariable _spawnTraceLayer;
+        [SerializeField] private SOLayerMaskVariable _groundTraceLayer;
 
         [Header(" Attack ")]
         [SerializeField][Min(0f)] private float _traceRadius = 1f;
-        [SerializeField] private Variable_LayerMask _traceLayer;
+        [SerializeField] private SOLayerMaskVariable _traceLayer;
 
         [Header(" Gameplay Effects ")]
         [SerializeField] private CoolTimeEffect _coolTimeEffect;
@@ -79,6 +80,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private readonly AnimationPlayer.Events _animationEvents;
             private bool _wasStartedAnimation;
 
+            private readonly ReachValueToTime _movementValue = new();
             private readonly OverlapSphereCast _overlapSphere = new();
 
             private Vector3 _startPosition;
@@ -174,6 +176,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 _moveDirection = transform.HorizontalDirection(_pawnSystem.LookPosition);
 
+                OnMovement();
                 _rotationSystem.SetRotation(Quaternion.LookRotation(_moveDirection, Vector3.up), false);
 
                 if (_ability._onAbilityCue.Cue)
@@ -186,6 +189,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 base.ExitAbility();
 
+                EndMovement();
                 EndTrace();
 
                 if (_impactCue is not null)
@@ -206,7 +210,10 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             public void UpdateAbility(float deltaTime)
             {
-                return;
+                if(IsPlaying)
+                {
+                    UpdateMovement();
+                }
             }
 
             public void FixedUpdateAbility(float deltaTime)
@@ -221,6 +228,26 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 }
             }
 
+            // Movement
+            private void OnMovement()
+            {
+                _movementValue.OnMovement(_ability._moveDistance, _ability._moveCurve);
+            }
+            private void EndMovement()
+            {
+                _movementValue.EndMovement();
+            }
+            private void UpdateMovement()
+            {
+                if (!_movementValue.IsPlaying)
+                    return;
+
+                var speed = _movementValue.UpdateMovement(_animationPlayer.NormalizedTime);
+
+                _movementSystem.MovePosition(transform.forward * -speed);
+            }
+
+
             private void OnStartedAnimation()
             {
                 _wasStartedAnimation = true;
@@ -233,6 +260,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 }
             }
 
+
+            // Area 
             private void OnSpawnArea()
             {
                 Log(nameof(OnSpawnArea));
@@ -268,8 +297,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     _ability._onAreaPointCue.Cue.Play(_hitPoint, transform.eulerAngles, cue.Scale, cue.Volume);
                 }
 
-                _addForceable.AddForce(transform.forward * -_ability._addForcePower);
-
                 OnTrace();
                 
             }
@@ -289,7 +316,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     }
                 }
             }
-
             public void ExitArea(ISpawnedActorByAbility spawnedActor, GameObject exitActor)
             {
                 Log(exitActor);
@@ -321,14 +347,12 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 _overlapSphere.OnTrace();
             }
-
             private void EndTrace()
             {
                 Log(nameof(EndTrace));
 
                 _overlapSphere.EndTrace();
             }
-
             private void UpdateTrace()
             {
                 var trace = _overlapSphere.UpdateTrace();

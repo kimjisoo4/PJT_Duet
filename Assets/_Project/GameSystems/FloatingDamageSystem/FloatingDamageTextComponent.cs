@@ -9,11 +9,11 @@ namespace PF.PJT.Duet
         [SerializeField] private FloatingTextComponent _floatingText;
         [SerializeField] private LookAtCamera _lookAtCamera;
         [SerializeField] private Timer _timer;
-
+        
         private void Awake()
         {
             _lookAtCamera.TryEnterState();
-            _timer.OnFinishedTimer += _timer_OnFinishedTimer;
+            _timer.OnFinishedTimer += Timer_OnFinishedTimer;
         }
 
         private void OnEnable()
@@ -30,7 +30,7 @@ namespace PF.PJT.Duet
 
             _timer.UpdateTimer(deltaTime);
         }
-        private void _timer_OnFinishedTimer(ITimer timer)
+        private void Timer_OnFinishedTimer(ITimer timer)
         {
             _floatingText.Release();
 

@@ -5,82 +5,127 @@ using UnityEngine.InputSystem;
 
 namespace PF.PJT.Duet
 {
+
     public class InputControlSystem : BaseMonoBehaviour
     {
         [Header(" [ Input Control System ] ")]
-        [SerializeField] private GameObjectListVariable _activeUIVariable;
-        [SerializeField][Readonly] private EBoolean _state = EBoolean.None;
+        [SerializeField] private EBlockInputState _state;
 
-        public bool UseUIInput => _state == EBoolean.True;
-        public bool UseGameInput => _state == EBoolean.False;
+        public bool UseInput => _state.HasFlag(EBlockInputState.None);
+        public bool UseUIInput => _state.HasFlag(EBlockInputState.UI);
+        public bool UseGameInput => _state.HasFlag(EBlockInputState.Game);
+
 
 #if UNITY_EDITOR
         [SerializeField][Readonly]private bool _cursorVisible;
         [SerializeField][Readonly]private CursorLockMode _cursorLockMode;
 #endif
 
-        private void OnDestroy()
-        {
-            if(_activeUIVariable)
-            {
-                _activeUIVariable.OnAdded -= _activeUIVariable_OnAdded;
-                _activeUIVariable.OnRemoved -= _activeUIVariable_OnRemoved;
-            }
-        }
-
         private void Start()
         {
             UpdateUIControl();
-
-            _activeUIVariable.OnAdded += _activeUIVariable_OnAdded;
-            _activeUIVariable.OnRemoved += _activeUIVariable_OnRemoved;
         }
 
         private void UpdateUIControl()
         {
-            if (_activeUIVariable.Values.Count > 0)
-                OnUIInputControl();
-            else
-                EndUIInputControl();
+            UpdateUIInput();
+            UpdateGameInput();
         }
 
-        private void OnUIInputControl()
+        public void OnUIInput()
         {
             if (UseUIInput)
                 return;
 
-            _state = EBoolean.True;
+            _state |= EBlockInputState.UI;
 
-            Log(nameof(OnUIInputControl));
+            Log(nameof(OnUIInput));
 
-            var playerinput = PlayerInput.all.ElementAtOrDefault(0);
-
-            if (playerinput)
-            {
-                playerinput.DeactivateInput();
-            }
-            
-            SetCursorState(true);
+            UpdateUIInput();
         }
 
-        private void EndUIInputControl()
+        public void EndUIInput()
+        {
+            if (!UseUIInput)
+                return;
+
+            _state &= ~EBlockInputState.UI;
+
+            Log(nameof(EndUIInput));
+
+            UpdateUIInput();
+        }
+
+
+        public void OnGameInput()
         {
             if (UseGameInput)
                 return;
 
-            _state = EBoolean.False;
+            _state |= EBlockInputState.Game;
 
-            Log(nameof(EndUIInputControl));
+            Log(nameof(OnGameInput));
 
-            var playerinput = PlayerInput.all.ElementAtOrDefault(0);
+            UpdateGameInput();
+        }
 
-            if (playerinput)
+        public void EndGameInput()
+        {
+            if (!UseGameInput)
+                return;
+
+            _state &= ~EBlockInputState.Game;
+
+            Log(nameof(EndGameInput));
+
+            UpdateGameInput();
+        }
+
+        private void UpdateUIInput()
+        {
+            SetCursorState(UseUIInput);
+
+            var playerInput = PlayerInput.all.ElementAtOrDefault(0);
+
+            if (!playerInput)
+                return;
+
+            if (UseUIInput)
             {
-                playerinput.ActivateInput();
+                playerInput.actions.FindActionMap("UI").Enable();
+            }
+            else
+            {
+                playerInput.actions.FindActionMap("UI").Disable();
+            }
+        }
+        private void UpdateGameInput()
+        {
+            var playerInput = PlayerInput.all.ElementAtOrDefault(0);
+
+            if (!playerInput)
+                return;
+
+            if (UseGameInput)
+            {
+                playerInput.actions.FindActionMap("Player").Enable();
+            }
+            else
+            {
+                playerInput.actions.FindActionMap("Player").Disable();
             }
 
-            SetCursorState(false);
+            /*
+                        if (UseGameInput)
+                        {
+                            playerInput.ActivateInput();
+                        }
+                        else
+                        {
+                            playerInput.DeactivateInput();
+                        }*/
         }
+
 
         private void SetCursorState(bool visible)
         {
@@ -99,40 +144,18 @@ namespace PF.PJT.Duet
             _cursorVisible = Cursor.visible;
             _cursorLockMode = Cursor.lockState;
 #endif
-
         }
 
         private void OnApplicationFocus(bool focus)
         {
             if (focus)
             {
-                switch (_state)
-                {
-                    case EBoolean.None:
-                        break;
-                    case EBoolean.True:
-                        SetCursorState(true);
-                        break;
-                    case EBoolean.False:
-                        SetCursorState(false);
-                        break;
-                    default:
-                        break;
-                }
+                SetCursorState(UseUIInput);
             }
             else
             {
                 SetCursorState(true);
             }
-        }
-
-        private void _activeUIVariable_OnAdded(ListVariableObject<GameObject> variable, GameObject value)
-        {
-            UpdateUIControl();
-        }
-        private void _activeUIVariable_OnRemoved(ListVariableObject<GameObject> variable, GameObject value)
-        {
-            UpdateUIControl();
         }
     }
 }

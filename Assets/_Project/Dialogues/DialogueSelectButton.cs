@@ -48,7 +48,7 @@ namespace PF.PJT.Duet
         {
             _buttonActor.SetActive(true);
         }
-        public void Inactivate()
+        public void Deactivate()
         {
             _buttonActor.SetActive(false);
         }

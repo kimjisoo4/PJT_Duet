@@ -121,7 +121,7 @@ MonoBehaviour:
   _inactiveState: {fileID: 463060837867701785}
   _waitForActivateState: {fileID: 3243104565511270415}
   _waitForSelectState: {fileID: 542057482588734915}
-  _waitForInactivateState: {fileID: 7974356986888359815}
+  _waitForDeactivateState: {fileID: 7974356986888359815}
   _activeUIInputVariable: {fileID: 11400000, guid: 352d1cc01f0a9664894025e92dfad8d8,
     type: 2}
   _inActiveStatusUIVariable: {fileID: 11400000, guid: 55eb62273cf49ec42b3a7150f7cf5060,
@@ -143,7 +143,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  _onInactivated:
+  _onDeactivated:
     _useUnityEvent: 1
     _unityEvent:
       m_PersistentCalls:
@@ -870,7 +870,7 @@ MonoBehaviour:
     _unityEvent:
       m_PersistentCalls:
         m_Calls: []
-  _onInactivated:
+  _onDeactivated:
     _useUnityEvent: 0
     _unityEvent:
       m_PersistentCalls:

@@ -39,7 +39,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2862505638891520
-    m_Localized: 
+    m_Localized: a long-distance class in which a person fights using archers.
     m_Metadata:
       m_Items: []
   - m_Id: 3174467627257856
@@ -76,6 +76,30 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 3176362567667712
     m_Localized: Fire Damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2863293215936512
+    m_Localized: Ork Warrior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2863060520144896
+    m_Localized: Lizardman warrior using a sword.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2862602577645568
+    m_Localized: a close-range class that uses swordsmanship to fight.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2862606407045120
+    m_Localized: a close-range class that uses martial arts to fight.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2863012503752704
+    m_Localized: Lizard Warrior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2863350531100672
+    m_Localized: Ork warriors using hammers.
     m_Metadata:
       m_Items: []
   references:

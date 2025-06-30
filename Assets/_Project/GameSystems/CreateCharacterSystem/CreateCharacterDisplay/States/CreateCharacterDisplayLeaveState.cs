@@ -10,23 +10,26 @@ namespace PF.PJT.Duet.CreateCharacterSystem
         [SerializeField] private GameObject _uiActor;
         [SerializeField] private CreateCharacterButton[] _createCharacterButtons;
 
-        private int _remainInactivateButtonCount;
+        private int _remainDeactivateButtonCount;
 
         private void Awake()
         {
             foreach (var createCharacterButton in _createCharacterButtons)
             {
-                createCharacterButton.OnInactivated += CreateCharacterButton_OnInactivated;
+                createCharacterButton.OnDeactivated += CreateCharacterButton_OnDeactivated;
             }
         }
-        private void OnDestroy()
+
+        protected override void OnDestroy()
         {
-            if(!_createCharacterButtons.IsNullOrEmpty())
+            base.OnDestroy();
+
+            if (!_createCharacterButtons.IsNullOrEmpty())
             {
                 foreach (var createCharacterButton in _createCharacterButtons)
                 {
                     if(createCharacterButton)
-                        createCharacterButton.OnInactivated -= CreateCharacterButton_OnInactivated;
+                        createCharacterButton.OnDeactivated -= CreateCharacterButton_OnDeactivated;
                 }
             }
         }
@@ -34,24 +37,24 @@ namespace PF.PJT.Duet.CreateCharacterSystem
         {
             base.EnterState();
 
-            OnInactivateButtons();
+            OnDeactivateButtons();
         }
 
-        private void OnInactivateButtons()
+        private void OnDeactivateButtons()
         {
-            _remainInactivateButtonCount = _createCharacterButtons.Length;
+            _remainDeactivateButtonCount = _createCharacterButtons.Length;
 
             foreach (var createCharacterButton in _createCharacterButtons)
             {
-                createCharacterButton.Inactivate();
+                createCharacterButton.Deactivate();
             }
         }
 
-        private void CreateCharacterButton_OnInactivated(CreateCharacterButton selectCharacterUI)
+        private void CreateCharacterButton_OnDeactivated(CreateCharacterButton selectCharacterUI)
         {
-            _remainInactivateButtonCount--;
+            _remainDeactivateButtonCount--;
 
-            if (_remainInactivateButtonCount <= 0)
+            if (_remainDeactivateButtonCount <= 0)
             {
                 CreateCharacterDisplay.FinishedState(this);
             }

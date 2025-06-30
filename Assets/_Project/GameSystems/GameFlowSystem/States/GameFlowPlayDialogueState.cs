@@ -40,14 +40,14 @@ namespace PF.PJT.Duet.GameFlowSystem
         {
             base.EnterState();
 
-            _dialogueController.OnFinishedInactivate += _dialogueController_OnFinishedInactivate;
+            _dialogueController.OnDeactivateFinished += DialogueController_OnDeactivateFinished;
 
             _dialogueController.Activate(_dialogue);
         }
 
-        private void _dialogueController_OnFinishedInactivate(DialogueController dialogueController)
+        private void DialogueController_OnDeactivateFinished(DialogueController dialogueController)
         {
-            TryNextState();
+            //TryNextState();
         }
 
         protected override void ExitState()
@@ -56,7 +56,7 @@ namespace PF.PJT.Duet.GameFlowSystem
 
             if(_dialogueController)
             {
-                _dialogueController.OnFinishedInactivate -= _dialogueController_OnFinishedInactivate;
+                _dialogueController.OnDeactivateFinished -= DialogueController_OnDeactivateFinished;
             }
         }
     }

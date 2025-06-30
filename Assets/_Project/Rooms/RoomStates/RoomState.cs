@@ -10,9 +10,14 @@ namespace PF.PJT.Duet
         [SerializeField] private RoomController _roomController;
         protected RoomController RoomController => _roomController;
 
-        protected virtual void OnValidate()
+        protected override void OnValidate()
         {
 #if UNITY_EDITOR
+            if (SUtility.IsPlayingOrWillChangePlaymode)
+                return;
+
+            base.OnValidate();
+
             if(!_roomController)
             {
                 _roomController = GetComponentInParent<RoomController>();

@@ -1,0 +1,55 @@
+:root {
+}
+
+.toggle {
+    transition-duration: 0.2s;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.toggle:focus {
+    transition-duration: 0.25s;
+    background-color: rgb(0, 160, 255);
+    scale: 1.01 1.01;
+    transition-timing-function: ease-out-back;
+}
+
+.toggle:focus .unity-toggle__label {
+    color: rgb(255, 255, 255);
+    -unity-font-style: bold;
+}
+
+.toggle:active {
+    background-color: rgb(255, 255, 255);
+    transition-duration: 0.25s;
+}
+
+.toggle .unity-toggle__input {
+    align-items: stretch;
+    flex-direction: row-reverse;
+}
+
+.toggle .unity-toggle__checkmark {
+    background-color: rgba(255, 255, 255, 0);
+    align-content: auto;
+    width: 60px;
+    height: 60px;
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+}
+
+.toggle .unity-toggle__input:checked > #unity-checkmark {
+    background-color: rgba(255, 255, 255, 0);
+    background-image: url("project://database/Assets/CleanFlatIcon/png_128/button/button_corner_square1/button_corner_square1_13.png?fileID=2800000&guid=647b6d3a958499b449bd3c3def0bf479&type=3#button_corner_square1_13");
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+}

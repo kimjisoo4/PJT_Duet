@@ -3,27 +3,15 @@ using UnityEngine;
 
 namespace PF.PJT.Duet.GameFlowSystem
 {
-
-    public class GameFlowSystemComponent : BaseMonoBehaviour
+    public class BaseGameFlowSystem : BaseMonoBehaviour, IGameFlowSystem
     {
-        [Header(" [ Game Flow System ] ")]
+        [Header(" [ Base Game Flow System ] ")]
         [SerializeField] private GameFlowState.StateMachine _stateMachine;
         public GameFlowState.StateMachine StateMachine => _stateMachine;
 
-
-        private void Start()
+        public bool TrySetState(GameFlowState gameFlowState)
         {
-            _stateMachine.Start();
-        }
-
-        public void TrySetState(GameFlowState gameFlowState)
-        {
-            _stateMachine.TrySetState(gameFlowState);
-        }
-
-        public void ForceSetState(GameFlowState gameFlowState)
-        {
-            _stateMachine.ForceSetState(gameFlowState);
+            return _stateMachine.TrySetState(gameFlowState);
         }
     }
 }

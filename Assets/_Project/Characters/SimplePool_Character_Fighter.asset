@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SimplePool_Character_Fighter
   m_EditorClassIdentifier: 
   UseDebug: 0
-  simplePoolObject: {fileID: 2582273113017920449, guid: 2aaa5a42ecb43ac44825cca0059d79ed,
+  _pooledObject: {fileID: 2582273113017920449, guid: 2aaa5a42ecb43ac44825cca0059d79ed,
     type: 3}
-  container: {fileID: 0}
-  startSize: 2
-  capacity: 3
-  maxSize: 10
+  _container: {fileID: 0}
+  _startSize: 1
+  _capacity: 10
+  _maxSize: 20

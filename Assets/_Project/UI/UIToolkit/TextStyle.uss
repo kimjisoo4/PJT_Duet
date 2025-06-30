@@ -1,0 +1,9 @@
+:root {
+}
+
+.text-menu-category {
+    -unity-font-style: bold;
+}
+
+.toggle:active {
+}

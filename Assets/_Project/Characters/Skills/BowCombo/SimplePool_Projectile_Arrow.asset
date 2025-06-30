@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SimplePool_Projectile_Arrow
   m_EditorClassIdentifier: 
   UseDebug: 0
-  simplePoolObject: {fileID: 2379186594445487946, guid: 2cca31236cd5c6542af01169b7b6f701,
+  _pooledObject: {fileID: 2379186594445487946, guid: 2cca31236cd5c6542af01169b7b6f701,
     type: 3}
-  container: {fileID: 0}
-  startSize: 5
-  capacity: 10
-  maxSize: 20
+  _container: {fileID: 0}
+  _startSize: 5
+  _capacity: 10
+  _maxSize: 20

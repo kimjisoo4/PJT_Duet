@@ -1,0 +1,15 @@
+:root {
+}
+
+.ingamemenu {
+    background-color: rgba(0, 0, 0, 0.8);
+    flex-grow: 0;
+    width: 400px;
+    height: 500px;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 50px;
+    padding-top: 50px;
+    padding-right: 50px;
+    padding-left: 50px;
+}

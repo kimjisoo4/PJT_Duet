@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SimplePool_Character_Knight
   m_EditorClassIdentifier: 
   UseDebug: 0
-  simplePoolObject: {fileID: 2043067166539176451, guid: 65d18a74094f930449cb0a344017b3c9,
+  _pooledObject: {fileID: 2043067166539176451, guid: 65d18a74094f930449cb0a344017b3c9,
     type: 3}
-  container: {fileID: 0}
-  startSize: 2
-  capacity: 3
-  maxSize: 10
+  _container: {fileID: 0}
+  _startSize: 1
+  _capacity: 10
+  _maxSize: 20

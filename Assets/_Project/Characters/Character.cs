@@ -1,4 +1,5 @@
-﻿using StudioScor.AbilitySystem;
+﻿using PF.PJT.Duet.Pawn.PawnSkill;
+using StudioScor.AbilitySystem;
 using StudioScor.GameplayEffectSystem;
 using StudioScor.GameplayTagSystem;
 using StudioScor.MovementSystem;
@@ -17,12 +18,14 @@ namespace PF.PJT.Duet.Pawn
     public enum ESkillSlot
     {
         None,
-        Attack,
-        Dash,
-        Jump,
-        Appear,
-        Leave,
-        Skill_01,
+        Auto,       // Auto Target Slot
+        Attack,     // LMB
+        Dash,       // Space
+        Appear,     // Tap (enabled)
+        Leave,      // Tap (disabled)
+        Skill_01,   // RMB
+        Skill_02,   // Shift LMB
+        Skill_03,   // Shift RMB
     }
 
     public interface IAddForceable
@@ -61,6 +64,7 @@ namespace PF.PJT.Duet.Pawn
         public void OnSpawn();
         public void OnDispawn();
         public void OnDie();
+        public void EndDie();
 
 
         public bool CanLeave();
@@ -70,9 +74,9 @@ namespace PF.PJT.Duet.Pawn
 
         public void Teleport(Vector3 position, Quaternion rotation);
         public void SetInputAttack(bool pressed);
-        public void SetInputSkill(bool pressed);
         public void SetInputDash(bool pressed);
-        public void SetInputJump(bool pressed);
+        public void SetInputSkill(int index, bool pressed);
+
 
         public event CharacterStateEventHandler OnReseted;
         public event CharacterStateEventHandler OnSpawned;
@@ -93,16 +97,14 @@ namespace PF.PJT.Duet.Pawn
 
         [Header(" Inputs ")]
         [SerializeField] private GameplayTag _inputAttackTag;
-        [SerializeField] private GameplayTag _inputSkillTag;
         [SerializeField] private GameplayTag _inputDashTag;
-        [SerializeField] private GameplayTag _inputJumpTag;
+        [SerializeField] private GameplayTag[] _inputSkillTags;
 
         [Header(" Default Abilities ")]
-        [SerializeField] private Ability _attackAbility;
-        [SerializeField] private Ability _dashAbility;
-        [SerializeField] private Ability _jumpAbility;
-        [SerializeField] private Ability _skillAbility;
-        [SerializeField] private Ability[] _defaultAbilities;
+        [SerializeField] private CharacterSkill _attackSkill;
+        [SerializeField] private CharacterSkill _mainSkill;
+        [SerializeField] private CharacterSkill _dashSkill; 
+        [SerializeField] private CharacterSkill[] _defaultSkills;
 
         [Header(" Change Character ")]
         [SerializeField] private Ability _appearAbility;
@@ -125,7 +127,6 @@ namespace PF.PJT.Duet.Pawn
         private IGameplayTagSystem _gameplayTagSystem;
         private IMovementSystem _movementSystem;
         private IRotationSystem _rotationSystem;
-        private IGroundChecker _groundChecker;
         private IDilationSystem _dilationSystem;
 
         private bool _isDead = false;
@@ -211,19 +212,14 @@ namespace PF.PJT.Duet.Pawn
             _abilitySystem.Tick(deltaTime * _dilationSystem.Speed);
             _gameplayEffectSystem.Tick(deltaTime * _dilationSystem.Speed);
 
-            _movementSystem.UpdateMovement(deltaTime * _dilationSystem.Speed);
         }
 
         private void FixedUpdate()
         {
             float deltaTime = Time.fixedDeltaTime;
 
-            _groundChecker.CheckGrounded();
-
-            _movementSystem.SetGrounded(_groundChecker.IsGrounded);
-            _movementSystem.SetGroundState(_groundChecker.Point, _groundChecker.Normal, _groundChecker.Distance);
-
             _abilitySystem.FixedTick(deltaTime * _dilationSystem.Speed);
+            _movementSystem.UpdateMovement(deltaTime * _dilationSystem.Speed);
         }
 
         private void LateUpdate()
@@ -241,7 +237,6 @@ namespace PF.PJT.Duet.Pawn
             _gameplayEffectSystem = gameObject.GetGameplayEffectSystem();
             _movementSystem = gameObject.GetMovementSystem();
             _rotationSystem = gameObject.GetRotationSystem();
-            _groundChecker = gameObject.GetGroundChecker();
             _dilationSystem = gameObject.GetDilationSystem();
             _statSystem = gameObject.GetStatSystem();
             _statusSystem = gameObject.GetStatusSystem();
@@ -256,16 +251,15 @@ namespace PF.PJT.Duet.Pawn
 
         private void GrantDefaultSkill()
         {
-            GrantSkill(ESkillSlot.Attack, _attackAbility);
-            GrantSkill(ESkillSlot.Skill_01, _skillAbility);
-            GrantSkill(ESkillSlot.Dash, _dashAbility);
-            GrantSkill(ESkillSlot.Jump, _jumpAbility);
+            GrantSkill(ESkillSlot.Attack, _attackSkill);
+            GrantSkill(ESkillSlot.Skill_01, _mainSkill);
+            GrantSkill(ESkillSlot.Dash, _dashSkill);
             GrantSkill(ESkillSlot.Appear, _appearAbility);
             GrantSkill(ESkillSlot.Leave, _leaveAbility);
 
-            foreach (var ability in _defaultAbilities)
+            foreach (var ability in _defaultSkills)
             {
-                GrantSkill(ESkillSlot.None, ability);
+                GrantSkill(ESkillSlot.Auto, ability);
             }
         }
 
@@ -311,19 +305,28 @@ namespace PF.PJT.Duet.Pawn
 
             Invoke_OnSpawend();
         }
-
         public void OnDie()
         {
             if (_isDead)
                 return;
+            
+            Log(nameof(OnDie));
 
             _isDead = true;
 
             _pawnSystem.UnPossess();
 
-            Invoke_OnDead();
-
         }
+        public void EndDie()
+        {
+            if (!_isDead)
+                return;
+
+            Log(nameof(EndDie));
+
+            Invoke_OnDead();
+        }
+       
 
         public void OnDispawn()
         {
@@ -334,7 +337,52 @@ namespace PF.PJT.Duet.Pawn
 
         public void GrantSkill(ESkillSlot slot, Ability skill)
         {
+            if (!skill)
+                return;
+
             Log($"{nameof(GrantSkill)} - Input : {slot} || Skill : {skill}");
+
+            if (slot == ESkillSlot.Auto)
+            {
+                var characterSkill = skill as CharacterSkill;
+
+                switch (characterSkill.SkillType)
+                {
+                    case ESkillType.None:
+                        slot = ESkillSlot.None;
+                        break;
+                    case ESkillType.Attack:
+                        slot = ESkillSlot.Attack;
+                        break;
+                    case ESkillType.Dash:
+                        slot = ESkillSlot.Dash;
+                        break;
+                    case ESkillType.Skill:
+                        if (!_slotSkills.ContainsKey(ESkillSlot.Skill_01))
+                        {
+                            slot = ESkillSlot.Skill_01;
+                        }
+                        else if(!_slotSkills.ContainsKey(ESkillSlot.Skill_02))
+                        {
+                            slot = ESkillSlot.Skill_02;
+                        }
+                        else if (!_slotSkills.ContainsKey(ESkillSlot.Skill_03))
+                        {
+                            slot = ESkillSlot.Skill_03;
+                        }
+                        else
+                        {
+                            Debug.Log(" Need Override Target ");
+                            slot = ESkillSlot.None;
+                        }
+                        break;
+                    case ESkillType.Appear:
+                        slot = ESkillSlot.Appear;
+                        break;
+                    default:
+                        break;
+                }
+            }
 
             if (slot != ESkillSlot.None)
             {
@@ -353,7 +401,6 @@ namespace PF.PJT.Duet.Pawn
                     _abilitySystem.TryGrantAbility(skill, 0);
                     _slotSkills.Add(slot, skill);
                 }
-
             }
             else
             {
@@ -421,37 +468,6 @@ namespace PF.PJT.Duet.Pawn
                 }
             }
         }
-        public void SetInputSkill(bool pressed)
-        {
-            if(pressed)
-            {
-                _gameplayTagSystem.AddOwnedTag(_inputSkillTag);
-
-                if(_slotSkills.TryGetValue(ESkillSlot.Skill_01, out Ability skillAbility))
-                {
-                    if (!_abilitySystem.TryActivateAbility(skillAbility))
-                    {
-                        _inputBuffer.SetBuffer(skillAbility);
-                    }
-                }
-            }
-            else
-            {
-                _gameplayTagSystem.RemoveOwnedTag(_inputSkillTag);
-
-                if (_slotSkills.TryGetValue(ESkillSlot.Skill_01, out Ability skillAbility))
-                {
-                    if (_abilitySystem.IsPlayingAbility(skillAbility))
-                    {
-                        _abilitySystem.ReleasedAbility(skillAbility);
-                    }
-                    else
-                    {
-                        _inputBuffer.ReleaseBuffer(skillAbility);
-                    }
-                }
-            }
-        }
         public void SetInputDash(bool pressed)
         {
             if (pressed)
@@ -484,38 +500,56 @@ namespace PF.PJT.Duet.Pawn
                 }
             }
         }
-        public void SetInputJump(bool pressed)
+        public void SetInputSkill(int index, bool pressed)
         {
-            if (pressed)
-            {
-                _gameplayTagSystem.AddOwnedTag(_inputJumpTag);
-                
-                if (_slotSkills.TryGetValue(ESkillSlot.Jump, out Ability jumpAbility))
-                {
-                    if (!_abilitySystem.TryActivateAbility(jumpAbility))
-                    {
-                        _inputBuffer.SetBuffer(jumpAbility);
-                    }
+            ESkillSlot slot;
 
+            switch (index)
+            {
+                case 0:
+                    slot = ESkillSlot.Skill_01;
+                    break;
+                case 1:
+                    slot = ESkillSlot.Skill_02;
+                    break;
+                case 2:
+                    slot = ESkillSlot.Skill_03;
+                    break;
+                default:
+                    slot = ESkillSlot.None;
+                    return;
+            }
+
+            if(pressed)
+            {
+                _gameplayTagSystem.AddOwnedTag(_inputSkillTags[index]);
+
+                if(_slotSkills.TryGetValue(slot, out Ability skillAbility))
+                {
+                    if (!_abilitySystem.TryActivateAbility(skillAbility))
+                    {
+                        _inputBuffer.SetBuffer(skillAbility);
+                    }
                 }
             }
             else
             {
-                _gameplayTagSystem.RemoveOwnedTag(_inputJumpTag);
+                _gameplayTagSystem.RemoveOwnedTag(_inputSkillTags[index]);
 
-                if (_slotSkills.TryGetValue(ESkillSlot.Jump, out Ability jumpAbility))
+                if (_slotSkills.TryGetValue(slot, out Ability skillAbility))
                 {
-                    if (_abilitySystem.IsPlayingAbility(jumpAbility))
+                    if (_abilitySystem.IsPlayingAbility(skillAbility))
                     {
-                        _abilitySystem.ReleasedAbility(jumpAbility);
+                        _abilitySystem.ReleasedAbility(skillAbility);
                     }
                     else
                     {
-                        _inputBuffer.ReleaseBuffer(jumpAbility);
+                        _inputBuffer.ReleaseBuffer(skillAbility);
                     }
                 }
             }
         }
+
 
 
         public void TakeKnockback(Vector3 direction, float distance, float duration)
@@ -559,7 +593,7 @@ namespace PF.PJT.Duet.Pawn
         }
         private void Invoke_OnDead()
         {
-            Log($"{nameof(OnDead)}");
+            Log($"{nameof(OnDie)}");
 
             _onDead.Invoke();
             OnDead?.Invoke(this);

@@ -35,7 +35,7 @@ MonoBehaviour:
   cancelAbilityTags: []
   _icon: {fileID: 21300000, guid: ce175afd01f9f974a893de3c3d10c4ce, type: 3}
   _name: 
-  _skillType: 4
+  _skillType: 3
   _description: "\uAE30\uB97C \uBAA8\uC544 \uC5D0\uB108\uC9C0 \uAD6C\uCCB4\uB97C
     \uB0A0\uB9B0\uB2E4. \uCDA9\uC804 \uB2E8\uACC4(\uCD5C\uB300{0}\uCD08)\uC5D0 \uB530\uB77C
     \uACF5\uACA9\uB825\uC758 {1}%/{2}%/{3}%\uC758 \uD53C\uD574\uB97C \uC900\uB2E4."

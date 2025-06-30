@@ -29,7 +29,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [Header(" Trace ")]
         [SerializeField] private BodyTag _tracePoint;
         [SerializeField][Min(0f)] private float _traceRadius = 1f;
-        [SerializeField] private Variable_LayerMask _traceLayer;
+        [SerializeField] private SOLayerMaskVariable _traceLayer;
 
         [Header(" Gameplay Effects ")]
         [SerializeField] private CoolTimeEffect _coolTimeEffect;

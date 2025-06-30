@@ -1,6 +1,5 @@
 ﻿using PF.PJT.Duet.Controller;
 using PF.PJT.Duet.Pawn;
-using PF.PJT.Duet.Pawn.PawnSkill;
 using StudioScor.AbilitySystem;
 using StudioScor.PlayerSystem;
 using StudioScor.StatusSystem;
@@ -8,38 +7,27 @@ using StudioScor.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 namespace PF.PJT.Duet
 {
+
     public class PlayerSkillStateSystem : BaseMonoBehaviour
     {
         [Header(" [ Player Skill System ] ")]
         [SerializeField] private PlayerManager _playerManager;
         [SerializeField] private GameObject _playerSkillStateUIActor;
         [SerializeField] private InputSkillSlotUI _attackSlot;
-        [SerializeField] private InputSkillSlotUI _skillSlot;
+        [SerializeField] private InputSkillSlotUI[] _skillSlots;
 
         [Header(" Tag Character ")]
         [SerializeField] private TagCharacterSlotUI _tagCharacterSlot;
         [SerializeField] private StatusUIToSimpleAmount _tagCharacterStatusAmount;
         [SerializeField] private InputSkillSlotUI _tagCharacterAppearSlot;
 
-        [Header(" Event ")]
-        [SerializeField] private GameObjectListVariable _inActiveVariable;
-
         private IPlayerController _playerController;
 
         private readonly Dictionary<ICharacter, IAbilitySystem> _abilitySystems = new();
 
-        private void Awake()
-        {
-            if(_inActiveVariable)
-            {
-                _inActiveVariable.OnAdded += _inActiveVariable_OnAdded;
-                _inActiveVariable.OnRemoved += _inActiveVariable_OnRemoved;
-            }
-        }
         private void Start()
         {
             if(_playerManager.HasPlayerController)
@@ -79,36 +67,7 @@ namespace PF.PJT.Duet
 
                 _abilitySystems.Clear();
             }
-
-
-            if (_inActiveVariable)
-            {
-                _inActiveVariable.OnAdded -= _inActiveVariable_OnAdded;
-                _inActiveVariable.OnRemoved -= _inActiveVariable_OnRemoved;
-            }
         }
-        private void _inActiveVariable_OnRemoved(ListVariableObject<GameObject> variable, GameObject value)
-        {
-            if (_inActiveVariable.Values.Count != 0)
-                return;
-
-            if (_playerSkillStateUIActor.activeSelf)
-                return;
-
-            _playerSkillStateUIActor.SetActive(true);
-        }
-
-        private void _inActiveVariable_OnAdded(ListVariableObject<GameObject> variable, GameObject value)
-        {
-            if (_inActiveVariable.Values.Count == 0)
-                return;
-
-            if (!_playerSkillStateUIActor.activeSelf)
-                return;
-
-            _playerSkillStateUIActor.SetActive(false);
-        }
-
 
 
         private void SetPlayerController()
@@ -141,9 +100,13 @@ namespace PF.PJT.Duet
             Log(nameof(ClearSlots));
 
             _attackSlot.SetSkill(null, null);
-            _skillSlot.SetSkill(null, null);
             _tagCharacterAppearSlot.SetSkill(null, null);
             _tagCharacterSlot.SetCharacter(null);
+
+            foreach (var skillSlot in _skillSlots)
+            {
+                skillSlot.SetSkill(null, null);
+            }
         }
 
         private void UpdateUI()
@@ -201,14 +164,18 @@ namespace PF.PJT.Duet
                     break;
                 case ESkillSlot.Dash:
                     break;
-                case ESkillSlot.Jump:
-                    break;
                 case ESkillSlot.Appear:
                     break;
                 case ESkillSlot.Leave:
                     break;
                 case ESkillSlot.Skill_01:
-                    _skillSlot.SetSkill(skill, abilitySystem.GetAbilitySpec(skill));
+                    _skillSlots[0].SetSkill(skill, abilitySystem.GetAbilitySpec(skill));
+                    break;
+                case ESkillSlot.Skill_02:
+                    _skillSlots[1].SetSkill(skill, abilitySystem.GetAbilitySpec(skill));
+                    break;
+                case ESkillSlot.Skill_03:
+                    _skillSlots[2].SetSkill(skill, abilitySystem.GetAbilitySpec(skill));
                     break;
                 default:
                     break;
@@ -227,14 +194,16 @@ namespace PF.PJT.Duet
                     break;
                 case ESkillSlot.Dash:
                     break;
-                case ESkillSlot.Jump:
-                    break;
                 case ESkillSlot.Appear:
                     _tagCharacterAppearSlot.SetSkill(skill, abilitySystem.GetAbilitySpec(skill));
                     break;
                 case ESkillSlot.Leave:
                     break;
                 case ESkillSlot.Skill_01:
+                    break;
+                case ESkillSlot.Skill_02:
+                    break;
+                case ESkillSlot.Skill_03:
                     break;
                 default:
                     break;

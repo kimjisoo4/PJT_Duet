@@ -2,6 +2,8 @@
 
 namespace PF.PJT.Duet.GameFlowSystem
 {
+
+
     [AddComponentMenu("Duet/GameFlow/State/Select Stage Reword State")]
     public class GameFlowSelectStageRewordState : GameFlowState
     {
@@ -17,8 +19,8 @@ namespace PF.PJT.Duet.GameFlowSystem
 
             _remainCount = _selectRewordCount;
 
-            _stageRewordSystem.OnInactivated += _stageRewordSystem_OnInactivated;
-            _stageRewordSystem.OnSelectedReword += _stageRewordSystem_OnSelectedReword;
+            _stageRewordSystem.OnDeactivated += StageRewordSystem_OnDeactivated;
+            _stageRewordSystem.OnSelectedReword += StageRewordSystem_OnSelectedReword;
             _stageRewordSystem.Init();
             _stageRewordSystem.Activate();
         }
@@ -29,7 +31,7 @@ namespace PF.PJT.Duet.GameFlowSystem
 
             if(_stageRewordSystem)
             {
-                _stageRewordSystem.OnInactivated -= _stageRewordSystem_OnInactivated;
+                _stageRewordSystem.OnDeactivated -= StageRewordSystem_OnDeactivated;
             }
         }
 
@@ -39,16 +41,16 @@ namespace PF.PJT.Duet.GameFlowSystem
 
             if(_remainCount <= 0)
             {
-                _stageRewordSystem.Inactivate();
+                _stageRewordSystem.Deactivate();
             }
         }
 
-        private void _stageRewordSystem_OnInactivated(StageRewordSystem stageRewordSystem)
+        private void StageRewordSystem_OnDeactivated(StageRewordSystem stageRewordSystem)
         {
-            TryNextState();
+            ComplateState();
         }
 
-        private void _stageRewordSystem_OnSelectedReword(StageRewordSystem stageRewordSystem, ItemSO selectItem)
+        private void StageRewordSystem_OnSelectedReword(StageRewordSystem stageRewordSystem, ItemSO selectItem)
         {
             OnSelectedReword(selectItem);
         }

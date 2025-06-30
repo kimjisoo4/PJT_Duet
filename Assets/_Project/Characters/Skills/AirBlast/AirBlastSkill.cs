@@ -5,6 +5,7 @@ using StudioScor.GameplayCueSystem;
 using StudioScor.GameplayEffectSystem;
 using StudioScor.GameplayTagSystem;
 using StudioScor.PlayerSystem;
+using StudioScor.RotationSystem;
 using StudioScor.Utilities;
 using System;
 using System.Linq;
@@ -133,12 +134,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     AnimationPlayer.Play(_animationHash, Ability._readyAnimFadeInTime, fixedTransition: Ability._readyAnimFixedTransition);
                     AnimationPlayer.AnimationEvents = _animationEvents;
 
-                    Spec._turnToggle.OnToggle();
-                }
-
-                protected override void ExitState()
-                {
-                    Spec._turnToggle.OffToggle();
+                    Spec.OnTurn();
                 }
                 private void _animationEvents_OnStarted()
                 {
@@ -199,7 +195,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 }
                 protected override void EnterState()
                 {
-                    Spec._turnToggle.OnToggle();
+                    Spec.OnTurn();
                     Spec._chargeable.OnCharging();
 
                     _timer.OnTimer(Ability._maxChargeTime);
@@ -225,14 +221,12 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 protected override void ExitState()
                 {
-                    Spec._turnToggle.OffToggle();
                     _timer.EndTimer();
 
                     if (Spec._chargeable is not null)
                         Spec._chargeable.FinishCharging();
                 }
             }
-
             public class ShootState : AirBlastState
             {
                 private readonly int _animationHash;
@@ -264,6 +258,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 }
                 protected override void EnterState()
                 {
+                    Spec.EndTurn();
                     _wasStartedAnimation = false;
                     AnimationPlayer.Play(_animationHash, Ability._shotAnimFadeInTime, fixedTransition: Ability._shotAnimFixedTransition);
                     AnimationPlayer.AnimationEvents = _animationEvents;
@@ -311,8 +306,10 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             protected new readonly AirBlastSkill _ability;
 
+            private readonly IPawnSystem _pawnSystem;
             private readonly IBodySystem _bodySystem;
             private readonly IGameplayEffectSystem _gameplayEffectSystem;
+            private readonly IRotationSystem _rotationSystem;
             private readonly IRelationshipSystem _relationshipSystem;
             private readonly AnimationPlayer _animationPlayer;
 
@@ -321,9 +318,8 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private readonly ChargeState _chargeState;
             private readonly ShootState _shootState;
 
-            private readonly Toggleable _turnToggle;
-
             private bool _wasReleased = false;
+            private bool _canTurn;
             private IBodyPart _bodypart;
             private ISpawnedActorByAbility _spawnedActor;
             private IChargeable _chargeable;
@@ -339,13 +335,12 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 _ability = ability as AirBlastSkill;
 
-                _animationPlayer = gameObject.GetComponentInChildren<AnimationPlayer>(true);
+                _pawnSystem = gameObject.GetPawnSystem();
+                _rotationSystem = gameObject.GetRotationSystem();
                 _bodySystem = gameObject.GetBodySystem();
                 _relationshipSystem = gameObject.GetRelationshipSystem();
                 _gameplayEffectSystem = gameObject.GetGameplayEffectSystem();
-
-                _turnToggle = new();
-                _turnToggle.OnChangedToggleState += _turnToggle_OnChangedToggleState;
+                _animationPlayer = gameObject.GetComponentInChildren<AnimationPlayer>(true);
 
                 _readyState = new(this);
                 _chargeState = new(this);
@@ -387,6 +382,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 base.ExitAbility();
 
+                EndTurn();
                 _stateMachine.End();
 
                 _spawnedActor = null;
@@ -413,7 +409,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 if (_spawnedActor is not null)
                 {
-                    _spawnedActor.Inactivate();
+                    _spawnedActor.Deactivate();
                     _spawnedActor = null;
                 }
             }
@@ -433,12 +429,39 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     {
                         _stateMachine.CurrentState.UpdateState(deltaTime);
                     }
+
+                    UpdateTurning(deltaTime);
                 }
             }
             public void FixedUpdateAbility(float deltaTime)
             {
                 return;
             }
+
+            private void OnTurn()
+            {
+                if (_canTurn)
+                    return;
+
+                _canTurn = true;
+            }
+            private void EndTurn()
+            {
+                if (!_canTurn)
+                    return;
+
+                _canTurn = false;
+            }
+            private void UpdateTurning(float deltaTime)
+            {
+                if (!_canTurn)
+                    return;
+
+                Quaternion lookRotation = Quaternion.LookRotation(_pawnSystem.LookDirection, transform.up);
+
+                _rotationSystem.SetRotation(lookRotation);
+            }
+
 
             public void OnHit(ISpawnedActorByAbility spawnedActor, RaycastHit[] hits, int hitCount)
             {
@@ -539,7 +562,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 if (isProjectile && collisionCount > 0)
                 {
                     OnSpawnExplosion(spawnedActor.transform.position, spawnedActor.transform.rotation, chargeLevel);
-                    spawnedActor.Inactivate();
+                    spawnedActor.Deactivate();
                 }
             } 
 
@@ -623,21 +646,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 effectSpec.OnEndedEffect -= _coolTimeEffectSpec_OnEndedEffect;
 
                 _coolTimeEffectSpec = null;
-            }
-            private void _turnToggle_OnChangedToggleState(Toggleable toggleable, bool isOn)
-            {
-                Log($"{toggleable} - {(isOn ? "On" : "Off")}");
-
-                if (isOn)
-                {
-                    if (_ability._turnTag)
-                        GameplayTagSystem.AddOwnedTag(_ability._turnTag);
-                }
-                else
-                {
-                    if (_ability._turnTag)
-                        GameplayTagSystem.RemoveOwnedTag(_ability._turnTag);
-                }
             }
         }
     }

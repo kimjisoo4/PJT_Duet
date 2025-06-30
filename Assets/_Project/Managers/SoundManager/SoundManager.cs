@@ -1,4 +1,5 @@
-﻿using StudioScor.Utilities;
+﻿using DG.Tweening;
+using StudioScor.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -68,6 +69,12 @@ namespace PF.PJT.Duet.Pawn
         [Header(" [ Sound Manager ] ")]
         [SerializeField] private AudioMixer _audioMixer;
 
+        [Header(" BGM ")]
+        [SerializeField] private AudioClip _startBGM;
+        [SerializeField] private AudioSource _mainBGMPlayer;
+        [SerializeField] private AudioSource _subBGMPlayer;
+
+        [Header(" Pools ")]
         [SerializeField] private SoundSourcePool _sfxPoolUI;
         [SerializeField] private SoundSourcePool _sfxPool2D;
         [SerializeField] private SoundSourcePool _sfxPool3D;
@@ -77,16 +84,24 @@ namespace PF.PJT.Duet.Pawn
         private const string PARAM_VOLUME_SFX = "Volume_SFX";
         private const string PARAM_VOLUME_UI = "Volume_UI";
 
-        private const float DB_MULTIPLY = 20;
+        private const float DB_MULTIPLY = 20; 
+        private const float MIN_DB = -80f;
 
         private void Awake()
         {
             _sfxPoolUI.Setup(gameObject);
             _sfxPool2D.Setup(gameObject);
             _sfxPool3D.Setup(gameObject);
+
+            if(_startBGM)
+                PlayBGM(_startBGM);
         }
+
         private float CalcDB(float value)
         {
+            if (value <= 0f)
+                return MIN_DB;
+
             return Mathf.Log10(value) * DB_MULTIPLY;
         }
 
@@ -141,6 +156,34 @@ namespace PF.PJT.Duet.Pawn
             source.Play();
 
             return source;
+        }
+
+        public void PlayBGM(AudioClip newBGM, float fadeTime = 1f)
+        {
+            if(!_mainBGMPlayer.isPlaying && !_subBGMPlayer.isPlaying )
+            {
+                _mainBGMPlayer.clip = newBGM;
+                _mainBGMPlayer.DOFade(1f, fadeTime);
+            }
+            else
+            {
+                var prevAudioSoruce = _mainBGMPlayer.isPlaying ? _mainBGMPlayer : _subBGMPlayer;
+                var nextAudioSoruce = prevAudioSoruce != _mainBGMPlayer ? _mainBGMPlayer : _subBGMPlayer;
+
+                nextAudioSoruce.clip = newBGM;
+
+                var sequence = DOTween.Sequence();
+
+                sequence.Append(prevAudioSoruce.DOFade(0f, fadeTime))
+                        .AppendCallback(() => prevAudioSoruce.Stop());
+
+                if (nextAudioSoruce.clip)
+                {
+                    sequence.AppendCallback(() => nextAudioSoruce.Play())
+                            .Append(nextAudioSoruce.DOFade(1f, fadeTime));
+                }
+            }
+                
         }
     }
 }

@@ -1,0 +1,116 @@
+:root {
+}
+
+.stageclear {
+    transition-duration: 0.5s;
+}
+
+.stageclear-label-description {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    -unity-text-align: upper-center;
+    transition-duration: 0.5s;
+}
+
+.stageclear-button-restart {
+    width: 300px;
+    transition-duration: 0.5s;
+}
+
+.stageclear-button-exit {
+    width: 300px;
+    transition-duration: 0.5s;
+}
+
+.stageclear-label-title {
+    margin-top: 50px;
+    margin-right: 50px;
+    margin-bottom: 50px;
+    margin-left: 50px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    font-size: 200px;
+    -unity-text-align: upper-center;
+    -unity-font-style: bold;
+    color: rgb(243, 199, 3);
+    -unity-text-outline-color: rgb(255, 255, 255);
+    text-shadow: 0 0 10px rgb(255, 250, 0);
+    -unity-text-outline-width: 2px;
+    transition-duration: 0.5s;
+}
+
+.stageclear-button {
+    transition-duration: 0.5s;
+}
+
+.stageclear-label-container {
+    justify-content: center;
+    margin-top: 100px;
+    margin-right: 100px;
+    margin-bottom: 100px;
+    margin-left: 100px;
+    flex-grow: 1;
+    transition-duration: 0.5s;
+}
+
+.stageclear-button-container {
+    align-items: center;
+    flex-grow: 1;
+    transition-duration: 0.5s;
+}
+
+.stageclear__inactive > .stageclear-label-container > .stageclear-label-title {
+    opacity: 0;
+    transition-duration: 0s;
+}
+
+.stageclear__inactive > .stageclear-label-container > .stageclear-label-description {
+    opacity: 0;
+    transition-duration: 0s;
+    transition-delay: 0s;
+}
+
+.stageclear__inactive > .stageclear-button-container {
+    translate: 0 100%;
+    transition-property: translate;
+    transition-duration: 0s;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0s;
+    opacity: 0;
+}
+
+.stageclear__appear > .stageclear-label-container > .stageclear-label-title {
+    opacity: 1;
+    transition-property: opacity;
+    transition-duration: 0.5s;
+}
+
+.stageclear__appear > .stageclear-label-container > .stageclear-label-description {
+    transition-delay: 0.5s;
+    transition-duration: 0.5s;
+    transition-property: opacity;
+    opacity: 1;
+}
+
+.stageclear__appear > .stageclear-button-container {
+    translate: 0 0%;
+    transition-property: translate, opacity;
+    transition-duration: 1s, 0s;
+    transition-timing-function: ease-in-out, linear;
+    transition-delay: 1s, 0s;
+    opacity: 1;
+}
+
+.stageclear__appear {
+}
+
+.stageclear__inactive {
+}

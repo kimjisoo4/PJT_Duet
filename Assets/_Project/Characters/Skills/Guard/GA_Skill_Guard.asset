@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26d07da983abb51468f34e80b8ae5f90, type: 3}
+  m_Name: GA_Skill_Guard
+  m_EditorClassIdentifier: 
+  UseDebug: 1
+  _id: GA_Skill_Guard
+  abilityTag: {fileID: 0}
+  attributeTags: []
+  conditionTags:
+    requireds: []
+    obstacleds:
+    - {fileID: 11400000, guid: fd09d83516d03d344b5d271d42af22cb, type: 2}
+    - {fileID: 11400000, guid: 08e9c4a810fff2044a1f26bae2fbd9c8, type: 2}
+    - {fileID: 11400000, guid: a37abe0ec7c2eaf41aed4e316cc0f45f, type: 2}
+  grantTags:
+    owneds:
+    - {fileID: 11400000, guid: 81b84526aacbdd44288166b92e9ca5ff, type: 2}
+    blocks:
+    - {fileID: 11400000, guid: 2ec728a8400d61a4da454d4c66f9d97a, type: 2}
+  cancelAbilityTags: []
+  _icon: {fileID: 0}
+  _name: Guard
+  _skillType: 3
+  _description: 
+  _animationName: GuardHit
+  _fadeTime: 0.2
+  _iffsetTime: 0
+  _guardHitGrantTags:
+    owneds: []
+    blocks:
+    - {fileID: 11400000, guid: 4c5f6ab52c7b07a438bdc382afcceb20, type: 2}
+    - {fileID: 11400000, guid: 78a10403a7528ab4fab481c3262d97e8, type: 2}
+  _moveSpeedStat:
+    _statTag: {fileID: 11400000, guid: 99b0d60dd64574d46adad3e32e9e38ef, type: 2}
+    _statModifier:
+      _value: 0.5
+      _type: 300
+      _order: 10
+  _justGuardTime: 0.2
+  _justGuardSkill: {fileID: 11400000, guid: 1b9b2bc81dfd42d49a827921212b85a1, type: 2}

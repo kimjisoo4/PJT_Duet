@@ -1,5 +1,5 @@
 ﻿using PF.PJT.Duet.Pawn;
-using StudioScor.AbilitySystem;
+using StudioScor.Utilities;
 using UnityEngine;
 
 namespace PF.PJT.Duet
@@ -12,28 +12,46 @@ namespace PF.PJT.Duet
         [SerializeField] private GameObject _cinematicViewActor;
         [SerializeField] private GameObject _cinemachineCameraActor;
 
-
-        private ICharacter _character;
-        private IAbilitySystem _abilitySystem;
-
-
+        [Header(" Input ")]
+        [SerializeField] private InputBlocker _inputBlocker;
+        [SerializeField] private EBlockInputState _blockInput = EBlockInputState.UI | EBlockInputState.Game;
+        
         private const string TRACK_CHARACTER_ANIMATION = "CharacterAnimationTrack";
+        private ICharacter _character;
 
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+
+#if UNITY_EDITOR
+            if(!_inputBlocker)
+            {
+                _inputBlocker = SUtility.FindAssetByType<InputBlocker>();
+            }
+#endif
+        }
         protected override void Awake()
         {
             base.Awake();
 
             _character = _orkWorriorActor.GetComponent<ICharacter>();
-            _abilitySystem = _character.gameObject.GetAbilitySystem();
 
             _orkWorriorActor.SetActive(false);
             _orkWorriorControllerActor.SetActive(false);
             _cinematicViewActor.SetActive(false);
             _cinemachineCameraActor.SetActive(false);
         }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            _inputBlocker.UnblockInput(this);
+        }
 
         protected override void OnBeforePlay()
         {
+            _inputBlocker.BlockInput(this, _blockInput);
+
             _orkWorriorActor.SetActive(true);
 
             var playableAsset = PlayableDirector.playableAsset;
@@ -46,6 +64,12 @@ namespace PF.PJT.Duet
                     break;
                 }
             }
+        }
+        protected override void OnStop()
+        {
+            base.OnStop();
+
+            _inputBlocker.UnblockInput(this);
         }
     }
 }

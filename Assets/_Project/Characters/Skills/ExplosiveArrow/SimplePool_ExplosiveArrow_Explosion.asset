@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SimplePool_ExplosiveArrow_Explosion
   m_EditorClassIdentifier: 
   UseDebug: 0
-  simplePoolObject: {fileID: 7115417442108496530, guid: c02d537cd1b3ee1428e67fec2c8e6de1,
+  _pooledObject: {fileID: 7115417442108496530, guid: c02d537cd1b3ee1428e67fec2c8e6de1,
     type: 3}
-  container: {fileID: 0}
-  startSize: 5
-  capacity: 10
-  maxSize: 20
+  _container: {fileID: 0}
+  _startSize: 5
+  _capacity: 10
+  _maxSize: 20

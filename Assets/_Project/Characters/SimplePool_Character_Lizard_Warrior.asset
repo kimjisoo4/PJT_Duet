@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SimplePool_Character_Lizard_Warrior
   m_EditorClassIdentifier: 
   UseDebug: 0
-  simplePoolObject: {fileID: 8411776396250860883, guid: 0cd221490e31f2c458e67483e1c67235,
+  _pooledObject: {fileID: 8411776396250860883, guid: 0cd221490e31f2c458e67483e1c67235,
     type: 3}
-  container: {fileID: 0}
-  startSize: 5
-  capacity: 10
-  maxSize: 20
+  _container: {fileID: 0}
+  _startSize: 5
+  _capacity: 10
+  _maxSize: 20

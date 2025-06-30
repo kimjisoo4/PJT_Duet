@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SimplePool_Character_Archer
   m_EditorClassIdentifier: 
   UseDebug: 0
-  simplePoolObject: {fileID: 4099210122345842749, guid: 6030078326f66d049a1fffea31728042,
+  _pooledObject: {fileID: 4099210122345842749, guid: 6030078326f66d049a1fffea31728042,
     type: 3}
-  container: {fileID: 0}
-  startSize: 2
-  capacity: 3
-  maxSize: 10
+  _container: {fileID: 0}
+  _startSize: 1
+  _capacity: 10
+  _maxSize: 20

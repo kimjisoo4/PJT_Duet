@@ -23,7 +23,7 @@ namespace PF.PJT.Duet.CreateCharacterSystem
         [SerializeField] private ToggleableUnityEvent _onActivated;
         [SerializeField] private ToggleableUnityEvent _onFinishedBlendIn;
         [SerializeField] private ToggleableUnityEvent _onStartedBlendOut;
-        [SerializeField] private ToggleableUnityEvent _onInactivated;
+        [SerializeField] private ToggleableUnityEvent _onDeactivated;
 
         private bool _wasInit;
         private bool _isPlaying;
@@ -31,7 +31,7 @@ namespace PF.PJT.Duet.CreateCharacterSystem
         public event ICreateCharacterDisplay.CreateCharacterDisplayEventHandler OnActivated;
         public event ICreateCharacterDisplay.CreateCharacterDisplayEventHandler OnFinishedBlendIn;
         public event ICreateCharacterDisplay.CreateCharacterDisplayEventHandler OnStartedBlendOut;
-        public event ICreateCharacterDisplay.CreateCharacterDisplayEventHandler OnInactivated;
+        public event ICreateCharacterDisplay.CreateCharacterDisplayEventHandler OnDeactivated;
 
         private void Awake()
         {
@@ -61,7 +61,7 @@ namespace PF.PJT.Duet.CreateCharacterSystem
                 }
             }
         }
-        public void Inactivate()
+        public void Deactivate()
         {
             Invoke_OnStartedBlendOut();
             
@@ -72,7 +72,7 @@ namespace PF.PJT.Duet.CreateCharacterSystem
                     if (_uiActor.activeSelf)
                         _uiActor.SetActive(false);
 
-                    Invoke_OnInactivated();
+                    Invoke_OnDeactivated();
                 }
             }
         }
@@ -105,7 +105,7 @@ namespace PF.PJT.Duet.CreateCharacterSystem
                 if (_uiActor.activeSelf)
                     _uiActor.SetActive(false);
 
-                Invoke_OnInactivated();
+                Invoke_OnDeactivated();
             }
         }
 
@@ -130,12 +130,12 @@ namespace PF.PJT.Duet.CreateCharacterSystem
             _onStartedBlendOut.Invoke();
             OnStartedBlendOut?.Invoke(this);
         }
-        private void Invoke_OnInactivated()
+        private void Invoke_OnDeactivated()
         {
-            Log(nameof(OnInactivated));
+            Log(nameof(OnDeactivated));
 
-            _onInactivated.Invoke();
-            OnInactivated?.Invoke(this);
+            _onDeactivated.Invoke();
+            OnDeactivated?.Invoke(this);
         }
     }
 }

@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 8550443922673569592}
   - component: {fileID: 1312075698635745048}
   - component: {fileID: 5995820861880600799}
-  - component: {fileID: 4081958184895595708}
   m_Layer: 0
   m_Name: P_MainCamera
   m_TagString: MainCamera
@@ -133,12 +132,12 @@ MonoBehaviour:
   m_RequiresColorTexture: 0
   m_Version: 2
   m_TaaSettings:
-    quality: 3
-    frameInfluence: 0.1
-    jitterScale: 1
-    mipBias: 0
-    varianceClampScale: 0.9
-    contrastAdaptiveSharpening: 0
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!114 &5995820861880600799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,17 +172,3 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4081958184895595708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1781577769589812990}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fea885a4cca260f4ba72f6786869c4c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UseDebug: 0
-  _useDontDestroy: 1

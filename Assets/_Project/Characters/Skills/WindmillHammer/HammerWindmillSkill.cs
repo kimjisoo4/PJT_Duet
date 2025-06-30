@@ -23,7 +23,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
         [Header(" Attack Trace ")]
         [SerializeField] private BodyTag _tracePoint;
-        [SerializeField] private Variable_LayerMask _traceLayer;
+        [SerializeField] private SOLayerMaskVariable _traceLayer;
         [SerializeField] private float _traceRadius = 1f;
         [SerializeField] private float _hitInterval = 0.2f;
 
@@ -300,9 +300,11 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             private void UpdateWindmillLoop(float deltaTime)
             {
-                if (_animationPlayer.Animator.TryGetAnimatorState(0, _loopAnimationHash, out AnimatorStateInfo animatorState))
+                if (_animationPlayer.Animator.TryGetAnimatorState(_animationPlayer.Layer, _loopAnimationHash, out AnimatorStateInfo animatorState))
                 {
                     float normalizedTime = animatorState.normalizedTime % 1f;
+
+                    Log($"Normalized Time : {normalizedTime} || Was Released : {_wasReleased}");
 
                     if (normalizedTime >= 0.8f && _wasReleased)
                     {

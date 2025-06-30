@@ -38,8 +38,8 @@ MonoBehaviour:
   cancelAbilityTags:
   - {fileID: 11400000, guid: bb9c34e238740184c87e09ab7e473cab, type: 2}
   _icon: {fileID: 0}
-  _name: 
-  _skillType: 0
+  _name: Dash
+  _skillType: 2
   _description: 
   _animationName: Diveroll
   _motionTime: motionTime

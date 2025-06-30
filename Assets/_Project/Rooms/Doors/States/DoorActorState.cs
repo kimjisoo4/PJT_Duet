@@ -13,13 +13,20 @@ namespace PF.PJT.Duet
         [SerializeField] private StateMachineableDoorActor _doorActor;
 
         public StateMachineableDoorActor DoorActor => _doorActor;
-
-        protected virtual void OnValidate()
+        
+        protected override void OnValidate()
         {
+#if UNITY_EDITOR
+            if (SUtility.IsPlayingOrWillChangePlaymode)
+                return;
+
+            base.OnValidate();
+
             if(!_doorActor)
             {
                 _doorActor = gameObject.GetComponentInParent<StateMachineableDoorActor>();
             }
+#endif
         }
     }
 

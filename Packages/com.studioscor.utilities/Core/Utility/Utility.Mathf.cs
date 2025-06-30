@@ -4,6 +4,18 @@ namespace StudioScor.Utilities
 {
     public static partial class SUtility
     {
+        public static bool SafeEquals(this float lhs, int rhs, float equaly = 0.001f)
+        {
+            float value = lhs - rhs;
+
+            return value.IsPositive() ? value <= equaly : value >= -equaly;
+        }
+        public static bool SafeEquals(this int lhs, float rhs, float equaly = 0.001f)
+        {
+            float value = lhs - rhs;
+
+            return value.IsPositive() ? value <= equaly : value >= -equaly;
+        }
         public static bool SafeEquals(this float lhs, float rhs, float equaly = 0.001f)
         {
             float value = lhs - rhs;
@@ -122,6 +134,14 @@ namespace StudioScor.Utilities
                     return value > min && value < max;
                 }
             }
+        }
+
+        public static bool InRangeAngle(this float angle, float range, bool inclusive = true)
+        {
+            if(inclusive)
+                return -range <= angle && angle <= range;
+            else
+                return -range < angle && angle < range;
         }
 
 

@@ -17,23 +17,17 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
     {
         [Header(" [ Appear Sword ]")]
         [Header(" Animation ")]
-        [SerializeField] private string _airAnimation = "AppearSword_Air";
-        [SerializeField][Range(0f, 1f)] private float _airAnimFadeTime = 0f;
-
-        [SerializeField] private string _attackAnimation = "AppearSword_Slash";
-        [SerializeField][Range(0f, 1f)] private float _attackAnimFadeTime = 0.2f;
+        [SerializeField] private string _animationName = "AppearSword";
+        [SerializeField][Range(0f, 1f)] private float _fadeTime = 0f;
 
         [Header(" Movement ")]
         [SerializeField] private float _moveDistance = 5f;
         [SerializeField] private AnimationCurve _moveCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
-        [Space(10f)]
-        [SerializeField] private float _jumpHeight = 5f;
-        [SerializeField] private AnimationCurve _jumpMoveCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
         [Header(" Trace ")]
         [SerializeField] private BodyTag _tracePoint;
         [SerializeField] private float _traceRadius = 2f;
-        [SerializeField] private Variable_LayerMask _traceLayer;
+        [SerializeField] private SOLayerMaskVariable _traceLayer;
 
         [Header(" Gameplay Effects ")]
         [SerializeField] private CoolTimeEffect _coolTimeEffect;
@@ -49,7 +43,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
         [SerializeField] private FGameplayCue _onHitToOtherCue;
         [SerializeField] private FGameplayCue _onSuccessedPlayerHit;
 
-        [SerializeField] private LayerMask _testLayer;
         public override IAbilitySpec CreateSpec(IAbilitySystem abilitySystem, int level = 0)
         {
             return new Spec(this, abilitySystem, level);
@@ -57,190 +50,6 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
         public class Spec : GASAbilitySpec, ISkillState, IUpdateableAbilitySpec
         {
-            public enum EState
-            {
-                None,
-                JumpMovement,
-                WaitGround,
-                Attack,
-            }
-
-            public abstract class SkillState : BaseStateClass
-            {
-                private readonly Spec _spec;
-
-                protected Spec Spec => _spec;
-                protected AppearSwordSkill Ability => _spec._ability;
-                protected AnimationPlayer AnimationPlayer => _spec._animationPlayer;
-                protected FiniteStateMachineSystemWithKey<EState, SkillState> StateMachine => _spec._stateMachine;
-
-                protected Transform transform => _spec.transform;
-                protected GameObject gameObject => _spec.gameObject;
-
-
-                public override bool UseDebug => _spec.UseDebug;
-                public override UnityEngine.Object Context => _spec.Context;
-
-                public SkillState(Spec spec)
-                {
-                    _spec = spec;
-                }
-
-                public virtual void UpdateState(float deltaTime)
-                {
-
-                }
-            }
-
-            public class AttackState : SkillState
-            {
-                private readonly int _animationHash;
-                private readonly AnimationPlayer.Events _animationEvents;
-                private bool _wasStarted;
-
-                public AttackState(Spec spec) : base(spec)
-                {
-                    _animationHash = Animator.StringToHash(Ability._attackAnimation);
-
-                    _animationEvents = new();
-                    _animationEvents.OnStarted += _animationEvents_OnStarted;
-                    _animationEvents.OnFailed += _animationEvents_OnFailed;
-                    _animationEvents.OnCanceled += _animationEvents_OnCanceled;
-                    _animationEvents.OnStartedBlendOut += _animationEvents_OnStartedBlendOut;
-                    _animationEvents.OnEnterNotifyState += _animationEvents_OnEnterNotifyState;
-                    _animationEvents.OnExitNotifyState += _animationEvents_OnExitNotifyState;
-                    _animationEvents.OnNotify += _animationEvents_OnNotify;
-                }
-
-                
-
-                protected override void EnterState()
-                {
-                    _wasStarted = false;
-
-                    AnimationPlayer.Play(_animationHash, Ability._attackAnimFadeTime);
-                    AnimationPlayer.AnimationEvents = _animationEvents;
-                }
-
-                private void _animationEvents_OnStartedBlendOut()
-                {
-                    Spec.TryFinishAbility();
-                }
-
-                private void _animationEvents_OnCanceled()
-                {
-                    Spec.CancelAbility();
-                }
-
-                private void _animationEvents_OnStarted()
-                {
-                    _wasStarted = true;
-                }
-                private void _animationEvents_OnFailed()
-                {
-                    if (!_wasStarted)
-                        return;
-
-                    Spec.CancelAbility();
-                }
-
-                private void _animationEvents_OnNotify(string eventName)
-                {
-                    switch(eventName)
-                    {
-                        case "Impact":
-                            Spec.PlayImpactFX();
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                private void _animationEvents_OnEnterNotifyState(string eventName)
-                {
-                    switch (eventName)
-                    {
-                        case "Trace":
-                            Spec.OnTrace();
-                            break;
-
-                        default:
-                            break;
-                    }
-                }
-                private void _animationEvents_OnExitNotifyState(string eventName)
-                {
-                    switch (eventName)
-                    {
-                        case "Trace":
-                            Spec.EndTrace();
-                            break;
-
-                        default:
-                            break;
-                    }
-                }
-            }
-            public class JumpMovementState : SkillState
-            {
-                private readonly int _animationHash;
-
-                private readonly ReachValueToTime _horizontalMove;
-                private readonly ReachValueToTime _verticalMove;
-
-                private Vector3 _moveDirection;
-
-                public JumpMovementState(Spec spec) : base(spec)
-                {
-                    _animationHash = Animator.StringToHash(Ability._airAnimation);
-
-                    _horizontalMove = new ReachValueToTime(Ability._moveDistance, Ability._moveCurve);
-                    _verticalMove = new ReachValueToTime(Ability._jumpHeight, Ability._jumpMoveCurve);
-                }
-
-                protected override void EnterState()
-                {
-                    AnimationPlayer.Play(_animationHash, Ability._airAnimFadeTime);
-
-                    _horizontalMove.OnMovement(Ability._moveDistance);
-                    _verticalMove.OnMovement(Ability._jumpHeight);
-
-                    _moveDirection = transform.HorizontalDirection(Spec._pawnSystem.LookPosition);
-
-                    Spec._rotationSystem.SetRotation(Quaternion.LookRotation(_moveDirection, Vector3.up), false);
-                }
-                protected override void ExitState()
-                {
-                    base.ExitState();
-
-                    _horizontalMove.EndMovement();
-                    _verticalMove.EndMovement();
-                }
-
-                public override void UpdateState(float deltaTime)
-                {
-                    if (AnimationPlayer.IsPlaying)
-                    {
-                        _horizontalMove.UpdateMovement(AnimationPlayer.NormalizedTime);
-                        _verticalMove.UpdateMovement(AnimationPlayer.NormalizedTime);
-
-                        Vector3 movePosition = _moveDirection * _horizontalMove.DeltaDistance;
-                        movePosition.y = _verticalMove.DeltaDistance;
-
-                        Spec._movementSystem.MovePosition(movePosition);
-
-                        Log($"Normalized Time {AnimationPlayer.NormalizedTime} " +
-                            $":: Horizontal Delta Position {_horizontalMove.DeltaDistance} " +
-                            $":: Vertical Delta Position {_verticalMove.DeltaDistance}");
-                    }
-                    
-
-                    if(AnimationPlayer.NormalizedTime >= 0.5f && Spec._movementSystem.IsGrounded)
-                    {
-                        StateMachine.TrySetState(EState.Attack);
-                    }
-                }
-            }
-
             protected new readonly AppearSwordSkill _ability;
 
             private readonly AnimationPlayer _animationPlayer;
@@ -252,12 +61,12 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             private readonly IGameplayEffectSystem _gameplayEffectSystem;
 
             private readonly TrailSphereCast _sphereCast = new();
+            private readonly AnimationPlayer.Events _animationEvents = new();
+            private readonly ReachValueToTime _movementValue = new();
 
-            private readonly FiniteStateMachineSystemWithKey<EState, SkillState> _stateMachine;
-            private readonly JumpMovementState _jumpMovementState;
-            private readonly AttackState _attackState;
+            private readonly int _animationID;
 
-
+            private bool _wasAnimationStarted;
             private CoolTimeEffect.Spec _coolTimeSpec;
             public float CoolTime => _ability._coolTimeEffect ? _ability._coolTimeEffect.Duration : 0f;
             public float RemainCoolTime => _coolTimeSpec is null || !_coolTimeSpec.IsActivate ? 0f : _coolTimeSpec.RemainTime;
@@ -276,19 +85,21 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
                 _gameplayEffectSystem = gameObject.GetGameplayEffectSystem();
 
-                _stateMachine = new FiniteStateMachineSystemWithKey<EState, SkillState>();
-                _jumpMovementState = new(this);
-                _attackState = new(this);
-
-                _stateMachine.SetDefaultState(EState.JumpMovement, _jumpMovementState);
-                _stateMachine.AddState(EState.Attack, _attackState);
-
+                _animationID = Animator.StringToHash(_ability._animationName);
+                _animationEvents.OnStarted += _animationEvents_OnStarted;
+                _animationEvents.OnFailed += _animationEvents_OnFailed;
+                _animationEvents.OnCanceled += _animationEvents_OnCanceled;
+                _animationEvents.OnStartedBlendOut += _animationEvents_OnStartedBlendOut;
+                _animationEvents.OnEnterNotifyState += _animationEvents_OnEnterNotifyState;
+                _animationEvents.OnExitNotifyState += _animationEvents_OnExitNotifyState;
+                _animationEvents.OnNotify += _animationEvents_OnNotify;
 
                 _ability._onAbilityCue.Initialization();
                 _ability._onImpactCue.Initialization();
                 _ability._onHitToOtherCue.Initialization();
                 _ability._onSuccessedPlayerHit.Initialization();
             }
+
 
             public override bool CanActiveAbility()
             {
@@ -306,7 +117,15 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 base.EnterAbility();
 
-                _stateMachine.Start();
+                _animationPlayer.Play(_animationID, _ability._fadeTime);
+                _animationPlayer.AnimationEvents = _animationEvents;
+
+                Vector3 direction = _pawnSystem.LookDirection;
+                
+                _rotationSystem.SetRotation(Quaternion.LookRotation(direction, transform.up));
+
+                OnMovement();
+
                 if (_ability._coolTimeEffect)
                 {
                     if (_gameplayEffectSystem.TryApplyGameplayEffect(_ability._coolTimeEffect, gameObject, Level, null, out var spec))
@@ -316,7 +135,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                     }
                 }
 
-                if(_ability._onAbilityCue.Cue)
+                if (_ability._onAbilityCue.Cue)
                 {
                     _ability._onAbilityCue.PlayFromTarget(transform);
                 }
@@ -326,8 +145,12 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
             {
                 base.ExitAbility();
 
-                _stateMachine.End();
+                _animationPlayer.TryStopAnimation(_animationID);
+
+                EndTrace();
+                EndMovement();
             }
+
             private void _coolTimeSpec_OnEndedEffect(IGameplayEffectSpec effectSpec)
             {
                 effectSpec.OnEndedEffect -= _coolTimeSpec_OnEndedEffect;
@@ -337,18 +160,18 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
 
             private void PlayImpactFX()
             {
-                if(_ability._onImpactCue.Cue)
+                if (_ability._onImpactCue.Cue)
                 {
                     _ability._onImpactCue.PlayFromTarget(transform);
                 }
             }
 
-            
+
             public void UpdateAbility(float deltaTime)
             {
                 if (IsPlaying)
                 {
-                    _stateMachine.CurrentState.UpdateState(deltaTime);
+                    UpdateMovement();
                 }
             }
 
@@ -357,6 +180,27 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                 UpdateTrace();
             }
 
+
+            // Movement
+            private void OnMovement()
+            {
+                _movementValue.OnMovement(_ability._moveDistance, _ability._moveCurve);
+            }
+            private void EndMovement()
+            {
+                _movementValue.EndMovement();
+            }
+            private void UpdateMovement()
+            {
+                if (!_animationPlayer.IsPlaying)
+                    return;
+
+                var speed = _movementValue.UpdateMovement(_animationPlayer.NormalizedTime);
+
+                _movementSystem.MovePosition(transform.forward * speed);
+            }
+            
+            // Attack
             private void OnTrace()
             {
                 var bodypart = _bodySystem.GetBodyPart(_ability._tracePoint);
@@ -413,7 +257,7 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                                 data.Release();
                             }
 
-                            if(_ability._takeRadialKnockbackEffect)
+                            if (_ability._takeRadialKnockbackEffect)
                             {
                                 var data = TakeRadialKnockbackEffect.Element.Get(_sphereCast.Owner.transform.position);
 
@@ -475,6 +319,65 @@ namespace PF.PJT.Duet.Pawn.PawnSkill
                         }
                     }
 
+                }
+            }
+
+
+            private void _animationEvents_OnStartedBlendOut()
+            {
+                TryFinishAbility();
+            }
+
+            private void _animationEvents_OnCanceled()
+            {
+                CancelAbility();
+            }
+
+            private void _animationEvents_OnStarted()
+            {
+                _wasAnimationStarted = true;
+            }
+            private void _animationEvents_OnFailed()
+            {
+                if (!_wasAnimationStarted)
+                    return;
+
+                CancelAbility();
+            }
+
+            private void _animationEvents_OnNotify(string eventName)
+            {
+                switch (eventName)
+                {
+                    case "Impact":
+                        PlayImpactFX();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            private void _animationEvents_OnEnterNotifyState(string eventName)
+            {
+                switch (eventName)
+                {
+                    case "Trace":
+                        OnTrace();
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            private void _animationEvents_OnExitNotifyState(string eventName)
+            {
+                switch (eventName)
+                {
+                    case "Trace":
+                        EndTrace();
+                        break;
+
+                    default:
+                        break;
                 }
             }
         }
